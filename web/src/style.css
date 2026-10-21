@@ -1,0 +1,341 @@
+:root {
+  --bg: #050608;
+  --surface: #0b0e12;
+  --line: #1c232c;
+  --text: #e9e6e0;
+  --muted: #8b929b;
+  --faint: #5b626b;
+  --heat: #f2a64a;
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --panel-w: 400px;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font: 13px/1.45 var(--font);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* Header ------------------------------------------------------------------ */
+
+.bar {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding: 10px 16px;
+  padding-top: max(10px, env(safe-area-inset-top));
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+  font-size: 12px;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.wordmark {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.totals,
+.snapshot {
+  margin: 0;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.totals {
+  min-width: 0;
+}
+
+.snapshot {
+  margin-left: auto;
+  flex: none;
+}
+
+/* Map --------------------------------------------------------------------- */
+
+.stage {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.stage > .map {
+  position: absolute;
+  inset: 0;
+}
+
+.stage .maplibregl-canvas:focus-visible {
+  outline: 1px solid var(--faint);
+  outline-offset: -1px;
+}
+
+.status {
+  position: absolute;
+  left: 16px;
+  bottom: 14px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  pointer-events: none;
+}
+
+.tooltip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  gap: 1px;
+  max-width: 260px;
+  padding: 6px 9px;
+  background: rgba(11, 14, 18, 0.94);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font-size: 12px;
+  pointer-events: none;
+}
+
+.tooltip strong {
+  font-weight: 500;
+}
+
+.tooltip span {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.tooltip[hidden] {
+  display: none;
+}
+
+/* Attribution: keep MapLibre's control but in the same quiet register. */
+.stage .maplibregl-ctrl-attrib,
+.stage .maplibregl-ctrl-attrib.maplibregl-compact {
+  background: rgba(5, 6, 8, 0.7);
+  color: var(--faint);
+}
+
+.stage .maplibregl-ctrl-attrib a {
+  color: var(--muted);
+}
+
+.maplibregl-ctrl-attrib-button {
+  filter: invert(1) brightness(0.6);
+}
+
+/* Panel ------------------------------------------------------------------- */
+
+.panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--panel-w);
+  max-width: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px 18px 24px;
+  background: rgba(11, 14, 18, 0.96);
+  border-left: 1px solid var(--line);
+  z-index: 2;
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+.panel-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.panel-title {
+  flex: 1;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.panel-title:focus {
+  outline: none;
+}
+
+.panel-title:focus-visible {
+  outline: 1px solid var(--faint);
+  outline-offset: 3px;
+}
+
+.panel-close {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  margin: -4px -6px 0 0;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  color: var(--muted);
+  font: 20px/1 var(--font);
+  cursor: pointer;
+}
+
+.panel-close:hover,
+.panel-close:focus-visible {
+  color: var(--text);
+  background: var(--line);
+  outline: none;
+}
+
+.panel-why {
+  margin: 6px 0 0;
+  color: var(--heat);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.panel-state {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.panel-state[hidden] {
+  display: none;
+}
+
+.articles {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+}
+
+.article {
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+
+.article-title {
+  display: block;
+  color: var(--text);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+a.article-title:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--faint);
+  text-underline-offset: 2px;
+}
+
+a.article-title:focus-visible {
+  outline: 1px solid var(--heat);
+  outline-offset: 2px;
+}
+
+a.article-title:visited {
+  color: #b7b3ad;
+}
+
+.article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.article-meta > span:first-child {
+  color: #a9afb6;
+}
+
+/* Tone: a tick on a short hairline; neutral grey, no words. */
+.tone {
+  position: relative;
+  display: inline-block;
+  width: 22px;
+  height: 7px;
+  margin-left: auto;
+  opacity: 0.8;
+}
+
+.tone::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 3px;
+  height: 1px;
+  background: var(--faint);
+}
+
+.tone-tick {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 7px;
+  margin-left: -0.5px;
+  background: var(--muted);
+}
+
+/* Narrow screens: bottom sheet ------------------------------------------- */
+
+@media (max-width: 720px) {
+  .bar {
+    gap: 12px;
+    flex-wrap: wrap;
+    row-gap: 2px;
+  }
+
+  .totals {
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  .panel {
+    top: auto;
+    left: 0;
+    width: 100%;
+    max-height: 55%;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    border-radius: 8px 8px 0 0;
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .panel:not([hidden]) {
+    animation: panel-in 140ms ease-out;
+  }
+
+  @keyframes panel-in {
+    from {
+      opacity: 0;
+    }
+  }
+}

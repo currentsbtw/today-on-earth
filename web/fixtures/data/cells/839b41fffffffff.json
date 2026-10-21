@@ -1,0 +1,344 @@
+{
+ "id": "839b41fffffffff",
+ "name": "Suva, Central, Fiji",
+ "n": 23,
+ "o": 14,
+ "c": 14,
+ "l": 11,
+ "t": -1.4,
+ "topOutlets": [
+  [
+   "jakarta-pos.example",
+   4
+  ],
+  [
+   "daily-ledger.example",
+   3
+  ],
+  [
+   "seoul-daily.example",
+   2
+  ],
+  [
+   "gazeta-sample.example",
+   2
+  ],
+  [
+   "morning-wire.example",
+   2
+  ],
+  [
+   "asahi-sample.example",
+   2
+  ],
+  [
+   "gulf-report.example",
+   1
+  ],
+  [
+   "xinhua-sample.example",
+   1
+  ],
+  [
+   "le-quotidien.example",
+   1
+  ],
+  [
+   "nation-ke.example",
+   1
+  ]
+ ],
+ "topCountries": [
+  [
+   "ID",
+   4
+  ],
+  [
+   "US",
+   3
+  ],
+  [
+   "KR",
+   2
+  ],
+  [
+   "PL",
+   2
+  ],
+  [
+   "GB",
+   2
+  ],
+  [
+   "JP",
+   2
+  ],
+  [
+   "AE",
+   1
+  ],
+  [
+   "CN",
+   1
+  ],
+  [
+   "FR",
+   1
+  ],
+  [
+   "KE",
+   1
+  ]
+ ],
+ "languages": [
+  [
+   "en",
+   6
+  ],
+  [
+   "id",
+   4
+  ],
+  [
+   "ar",
+   2
+  ],
+  [
+   "ko",
+   2
+  ],
+  [
+   "pl",
+   2
+  ],
+  [
+   "ja",
+   2
+  ],
+  [
+   "zh",
+   1
+  ],
+  [
+   "fr",
+   1
+  ],
+  [
+   "uk",
+   1
+  ],
+  [
+   "it",
+   1
+  ]
+ ],
+ "articles": [
+  {
+   "title": "[sample] Officials meet over regional dispute near Suva",
+   "url": "https://gulf-report.example/news/6iegba",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-21T03:51:00Z",
+   "tone": -5
+  },
+  {
+   "title": "",
+   "url": "https://seoul-daily.example/news/zdg8q",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-21T02:59:00Z",
+   "tone": -0.3
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Suva",
+   "url": "https://jakarta-pos.example/news/1qx8cy",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-21T01:47:00Z",
+   "tone": -2.8
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Suva",
+   "url": "https://daily-ledger.example/news/93zqjh",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-21T00:50:00Z",
+   "tone": -6.5
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Suva",
+   "url": "https://gazeta-sample.example/news/evy0i6",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T23:47:00Z",
+   "tone": 3.5
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Suva",
+   "url": "https://daily-ledger.example/news/17rcfx",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T22:51:00Z",
+   "tone": 1.4
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Suva",
+   "url": "https://jakarta-pos.example/news/yevao",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T21:52:00Z",
+   "tone": 4.1
+  },
+  {
+   "title": "",
+   "url": "https://xinhua-sample.example/news/23p412",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T20:57:00Z",
+   "tone": 0.7
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Suva",
+   "url": "https://gazeta-sample.example/news/50gvi7",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T20:05:00Z",
+   "tone": -6.2
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Suva",
+   "url": "https://morning-wire.example/news/af0r95",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T19:04:00Z",
+   "tone": -5.9
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Suva",
+   "url": "https://jakarta-pos.example/news/3yem13",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T18:01:00Z",
+   "tone": -3.1
+  },
+  {
+   "title": "",
+   "url": "https://morning-wire.example/news/c9n0or",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T17:01:00Z",
+   "tone": -3.3
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Suva",
+   "url": "https://le-quotidien.example/news/czsefq",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T15:48:00Z",
+   "tone": -5.8
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Suva",
+   "url": "https://nation-ke.example/news/dnaazy",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T15:01:00Z",
+   "tone": -5.7
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Suva",
+   "url": "https://al-akhbar.example/news/5db8di",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T13:49:00Z",
+   "tone": 2.5
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Suva",
+   "url": "https://jakarta-pos.example/news/4vz1y9",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T12:55:00Z",
+   "tone": -6.5
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Suva",
+   "url": "https://seoul-daily.example/news/d7fpnf",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T11:55:00Z",
+   "tone": 2.8
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Suva",
+   "url": "https://asahi-sample.example/news/al9bn9",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T11:04:00Z",
+   "tone": 4.2
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Suva",
+   "url": "https://kyiv-herald.example/news/1b238v",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T10:01:00Z",
+   "tone": -2
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Suva",
+   "url": "https://corriere-sample.example/news/buvg57",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T08:56:00Z",
+   "tone": -1.1
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Suva",
+   "url": "https://tehran-times.example/news/aq8o3x",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T07:49:00Z",
+   "tone": 4.7
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Suva",
+   "url": "https://asahi-sample.example/news/at63sy",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T07:01:00Z",
+   "tone": -5.3
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Suva",
+   "url": "https://daily-ledger.example/news/9uwm08",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T05:46:00Z",
+   "tone": 3.4
+  }
+ ]
+}

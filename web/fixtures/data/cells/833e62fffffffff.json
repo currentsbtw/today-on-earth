@@ -1,0 +1,587 @@
+{
+ "id": "833e62fffffffff",
+ "name": "Cairo, Al Qahirah, Egypt",
+ "n": 344,
+ "o": 41,
+ "c": 19,
+ "l": 13,
+ "t": -0.7,
+ "topOutlets": [
+  [
+   "gazeta-sample.example",
+   5
+  ],
+  [
+   "vesti-news.example",
+   5
+  ],
+  [
+   "daily-ledger.example",
+   5
+  ],
+  [
+   "wire-service.example",
+   4
+  ],
+  [
+   "jakarta-pos.example",
+   3
+  ],
+  [
+   "la-voz.example",
+   3
+  ],
+  [
+   "cape-mail.example",
+   3
+  ],
+  [
+   "el-diario.example",
+   2
+  ],
+  [
+   "haaretz-sample.example",
+   2
+  ],
+  [
+   "gulf-report.example",
+   2
+  ]
+ ],
+ "topCountries": [
+  [
+   "PL",
+   5
+  ],
+  [
+   "RU",
+   5
+  ],
+  [
+   "US",
+   5
+  ],
+  [
+   "",
+   4
+  ],
+  [
+   "ID",
+   3
+  ],
+  [
+   "AR",
+   3
+  ],
+  [
+   "ZA",
+   3
+  ],
+  [
+   "MX",
+   2
+  ],
+  [
+   "IL",
+   2
+  ],
+  [
+   "AE",
+   2
+  ]
+ ],
+ "languages": [
+  [
+   "en",
+   18
+  ],
+  [
+   "pl",
+   5
+  ],
+  [
+   "es",
+   5
+  ],
+  [
+   "ru",
+   5
+  ],
+  [
+   "ar",
+   4
+  ],
+  [
+   "id",
+   3
+  ],
+  [
+   "he",
+   2
+  ],
+  [
+   "fa",
+   2
+  ],
+  [
+   "ja",
+   2
+  ],
+  [
+   "no",
+   1
+  ]
+ ],
+ "articles": [
+  {
+   "title": "[sample] Central bank holds interest rate near Cairo",
+   "url": "https://jakarta-pos.example/news/8m0r2e",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-21T03:47:00Z",
+   "tone": -5.8
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Cairo",
+   "url": "https://gazeta-sample.example/news/bbmvbi",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-21T03:32:00Z",
+   "tone": 2.5
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Cairo",
+   "url": "https://el-diario.example/news/7ditr7",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-21T03:01:00Z",
+   "tone": -1.5
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Cairo",
+   "url": "https://vesti-news.example/news/21pyuz",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-21T02:31:00Z",
+   "tone": 0.5
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Cairo",
+   "url": "https://la-voz.example/news/5hzbmq",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-21T02:14:00Z",
+   "tone": 1.5
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Cairo",
+   "url": "https://daily-ledger.example/news/875cem",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-21T01:46:00Z",
+   "tone": -3
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Cairo",
+   "url": "https://daily-ledger.example/news/fi9drn",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-21T01:18:00Z",
+   "tone": -0.6
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Cairo",
+   "url": "https://haaretz-sample.example/news/53t406",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-21T00:47:00Z",
+   "tone": 0.4
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Cairo",
+   "url": "https://jakarta-pos.example/news/61i1co",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-21T00:09:00Z",
+   "tone": -0.2
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Cairo",
+   "url": "https://gulf-report.example/news/3od4on",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T23:40:00Z",
+   "tone": 0.4
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Cairo",
+   "url": "https://wire-service.example/news/fm0t3o",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T23:28:00Z",
+   "tone": 1.7
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Cairo",
+   "url": "https://gazeta-sample.example/news/rsts5",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T22:55:00Z",
+   "tone": -0.3
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Cairo",
+   "url": "https://cape-mail.example/news/g0st9m",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T22:26:00Z",
+   "tone": -4.1
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Cairo",
+   "url": "https://global-desk.example/news/25ajn1",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T21:48:00Z",
+   "tone": 4.3
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Cairo",
+   "url": "https://nord-avis.example/news/b1boy3",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T21:34:00Z",
+   "tone": -5.1
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Cairo",
+   "url": "https://tehran-times.example/news/a75z99",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T21:09:00Z",
+   "tone": -0.4
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Cairo",
+   "url": "https://wire-service.example/news/gif0ug",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T20:33:00Z",
+   "tone": -6.1
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Cairo",
+   "url": "https://xinhua-sample.example/news/57jd6w",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T20:08:00Z",
+   "tone": 3.6
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Cairo",
+   "url": "https://gulf-report.example/news/2d5h7j",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T19:37:00Z",
+   "tone": -1
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Cairo",
+   "url": "https://o-correio.example/news/2i7w38",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T19:03:00Z",
+   "tone": 1.8
+  },
+  {
+   "title": "",
+   "url": "https://daily-ledger.example/news/8vzt9b",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T18:38:00Z",
+   "tone": 2.6
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Cairo",
+   "url": "https://gazeta-sample.example/news/94o491",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T18:11:00Z",
+   "tone": -1.6
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Cairo",
+   "url": "https://al-akhbar.example/news/6xuhwx",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T17:47:00Z",
+   "tone": 0.5
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Cairo",
+   "url": "https://al-akhbar.example/news/4sic5j",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T17:17:00Z",
+   "tone": -0.5
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Cairo",
+   "url": "https://daily-ledger.example/news/5agox5",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T16:47:00Z",
+   "tone": -1.1
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Cairo",
+   "url": "https://vesti-news.example/news/68lj6r",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T16:22:00Z",
+   "tone": -2.6
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Cairo",
+   "url": "https://el-diario.example/news/1x51g8",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T16:00:00Z",
+   "tone": -3.4
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Cairo",
+   "url": "https://cape-mail.example/news/cl5kvy",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T15:32:00Z",
+   "tone": -5.1
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Cairo",
+   "url": "https://cape-mail.example/news/2dlt1q",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T14:57:00Z",
+   "tone": 0.2
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Cairo",
+   "url": "https://harbour-press.example/news/bfpyth",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T14:38:00Z",
+   "tone": -2.5
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Cairo",
+   "url": "https://tehran-times.example/news/3g0yz5",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T14:01:00Z",
+   "tone": -3.7
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Cairo",
+   "url": "https://asahi-sample.example/news/g999pa",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T13:44:00Z",
+   "tone": -2.7
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Cairo",
+   "url": "https://wire-service.example/news/18p40b",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T13:08:00Z",
+   "tone": 4.4
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Cairo",
+   "url": "https://haaretz-sample.example/news/1zjr5d",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T12:39:00Z",
+   "tone": -0.9
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Cairo",
+   "url": "https://vesti-news.example/news/c4snxl",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T12:26:00Z",
+   "tone": 4.3
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Cairo",
+   "url": "https://vesti-news.example/news/25e5eh",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T11:59:00Z",
+   "tone": 3.4
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Cairo",
+   "url": "https://gazeta-sample.example/news/g9k6lb",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T11:12:00Z",
+   "tone": 3.9
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Cairo",
+   "url": "https://gazeta-sample.example/news/6ho40s",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T10:54:00Z",
+   "tone": -1.1
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Cairo",
+   "url": "https://global-desk.example/news/2a22iz",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T10:33:00Z",
+   "tone": -0.3
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Cairo",
+   "url": "https://lagos-sun.example/news/dfbi28",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T10:00:00Z",
+   "tone": 3.9
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Cairo",
+   "url": "https://la-voz.example/news/er7oku",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T09:28:00Z",
+   "tone": 4.2
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Cairo",
+   "url": "https://lagos-sun.example/news/bn1ql",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T09:03:00Z",
+   "tone": -0.3
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Cairo",
+   "url": "https://la-voz.example/news/aud7ea",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T08:42:00Z",
+   "tone": -3.7
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Cairo",
+   "url": "https://jakarta-pos.example/news/8svj6u",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T08:18:00Z",
+   "tone": -5.2
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Cairo",
+   "url": "https://hurriyet-sample.example/news/epsdj1",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T07:31:00Z",
+   "tone": -1.8
+  },
+  {
+   "title": "",
+   "url": "https://wire-service.example/news/f0t19l",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T07:16:00Z",
+   "tone": -6.6
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Cairo",
+   "url": "https://daily-ledger.example/news/9tjtap",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T06:41:00Z",
+   "tone": -3.9
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Cairo",
+   "url": "https://vesti-news.example/news/fb3nyf",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T06:09:00Z",
+   "tone": -4.5
+  },
+  {
+   "title": "",
+   "url": "https://asahi-sample.example/news/en3oso",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T05:44:00Z",
+   "tone": 1.6
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Cairo",
+   "url": "https://harbour-press.example/news/e13izi",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T05:15:00Z",
+   "tone": -2.2
+  }
+ ]
+}

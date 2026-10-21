@@ -1,0 +1,587 @@
+{
+ "id": "8331aafffffffff",
+ "name": "Beijing, Beijing, China",
+ "n": 1440,
+ "o": 83,
+ "c": 21,
+ "l": 15,
+ "t": -0.6,
+ "topOutlets": [
+  [
+   "lagos-sun.example",
+   5
+  ],
+  [
+   "jakarta-pos.example",
+   4
+  ],
+  [
+   "o-correio.example",
+   4
+  ],
+  [
+   "xinhua-sample.example",
+   4
+  ],
+  [
+   "wire-service.example",
+   4
+  ],
+  [
+   "el-diario.example",
+   3
+  ],
+  [
+   "morning-wire.example",
+   3
+  ],
+  [
+   "corriere-sample.example",
+   3
+  ],
+  [
+   "la-voz.example",
+   2
+  ],
+  [
+   "kyiv-herald.example",
+   2
+  ]
+ ],
+ "topCountries": [
+  [
+   "NG",
+   5
+  ],
+  [
+   "ID",
+   4
+  ],
+  [
+   "BR",
+   4
+  ],
+  [
+   "CN",
+   4
+  ],
+  [
+   "",
+   4
+  ],
+  [
+   "MX",
+   3
+  ],
+  [
+   "GB",
+   3
+  ],
+  [
+   "IT",
+   3
+  ],
+  [
+   "AR",
+   2
+  ],
+  [
+   "UA",
+   2
+  ]
+ ],
+ "languages": [
+  [
+   "en",
+   17
+  ],
+  [
+   "es",
+   5
+  ],
+  [
+   "id",
+   4
+  ],
+  [
+   "pt",
+   4
+  ],
+  [
+   "zh",
+   4
+  ],
+  [
+   "it",
+   3
+  ],
+  [
+   "uk",
+   2
+  ],
+  [
+   "he",
+   2
+  ],
+  [
+   "ko",
+   2
+  ],
+  [
+   "pl",
+   2
+  ]
+ ],
+ "articles": [
+  {
+   "title": "[sample] Trade talks resume after pause near Beijing",
+   "url": "https://el-diario.example/news/h7s51",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-21T03:53:00Z",
+   "tone": -0.7
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Beijing",
+   "url": "https://jakarta-pos.example/news/fxwxvj",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-21T03:33:00Z",
+   "tone": -0.6
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Beijing",
+   "url": "https://o-correio.example/news/cmubux",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-21T03:02:00Z",
+   "tone": 4.3
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Beijing",
+   "url": "https://la-voz.example/news/a21y53",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-21T02:39:00Z",
+   "tone": 1.3
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Beijing",
+   "url": "https://xinhua-sample.example/news/em9lbx",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-21T02:01:00Z",
+   "tone": -1.7
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Beijing",
+   "url": "https://la-voz.example/news/wgi5t",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-21T01:39:00Z",
+   "tone": -2.4
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Beijing",
+   "url": "https://morning-wire.example/news/c14m9n",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-21T01:07:00Z",
+   "tone": -4.4
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Beijing",
+   "url": "https://lagos-sun.example/news/5o30f3",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-21T00:36:00Z",
+   "tone": 1.8
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Beijing",
+   "url": "https://le-quotidien.example/news/ae2xr8",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-21T00:22:00Z",
+   "tone": 1.1
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Beijing",
+   "url": "https://kyiv-herald.example/news/d238kl",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T23:55:00Z",
+   "tone": -4.2
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Beijing",
+   "url": "https://haaretz-sample.example/news/1wknx5",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T23:12:00Z",
+   "tone": 4
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Beijing",
+   "url": "https://lagos-sun.example/news/a1icht",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T22:48:00Z",
+   "tone": -1.6
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Beijing",
+   "url": "https://lagos-sun.example/news/3865mu",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T22:32:00Z",
+   "tone": 3.1
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Beijing",
+   "url": "https://nation-ke.example/news/69g1tq",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T21:49:00Z",
+   "tone": -2.5
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Beijing",
+   "url": "https://xinhua-sample.example/news/9kpdts",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T21:26:00Z",
+   "tone": 4.7
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Beijing",
+   "url": "https://xinhua-sample.example/news/66dkuq",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T20:56:00Z",
+   "tone": -5.2
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Beijing",
+   "url": "https://corriere-sample.example/news/fuqj56",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T20:41:00Z",
+   "tone": -0.9
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Beijing",
+   "url": "https://el-diario.example/news/fizad6",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T20:07:00Z",
+   "tone": -2.7
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Beijing",
+   "url": "https://corriere-sample.example/news/bi1ntj",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T19:29:00Z",
+   "tone": -5.9
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Beijing",
+   "url": "https://seoul-daily.example/news/7fzdw6",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T19:03:00Z",
+   "tone": 4.8
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Beijing",
+   "url": "https://gazeta-sample.example/news/8r2vdg",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T18:53:00Z",
+   "tone": -0.7
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Beijing",
+   "url": "https://asahi-sample.example/news/96n86i",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T18:19:00Z",
+   "tone": 2.6
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Beijing",
+   "url": "https://lagos-sun.example/news/2re1iv",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T17:48:00Z",
+   "tone": -3.6
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Beijing",
+   "url": "https://wire-service.example/news/bjtsno",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T17:19:00Z",
+   "tone": 2.3
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Beijing",
+   "url": "https://cape-mail.example/news/e8jp2s",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T16:58:00Z",
+   "tone": -1.7
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Beijing",
+   "url": "https://wire-service.example/news/2jxbpv",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T16:21:00Z",
+   "tone": 1.6
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Beijing",
+   "url": "https://gulf-report.example/news/5jmi3x",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T16:01:00Z",
+   "tone": 0.5
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Beijing",
+   "url": "https://tehran-times.example/news/1124fu",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T15:26:00Z",
+   "tone": -2.7
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Beijing",
+   "url": "https://hindustan-post.example/news/b3juyk",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T15:05:00Z",
+   "tone": 4.2
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Beijing",
+   "url": "https://o-correio.example/news/34hzhd",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T14:44:00Z",
+   "tone": -1.8
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Beijing",
+   "url": "https://wire-service.example/news/4qtwe",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T14:08:00Z",
+   "tone": 4.4
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Beijing",
+   "url": "https://morning-wire.example/news/6rs08c",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T13:37:00Z",
+   "tone": 0
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Beijing",
+   "url": "https://lagos-sun.example/news/2v4rrn",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T13:14:00Z",
+   "tone": -2.8
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Beijing",
+   "url": "https://kyiv-herald.example/news/29dyix",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T12:48:00Z",
+   "tone": -6
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Beijing",
+   "url": "https://wire-service.example/news/9va6yw",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T12:12:00Z",
+   "tone": 1.1
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Beijing",
+   "url": "https://hindustan-post.example/news/32yyum",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T11:46:00Z",
+   "tone": 2.2
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Beijing",
+   "url": "https://nation-ke.example/news/20braf",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T11:26:00Z",
+   "tone": -3.5
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Beijing",
+   "url": "https://xinhua-sample.example/news/deldts",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T10:55:00Z",
+   "tone": 0.3
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Beijing",
+   "url": "https://el-diario.example/news/9eohye",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T10:31:00Z",
+   "tone": 0.8
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Beijing",
+   "url": "https://o-correio.example/news/emobcd",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T10:00:00Z",
+   "tone": 2.5
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Beijing",
+   "url": "https://corriere-sample.example/news/2s7wyq",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T09:29:00Z",
+   "tone": -4
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Beijing",
+   "url": "https://morning-wire.example/news/7yv848",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T08:54:00Z",
+   "tone": -2.5
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Beijing",
+   "url": "https://o-correio.example/news/3hget0",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T08:30:00Z",
+   "tone": -5.9
+  },
+  {
+   "title": "",
+   "url": "https://vesti-news.example/news/egkv5o",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T08:03:00Z",
+   "tone": -3.2
+  },
+  {
+   "title": "",
+   "url": "https://jakarta-pos.example/news/ca40rd",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T07:36:00Z",
+   "tone": 1.2
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Beijing",
+   "url": "https://seoul-daily.example/news/d3p9lu",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T07:17:00Z",
+   "tone": 2
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Beijing",
+   "url": "https://haaretz-sample.example/news/3vhmkj",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T06:49:00Z",
+   "tone": -4.8
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Beijing",
+   "url": "https://jakarta-pos.example/news/3y95ji",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T06:17:00Z",
+   "tone": -1.6
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Beijing",
+   "url": "https://jakarta-pos.example/news/bji1xh",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T06:01:00Z",
+   "tone": 3.2
+  },
+  {
+   "title": "",
+   "url": "https://gazeta-sample.example/news/ecswv7",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T05:33:00Z",
+   "tone": -4.2
+  }
+ ]
+}

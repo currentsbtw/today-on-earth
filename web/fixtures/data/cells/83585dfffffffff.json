@@ -1,0 +1,119 @@
+{
+ "id": "83585dfffffffff",
+ "name": "Ndjamena, Chari-Baguirmi, Chad",
+ "n": 6,
+ "o": 5,
+ "c": 4,
+ "l": 4,
+ "t": -2.1,
+ "topOutlets": [
+  [
+   "cape-mail.example",
+   2
+  ],
+  [
+   "haaretz-sample.example",
+   2
+  ],
+  [
+   "xinhua-sample.example",
+   1
+  ],
+  [
+   "le-quotidien.example",
+   1
+  ]
+ ],
+ "topCountries": [
+  [
+   "ZA",
+   2
+  ],
+  [
+   "IL",
+   2
+  ],
+  [
+   "CN",
+   1
+  ],
+  [
+   "FR",
+   1
+  ]
+ ],
+ "languages": [
+  [
+   "en",
+   2
+  ],
+  [
+   "he",
+   2
+  ],
+  [
+   "zh",
+   1
+  ],
+  [
+   "fr",
+   1
+  ]
+ ],
+ "articles": [
+  {
+   "title": "[sample] Ministers discuss energy prices near Ndjamena",
+   "url": "https://xinhua-sample.example/news/7xg6os",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-21T03:49:00Z",
+   "tone": 0.6
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Ndjamena",
+   "url": "https://cape-mail.example/news/eq3heo",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-21T00:07:00Z",
+   "tone": -6.2
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Ndjamena",
+   "url": "https://cape-mail.example/news/4vy30j",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T20:25:00Z",
+   "tone": 1.1
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Ndjamena",
+   "url": "https://haaretz-sample.example/news/3dx7cx",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T16:21:00Z",
+   "tone": -4.6
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Ndjamena",
+   "url": "https://haaretz-sample.example/news/am3ijj",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T12:29:00Z",
+   "tone": 0.4
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Ndjamena",
+   "url": "https://le-quotidien.example/news/2hkqub",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T08:42:00Z",
+   "tone": -4.2
+  }
+ ]
+}

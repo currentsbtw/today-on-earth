@@ -1,0 +1,64 @@
+name: Snapshot
+
+# Every 15 minutes: pull the newest GDELT GKG files, rebuild the static data files,
+# build the site, and deploy it to GitHub Pages. The previous run's rolling-window
+# state is read back from the live site (/data/state.json.gz).
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two snapshots overlap; a queued run waits for the current one.
+concurrency:
+  group: snapshot
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            ingest/package-lock.json
+            web/package-lock.json
+
+      - name: Ingest GDELT
+        working-directory: ingest
+        env:
+          STATE_URL: ${{ vars.SITE_URL }}/data/state.json.gz
+          OUT_DIR: ../web/public/data
+        run: |
+          npm ci
+          npm run ingest
+
+      - name: Build site
+        working-directory: web
+        run: |
+          npm ci
+          npm run build
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: web/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

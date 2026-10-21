@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#050608" />
+    <meta name="description" content="A map of where the world's news is happening, with every outlet covering each place." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 fill=%27%23050608%27/%3E%3Ccircle cx=%278%27 cy=%278%27 r=%274%27 fill=%27%23f2a64a%27/%3E%3C/svg%3E" />
+    <title>Today On Earth</title>
+  </head>
+  <body>
+    <header class="bar">
+      <h1 class="wordmark">Today On Earth</h1>
+      <p class="totals" id="totals" aria-live="polite"></p>
+      <p class="snapshot" id="snapshot"></p>
+    </header>
+    <main class="stage">
+      <div id="map" class="map" aria-label="World map of news coverage"></div>
+      <div id="tooltip" class="tooltip" hidden></div>
+      <p id="status" class="status" role="status">loading</p>
+      <aside id="panel" class="panel" role="dialog" aria-modal="false" aria-labelledby="panel-title" hidden>
+        <div class="panel-head">
+          <h2 id="panel-title" class="panel-title" tabindex="-1"></h2>
+          <button id="panel-close" class="panel-close" type="button" aria-label="Close">&times;</button>
+        </div>
+        <p id="panel-why" class="panel-why"></p>
+        <p id="panel-state" class="panel-state" hidden></p>
+        <ol id="panel-list" class="articles"></ol>
+      </aside>
+    </main>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>

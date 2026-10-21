@@ -1,0 +1,25 @@
+{
+  "name": "today-on-earth-ingest",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Turns GDELT's 15-minute GKG feed into the static heatmap files described in docs/DATA-CONTRACT.md",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "ingest": "tsx src/main.ts",
+    "check": "tsx scripts/check-contract.ts",
+    "test": "node --import tsx --test \"test/*.test.ts\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "fflate": "^0.8.3",
+    "h3-js": "^4.5.0",
+    "tsx": "^4.23.15"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "typescript": "^7.0.2"
+  }
+}
