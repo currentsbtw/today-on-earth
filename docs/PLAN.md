@@ -206,7 +206,10 @@ name part, pause-others when two videos play (done), tooltip not announced to sc
 readers, land outline before first paint, native admin names ("Moskva"); phone: on an
 emulated 375x812 viewport none of three loads of the live site painted heat within
 10 s (two still said "loading", header totals shown, no console errors); unverified
-on a real phone, check on the iPhone before the first clip goes out.
+on a real phone, check on the iPhone before the first clip goes out. Later the same day
+a desktop load on a cold cache also took ~20 s before heat painted (3,198 cells, 441 KB
+heat.json), so this is most likely first-paint time, not a phone bug: measure and trim
+first paint.
 
 ## Phase 2: Time and stories (re-scoped 2026-10-21 for "impress the first visitor")
 
