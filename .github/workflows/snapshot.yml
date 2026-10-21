@@ -25,6 +25,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # Job-level permissions replace the workflow-level block for this job only.
+    # contents: write lets the archive step create and upload to archive-* releases;
+    # actions: write is still needed for the cache prune. pages and id-token are dropped
+    # here because only the deploy job uses them.
+    permissions:
+      contents: write
+      actions: write
     steps:
       - uses: actions/checkout@v7
 
@@ -81,6 +88,42 @@ jobs:
           while read -r id; do
             gh cache delete "$id"
           done
+
+      # Nothing older than 24 h survives in the cache or on the site, so every snapshot
+      # goes to one release per UTC day (archive-YYYY-MM-DD): heat-<stamp>.json.gz every
+      # run, plus cells-<stamp>.tar.gz from the first run of the day that lacks one.
+      # Release assets are free and durable. Never fails the snapshot; set the repository
+      # variable ARCHIVE to "false" to turn it off.
+      - name: Archive snapshot
+        if: success() && vars.ARCHIVE != 'false'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          data=web/public/data
+          at=$(jq -r .generatedAt "$data/heat.json")
+          stamp=$(printf '%s' "$at" | tr -d ':-')
+          if ! [[ "$stamp" =~ ^[0-9]{8}T[0-9]{6}Z$ ]]; then
+            echo "::warning title=Archive skipped::Unexpected generatedAt '$at'."
+            exit 1
+          fi
+          day=${at%%T*}
+          tag="archive-$day"
+          out="$RUNNER_TEMP/archive"
+          mkdir -p "$out"
+          gh release view "$tag" >/dev/null 2>&1 ||
+            gh release create "$tag" --title "Archive $day" --target "$GITHUB_SHA" --latest=false \
+              --notes "Today On Earth snapshots for $day UTC: heat.json every run, cells/ once a day. Written by the Snapshot workflow."
+          gzip -9 -c "$data/heat.json" > "$out/heat-$stamp.json.gz"
+          gh release upload "$tag" "$out/heat-$stamp.json.gz" --clobber
+          cells=$(gh release view "$tag" --json assets --jq '[.assets[].name | select(startswith("cells-"))] | length')
+          if [ "$cells" -eq 0 ]; then
+            tar -czf "$out/cells-$stamp.tar.gz" -C "$data" cells
+            gh release upload "$tag" "$out/cells-$stamp.tar.gz" --clobber
+          fi
+          ls -l "$out"
 
       - name: Build site
         working-directory: web
