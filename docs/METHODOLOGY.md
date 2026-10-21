@@ -52,8 +52,9 @@ exist. It compares each place's current count with the median of its own daily
 counts over the last seven days, so a quiet place lighting up stands out and a
 place that is always busy does not. The brightness is log2((articles + 1) /
 (normal + 1)) scaled so that eight times normal is full brightness; the floor for
-"normal" is 3 articles so that tiny places do not explode. Places with no history
-yet are shown with the ordinary brightness and no ratio.
+"normal" is 3 articles so that tiny places do not explode. Places that are not in
+the current snapshot are shown with the ordinary brightness and no ratio; a place
+with no history at all counts as new, with a normal of zero.
 
 ## Stories
 

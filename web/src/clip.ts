@@ -28,7 +28,11 @@ root.style.setProperty('--bottom-band', `${bottomBand}px`);
 
 const dateFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 
+let marked = false;
 function markReady(error?: string) {
+  // First outcome wins: a late timeout must not flag a frame that already finished.
+  if (marked) return;
+  marked = true;
   if (error) document.body.dataset.error = error;
   (window as unknown as { __clipReady: boolean }).__clipReady = true;
   document.body.dataset.ready = '1';
@@ -79,4 +83,6 @@ async function render() {
 }
 
 // A renderer waits for data-ready; on failure it also gets data-error so it never hangs.
-render().catch((e: unknown) => markReady(e instanceof Error ? e.message : 'failed'));
+const TIMEOUT_MS = 20_000;
+const timeout = new Promise<never>((_, reject) => window.setTimeout(() => reject(new Error('timeout')), TIMEOUT_MS));
+Promise.race([render(), timeout]).catch((e: unknown) => markReady(e instanceof Error ? e.message : 'failed'));

@@ -103,7 +103,7 @@ async function start() {
     void map.outline(null);
     map.setSheet(0);
     writeHash();
-  });
+  }, (height) => map.setSheet(height));
   initQuakes(document.getElementById('quake-toggle') as HTMLButtonElement, (data) => map.setQuakes(data));
 
   const heat = await heatPromise.catch(() => null);
@@ -124,11 +124,11 @@ async function start() {
   const redraw = () => {
     if (shownRows) {
       // Replay frames carry no baseline, so a past frame borrows the live `b` of the same
-      // cell. A cell absent from the live snapshot gets b = 0, i.e. it reads as new (its
-      // weight is still capped at full brightness by heatWeight).
+      // cell. A cell absent from the live snapshot has no `b`: it keeps its absolute weight
+      // and shows no ratio (DATA-CONTRACT "Baseline").
       const cells = shownRows.map(([id, lat, lon, n]) => {
         const now = live.get(id);
-        return { id, lat, lon, n, name: now?.name ?? '', b: now?.b ?? 0 };
+        return { id, lat, lon, n, name: now?.name ?? '', b: now?.b };
       });
       map.setCells(cells, liveMax, mode);
     } else {

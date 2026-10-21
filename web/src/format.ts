@@ -72,7 +72,7 @@ export function placeKey(name: string): string {
 
 /**
  * The 11-character id of a YouTube video URL, or null. Accepts youtube.com/watch?v=<id>,
- * youtu.be/<id>, youtube.com/shorts/<id> and youtube.com/embed/<id>; rejects everything else.
+ * youtu.be/<id>, and youtube.com/shorts/, /embed/, /live/ and /v/<id>; rejects everything else.
  */
 export function youtubeId(url: string): string | null {
   let u: URL;
@@ -87,7 +87,7 @@ export function youtubeId(url: string): string | null {
   let id: string | null = null;
   if (host === 'youtu.be' && parts.length === 1) id = parts[0];
   else if (host === 'youtube.com' && parts.length === 1 && parts[0] === 'watch') id = u.searchParams.get('v');
-  else if (host === 'youtube.com' && parts.length === 2 && (parts[0] === 'shorts' || parts[0] === 'embed')) id = parts[1];
+  else if (host === 'youtube.com' && parts.length === 2 && ['shorts', 'embed', 'live', 'v'].includes(parts[0])) id = parts[1];
   return id && /^[A-Za-z0-9_-]{11}$/.test(id) ? id : null;
 }
 

@@ -56,12 +56,20 @@ export const relativeRatio = (n: number, b: number) => (n + 1) / (Math.max(b, BA
  * brightness and anything at or below normal is dark.
  */
 export function heatWeight(c: Pick<MapCell, 'n' | 'b'>, maxN: number, mode: HeatMode): number {
-  if (mode === 'normal') return clamp(Math.log2(relativeRatio(c.n, c.b ?? 0)) / 3, 0, 1);
+  // Without a live baseline (a replay-only cell) there is nothing to compare against, so
+  // the cell keeps its absolute weight and shows no ratio (DATA-CONTRACT "Baseline").
+  if (mode === 'normal' && hasBaseline(c)) return clamp(Math.log2(relativeRatio(c.n, c.b!)) / 3, 0, 1);
   return Math.min(1, Math.log1p(c.n) / Math.log1p(Math.max(1, maxN)));
 }
 
 /** "×2.4 normal" */
-export const ratioLabel = (c: Pick<MapCell, 'n' | 'b'>) => `×${relativeRatio(c.n, c.b ?? 0).toFixed(1)} normal`;
+export const ratioLabel = (c: Pick<MapCell, 'n' | 'b'>) =>
+  hasBaseline(c) ? `×${relativeRatio(c.n, c.b!).toFixed(1)} normal` : '';
+
+/** Live cells carry `b`; replay-only cells do not. */
+function hasBaseline(c: Pick<MapCell, 'b'>): boolean {
+  return typeof c.b === 'number';
+}
 
 /** Point features for the heat source, shared by the map page and the clip page. */
 export function heatFeatures(cells: MapCell[], maxN: number, mode: HeatMode): GeoJSON.Feature<GeoJSON.Point>[] {
@@ -73,7 +81,7 @@ export function heatFeatures(cells: MapCell[], maxN: number, mode: HeatMode): Ge
       properties: {
         id: c.id,
         n: c.n,
-        label: mode === 'normal' && short ? `${short}\n${ratioLabel(c)}` : short,
+        label: mode === 'normal' && short && ratioLabel(c) ? `${short}\n${ratioLabel(c)}` : short,
         w: heatWeight(c, maxN, mode),
       },
     };
@@ -403,7 +411,7 @@ export function createMap(
     pitchWithRotate: false,
     touchPitch: false,
     maxPitch: 0,
-    attributionControl: { compact: true, customAttribution: 'Natural Earth · GDELT · <a href="./about.html">How it works</a>' },
+    attributionControl: { compact: true, customAttribution: 'Natural Earth · GDELT · USGS · <a href="./about.html">How it works</a>' },
   });
   mapRef = map;
   map.touchZoomRotate.disableRotation();
@@ -414,6 +422,7 @@ export function createMap(
   const byId = new Map<string, MapCell>();
   let outlineRequest = 0;
   let heatMode: HeatMode = 'articles';
+  let sheetPadding = 0; // bottom padding last asked for by setSheet
 
   const span = (text: string, className = '') => Object.assign(document.createElement('span'), { textContent: text, className });
 
@@ -431,14 +440,14 @@ export function createMap(
 
   /** What is under the pointer: a quake ring wins over a news cell (it sits on top). */
   const hit = (point: { x: number; y: number }) => {
-    const quake = map.queryRenderedFeatures([point.x, point.y], { layers: ['quake-ring'] })[0];
-    if (quake) return { quake };
     let cell: MapCell | undefined;
     for (const f of map.queryRenderedFeatures([point.x, point.y], { layers: ['cell-hit'] })) {
       const c = byId.get(String(f.properties?.id));
       if (c && (!cell || c.n > cell.n)) cell = c;
     }
-    return { cell };
+    if (cell) return { cell };
+    // The news cell wins; a quake ring only answers where no cell is hit.
+    return { quake: map.queryRenderedFeatures([point.x, point.y], { layers: ['quake-ring'] })[0] };
   };
 
   map.on('mousemove', (e) => {
@@ -456,7 +465,7 @@ export function createMap(
       tooltip.replaceChildren(span(parts.join(' · '), 'quake-tip'));
     } else if (cell) {
       const lines = [span(`${count(cell.n)} articles`)];
-      if (heatMode === 'normal') lines.push(span(ratioLabel(cell)));
+      if (heatMode === 'normal' && ratioLabel(cell)) lines.push(span(ratioLabel(cell)));
       if (cell.name) lines.unshift(Object.assign(document.createElement('strong'), { textContent: cell.name }));
       tooltip.replaceChildren(...lines);
     } else {
@@ -470,8 +479,9 @@ export function createMap(
   map.on('click', (e) => {
     const { quake, cell } = hit(e.point);
     if (quake) {
+      // USGS event pages only over https.
       const href = safeHref(String(quake.properties?.url ?? ''));
-      if (href) window.open(href, '_blank', 'noopener');
+      if (href?.startsWith('https://')) window.open(href, '_blank', 'noopener');
     } else if (cell) {
       onSelect(cell);
     }
@@ -499,7 +509,11 @@ export function createMap(
     },
 
     setSheet(height, focus) {
-      const padding = { ...NO_PADDING, bottom: Math.max(0, Math.round(height)) };
+      const bottom = Math.max(0, Math.round(height));
+      // Resize reports repeat the same height; easing again would cut short a focus ease.
+      if (!focus && bottom === sheetPadding) return;
+      sheetPadding = bottom;
+      const padding = { ...NO_PADDING, bottom };
       if (focus) map.easeTo({ center: focus, padding, duration: 450 });
       else map.easeTo({ padding, duration: 300 });
     },

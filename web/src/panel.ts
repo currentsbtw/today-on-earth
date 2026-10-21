@@ -116,8 +116,9 @@ function storyCard(story: Story, now: number): HTMLElement {
 }
 
 // Videos --------------------------------------------------------------------
-// Thumbnails come from YouTube's image host; the player is youtube-nocookie.com and only
-// loads when someone presses a thumbnail. Never autoplay.
+// Cards are drawn locally from the article (title and outlet): nothing is requested from
+// YouTube until someone presses one, and then only the youtube-nocookie.com player loads.
+// Never autoplay.
 
 const MAX_CLIPS = 8;
 const PLAY_SVG = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z"/></svg>';
@@ -125,7 +126,7 @@ const PLAY_SVG = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l
 interface Clip {
   id: string;
   source: string;
-  time: string;
+  title: string;
 }
 
 /** Distinct videos in the cell's articles and story articles, newest first. */
@@ -135,65 +136,62 @@ function collectClips(detail: CellDetail): Clip[] {
   const seen = new Map<string, Clip>();
   for (const a of all) {
     const id = youtubeId(a.video ?? '');
-    if (id && !seen.has(id)) seen.set(id, { id, source: a.source || host(a.url), time: a.time });
+    if (id && !seen.has(id)) seen.set(id, { id, source: a.source || host(a.url), title: a.title.trim() });
     if (seen.size >= MAX_CLIPS) break;
   }
   return [...seen.values()];
 }
 
+/** A dark 16:9 card: play glyph, the article's title (two lines) and the outlet. */
 function clipItem(clip: Clip): HTMLLIElement {
   const li = el('li', 'video');
   li.dataset.id = clip.id;
-  const button = el('button', 'video-thumb');
+  li.dataset.source = clip.source;
+  li.dataset.title = clip.title;
+  const button = el('button', 'video-card');
   button.type = 'button';
-  button.setAttribute('aria-label', `Play video from ${clip.source}`);
-  const img = document.createElement('img');
-  img.src = `https://i.ytimg.com/vi/${clip.id}/mqdefault.jpg`;
-  img.alt = '';
-  img.loading = 'lazy';
-  img.width = 160;
-  img.height = 90;
+  button.setAttribute('aria-label', `Play video from ${clip.source}${clip.title ? `: ${clip.title}` : ''}`);
   const glyph = el('span', 'video-glyph');
   glyph.innerHTML = PLAY_SVG;
-  button.append(img, glyph);
+  button.append(glyph, el('span', 'video-title', clip.title), el('span', 'video-source', clip.source));
   button.addEventListener('click', () => playClip(li));
-  li.append(button, el('span', 'video-source', clip.source));
+  li.append(button);
   return li;
 }
 
-/** Swaps the thumbnail for the YouTube player, in place. */
+/** Swaps the card for the YouTube player, in place. */
 function playClip(li: HTMLElement) {
-  const thumb = li.querySelector('.video-thumb');
-  if (!thumb) return;
-  // One player at a time: any other open player goes back to its thumbnail (which stops it).
+  const card = li.querySelector('.video-card');
+  if (!card) return;
+  // One player at a time: any other open player goes back to its card (which stops it).
   for (const other of videos.querySelectorAll<HTMLElement>('.video.is-playing')) {
     if (other === li) continue;
-    other.replaceWith(clipItem({ id: other.dataset.id!, source: other.querySelector('.video-source')?.textContent ?? '', time: '' }));
+    other.replaceWith(clipItem({ id: other.dataset.id!, source: other.dataset.source ?? '', title: other.dataset.title ?? '' }));
   }
   const frame = document.createElement('iframe');
   frame.src = `https://www.youtube-nocookie.com/embed/${li.dataset.id}`;
-  frame.title = `YouTube video from ${li.querySelector('.video-source')?.textContent ?? ''}`;
+  frame.title = `YouTube video from ${li.dataset.source ?? ''}`;
   frame.allow = 'accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
   frame.allowFullscreen = true;
   frame.loading = 'lazy';
   frame.referrerPolicy = 'strict-origin-when-cross-origin';
   li.classList.add('is-playing');
-  thumb.replaceWith(frame);
+  card.replaceWith(frame);
   li.scrollIntoView({ block: 'nearest', inline: 'start' });
   frame.focus();
 }
 
 /** From an article row: open that video in the strip (adding it if it was not among the first 8). */
-function playFromRow(id: string, source: string) {
+function playFromRow(clip: Clip) {
   let strip = videos.querySelector<HTMLOListElement>('.video-strip');
   if (!strip) {
     strip = el('ol', 'video-strip');
     videos.replaceChildren(el('h3', 'panel-section', 'Videos'), strip);
   }
   videos.hidden = false;
-  let li = strip.querySelector<HTMLLIElement>(`li[data-id="${id}"]`);
+  let li = strip.querySelector<HTMLLIElement>(`li[data-id="${clip.id}"]`);
   if (!li) {
-    li = clipItem({ id, source, time: '' });
+    li = clipItem(clip);
     strip.prepend(li);
   }
   playClip(li);
@@ -275,9 +273,9 @@ function articleItem(a: Article, now: number): HTMLLIElement {
     const head = el('div', 'article-head');
     const play = el('button', 'article-play');
     play.type = 'button';
-    play.setAttribute('aria-label', 'Play video');
+    play.setAttribute('aria-label', `Play video from ${a.source || host(a.url)}`);
     play.innerHTML = PLAY_SVG;
-    play.addEventListener('click', () => playFromRow(id, a.source || host(a.url)));
+    play.addEventListener('click', () => playFromRow({ id, source: a.source || host(a.url), title: a.title.trim() }));
     head.append(headline, play);
     li.append(head, meta);
   } else {
@@ -348,7 +346,7 @@ export function showError() {
 function setTall(tall: boolean) {
   panel.classList.toggle('is-tall', tall);
   handle.setAttribute('aria-expanded', String(tall));
-  handle.setAttribute('aria-label', tall ? 'Collapse' : 'Expand');
+  handle.setAttribute('aria-label', tall ? 'Collapse details' : 'Expand details');
 }
 
 /** The sheet's current height on narrow screens, 0 where the panel is a side column. */
@@ -369,14 +367,17 @@ export function isOpen(): boolean {
   return !panel.hidden;
 }
 
-export function initPanel(handleClose: () => void) {
+/** `onSheet` hears the phone sheet height (0 when closed or on wide screens) whenever it changes. */
+export function initPanel(handleClose: () => void, onSheet: (height: number) => void = () => {}) {
   onClose = handleClose;
   closeButton.addEventListener('click', close);
   handle.addEventListener('click', () => setTall(!panel.classList.contains('is-tall')));
-  // Expose the panel's height so the scrubber can sit above the bottom sheet on phones.
+  // Expose the panel's height so the scrubber can sit above the bottom sheet on phones, and
+  // report it so the map's padding follows the handle, rotation and viewport changes.
   const stage = panel.parentElement!;
   new ResizeObserver(() => {
     stage.style.setProperty('--sheet-h', `${panel.hidden ? 0 : panel.offsetHeight}px`);
+    onSheet(sheetHeight());
   }).observe(panel);
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !panel.hidden) close();

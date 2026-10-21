@@ -11,6 +11,7 @@ export function initQuakes(button: HTMLButtonElement, draw: (data: GeoJSON.Featu
   let on = readPref(PREF) === '1';
   let data: GeoJSON.FeatureCollection | null = null;
   let lastAttempt = 0;
+  let failed = false; // the last fetch failed; shown as "unavailable" while the toggle is on
   let loading = false;
   let timer = 0;
 
@@ -38,10 +39,15 @@ export function initQuakes(button: HTMLButtonElement, draw: (data: GeoJSON.Featu
           // Depth is the third coordinate; rendered features come back 2D, so keep it as a property.
           .map((f) => ({ ...f, properties: { ...f.properties, depth: (f.geometry as GeoJSON.Point).coordinates[2] ?? null } })),
       };
+      failed = false;
       setUnavailable(false);
       if (on) draw(data);
     } catch {
-      setUnavailable(true);
+      failed = true;
+      // Let the next toggle-on retry straight away instead of waiting out the 10 minutes.
+      lastAttempt = 0;
+      // A failure that lands after the toggle was turned off must not mark an off button.
+      if (on) setUnavailable(true);
     } finally {
       loading = false;
     }
@@ -53,6 +59,7 @@ export function initQuakes(button: HTMLButtonElement, draw: (data: GeoJSON.Featu
     button.setAttribute('aria-pressed', String(on));
     window.clearInterval(timer);
     if (on) {
+      setUnavailable(failed);
       void refresh();
       timer = window.setInterval(() => void refresh(), REFRESH_MS);
     } else {
