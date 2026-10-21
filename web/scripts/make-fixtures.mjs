@@ -158,6 +158,16 @@ function makeStories(place, n, stats, pool) {
   return { stories, unclustered: n - grouped };
 }
 
+// Each place's normal (median daily articles): most places run near it, a few surge far
+// above it, and one is brand new (b = 0), so relative heat looks different from absolute.
+const SURGING = ['Khartoum', 'Caracas', 'Suva', 'Kinshasa'];
+function baselineFor(place, n) {
+  const short = place.split(',')[0];
+  if (short === 'Anchorage') return 0;
+  const factor = SURGING.includes(short) ? 0.08 + rand() * 0.1 : 0.6 + rand() * 0.7;
+  return Math.round(n * factor * 10) / 10;
+}
+
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(new URL('cells/', OUT), { recursive: true });
 
@@ -211,7 +221,7 @@ for (const [name, lat, lon, n, home] of PLACES) {
     t: articles.length ? round1(articles.reduce((s, a) => s + a.tone, 0) / articles.length) : 0,
   };
   totalArticles += n;
-  cells.push({ id, lat: Math.round(clat * 100) / 100, lon: Math.round(clon * 100) / 100, ...stats, name });
+  cells.push({ id, lat: Math.round(clat * 100) / 100, lon: Math.round(clon * 100) / 100, ...stats, name, b: baselineFor(name, n) });
   const detail = {
     id, name, ...stats,
     topOutlets: tally('source'), topCountries: tally('country'), languages: tally('lang'),
@@ -242,6 +252,8 @@ const totalsFor = (placed, cellCount) => {
 const heat = {
   generatedAt: iso(now),
   windowHours: 24,
+  // Five complete days of per-cell history, so the "vs. normal" view can be exercised.
+  baselineDays: 5,
   newestArticleAt: iso(new Date(now.getTime() - 10 * 60000)),
   // Like the per-cell counts, totals describe the whole window, not just the listed articles.
   totals: totalsFor(totalArticles, cells.length),

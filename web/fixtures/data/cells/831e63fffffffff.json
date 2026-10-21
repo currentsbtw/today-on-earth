@@ -4,7 +4,7 @@
  "n": 2480,
  "o": 110,
  "c": 28,
- "l": 14,
+ "l": 15,
  "t": -1.3,
  "topOutlets": [
   [
@@ -22,10 +22,6 @@
   [
    "al-akhbar.example",
    4
-  ],
-  [
-   "jakarta-pos.example",
-   3
   ],
   [
    "kyiv-herald.example",
@@ -46,6 +42,10 @@
   [
    "vesti-news.example",
    3
+  ],
+  [
+   "global-desk.example",
+   2
   ]
  ],
  "topCountries": [
@@ -66,10 +66,6 @@
    4
   ],
   [
-   "ID",
-   3
-  ],
-  [
    "UA",
    3
   ],
@@ -88,6 +84,10 @@
   [
    "RU",
    3
+  ],
+  [
+   "CA",
+   2
   ]
  ],
  "languages": [
@@ -98,10 +98,6 @@
   [
    "ar",
    8
-  ],
-  [
-   "id",
-   3
   ],
   [
    "uk",
@@ -124,36 +120,40 @@
    2
   ],
   [
+   "id",
+   2
+  ],
+  [
    "he",
    2
   ],
   [
-   "fa",
+   "de",
    1
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Election commission publishes turnout figures near Kyiv",
-   "url": "https://jakarta-pos.example/news/wkobt",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-21T05:23:00Z",
-   "tone": -3,
+   "title": "",
+   "url": "https://gulf-report.example/news/5g5lnt",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-21T05:46:00Z",
+   "tone": 2.3,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Kyiv",
-   "url": "https://gulf-report.example/news/9fmcz1",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-21T05:05:00Z",
-   "tone": -2.9,
+   "url": "https://tageszeitung.example/news/5nild6",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-21T05:21:00Z",
+   "tone": -6.3,
    "image": "",
-   "video": "https://www.youtube.com/channel/UC_placeholder"
+   "video": ""
   },
   {
    "title": "[sample] Wildfire forces evacuations near Kyiv",
@@ -161,7 +161,7 @@
    "source": "kyiv-herald.example",
    "country": "UA",
    "lang": "uk",
-   "time": "2026-10-21T04:21:00Z",
+   "time": "2026-10-21T04:36:00Z",
    "tone": -4,
    "image": "",
    "video": ""
@@ -172,7 +172,7 @@
    "source": "morning-wire.example",
    "country": "GB",
    "lang": "en",
-   "time": "2026-10-21T04:02:00Z",
+   "time": "2026-10-21T04:17:00Z",
    "tone": -4.6,
    "image": "",
    "video": ""
@@ -183,7 +183,7 @@
    "source": "xinhua-sample.example",
    "country": "CN",
    "lang": "zh",
-   "time": "2026-10-21T03:27:00Z",
+   "time": "2026-10-21T03:42:00Z",
    "tone": -1.2,
    "image": "",
    "video": ""
@@ -194,7 +194,7 @@
    "source": "global-desk.example",
    "country": "CA",
    "lang": "en",
-   "time": "2026-10-21T03:05:00Z",
+   "time": "2026-10-21T03:20:00Z",
    "tone": 2.7,
    "image": "",
    "video": ""
@@ -205,7 +205,7 @@
    "source": "cape-mail.example",
    "country": "ZA",
    "lang": "en",
-   "time": "2026-10-21T02:43:00Z",
+   "time": "2026-10-21T02:58:00Z",
    "tone": -2.8,
    "image": "",
    "video": ""
@@ -216,7 +216,7 @@
    "source": "wire-service.example",
    "country": "",
    "lang": "en",
-   "time": "2026-10-21T02:12:00Z",
+   "time": "2026-10-21T02:27:00Z",
    "tone": -0.4,
    "image": "",
    "video": ""
@@ -227,7 +227,7 @@
    "source": "kyiv-herald.example",
    "country": "UA",
    "lang": "uk",
-   "time": "2026-10-21T01:44:00Z",
+   "time": "2026-10-21T01:59:00Z",
    "tone": -1,
    "image": "",
    "video": ""
@@ -238,7 +238,7 @@
    "source": "el-diario.example",
    "country": "MX",
    "lang": "es",
-   "time": "2026-10-21T01:14:00Z",
+   "time": "2026-10-21T01:29:00Z",
    "tone": 3.7,
    "image": "",
    "video": ""
@@ -249,7 +249,7 @@
    "source": "gulf-report.example",
    "country": "AE",
    "lang": "ar",
-   "time": "2026-10-21T00:47:00Z",
+   "time": "2026-10-21T01:02:00Z",
    "tone": -4.1,
    "image": "",
    "video": ""
@@ -260,7 +260,7 @@
    "source": "nord-avis.example",
    "country": "NO",
    "lang": "no",
-   "time": "2026-10-21T00:32:00Z",
+   "time": "2026-10-21T00:47:00Z",
    "tone": -5.5,
    "image": "",
    "video": ""
@@ -271,7 +271,7 @@
    "source": "nord-avis.example",
    "country": "NO",
    "lang": "no",
-   "time": "2026-10-20T23:59:00Z",
+   "time": "2026-10-21T00:14:00Z",
    "tone": -4.3,
    "image": "",
    "video": ""
@@ -282,7 +282,7 @@
    "source": "jakarta-pos.example",
    "country": "ID",
    "lang": "id",
-   "time": "2026-10-20T23:27:00Z",
+   "time": "2026-10-20T23:42:00Z",
    "tone": -5.5,
    "image": "",
    "video": ""
@@ -293,7 +293,7 @@
    "source": "cape-mail.example",
    "country": "ZA",
    "lang": "en",
-   "time": "2026-10-20T22:51:00Z",
+   "time": "2026-10-20T23:06:00Z",
    "tone": -0.4,
    "image": "",
    "video": ""
@@ -304,7 +304,7 @@
    "source": "global-desk.example",
    "country": "CA",
    "lang": "en",
-   "time": "2026-10-20T22:22:00Z",
+   "time": "2026-10-20T22:37:00Z",
    "tone": -1.6,
    "image": "",
    "video": ""
@@ -315,7 +315,7 @@
    "source": "wire-service.example",
    "country": "",
    "lang": "en",
-   "time": "2026-10-20T22:13:00Z",
+   "time": "2026-10-20T22:28:00Z",
    "tone": 0.7,
    "image": "",
    "video": ""
@@ -326,7 +326,7 @@
    "source": "hindustan-post.example",
    "country": "IN",
    "lang": "en",
-   "time": "2026-10-20T21:30:00Z",
+   "time": "2026-10-20T21:45:00Z",
    "tone": -4.3,
    "image": "",
    "video": ""
@@ -337,7 +337,7 @@
    "source": "haaretz-sample.example",
    "country": "IL",
    "lang": "he",
-   "time": "2026-10-20T21:12:00Z",
+   "time": "2026-10-20T21:27:00Z",
    "tone": -1,
    "image": "",
    "video": ""
@@ -348,7 +348,7 @@
    "source": "kyiv-herald.example",
    "country": "UA",
    "lang": "uk",
-   "time": "2026-10-20T20:35:00Z",
+   "time": "2026-10-20T20:50:00Z",
    "tone": -5.1,
    "image": "",
    "video": ""
@@ -359,7 +359,7 @@
    "source": "harbour-press.example",
    "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T20:13:00Z",
+   "time": "2026-10-20T20:28:00Z",
    "tone": -3,
    "image": "",
    "video": ""
@@ -370,7 +370,7 @@
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T19:45:00Z",
+   "time": "2026-10-20T20:00:00Z",
    "tone": -0.7,
    "image": "",
    "video": ""
@@ -381,7 +381,7 @@
    "source": "al-akhbar.example",
    "country": "EG",
    "lang": "ar",
-   "time": "2026-10-20T19:14:00Z",
+   "time": "2026-10-20T19:29:00Z",
    "tone": -2.9,
    "image": "",
    "video": ""
@@ -392,7 +392,7 @@
    "source": "gulf-report.example",
    "country": "AE",
    "lang": "ar",
-   "time": "2026-10-20T18:43:00Z",
+   "time": "2026-10-20T18:58:00Z",
    "tone": -6.6,
    "image": "",
    "video": ""
@@ -403,7 +403,7 @@
    "source": "cape-mail.example",
    "country": "ZA",
    "lang": "en",
-   "time": "2026-10-20T18:28:00Z",
+   "time": "2026-10-20T18:43:00Z",
    "tone": -6.3,
    "image": "",
    "video": ""
@@ -414,7 +414,7 @@
    "source": "vesti-news.example",
    "country": "RU",
    "lang": "ru",
-   "time": "2026-10-20T18:02:00Z",
+   "time": "2026-10-20T18:17:00Z",
    "tone": 1.5,
    "image": "",
    "video": ""
@@ -425,7 +425,7 @@
    "source": "xinhua-sample.example",
    "country": "CN",
    "lang": "zh",
-   "time": "2026-10-20T17:22:00Z",
+   "time": "2026-10-20T17:37:00Z",
    "tone": 4.6,
    "image": "",
    "video": ""
@@ -436,7 +436,7 @@
    "source": "vesti-news.example",
    "country": "RU",
    "lang": "ru",
-   "time": "2026-10-20T16:59:00Z",
+   "time": "2026-10-20T17:14:00Z",
    "tone": -0.9,
    "image": "",
    "video": ""
@@ -447,7 +447,7 @@
    "source": "al-akhbar.example",
    "country": "EG",
    "lang": "ar",
-   "time": "2026-10-20T16:28:00Z",
+   "time": "2026-10-20T16:43:00Z",
    "tone": -4,
    "image": "",
    "video": ""
@@ -458,7 +458,7 @@
    "source": "harbour-press.example",
    "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T16:09:00Z",
+   "time": "2026-10-20T16:24:00Z",
    "tone": 1.6,
    "image": "",
    "video": ""
@@ -469,7 +469,7 @@
    "source": "jakarta-pos.example",
    "country": "ID",
    "lang": "id",
-   "time": "2026-10-20T15:42:00Z",
+   "time": "2026-10-20T15:57:00Z",
    "tone": 2.2,
    "image": "",
    "video": ""
@@ -480,7 +480,7 @@
    "source": "lagos-sun.example",
    "country": "NG",
    "lang": "en",
-   "time": "2026-10-20T15:10:00Z",
+   "time": "2026-10-20T15:25:00Z",
    "tone": -6.5,
    "image": "",
    "video": ""
@@ -491,7 +491,7 @@
    "source": "o-correio.example",
    "country": "BR",
    "lang": "pt",
-   "time": "2026-10-20T14:41:00Z",
+   "time": "2026-10-20T14:56:00Z",
    "tone": -6.1,
    "image": "",
    "video": ""
@@ -502,7 +502,7 @@
    "source": "daily-ledger.example",
    "country": "US",
    "lang": "en",
-   "time": "2026-10-20T14:17:00Z",
+   "time": "2026-10-20T14:32:00Z",
    "tone": -0.3,
    "image": "",
    "video": ""
@@ -513,7 +513,7 @@
    "source": "hurriyet-sample.example",
    "country": "TR",
    "lang": "tr",
-   "time": "2026-10-20T13:56:00Z",
+   "time": "2026-10-20T14:11:00Z",
    "tone": 3.7,
    "image": "",
    "video": ""
@@ -524,7 +524,7 @@
    "source": "harbour-press.example",
    "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T13:19:00Z",
+   "time": "2026-10-20T13:34:00Z",
    "tone": 4.5,
    "image": "",
    "video": ""
@@ -535,7 +535,7 @@
    "source": "el-diario.example",
    "country": "MX",
    "lang": "es",
-   "time": "2026-10-20T12:44:00Z",
+   "time": "2026-10-20T12:59:00Z",
    "tone": 3,
    "image": "",
    "video": ""
@@ -546,7 +546,7 @@
    "source": "harbour-press.example",
    "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T12:33:00Z",
+   "time": "2026-10-20T12:48:00Z",
    "tone": -0.3,
    "image": "",
    "video": ""
@@ -557,7 +557,7 @@
    "source": "gulf-report.example",
    "country": "AE",
    "lang": "ar",
-   "time": "2026-10-20T11:52:00Z",
+   "time": "2026-10-20T12:07:00Z",
    "tone": -1.6,
    "image": "",
    "video": ""
@@ -568,7 +568,7 @@
    "source": "morning-wire.example",
    "country": "GB",
    "lang": "en",
-   "time": "2026-10-20T11:21:00Z",
+   "time": "2026-10-20T11:36:00Z",
    "tone": 3.1,
    "image": "",
    "video": ""
@@ -579,7 +579,7 @@
    "source": "cape-mail.example",
    "country": "ZA",
    "lang": "en",
-   "time": "2026-10-20T10:58:00Z",
+   "time": "2026-10-20T11:13:00Z",
    "tone": 4.7,
    "image": "",
    "video": ""
@@ -590,7 +590,7 @@
    "source": "morning-wire.example",
    "country": "GB",
    "lang": "en",
-   "time": "2026-10-20T10:39:00Z",
+   "time": "2026-10-20T10:54:00Z",
    "tone": -2.2,
    "image": "",
    "video": "https://www.youtube.com/channel/UC_placeholder"
@@ -601,7 +601,7 @@
    "source": "corriere-sample.example",
    "country": "IT",
    "lang": "it",
-   "time": "2026-10-20T09:57:00Z",
+   "time": "2026-10-20T10:12:00Z",
    "tone": -3.5,
    "image": "",
    "video": ""
@@ -612,7 +612,7 @@
    "source": "al-akhbar.example",
    "country": "EG",
    "lang": "ar",
-   "time": "2026-10-20T09:46:00Z",
+   "time": "2026-10-20T10:01:00Z",
    "tone": 0.2,
    "image": "",
    "video": ""
@@ -623,7 +623,7 @@
    "source": "vesti-news.example",
    "country": "RU",
    "lang": "ru",
-   "time": "2026-10-20T09:09:00Z",
+   "time": "2026-10-20T09:24:00Z",
    "tone": 1.3,
    "image": "",
    "video": ""
@@ -634,7 +634,7 @@
    "source": "haaretz-sample.example",
    "country": "IL",
    "lang": "he",
-   "time": "2026-10-20T08:52:00Z",
+   "time": "2026-10-20T09:07:00Z",
    "tone": -3.4,
    "image": "",
    "video": ""
@@ -645,7 +645,7 @@
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-20T08:21:00Z",
+   "time": "2026-10-20T08:36:00Z",
    "tone": -6,
    "image": "",
    "video": "https://youtu.be/jNQXAC9IVRw"
@@ -656,7 +656,7 @@
    "source": "al-akhbar.example",
    "country": "EG",
    "lang": "ar",
-   "time": "2026-10-20T07:46:00Z",
+   "time": "2026-10-20T08:01:00Z",
    "tone": -3.5,
    "image": "",
    "video": ""
@@ -667,7 +667,7 @@
    "source": "xinhua-sample.example",
    "country": "CN",
    "lang": "zh",
-   "time": "2026-10-20T07:28:00Z",
+   "time": "2026-10-20T07:43:00Z",
    "tone": 4.3,
    "image": "",
    "video": ""
@@ -678,7 +678,7 @@
    "source": "nord-avis.example",
    "country": "NO",
    "lang": "no",
-   "time": "2026-10-20T06:53:00Z",
+   "time": "2026-10-20T07:08:00Z",
    "tone": 2.5,
    "image": "",
    "video": ""
@@ -686,16 +686,102 @@
  ],
  "stories": [
   {
-   "n": 754,
-   "o": 47,
-   "c": 14,
+   "n": 880,
+   "o": 55,
+   "c": 16,
+   "l": 8,
+   "t": -2.3,
+   "first": "2026-10-20T22:56:00Z",
+   "last": "2026-10-21T02:01:00Z",
+   "headline": "[sample] Central bank leaves rates unchanged in Kyiv: reactions",
+   "headlineSource": "gulf-report.example",
+   "headlineLang": "ar",
+   "entities": [
+    "central bank",
+    "inflation",
+    "interest rates",
+    "kyiv"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Kyiv: live updates",
+     "url": "https://global-desk.example/story/995yat",
+     "source": "global-desk.example",
+     "country": "CA",
+     "lang": "en",
+     "time": "2026-10-21T02:01:00Z",
+     "tone": -1.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Kyiv: in pictures",
+     "url": "https://hindustan-post.example/story/37r8mv",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T01:25:00Z",
+     "tone": -3.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Kyiv: analysis",
+     "url": "https://cape-mail.example/story/914q50",
+     "source": "cape-mail.example",
+     "country": "ZA",
+     "lang": "en",
+     "time": "2026-10-21T01:07:00Z",
+     "tone": -4.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Kyiv: what we know",
+     "url": "https://jakarta-pos.example/story/70zfdq",
+     "source": "jakarta-pos.example",
+     "country": "ID",
+     "lang": "id",
+     "time": "2026-10-20T23:31:00Z",
+     "tone": -2.6,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Kyiv: explained",
+     "url": "https://seoul-daily.example/story/5afm75",
+     "source": "seoul-daily.example",
+     "country": "KR",
+     "lang": "ko",
+     "time": "2026-10-20T22:09:00Z",
+     "tone": -4,
+     "image": "",
+     "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Kyiv: reactions",
+     "url": "https://gulf-report.example/story/8bijkq",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-20T22:56:00Z",
+     "tone": 3.4,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 633,
+   "o": 39,
+   "c": 11,
    "l": 6,
-   "t": 1,
-   "first": "2026-10-20T15:28:00Z",
-   "last": "2026-10-21T02:19:00Z",
-   "headline": "[sample] Court hears appeal in corruption case in Kyiv: what we know",
-   "headlineSource": "kyiv-herald.example",
-   "headlineLang": "uk",
+   "t": -1.2,
+   "first": "2026-10-20T16:24:00Z",
+   "last": "2026-10-21T03:25:00Z",
+   "headline": "[sample] Court hears appeal in corruption case in Kyiv: timeline",
+   "headlineSource": "jakarta-pos.example",
+   "headlineLang": "id",
    "entities": [
     "supreme court",
     "corruption",
@@ -704,84 +790,84 @@
    ],
    "articles": [
     {
-     "title": "[sample] Court hears appeal in corruption case in Kyiv: analysis",
-     "url": "https://le-quotidien.example/story/ffr5s5",
-     "source": "le-quotidien.example",
-     "country": "FR",
-     "lang": "fr",
-     "time": "2026-10-21T02:19:00Z",
-     "tone": 2.6,
+     "title": "[sample] Court hears appeal in corruption case in Kyiv: reactions",
+     "url": "https://global-desk.example/story/6jq7s9",
+     "source": "global-desk.example",
+     "country": "CA",
+     "lang": "en",
+     "time": "2026-10-21T03:25:00Z",
+     "tone": -0.8,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Court hears appeal in corruption case in Kyiv: timeline",
-     "url": "https://seoul-daily.example/story/81t1oy",
-     "source": "seoul-daily.example",
-     "country": "KR",
-     "lang": "ko",
-     "time": "2026-10-21T01:40:00Z",
-     "tone": 0,
-     "image": "",
-     "video": "https://www.youtube.com/shorts/aqz-KE-bpKQ"
-    },
-    {
      "title": "[sample] Court hears appeal in corruption case in Kyiv: reactions",
-     "url": "https://el-diario.example/story/c7mezg",
-     "source": "el-diario.example",
-     "country": "MX",
-     "lang": "es",
-     "time": "2026-10-21T00:23:00Z",
-     "tone": -0.5,
-     "image": "",
-     "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in Kyiv: explained",
-     "url": "https://wire-service.example/story/f5shf",
-     "source": "wire-service.example",
-     "country": "",
-     "lang": "en",
-     "time": "2026-10-21T00:31:00Z",
-     "tone": 1.5,
+     "url": "https://haaretz-sample.example/story/afrulu",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-21T03:00:00Z",
+     "tone": -5.6,
      "image": "",
      "video": ""
     },
     {
      "title": "[sample] Court hears appeal in corruption case in Kyiv: in pictures",
-     "url": "https://hindustan-post.example/story/aixrbu",
-     "source": "hindustan-post.example",
-     "country": "IN",
-     "lang": "en",
-     "time": "2026-10-21T00:11:00Z",
-     "tone": 3.6,
+     "url": "https://seoul-daily.example/story/5ozt12",
+     "source": "seoul-daily.example",
+     "country": "KR",
+     "lang": "ko",
+     "time": "2026-10-21T01:59:00Z",
+     "tone": -1.5,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Court hears appeal in corruption case in Kyiv: what we know",
-     "url": "https://kyiv-herald.example/story/6qh3cc",
-     "source": "kyiv-herald.example",
-     "country": "UA",
-     "lang": "uk",
-     "time": "2026-10-20T23:49:00Z",
-     "tone": -1,
+     "title": "[sample] Court hears appeal in corruption case in Kyiv: timeline",
+     "url": "https://jakarta-pos.example/story/1o522s",
+     "source": "jakarta-pos.example",
+     "country": "ID",
+     "lang": "id",
+     "time": "2026-10-21T00:52:00Z",
+     "tone": 1.2,
+     "image": "",
+     "video": "https://www.youtube.com/channel/UC_placeholder"
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Kyiv: live updates",
+     "url": "https://global-desk.example/story/735aat",
+     "source": "global-desk.example",
+     "country": "CA",
+     "lang": "en",
+     "time": "2026-10-21T01:21:00Z",
+     "tone": 0.1,
+     "image": "",
+     "video": "https://www.youtube.com/shorts/aqz-KE-bpKQ"
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Kyiv: timeline",
+     "url": "https://seoul-daily.example/story/52n70j",
+     "source": "seoul-daily.example",
+     "country": "KR",
+     "lang": "ko",
+     "time": "2026-10-21T00:30:00Z",
+     "tone": -0.7,
      "image": "",
      "video": ""
     }
    ]
   },
   {
-   "n": 660,
-   "o": 41,
-   "c": 12,
-   "l": 6,
-   "t": -0.6,
-   "first": "2026-10-20T18:32:00Z",
-   "last": "2026-10-21T01:52:00Z",
-   "headline": "[sample] Ministers meet over energy prices in Kyiv: in pictures",
-   "headlineSource": "nord-avis.example",
-   "headlineLang": "no",
+   "n": 256,
+   "o": 16,
+   "c": 5,
+   "l": 3,
+   "t": -0.4,
+   "first": "2026-10-20T21:15:00Z",
+   "last": "2026-10-21T03:25:00Z",
+   "headline": "[sample] Ministers meet over energy prices in Kyiv: live updates",
+   "headlineSource": "gulf-report.example",
+   "headlineLang": "ar",
    "entities": [
     "energy",
     "european union",
@@ -790,74 +876,160 @@
    ],
    "articles": [
     {
-     "title": "[sample] Ministers meet over energy prices in Kyiv: in pictures",
-     "url": "https://daily-ledger.example/story/eix48n",
-     "source": "daily-ledger.example",
-     "country": "US",
-     "lang": "en",
-     "time": "2026-10-21T01:52:00Z",
-     "tone": -2,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Kyiv: analysis",
-     "url": "https://asahi-sample.example/story/daixm8",
-     "source": "asahi-sample.example",
-     "country": "JP",
-     "lang": "ja",
-     "time": "2026-10-21T01:22:00Z",
-     "tone": 0.3,
-     "image": "",
-     "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Kyiv: in pictures",
-     "url": "https://nord-avis.example/story/9ygucc",
-     "source": "nord-avis.example",
-     "country": "NO",
-     "lang": "no",
-     "time": "2026-10-21T00:46:00Z",
-     "tone": -0.2,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Kyiv: explained",
-     "url": "https://gulf-report.example/story/6lwya5",
+     "title": "[sample] Ministers meet over energy prices in Kyiv: live updates",
+     "url": "https://gulf-report.example/story/4u7wb",
      "source": "gulf-report.example",
      "country": "AE",
      "lang": "ar",
-     "time": "2026-10-21T00:40:00Z",
-     "tone": 1.9,
+     "time": "2026-10-21T03:25:00Z",
+     "tone": 0.7,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Ministers meet over energy prices in Kyiv: analysis",
-     "url": "https://kyiv-herald.example/story/edgro5",
-     "source": "kyiv-herald.example",
-     "country": "UA",
-     "lang": "uk",
-     "time": "2026-10-20T22:16:00Z",
-     "tone": -1.7,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Kyiv: what we know",
-     "url": "https://harbour-press.example/story/6ryx5f",
+     "title": "[sample] Ministers meet over energy prices in Kyiv: in pictures",
+     "url": "https://harbour-press.example/story/6xcj8z",
      "source": "harbour-press.example",
      "country": "AU",
      "lang": "en",
-     "time": "2026-10-20T22:22:00Z",
-     "tone": -1.8,
+     "time": "2026-10-21T02:40:00Z",
+     "tone": -3.1,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Kyiv: latest",
+     "url": "https://kyiv-herald.example/story/563tta",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-21T02:13:00Z",
+     "tone": 3.3,
+     "image": "",
+     "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Kyiv: reactions",
+     "url": "https://gulf-report.example/story/e8jtsa",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T01:16:00Z",
+     "tone": 3.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Kyiv: in pictures",
+     "url": "https://kyiv-herald.example/story/6ty12x",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-20T23:41:00Z",
+     "tone": -5.6,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Kyiv: latest",
+     "url": "https://wire-service.example/story/3r94wd",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-20T23:20:00Z",
+     "tone": -1.1,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 214,
+   "o": 13,
+   "c": 4,
+   "l": 5,
+   "t": -0.7,
+   "first": "2026-10-21T00:10:00Z",
+   "last": "2026-10-21T04:20:00Z",
+   "headline": "[sample] Election count enters second day in Kyiv: analysis",
+   "headlineSource": "tehran-times.example",
+   "headlineLang": "fa",
+   "entities": [
+    "election commission",
+    "parliament",
+    "voters",
+    "kyiv"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Election count enters second day in Kyiv: explained",
+     "url": "https://kyiv-herald.example/story/60g26e",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-21T04:20:00Z",
+     "tone": 3.6,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Kyiv: explained",
+     "url": "https://wire-service.example/story/7d85xq",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T03:42:00Z",
+     "tone": -5.1,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Kyiv: analysis",
+     "url": "https://le-quotidien.example/story/g28xdp",
+     "source": "le-quotidien.example",
+     "country": "FR",
+     "lang": "fr",
+     "time": "2026-10-21T03:06:00Z",
+     "tone": -1.1,
+     "image": "",
+     "video": "https://www.youtube.com/shorts/aqz-KE-bpKQ"
+    },
+    {
+     "title": "[sample] Election count enters second day in Kyiv: in pictures",
+     "url": "https://el-diario.example/story/531ek3",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T01:35:00Z",
+     "tone": 0.2,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Kyiv: analysis",
+     "url": "https://lagos-sun.example/story/cv22m1",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-21T02:00:00Z",
+     "tone": -0.6,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Kyiv: analysis",
+     "url": "https://tehran-times.example/story/3rnwym",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-21T01:00:00Z",
+     "tone": -1.2,
      "image": "",
      "video": ""
     }
    ]
   }
  ],
- "unclustered": 1066,
+ "unclustered": 497,
  "videos": 74
 }

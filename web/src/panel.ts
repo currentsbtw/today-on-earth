@@ -13,6 +13,7 @@ const list = $<HTMLOListElement>('panel-list');
 const stories = $<HTMLDivElement>('panel-stories');
 const videos = $<HTMLElement>('panel-videos');
 const closeButton = $<HTMLButtonElement>('panel-close');
+const handle = $<HTMLButtonElement>('sheet-handle');
 
 let returnFocus: HTMLElement | null = null;
 let onClose: () => void = () => {};
@@ -164,6 +165,11 @@ function clipItem(clip: Clip): HTMLLIElement {
 function playClip(li: HTMLElement) {
   const thumb = li.querySelector('.video-thumb');
   if (!thumb) return;
+  // One player at a time: any other open player goes back to its thumbnail (which stops it).
+  for (const other of videos.querySelectorAll<HTMLElement>('.video.is-playing')) {
+    if (other === li) continue;
+    other.replaceWith(clipItem({ id: other.dataset.id!, source: other.querySelector('.video-source')?.textContent ?? '', time: '' }));
+  }
   const frame = document.createElement('iframe');
   frame.src = `https://www.youtube-nocookie.com/embed/${li.dataset.id}`;
   frame.title = `YouTube video from ${li.querySelector('.video-source')?.textContent ?? ''}`;
@@ -338,9 +344,22 @@ export function showError() {
   setState('Could not load the articles for this place.');
 }
 
+/** Phone bottom sheet: two heights only, half and near-full, switched by the handle. */
+function setTall(tall: boolean) {
+  panel.classList.toggle('is-tall', tall);
+  handle.setAttribute('aria-expanded', String(tall));
+  handle.setAttribute('aria-label', tall ? 'Collapse' : 'Expand');
+}
+
+/** The sheet's current height on narrow screens, 0 where the panel is a side column. */
+export function sheetHeight(): number {
+  return !panel.hidden && window.matchMedia('(max-width: 720px)').matches ? panel.offsetHeight : 0;
+}
+
 export function close() {
   if (panel.hidden) return;
   panel.hidden = true;
+  setTall(false);
   onClose();
   returnFocus?.focus();
   returnFocus = null;
@@ -353,6 +372,7 @@ export function isOpen(): boolean {
 export function initPanel(handleClose: () => void) {
   onClose = handleClose;
   closeButton.addEventListener('click', close);
+  handle.addEventListener('click', () => setTall(!panel.classList.contains('is-tall')));
   // Expose the panel's height so the scrubber can sit above the bottom sheet on phones.
   const stage = panel.parentElement!;
   new ResizeObserver(() => {

@@ -1,9 +1,15 @@
 import './style.css';
-import { isCellId, loadCell, loadHeat, type HeatCell, type Totals } from './data';
+import { isCellId, loadCell, loadHeat, type FrameRow, type HeatCell, type Totals } from './data';
 import { count, plural, utcTime } from './format';
-import { createMap, type MapCell } from './map';
+import { createMap, type HeatMode, type MapCell } from './map';
 import * as panel from './panel';
+import { readPref, writePref } from './prefs';
+import { initQuakes } from './quakes';
 import { initReplay, type FrameView, type Replay } from './replay';
+
+/** Relative heat needs this many complete days of per-cell history (see DATA-CONTRACT "Baseline"). */
+const MIN_BASELINE_DAYS = 3;
+const MODE_PREF = 'toe.heatMode';
 
 const status = document.getElementById('status')!;
 const totals = document.getElementById('totals')!;
@@ -75,6 +81,9 @@ async function start() {
     selectedIsLive = !!current;
     if (current) panel.openLoading(current, windowHours);
     else panel.openMissing(cell.n);
+    // Phones: keep the map's usable area above the bottom sheet and bring the cell into it.
+    const sheet = panel.sheetHeight();
+    if (sheet) map.setSheet(sheet, [cell.lon, cell.lat]);
     updateNote();
     writeHash();
     if (!current) return;
@@ -92,8 +101,10 @@ async function start() {
     selected = null;
     selectedIsLive = false;
     void map.outline(null);
+    map.setSheet(0);
     writeHash();
   });
+  initQuakes(document.getElementById('quake-toggle') as HTMLButtonElement, (data) => map.setQuakes(data));
 
   const heat = await heatPromise.catch(() => null);
   if (!heat) return;
@@ -101,18 +112,53 @@ async function start() {
   for (const c of liveCells) live.set(c.id, c);
   liveMax = Math.max(1, ...liveCells.map((c) => c.n));
   windowHours = heat.windowHours || 24;
-  map.setCells(liveCells, liveMax);
+
+  // Brightness mode: absolute article counts, or each place against its own normal. The
+  // relative view only exists once the ingest has enough days of per-cell history.
+  const modeControl = document.getElementById('mode')!;
+  const modeNote = document.getElementById('mode-note')!;
+  const relativeAvailable = (heat.baselineDays ?? 0) >= MIN_BASELINE_DAYS;
+  let mode: HeatMode = relativeAvailable && readPref(MODE_PREF) === 'normal' ? 'normal' : 'articles';
+  let shownRows: FrameRow[] | null = null; // rows of the frame on screen; null = live
+
+  const redraw = () => {
+    if (shownRows) {
+      // Replay frames carry no baseline, so a past frame borrows the live `b` of the same
+      // cell. A cell absent from the live snapshot gets b = 0, i.e. it reads as new (its
+      // weight is still capped at full brightness by heatWeight).
+      const cells = shownRows.map(([id, lat, lon, n]) => {
+        const now = live.get(id);
+        return { id, lat, lon, n, name: now?.name ?? '', b: now?.b ?? 0 };
+      });
+      map.setCells(cells, liveMax, mode);
+    } else {
+      map.setCells(liveCells, liveMax, mode);
+    }
+  };
+
+  const setMode = (next: HeatMode) => {
+    mode = next;
+    for (const b of modeControl.querySelectorAll('button')) b.setAttribute('aria-pressed', String(b.dataset.mode === mode));
+    modeNote.hidden = mode !== 'normal';
+    redraw();
+  };
+  if (relativeAvailable) {
+    modeControl.hidden = false;
+    modeControl.addEventListener('click', (e) => {
+      const next = (e.target as HTMLElement).closest('button')?.dataset.mode as HeatMode | undefined;
+      if (!next || next === mode) return;
+      writePref(MODE_PREF, next);
+      setMode(next);
+    });
+  }
+  setMode(mode);
   setStatus(liveCells.length ? '' : 'No coverage in this snapshot.');
 
   const showFrame = (view: FrameView) => {
     frame = view;
-    if (view.rows) {
-      // Past frame: live names where the cell still exists, otherwise just counts.
-      const cells = view.rows.map(([id, lat, lon, n]) => ({ id, lat, lon, n, name: live.get(id)?.name ?? '' }));
-      map.setCells(cells, liveMax);
-    } else {
-      map.setCells(liveCells, liveMax);
-    }
+    // Past frame: live names where the cell still exists, otherwise just counts.
+    shownRows = view.rows;
+    redraw();
     if (view.live) showTotals(heat.totals, heat.generatedAt, false);
     else showTotals(view.shown.totals, view.shown.at, true);
     updateNote();

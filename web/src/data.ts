@@ -10,6 +10,8 @@ export interface HeatCell {
   l: number;
   t: number;
   name: string;
+  /** Median daily articles over the last up to 7 complete UTC days; 0 when unknown or new. */
+  b?: number;
 }
 
 export interface Totals {
@@ -24,6 +26,8 @@ export interface Heat {
   generatedAt: string;
   windowHours: number;
   newestArticleAt: string;
+  /** Complete UTC days of per-cell history behind `b` (0-14). Relative heat needs >= 3. */
+  baselineDays?: number;
   totals: Totals;
   cells: HeatCell[];
 }

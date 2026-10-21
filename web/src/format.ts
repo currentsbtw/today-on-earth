@@ -90,3 +90,6 @@ export function youtubeId(url: string): string | null {
   else if (host === 'youtube.com' && parts.length === 2 && (parts[0] === 'shorts' || parts[0] === 'embed')) id = parts[1];
   return id && /^[A-Za-z0-9_-]{11}$/.test(id) ? id : null;
 }
+
+/** Permalink / clip stamp of a frame time: "2026-10-21T04:47:14Z" -> "20261021T044714Z" */
+export const stampOf = (at: string) => at.replace(/[-:.]/g, '');

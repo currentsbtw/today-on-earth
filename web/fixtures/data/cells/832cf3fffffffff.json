@@ -3,36 +3,36 @@
  "name": "Tehran, Tehran, Iran",
  "n": 505,
  "o": 49,
- "c": 20,
- "l": 14,
- "t": -0.4,
+ "c": 21,
+ "l": 15,
+ "t": -0.7,
  "topOutlets": [
   [
    "tehran-times.example",
    5
   ],
   [
-   "la-voz.example",
-   4
-  ],
-  [
-   "wire-service.example",
-   4
-  ],
-  [
    "kyiv-herald.example",
    4
   ],
   [
-   "al-akhbar.example",
+   "nord-avis.example",
+   4
+  ],
+  [
+   "seoul-daily.example",
    3
   ],
   [
-   "hindustan-post.example",
+   "wire-service.example",
    3
   ],
   [
-   "gazeta-sample.example",
+   "cape-mail.example",
+   3
+  ],
+  [
+   "xinhua-sample.example",
    3
   ],
   [
@@ -40,12 +40,12 @@
    3
   ],
   [
-   "nord-avis.example",
+   "la-voz.example",
    3
   ],
   [
-   "lagos-sun.example",
-   2
+   "tageszeitung.example",
+   3
   ]
  ],
  "topCountries": [
@@ -54,27 +54,27 @@
    5
   ],
   [
-   "AR",
-   4
-  ],
-  [
-   "",
-   4
-  ],
-  [
    "UA",
    4
   ],
   [
-   "EG",
+   "NO",
+   4
+  ],
+  [
+   "KR",
    3
   ],
   [
-   "IN",
+   "",
    3
   ],
   [
-   "PL",
+   "ZA",
+   3
+  ],
+  [
+   "CN",
    3
   ],
   [
@@ -82,25 +82,21 @@
    3
   ],
   [
-   "NO",
+   "AR",
    3
   ],
   [
-   "NG",
-   2
+   "DE",
+   3
   ]
  ],
  "languages": [
   [
    "en",
-   16
+   14
   ],
   [
    "fa",
-   5
-  ],
-  [
-   "es",
    5
   ],
   [
@@ -108,11 +104,19 @@
    4
   ],
   [
-   "ar",
+   "no",
+   4
+  ],
+  [
+   "es",
+   4
+  ],
+  [
+   "ko",
    3
   ],
   [
-   "pl",
+   "zh",
    3
   ],
   [
@@ -120,279 +124,22 @@
    3
   ],
   [
-   "no",
+   "de",
    3
   ],
   [
-   "ja",
-   2
-  ],
-  [
-   "ko",
+   "ru",
    2
   ]
  ],
  "articles": [
-  {
-   "title": "[sample] Wildfire forces evacuations near Tehran",
-   "url": "https://lagos-sun.example/news/5myf8y",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-21T05:22:00Z",
-   "tone": 1,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "",
-   "url": "https://al-akhbar.example/news/4oas4g",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T05:00:00Z",
-   "tone": 0.9,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Tehran",
-   "url": "https://asahi-sample.example/news/3mtu3y",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-21T04:29:00Z",
-   "tone": -1,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Tehran",
-   "url": "https://al-akhbar.example/news/7jt1va",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T04:00:00Z",
-   "tone": -5.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Tehran",
-   "url": "https://le-quotidien.example/news/12k5ev",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-21T03:25:00Z",
-   "tone": -5.8,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Tehran",
-   "url": "https://hindustan-post.example/news/7ym4gk",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-21T03:16:00Z",
-   "tone": -0.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Tehran",
-   "url": "https://gazeta-sample.example/news/ftitp6",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-21T02:49:00Z",
-   "tone": -4.2,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Tehran",
-   "url": "https://harbour-press.example/news/59zm96",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-21T02:12:00Z",
-   "tone": -0.8,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Tehran",
-   "url": "https://morning-wire.example/news/dpyhis",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-21T01:40:00Z",
-   "tone": -0.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Tehran",
-   "url": "https://global-desk.example/news/g6y6sp",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-21T01:14:00Z",
-   "tone": -3.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Tehran",
-   "url": "https://tehran-times.example/news/187g96",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-21T00:52:00Z",
-   "tone": -1.2,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Tehran",
-   "url": "https://hindustan-post.example/news/6us596",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-21T00:13:00Z",
-   "tone": 1.5,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Tehran",
-   "url": "https://la-voz.example/news/45f983",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T23:48:00Z",
-   "tone": 1.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Tehran",
-   "url": "https://tehran-times.example/news/d89t3g",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T23:26:00Z",
-   "tone": -6.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Tehran",
-   "url": "https://gazeta-sample.example/news/fzbz80",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T22:50:00Z",
-   "tone": -5.8,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Tehran",
-   "url": "https://global-desk.example/news/bf04xz",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T22:25:00Z",
-   "tone": -1.9,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Tehran",
-   "url": "https://wire-service.example/news/2s7ale",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T22:12:00Z",
-   "tone": 4.9,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Tehran",
-   "url": "https://hurriyet-sample.example/news/1a5wjp",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T21:42:00Z",
-   "tone": 3.1,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Tehran",
-   "url": "https://la-voz.example/news/fl1vyn",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T21:16:00Z",
-   "tone": 2.5,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Tehran",
-   "url": "https://la-voz.example/news/9cave0",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T20:39:00Z",
-   "tone": 3.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Tehran",
-   "url": "https://kyiv-herald.example/news/5xaip9",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T20:22:00Z",
-   "tone": 0.9,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Tehran",
-   "url": "https://asahi-sample.example/news/9f1ndg",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T19:44:00Z",
-   "tone": 4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "",
-   "url": "https://lagos-sun.example/news/1umtnx",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T19:25:00Z",
-   "tone": -5.8,
-   "image": "",
-   "video": ""
-  },
   {
    "title": "[sample] Storm disrupts transport links near Tehran",
    "url": "https://seoul-daily.example/news/86n7jk",
    "source": "seoul-daily.example",
    "country": "KR",
    "lang": "ko",
-   "time": "2026-10-20T18:42:00Z",
+   "time": "2026-10-21T05:32:00Z",
    "tone": 4.5,
    "image": "",
    "video": ""
@@ -403,7 +150,7 @@
    "source": "kyiv-herald.example",
    "country": "UA",
    "lang": "uk",
-   "time": "2026-10-20T18:22:00Z",
+   "time": "2026-10-21T05:12:00Z",
    "tone": -2.8,
    "image": "",
    "video": "https://m.youtube.com/watch?v=kJQP7kiw5Fk"
@@ -414,7 +161,7 @@
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T18:00:00Z",
+   "time": "2026-10-21T04:50:00Z",
    "tone": 0.9,
    "image": "",
    "video": ""
@@ -425,7 +172,7 @@
    "source": "wire-service.example",
    "country": "",
    "lang": "en",
-   "time": "2026-10-20T17:33:00Z",
+   "time": "2026-10-21T04:23:00Z",
    "tone": 3.2,
    "image": "",
    "video": ""
@@ -436,7 +183,7 @@
    "source": "o-correio.example",
    "country": "BR",
    "lang": "pt",
-   "time": "2026-10-20T16:55:00Z",
+   "time": "2026-10-21T03:45:00Z",
    "tone": 2.1,
    "image": "",
    "video": ""
@@ -447,7 +194,7 @@
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T16:33:00Z",
+   "time": "2026-10-21T03:23:00Z",
    "tone": -6.8,
    "image": "",
    "video": ""
@@ -458,7 +205,7 @@
    "source": "nord-avis.example",
    "country": "NO",
    "lang": "no",
-   "time": "2026-10-20T16:14:00Z",
+   "time": "2026-10-21T03:03:00Z",
    "tone": -0.7,
    "image": "",
    "video": ""
@@ -469,7 +216,7 @@
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-20T15:36:00Z",
+   "time": "2026-10-21T02:26:00Z",
    "tone": -7,
    "image": "",
    "video": ""
@@ -480,7 +227,7 @@
    "source": "seoul-daily.example",
    "country": "KR",
    "lang": "ko",
-   "time": "2026-10-20T15:20:00Z",
+   "time": "2026-10-21T02:09:00Z",
    "tone": -1.3,
    "image": "",
    "video": ""
@@ -491,7 +238,7 @@
    "source": "el-diario.example",
    "country": "MX",
    "lang": "es",
-   "time": "2026-10-20T14:48:00Z",
+   "time": "2026-10-21T01:38:00Z",
    "tone": 2,
    "image": "",
    "video": ""
@@ -502,7 +249,7 @@
    "source": "cape-mail.example",
    "country": "ZA",
    "lang": "en",
-   "time": "2026-10-20T14:21:00Z",
+   "time": "2026-10-21T01:11:00Z",
    "tone": 4.1,
    "image": "",
    "video": ""
@@ -513,7 +260,7 @@
    "source": "xinhua-sample.example",
    "country": "CN",
    "lang": "zh",
-   "time": "2026-10-20T13:39:00Z",
+   "time": "2026-10-21T00:29:00Z",
    "tone": 0.8,
    "image": "",
    "video": ""
@@ -524,7 +271,7 @@
    "source": "nord-avis.example",
    "country": "NO",
    "lang": "no",
-   "time": "2026-10-20T13:19:00Z",
+   "time": "2026-10-21T00:09:00Z",
    "tone": 2.7,
    "image": "",
    "video": ""
@@ -535,7 +282,7 @@
    "source": "wire-service.example",
    "country": "",
    "lang": "en",
-   "time": "2026-10-20T12:57:00Z",
+   "time": "2026-10-20T23:47:00Z",
    "tone": -4.7,
    "image": "",
    "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
@@ -546,7 +293,7 @@
    "source": "harbour-press.example",
    "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T12:34:00Z",
+   "time": "2026-10-20T23:23:00Z",
    "tone": -6.9,
    "image": "",
    "video": ""
@@ -557,7 +304,7 @@
    "source": "hurriyet-sample.example",
    "country": "TR",
    "lang": "tr",
-   "time": "2026-10-20T12:05:00Z",
+   "time": "2026-10-20T22:55:00Z",
    "tone": 2.2,
    "image": "",
    "video": ""
@@ -568,7 +315,7 @@
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T11:22:00Z",
+   "time": "2026-10-20T22:11:00Z",
    "tone": 4.5,
    "image": "",
    "video": ""
@@ -579,7 +326,7 @@
    "source": "wire-service.example",
    "country": "",
    "lang": "en",
-   "time": "2026-10-20T11:03:00Z",
+   "time": "2026-10-20T21:53:00Z",
    "tone": -2.2,
    "image": "",
    "video": ""
@@ -590,7 +337,7 @@
    "source": "vesti-news.example",
    "country": "RU",
    "lang": "ru",
-   "time": "2026-10-20T10:34:00Z",
+   "time": "2026-10-20T21:24:00Z",
    "tone": 3.3,
    "image": "",
    "video": ""
@@ -601,7 +348,7 @@
    "source": "kyiv-herald.example",
    "country": "UA",
    "lang": "uk",
-   "time": "2026-10-20T10:14:00Z",
+   "time": "2026-10-20T21:04:00Z",
    "tone": 1.5,
    "image": "",
    "video": ""
@@ -612,7 +359,7 @@
    "source": "hurriyet-sample.example",
    "country": "TR",
    "lang": "tr",
-   "time": "2026-10-20T09:40:00Z",
+   "time": "2026-10-20T20:30:00Z",
    "tone": 0.4,
    "image": "",
    "video": ""
@@ -623,7 +370,7 @@
    "source": "hindustan-post.example",
    "country": "IN",
    "lang": "en",
-   "time": "2026-10-20T09:12:00Z",
+   "time": "2026-10-20T20:02:00Z",
    "tone": -5.1,
    "image": "",
    "video": ""
@@ -634,7 +381,7 @@
    "source": "kyiv-herald.example",
    "country": "UA",
    "lang": "uk",
-   "time": "2026-10-20T08:39:00Z",
+   "time": "2026-10-20T19:29:00Z",
    "tone": 0.6,
    "image": "",
    "video": ""
@@ -645,7 +392,7 @@
    "source": "la-voz.example",
    "country": "AR",
    "lang": "es",
-   "time": "2026-10-20T08:22:00Z",
+   "time": "2026-10-20T19:11:00Z",
    "tone": 3,
    "image": "",
    "video": ""
@@ -656,7 +403,7 @@
    "source": "cape-mail.example",
    "country": "ZA",
    "lang": "en",
-   "time": "2026-10-20T07:56:00Z",
+   "time": "2026-10-20T18:46:00Z",
    "tone": 0.8,
    "image": "",
    "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
@@ -667,7 +414,7 @@
    "source": "al-akhbar.example",
    "country": "EG",
    "lang": "ar",
-   "time": "2026-10-20T07:24:00Z",
+   "time": "2026-10-20T18:14:00Z",
    "tone": -1,
    "image": "",
    "video": ""
@@ -678,272 +425,525 @@
    "source": "nord-avis.example",
    "country": "NO",
    "lang": "no",
-   "time": "2026-10-20T07:03:00Z",
+   "time": "2026-10-20T17:53:00Z",
    "tone": 2.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Tehran",
+   "url": "https://kyiv-herald.example/news/645dri",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T17:19:00Z",
+   "tone": -6.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Tehran",
+   "url": "https://cape-mail.example/news/6ttc94",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T16:41:00Z",
+   "tone": 1.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Tehran",
+   "url": "https://tehran-times.example/news/3745xh",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T16:26:00Z",
+   "tone": -2.3,
+   "image": "",
+   "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Tehran",
+   "url": "https://asahi-sample.example/news/4twi81",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T15:43:00Z",
+   "tone": 0.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Tehran",
+   "url": "https://xinhua-sample.example/news/gar98f",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T15:32:00Z",
+   "tone": 4.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Tehran",
+   "url": "https://daily-ledger.example/news/bxd937",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T15:02:00Z",
+   "tone": 1.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Tehran",
+   "url": "https://tageszeitung.example/news/fkgd32",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T14:37:00Z",
+   "tone": -4.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Tehran",
+   "url": "https://seoul-daily.example/news/doc6f1",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T14:06:00Z",
+   "tone": -3.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://xinhua-sample.example/news/7krn8i",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T13:40:00Z",
+   "tone": 1.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Tehran",
+   "url": "https://lagos-sun.example/news/135u59",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T13:03:00Z",
+   "tone": -3.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Tehran",
+   "url": "https://nord-avis.example/news/5020zx",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T12:30:00Z",
+   "tone": -6.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Tehran",
+   "url": "https://vesti-news.example/news/1h4wc4",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T12:11:00Z",
+   "tone": -6.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Tehran",
+   "url": "https://nation-ke.example/news/3zmd46",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T11:40:00Z",
+   "tone": -5.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Tehran",
+   "url": "https://la-voz.example/news/85qqkk",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T11:26:00Z",
+   "tone": -4.3,
+   "image": "",
+   "video": "https://m.youtube.com/watch?v=kJQP7kiw5Fk"
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Tehran",
+   "url": "https://harbour-press.example/news/ep3tk1",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T10:58:00Z",
+   "tone": -0.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://haaretz-sample.example/news/573m0t",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T10:23:00Z",
+   "tone": -2.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://hindustan-post.example/news/81chue",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T09:54:00Z",
+   "tone": -5.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Tehran",
+   "url": "https://tehran-times.example/news/58qb69",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T09:20:00Z",
+   "tone": 4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Tehran",
+   "url": "https://tageszeitung.example/news/85e7uk",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T09:02:00Z",
+   "tone": 4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Tehran",
+   "url": "https://tageszeitung.example/news/2dsrn8",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T08:36:00Z",
+   "tone": -4.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Tehran",
+   "url": "https://daily-ledger.example/news/esy467",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T08:11:00Z",
+   "tone": -1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Tehran",
+   "url": "https://la-voz.example/news/5try9q",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T07:41:00Z",
+   "tone": -2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Tehran",
+   "url": "https://hurriyet-sample.example/news/eq3zw1",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T07:16:00Z",
+   "tone": 4.2,
    "image": "",
    "video": ""
   }
  ],
  "stories": [
   {
-   "n": 114,
-   "o": 16,
-   "c": 7,
-   "l": 5,
-   "t": -1.3,
-   "first": "2026-10-21T02:50:00Z",
-   "last": "2026-10-21T05:30:00Z",
-   "headline": "[sample] Wildfire forces evacuations in hills in Tehran: explained",
-   "headlineSource": "lagos-sun.example",
-   "headlineLang": "en",
+   "n": 161,
+   "o": 22,
+   "c": 11,
+   "l": 7,
+   "t": -0.2,
+   "first": "2026-10-20T21:13:00Z",
+   "last": "2026-10-21T04:27:00Z",
+   "headline": "[sample] Ministers meet over energy prices in Tehran: live updates",
+   "headlineSource": "asahi-sample.example",
+   "headlineLang": "ja",
    "entities": [
-    "wildfire",
-    "evacuation",
-    "fire service",
+    "energy",
+    "european union",
+    "oil prices",
     "tehran"
    ],
    "articles": [
     {
-     "title": "[sample] Wildfire forces evacuations in hills in Tehran: in pictures",
-     "url": "https://tehran-times.example/story/g3viaq",
-     "source": "tehran-times.example",
-     "country": "IR",
-     "lang": "fa",
-     "time": "2026-10-21T05:30:00Z",
-     "tone": -2.1,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Tehran: explained",
-     "url": "https://lagos-sun.example/story/9he4fd",
+     "title": "[sample] Ministers meet over energy prices in Tehran: analysis",
+     "url": "https://lagos-sun.example/story/a14qk7",
      "source": "lagos-sun.example",
      "country": "NG",
      "lang": "en",
-     "time": "2026-10-21T05:05:00Z",
-     "tone": 2.6,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Tehran: analysis",
-     "url": "https://gazeta-sample.example/story/b1587g",
-     "source": "gazeta-sample.example",
-     "country": "PL",
-     "lang": "pl",
-     "time": "2026-10-21T04:44:00Z",
-     "tone": -3.3,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Tehran: explained",
-     "url": "https://tehran-times.example/story/b5o5f3",
-     "source": "tehran-times.example",
-     "country": "IR",
-     "lang": "fa",
-     "time": "2026-10-21T03:12:00Z",
-     "tone": -4.1,
-     "image": "",
-     "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Tehran: analysis",
-     "url": "https://global-desk.example/story/3euaes",
-     "source": "global-desk.example",
-     "country": "CA",
-     "lang": "en",
-     "time": "2026-10-21T02:42:00Z",
-     "tone": -0.5,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Tehran: timeline",
-     "url": "https://jakarta-pos.example/story/doc6f1",
-     "source": "jakarta-pos.example",
-     "country": "ID",
-     "lang": "id",
-     "time": "2026-10-21T02:50:00Z",
-     "tone": -0.7,
-     "image": "",
-     "video": ""
-    }
-   ]
-  },
-  {
-   "n": 85,
-   "o": 12,
-   "c": 5,
-   "l": 4,
-   "t": -0.5,
-   "first": "2026-10-21T00:26:00Z",
-   "last": "2026-10-21T03:41:00Z",
-   "headline": "[sample] Court hears appeal in corruption case in Tehran: reactions",
-   "headlineSource": "daily-ledger.example",
-   "headlineLang": "en",
-   "entities": [
-    "supreme court",
-    "corruption",
-    "prosecutor",
-    "tehran"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Court hears appeal in corruption case in Tehran: reactions",
-     "url": "https://nation-ke.example/story/asgb34",
-     "source": "nation-ke.example",
-     "country": "KE",
-     "lang": "en",
-     "time": "2026-10-21T03:41:00Z",
-     "tone": 3,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in Tehran: reactions",
-     "url": "https://tehran-times.example/story/4fz80r",
-     "source": "tehran-times.example",
-     "country": "IR",
-     "lang": "fa",
-     "time": "2026-10-21T02:44:00Z",
-     "tone": 3.4,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in Tehran: reactions",
-     "url": "https://wire-service.example/story/a5exp",
-     "source": "wire-service.example",
-     "country": "",
-     "lang": "en",
-     "time": "2026-10-21T02:31:00Z",
-     "tone": -2.8,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in Tehran: reactions",
-     "url": "https://daily-ledger.example/story/1h4wc4",
-     "source": "daily-ledger.example",
-     "country": "US",
-     "lang": "en",
-     "time": "2026-10-21T02:35:00Z",
-     "tone": 1.7,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in Tehran: timeline",
-     "url": "https://nation-ke.example/story/3t72q3",
-     "source": "nation-ke.example",
-     "country": "KE",
-     "lang": "en",
-     "time": "2026-10-21T01:45:00Z",
-     "tone": -4.6,
-     "image": "",
-     "video": "https://youtu.be/jNQXAC9IVRw"
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in Tehran: reactions",
-     "url": "https://tehran-times.example/story/2c0len",
-     "source": "tehran-times.example",
-     "country": "IR",
-     "lang": "fa",
-     "time": "2026-10-21T00:26:00Z",
-     "tone": -3.7,
-     "image": "",
-     "video": "https://m.youtube.com/watch?v=kJQP7kiw5Fk"
-    }
-   ]
-  },
-  {
-   "n": 65,
-   "o": 9,
-   "c": 4,
-   "l": 4,
-   "t": -1.6,
-   "first": "2026-10-20T23:34:00Z",
-   "last": "2026-10-21T02:52:00Z",
-   "headline": "[sample] Strike halts rail services in Tehran: analysis",
-   "headlineSource": "nation-ke.example",
-   "headlineLang": "en",
-   "entities": [
-    "trade union",
-    "rail",
-    "labour",
-    "tehran"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Strike halts rail services in Tehran: analysis",
-     "url": "https://nation-ke.example/story/8flskf",
-     "source": "nation-ke.example",
-     "country": "KE",
-     "lang": "en",
-     "time": "2026-10-21T02:52:00Z",
-     "tone": 2,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Tehran: reactions",
-     "url": "https://tehran-times.example/story/657p4i",
-     "source": "tehran-times.example",
-     "country": "IR",
-     "lang": "fa",
-     "time": "2026-10-21T02:07:00Z",
+     "time": "2026-10-21T04:27:00Z",
      "tone": -1.1,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Strike halts rail services in Tehran: timeline",
-     "url": "https://tehran-times.example/story/1s6kyi",
+     "title": "[sample] Ministers meet over energy prices in Tehran: analysis",
+     "url": "https://tehran-times.example/story/6tish4",
      "source": "tehran-times.example",
      "country": "IR",
      "lang": "fa",
-     "time": "2026-10-21T01:54:00Z",
-     "tone": -5.7,
+     "time": "2026-10-21T03:50:00Z",
+     "tone": 1.7,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Strike halts rail services in Tehran: what we know",
-     "url": "https://xinhua-sample.example/story/58qb69",
+     "title": "[sample] Ministers meet over energy prices in Tehran: live updates",
+     "url": "https://asahi-sample.example/story/4c86v1",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T03:23:00Z",
+     "tone": 0.7,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Tehran: what we know",
+     "url": "https://vesti-news.example/story/avd1t6",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T01:30:00Z",
+     "tone": -1.7,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Tehran: in pictures",
+     "url": "https://xinhua-sample.example/story/eyxp51",
      "source": "xinhua-sample.example",
      "country": "CN",
      "lang": "zh",
-     "time": "2026-10-21T00:04:00Z",
-     "tone": -1.7,
+     "time": "2026-10-21T01:23:00Z",
+     "tone": -0.9,
      "image": "",
-     "video": "https://www.youtube.com/shorts/aqz-KE-bpKQ"
+     "video": ""
     },
     {
-     "title": "[sample] Strike halts rail services in Tehran: what we know",
-     "url": "https://daily-ledger.example/story/85e7uk",
+     "title": "[sample] Ministers meet over energy prices in Tehran: analysis",
+     "url": "https://daily-ledger.example/story/bdt2sn",
      "source": "daily-ledger.example",
      "country": "US",
      "lang": "en",
-     "time": "2026-10-20T23:08:00Z",
-     "tone": -3,
+     "time": "2026-10-21T01:27:00Z",
+     "tone": 0,
      "image": "",
-     "video": "https://youtu.be/jNQXAC9IVRw"
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 73,
+   "o": 10,
+   "c": 5,
+   "l": 5,
+   "t": 0.5,
+   "first": "2026-10-20T21:36:00Z",
+   "last": "2026-10-21T02:37:00Z",
+   "headline": "[sample] Storm damage closes main roads in Tehran: analysis",
+   "headlineSource": "hurriyet-sample.example",
+   "headlineLang": "tr",
+   "entities": [
+    "natural disaster",
+    "transport",
+    "emergency services",
+    "tehran"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Storm damage closes main roads in Tehran: explained",
+     "url": "https://wire-service.example/story/ckwsu3",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T02:37:00Z",
+     "tone": 3.6,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Strike halts rail services in Tehran: latest",
-     "url": "https://haaretz-sample.example/story/2dsrn8",
-     "source": "haaretz-sample.example",
-     "country": "IL",
-     "lang": "he",
-     "time": "2026-10-21T00:37:00Z",
-     "tone": -0.2,
+     "title": "[sample] Storm damage closes main roads in Tehran: reactions",
+     "url": "https://vesti-news.example/story/chjzpm",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T02:05:00Z",
+     "tone": 2.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Tehran: analysis",
+     "url": "https://daily-ledger.example/story/9k7ggk",
+     "source": "daily-ledger.example",
+     "country": "US",
+     "lang": "en",
+     "time": "2026-10-21T00:55:00Z",
+     "tone": -2.6,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Tehran: timeline",
+     "url": "https://tehran-times.example/story/60uo6j",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-20T23:43:00Z",
+     "tone": -3.6,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Tehran: live updates",
+     "url": "https://seoul-daily.example/story/ac9oy4",
+     "source": "seoul-daily.example",
+     "country": "KR",
+     "lang": "ko",
+     "time": "2026-10-20T23:17:00Z",
+     "tone": -0.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Tehran: analysis",
+     "url": "https://hurriyet-sample.example/story/fh32mn",
+     "source": "hurriyet-sample.example",
+     "country": "TR",
+     "lang": "tr",
+     "time": "2026-10-20T22:22:00Z",
+     "tone": 3.8,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 47,
+   "o": 6,
+   "c": 3,
+   "l": 3,
+   "t": 0.3,
+   "first": "2026-10-20T21:38:00Z",
+   "last": "2026-10-21T04:30:00Z",
+   "headline": "[sample] Election count enters second day in Tehran: live updates",
+   "headlineSource": "nation-ke.example",
+   "headlineLang": "en",
+   "entities": [
+    "election commission",
+    "parliament",
+    "voters",
+    "tehran"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Election count enters second day in Tehran: live updates",
+     "url": "https://wire-service.example/story/8ofgrk",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T04:30:00Z",
+     "tone": -0.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Tehran: live updates",
+     "url": "https://nord-avis.example/story/av9yd5",
+     "source": "nord-avis.example",
+     "country": "NO",
+     "lang": "no",
+     "time": "2026-10-21T03:48:00Z",
+     "tone": 2,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Tehran: analysis",
+     "url": "https://tehran-times.example/story/75b63z",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-21T02:54:00Z",
+     "tone": 0.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Tehran: timeline",
+     "url": "https://wire-service.example/story/6vk6mt",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T03:12:00Z",
+     "tone": 1.7,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Tehran: live updates",
+     "url": "https://nation-ke.example/story/8jmgod",
+     "source": "nation-ke.example",
+     "country": "KE",
+     "lang": "en",
+     "time": "2026-10-21T00:46:00Z",
+     "tone": -1.4,
+     "image": "",
+     "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
+    },
+    {
+     "title": "[sample] Election count enters second day in Tehran: in pictures",
+     "url": "https://lagos-sun.example/story/em4dbb",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-21T00:05:00Z",
+     "tone": -0.9,
      "image": "",
      "video": ""
     }
    ]
   }
  ],
- "unclustered": 241,
+ "unclustered": 224,
  "videos": 15
 }

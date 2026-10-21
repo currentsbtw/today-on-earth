@@ -3,36 +3,24 @@
  "name": "Cairo, Al Qahirah, Egypt",
  "n": 344,
  "o": 41,
- "c": 19,
- "l": 12,
- "t": -0.4,
+ "c": 23,
+ "l": 15,
+ "t": -1,
  "topOutlets": [
-  [
-   "al-akhbar.example",
-   5
-  ],
-  [
-   "gulf-report.example",
-   5
-  ],
-  [
-   "hindustan-post.example",
-   4
-  ],
   [
    "gazeta-sample.example",
    4
   ],
   [
-   "hurriyet-sample.example",
+   "asahi-sample.example",
    4
   ],
   [
-   "la-voz.example",
-   3
+   "gulf-report.example",
+   4
   ],
   [
-   "jakarta-pos.example",
+   "tehran-times.example",
    3
   ],
   [
@@ -40,41 +28,41 @@
    3
   ],
   [
-   "vesti-news.example",
+   "al-akhbar.example",
    3
   ],
   [
-   "kyiv-herald.example",
-   3
+   "cape-mail.example",
+   2
+  ],
+  [
+   "global-desk.example",
+   2
+  ],
+  [
+   "xinhua-sample.example",
+   2
+  ],
+  [
+   "o-correio.example",
+   2
   ]
  ],
  "topCountries": [
-  [
-   "EG",
-   5
-  ],
-  [
-   "AE",
-   5
-  ],
-  [
-   "IN",
-   4
-  ],
   [
    "PL",
    4
   ],
   [
-   "TR",
+   "JP",
    4
   ],
   [
-   "AR",
-   3
+   "AE",
+   4
   ],
   [
-   "ID",
+   "IR",
    3
   ],
   [
@@ -82,37 +70,49 @@
    3
   ],
   [
-   "RU",
+   "EG",
    3
   ],
   [
-   "UA",
-   3
+   "ZA",
+   2
+  ],
+  [
+   "CA",
+   2
+  ],
+  [
+   "CN",
+   2
+  ],
+  [
+   "BR",
+   2
   ]
  ],
  "languages": [
   [
    "en",
-   11
+   12
   ],
   [
    "ar",
-   10
-  ],
-  [
-   "es",
-   5
+   7
   ],
   [
    "pl",
    4
   ],
   [
-   "tr",
+   "ja",
    4
   ],
   [
-   "id",
+   "fa",
+   3
+  ],
+  [
+   "es",
    3
   ],
   [
@@ -120,400 +120,158 @@
    3
   ],
   [
-   "ru",
-   3
+   "zh",
+   2
   ],
   [
-   "uk",
-   3
+   "pt",
+   2
   ],
   [
-   "fa",
+   "tr",
    2
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Election commission publishes turnout figures near Cairo",
-   "url": "https://al-akhbar.example/news/3haur2",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T05:21:00Z",
-   "tone": -0.7,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Cairo",
-   "url": "https://le-quotidien.example/news/bsc59p",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-21T05:02:00Z",
-   "tone": 4.5,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Cairo",
-   "url": "https://cape-mail.example/news/6vxbzm",
+   "title": "[sample] Storm disrupts transport links near Cairo",
+   "url": "https://cape-mail.example/news/9jzxxz",
    "source": "cape-mail.example",
    "country": "ZA",
    "lang": "en",
-   "time": "2026-10-21T04:27:00Z",
-   "tone": -3.4,
+   "time": "2026-10-21T05:38:00Z",
+   "tone": -4.5,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Officials meet over regional dispute near Cairo",
-   "url": "https://la-voz.example/news/5zh83h",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-21T04:04:00Z",
-   "tone": 4.2,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Cairo",
-   "url": "https://al-akhbar.example/news/a17wif",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T03:28:00Z",
-   "tone": -2.6,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Cairo",
-   "url": "https://hindustan-post.example/news/7qtvtq",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-21T03:00:00Z",
-   "tone": -5.8,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Cairo",
-   "url": "https://al-akhbar.example/news/7kkk1l",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T02:33:00Z",
-   "tone": -5,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Cairo",
-   "url": "https://al-akhbar.example/news/9wvs1s",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T02:03:00Z",
-   "tone": 2.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Cairo",
-   "url": "https://global-desk.example/news/14t1i3",
+   "title": "[sample] Central bank holds interest rate near Cairo",
+   "url": "https://global-desk.example/news/3d7o8c",
    "source": "global-desk.example",
    "country": "CA",
    "lang": "en",
-   "time": "2026-10-21T01:36:00Z",
-   "tone": -5.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Cairo",
-   "url": "https://global-desk.example/news/bd4399",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-21T01:09:00Z",
-   "tone": 3.8,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Cairo",
-   "url": "https://al-akhbar.example/news/ayhs5z",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T00:52:00Z",
-   "tone": 2.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Cairo",
-   "url": "https://gazeta-sample.example/news/80r8z8",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-21T00:12:00Z",
-   "tone": -5.6,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Cairo",
-   "url": "https://gazeta-sample.example/news/bctkm0",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-21T00:00:00Z",
-   "tone": -6.1,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Cairo",
-   "url": "https://nation-ke.example/news/erej68",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T23:19:00Z",
-   "tone": 3.8,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Cairo",
-   "url": "https://jakarta-pos.example/news/ek8kt",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T22:58:00Z",
-   "tone": 0.5,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Cairo",
-   "url": "https://nation-ke.example/news/este0l",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T22:36:00Z",
+   "time": "2026-10-21T05:04:00Z",
    "tone": -1.8,
    "image": "",
    "video": ""
   },
   {
-   "title": "",
-   "url": "https://gulf-report.example/news/6swmbx",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T22:00:00Z",
-   "tone": 0.9,
+   "title": "[sample] Protest gathers in city centre near Cairo",
+   "url": "https://tehran-times.example/news/1fm5c",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-21T04:49:00Z",
+   "tone": 1.1,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Trade talks resume after pause near Cairo",
-   "url": "https://hindustan-post.example/news/g5q09a",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T21:42:00Z",
-   "tone": -5.1,
+   "url": "https://la-voz.example/news/3tuwd",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-21T04:12:00Z",
+   "tone": -3.1,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Protest gathers in city centre near Cairo",
-   "url": "https://gulf-report.example/news/e0edbm",
+   "title": "[sample] Storm disrupts transport links near Cairo",
+   "url": "https://xinhua-sample.example/news/tm8rb",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-21T03:58:00Z",
+   "tone": 2.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Cairo",
+   "url": "https://gazeta-sample.example/news/cxbgh8",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-21T03:19:00Z",
+   "tone": 2.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Cairo",
+   "url": "https://asahi-sample.example/news/6ijkuj",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-21T03:05:00Z",
+   "tone": -4,
+   "image": "",
+   "video": "https://www.youtube.com/channel/UC_placeholder"
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Cairo",
+   "url": "https://o-correio.example/news/6qql90",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-21T02:20:00Z",
+   "tone": 3.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Cairo",
+   "url": "https://o-correio.example/news/cp0x2d",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-21T01:58:00Z",
+   "tone": -4.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://gulf-report.example/news/2hymb",
    "source": "gulf-report.example",
    "country": "AE",
    "lang": "ar",
-   "time": "2026-10-20T21:14:00Z",
-   "tone": 1.2,
+   "time": "2026-10-21T01:24:00Z",
+   "tone": 1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Cairo",
+   "url": "https://nord-avis.example/news/d0ggcb",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-21T00:56:00Z",
+   "tone": -6.4,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Cairo",
-   "url": "https://hurriyet-sample.example/news/9x0oj3",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T20:39:00Z",
-   "tone": -1.2,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Cairo",
-   "url": "https://nord-avis.example/news/6wsalc",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T20:11:00Z",
-   "tone": 2,
+   "url": "https://al-akhbar.example/news/4l8bar",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-21T00:41:00Z",
+   "tone": 2.1,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Cairo",
-   "url": "https://nord-avis.example/news/2ooq2n",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T19:52:00Z",
-   "tone": -0.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Cairo",
-   "url": "https://vesti-news.example/news/a5ffx8",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T19:25:00Z",
-   "tone": 4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Cairo",
-   "url": "https://xinhua-sample.example/news/ftos6r",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T18:56:00Z",
-   "tone": 4.2,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Cairo",
-   "url": "https://el-diario.example/news/4v1vii",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T18:24:00Z",
-   "tone": -2.5,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Cairo",
-   "url": "https://jakarta-pos.example/news/3rkq79",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T17:55:00Z",
-   "tone": 4.3,
-   "image": "",
-   "video": "https://www.youtube.com/shorts/aqz-KE-bpKQ"
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Cairo",
-   "url": "https://kyiv-herald.example/news/1vkpq8",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T17:27:00Z",
-   "tone": -6.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Cairo",
-   "url": "https://gazeta-sample.example/news/3os0mv",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T16:51:00Z",
-   "tone": 2.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "",
-   "url": "https://kyiv-herald.example/news/alca2k",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T16:32:00Z",
-   "tone": -0.8,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Cairo",
-   "url": "https://la-voz.example/news/eeqclj",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T16:14:00Z",
-   "tone": 1.6,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Cairo",
-   "url": "https://gulf-report.example/news/9zos2e",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T15:31:00Z",
-   "tone": -1.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Cairo",
-   "url": "https://hurriyet-sample.example/news/f1pd9q",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T15:16:00Z",
-   "tone": -6.4,
-   "image": "",
-   "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Cairo",
-   "url": "https://hindustan-post.example/news/4pxohz",
-   "source": "hindustan-post.example",
-   "country": "IN",
+   "url": "https://global-desk.example/news/z7xxn",
+   "source": "global-desk.example",
+   "country": "CA",
    "lang": "en",
-   "time": "2026-10-20T14:34:00Z",
-   "tone": 2.4,
-   "image": "",
-   "video": "https://m.youtube.com/watch?v=kJQP7kiw5Fk"
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Cairo",
-   "url": "https://vesti-news.example/news/cigyry",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T14:08:00Z",
-   "tone": -5.9,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "",
-   "url": "https://la-voz.example/news/z7xxn",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T13:39:00Z",
+   "time": "2026-10-21T00:14:00Z",
    "tone": 2.1,
    "image": "",
    "video": ""
@@ -524,7 +282,7 @@
    "source": "el-diario.example",
    "country": "MX",
    "lang": "es",
-   "time": "2026-10-20T13:14:00Z",
+   "time": "2026-10-20T23:36:00Z",
    "tone": 0.7,
    "image": "",
    "video": ""
@@ -535,7 +293,7 @@
    "source": "lagos-sun.example",
    "country": "NG",
    "lang": "en",
-   "time": "2026-10-20T12:58:00Z",
+   "time": "2026-10-20T23:20:00Z",
    "tone": -6.4,
    "image": "",
    "video": ""
@@ -546,7 +304,7 @@
    "source": "nord-avis.example",
    "country": "NO",
    "lang": "no",
-   "time": "2026-10-20T12:30:00Z",
+   "time": "2026-10-20T22:52:00Z",
    "tone": 2.1,
    "image": "",
    "video": ""
@@ -557,7 +315,7 @@
    "source": "gulf-report.example",
    "country": "AE",
    "lang": "ar",
-   "time": "2026-10-20T11:56:00Z",
+   "time": "2026-10-20T22:19:00Z",
    "tone": 3,
    "image": "",
    "video": ""
@@ -568,7 +326,7 @@
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-20T11:29:00Z",
+   "time": "2026-10-20T21:51:00Z",
    "tone": -3.9,
    "image": "",
    "video": ""
@@ -579,7 +337,7 @@
    "source": "hurriyet-sample.example",
    "country": "TR",
    "lang": "tr",
-   "time": "2026-10-20T10:56:00Z",
+   "time": "2026-10-20T21:18:00Z",
    "tone": 1.8,
    "image": "",
    "video": ""
@@ -590,7 +348,7 @@
    "source": "harbour-press.example",
    "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T10:30:00Z",
+   "time": "2026-10-20T20:52:00Z",
    "tone": 2.8,
    "image": "",
    "video": ""
@@ -601,43 +359,43 @@
    "source": "jakarta-pos.example",
    "country": "ID",
    "lang": "id",
-   "time": "2026-10-20T10:13:00Z",
+   "time": "2026-10-20T20:35:00Z",
    "tone": -2,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Cairo",
-   "url": "https://hindustan-post.example/news/1olbua",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T09:32:00Z",
-   "tone": -2.1,
+   "url": "https://al-akhbar.example/news/2x6u1j",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T20:02:00Z",
+   "tone": -5.8,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Cairo",
-   "url": "https://hurriyet-sample.example/news/a88ql",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T09:07:00Z",
-   "tone": 5,
+   "url": "https://asahi-sample.example/news/1kwspo",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T19:28:00Z",
+   "tone": -6.8,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Trade talks resume after pause near Cairo",
-   "url": "https://vesti-news.example/news/8f1zoi",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T08:38:00Z",
-   "tone": -7,
+   "title": "[sample] Officials meet over regional dispute near Cairo",
+   "url": "https://asahi-sample.example/news/fd7sni",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T19:09:00Z",
+   "tone": -0.9,
    "image": "",
-   "video": ""
+   "video": "https://youtu.be/jNQXAC9IVRw"
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Cairo",
@@ -645,7 +403,7 @@
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T08:15:00Z",
+   "time": "2026-10-20T18:37:00Z",
    "tone": 2.3,
    "image": "",
    "video": ""
@@ -656,7 +414,7 @@
    "source": "gulf-report.example",
    "country": "AE",
    "lang": "ar",
-   "time": "2026-10-20T07:43:00Z",
+   "time": "2026-10-20T18:05:00Z",
    "tone": 1,
    "image": "",
    "video": ""
@@ -667,7 +425,7 @@
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T07:18:00Z",
+   "time": "2026-10-20T17:40:00Z",
    "tone": 2.9,
    "image": "",
    "video": ""
@@ -678,282 +436,352 @@
    "source": "kyiv-herald.example",
    "country": "UA",
    "lang": "uk",
-   "time": "2026-10-20T07:03:00Z",
+   "time": "2026-10-20T17:25:00Z",
    "tone": 0.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Cairo",
+   "url": "https://haaretz-sample.example/news/3r8ai",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T16:40:00Z",
+   "tone": -4.2,
+   "image": "",
+   "video": "https://m.youtube.com/watch?v=kJQP7kiw5Fk"
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Cairo",
+   "url": "https://gazeta-sample.example/news/4vqkom",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T16:24:00Z",
+   "tone": -0.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Cairo",
+   "url": "https://morning-wire.example/news/1o7abf",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T16:01:00Z",
+   "tone": 3.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Cairo",
+   "url": "https://al-akhbar.example/news/1eb2kc",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T15:19:00Z",
+   "tone": -4.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Cairo",
+   "url": "https://nation-ke.example/news/5bztse",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T14:55:00Z",
+   "tone": -3.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Cairo",
+   "url": "https://lagos-sun.example/news/c78umh",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T14:28:00Z",
+   "tone": -1.5,
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Cairo",
+   "url": "https://jakarta-pos.example/news/fi3r60",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T13:53:00Z",
+   "tone": -1.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Cairo",
+   "url": "https://haaretz-sample.example/news/5yaahq",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T13:43:00Z",
+   "tone": 1.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Cairo",
+   "url": "https://kyiv-herald.example/news/3pibl9",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T13:11:00Z",
+   "tone": -0.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Cairo",
+   "url": "https://nord-avis.example/news/2zp6i9",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T12:42:00Z",
+   "tone": -2.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Cairo",
+   "url": "https://corriere-sample.example/news/bawdx3",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T12:11:00Z",
+   "tone": -5.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Cairo",
+   "url": "https://gazeta-sample.example/news/5m2wrr",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T11:47:00Z",
+   "tone": -2.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Cairo",
+   "url": "https://xinhua-sample.example/news/djecae",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T11:12:00Z",
+   "tone": -1.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Cairo",
+   "url": "https://cape-mail.example/news/840eb6",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T10:40:00Z",
+   "tone": 3.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Cairo",
+   "url": "https://asahi-sample.example/news/f53a9j",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T10:21:00Z",
+   "tone": -5.8,
+   "image": "",
+   "video": "https://www.youtube.com/channel/UC_placeholder"
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Cairo",
+   "url": "https://hurriyet-sample.example/news/aa15cd",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T10:00:00Z",
+   "tone": 1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Cairo",
+   "url": "https://hindustan-post.example/news/aq65ul",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T09:24:00Z",
+   "tone": -3.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Cairo",
+   "url": "https://el-diario.example/news/6jhlru",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T08:51:00Z",
+   "tone": 1.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Cairo",
+   "url": "https://gulf-report.example/news/lv43v",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T08:23:00Z",
+   "tone": -0.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Cairo",
+   "url": "https://nation-ke.example/news/9s7ou2",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T07:59:00Z",
+   "tone": 4.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Cairo",
+   "url": "https://hindustan-post.example/news/5rq6wp",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T07:41:00Z",
+   "tone": -4.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Cairo",
+   "url": "https://le-quotidien.example/news/3pnrmw",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T07:10:00Z",
+   "tone": -1.1,
    "image": "",
    "video": ""
   }
  ],
  "stories": [
   {
-   "n": 104,
-   "o": 17,
-   "c": 9,
-   "l": 5,
-   "t": -0.4,
-   "first": "2026-10-20T20:53:00Z",
-   "last": "2026-10-21T01:59:00Z",
-   "headline": "[sample] Wildfire forces evacuations in hills in Cairo: timeline",
-   "headlineSource": "vesti-news.example",
-   "headlineLang": "ru",
+   "n": 126,
+   "o": 21,
+   "c": 13,
+   "l": 8,
+   "t": -1.8,
+   "first": "2026-10-20T14:26:00Z",
+   "last": "2026-10-21T02:18:00Z",
+   "headline": "[sample] Ministers meet over energy prices in Cairo: explained",
+   "headlineSource": "al-akhbar.example",
+   "headlineLang": "ar",
    "entities": [
-    "wildfire",
-    "evacuation",
-    "fire service",
+    "energy",
+    "european union",
+    "oil prices",
     "cairo"
    ],
    "articles": [
     {
-     "title": "[sample] Wildfire forces evacuations in hills in Cairo: timeline",
-     "url": "https://o-correio.example/story/dbi4px",
-     "source": "o-correio.example",
-     "country": "BR",
-     "lang": "pt",
-     "time": "2026-10-21T01:59:00Z",
-     "tone": -1.4,
-     "image": "",
-     "video": "https://youtu.be/jNQXAC9IVRw"
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Cairo: explained",
-     "url": "https://morning-wire.example/story/a87jcr",
-     "source": "morning-wire.example",
-     "country": "GB",
-     "lang": "en",
-     "time": "2026-10-21T01:26:00Z",
-     "tone": 2.1,
+     "title": "[sample] Ministers meet over energy prices in Cairo: explained",
+     "url": "https://nord-avis.example/story/zzgc6",
+     "source": "nord-avis.example",
+     "country": "NO",
+     "lang": "no",
+     "time": "2026-10-21T02:18:00Z",
+     "tone": 3.7,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Wildfire forces evacuations in hills in Cairo: timeline",
-     "url": "https://vesti-news.example/story/ao6vqe",
-     "source": "vesti-news.example",
-     "country": "RU",
-     "lang": "ru",
-     "time": "2026-10-21T00:33:00Z",
-     "tone": -2.4,
+     "title": "[sample] Ministers meet over energy prices in Cairo: explained",
+     "url": "https://al-akhbar.example/story/cjzaes",
+     "source": "al-akhbar.example",
+     "country": "EG",
+     "lang": "ar",
+     "time": "2026-10-21T01:25:00Z",
+     "tone": -3.6,
+     "image": "",
+     "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Cairo: latest",
+     "url": "https://tehran-times.example/story/ah21lz",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-21T00:50:00Z",
+     "tone": -3.9,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Wildfire forces evacuations in hills in Cairo: timeline",
-     "url": "https://cape-mail.example/story/xsqj9",
-     "source": "cape-mail.example",
-     "country": "ZA",
-     "lang": "en",
-     "time": "2026-10-21T00:44:00Z",
-     "tone": 1.2,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Cairo: analysis",
-     "url": "https://harbour-press.example/story/fi3r60",
-     "source": "harbour-press.example",
-     "country": "AU",
-     "lang": "en",
-     "time": "2026-10-20T23:23:00Z",
-     "tone": -3.1,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Cairo: live updates",
-     "url": "https://daily-ledger.example/story/dufe29",
-     "source": "daily-ledger.example",
-     "country": "US",
-     "lang": "en",
-     "time": "2026-10-20T23:09:00Z",
-     "tone": 1.2,
-     "image": "",
-     "video": ""
-    }
-   ]
-  },
-  {
-   "n": 97,
-   "o": 16,
-   "c": 9,
-   "l": 5,
-   "t": -2.1,
-   "first": "2026-10-20T15:55:00Z",
-   "last": "2026-10-21T02:26:00Z",
-   "headline": "[sample] Strike halts rail services in Cairo: timeline",
-   "headlineSource": "seoul-daily.example",
-   "headlineLang": "ko",
-   "entities": [
-    "trade union",
-    "rail",
-    "labour",
-    "cairo"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Strike halts rail services in Cairo: latest",
-     "url": "https://global-desk.example/story/9j28k1",
-     "source": "global-desk.example",
-     "country": "CA",
-     "lang": "en",
-     "time": "2026-10-21T02:26:00Z",
-     "tone": 3.3,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Cairo: live updates",
-     "url": "https://lagos-sun.example/story/2zp6i9",
-     "source": "lagos-sun.example",
-     "country": "NG",
-     "lang": "en",
-     "time": "2026-10-21T01:51:00Z",
-     "tone": -2.5,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Cairo: timeline",
-     "url": "https://seoul-daily.example/story/1sm8ut",
-     "source": "seoul-daily.example",
-     "country": "KR",
-     "lang": "ko",
-     "time": "2026-10-21T00:52:00Z",
-     "tone": -5.1,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Cairo: reactions",
-     "url": "https://gazeta-sample.example/story/2mqulq",
-     "source": "gazeta-sample.example",
-     "country": "PL",
-     "lang": "pl",
-     "time": "2026-10-21T01:14:00Z",
-     "tone": -2.6,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Cairo: in pictures",
-     "url": "https://kyiv-herald.example/story/bzlzvk",
-     "source": "kyiv-herald.example",
-     "country": "UA",
-     "lang": "uk",
-     "time": "2026-10-21T00:26:00Z",
-     "tone": -1.1,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Cairo: in pictures",
-     "url": "https://hindustan-post.example/story/cdy0dm",
-     "source": "hindustan-post.example",
-     "country": "IN",
-     "lang": "en",
-     "time": "2026-10-20T21:36:00Z",
-     "tone": -4.7,
-     "image": "",
-     "video": ""
-    }
-   ]
-  },
-  {
-   "n": 51,
-   "o": 9,
-   "c": 5,
-   "l": 4,
-   "t": 0.3,
-   "first": "2026-10-20T20:17:00Z",
-   "last": "2026-10-21T03:53:00Z",
-   "headline": "[sample] Storm damage closes main roads in Cairo: timeline",
-   "headlineSource": "hindustan-post.example",
-   "headlineLang": "en",
-   "entities": [
-    "natural disaster",
-    "transport",
-    "emergency services",
-    "cairo"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Storm damage closes main roads in Cairo: in pictures",
-     "url": "https://asahi-sample.example/story/41d4qw",
-     "source": "asahi-sample.example",
-     "country": "JP",
-     "lang": "ja",
-     "time": "2026-10-21T03:53:00Z",
-     "tone": 3.2,
-     "image": "",
-     "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Cairo: live updates",
-     "url": "https://gazeta-sample.example/story/3a66nl",
-     "source": "gazeta-sample.example",
-     "country": "PL",
-     "lang": "pl",
-     "time": "2026-10-21T03:11:00Z",
-     "tone": -4,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Cairo: explained",
-     "url": "https://nation-ke.example/story/81canm",
-     "source": "nation-ke.example",
-     "country": "KE",
-     "lang": "en",
-     "time": "2026-10-21T02:25:00Z",
-     "tone": 3,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Cairo: reactions",
-     "url": "https://lagos-sun.example/story/f2a52n",
-     "source": "lagos-sun.example",
-     "country": "NG",
-     "lang": "en",
-     "time": "2026-10-21T02:26:00Z",
-     "tone": 2.8,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Cairo: timeline",
-     "url": "https://hindustan-post.example/story/beyvqv",
-     "source": "hindustan-post.example",
-     "country": "IN",
-     "lang": "en",
-     "time": "2026-10-21T00:09:00Z",
-     "tone": -1.9,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Cairo: what we know",
-     "url": "https://gulf-report.example/story/lv43v",
+     "title": "[sample] Ministers meet over energy prices in Cairo: timeline",
+     "url": "https://gulf-report.example/story/77n9f7",
      "source": "gulf-report.example",
      "country": "AE",
      "lang": "ar",
-     "time": "2026-10-21T00:18:00Z",
-     "tone": -1.2,
+     "time": "2026-10-21T00:42:00Z",
+     "tone": -3.8,
+     "image": "",
+     "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Cairo: reactions",
+     "url": "https://cape-mail.example/story/4o2yfh",
+     "source": "cape-mail.example",
+     "country": "ZA",
+     "lang": "en",
+     "time": "2026-10-20T22:22:00Z",
+     "tone": 1.4,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Cairo: latest",
+     "url": "https://xinhua-sample.example/story/e4o811",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-20T21:38:00Z",
+     "tone": -4.5,
      "image": "",
      "video": ""
     }
    ]
   },
   {
-   "n": 23,
-   "o": 6,
-   "c": 2,
-   "l": 5,
-   "t": -0.9,
-   "first": "2026-10-20T19:34:00Z",
-   "last": "2026-10-21T05:00:00Z",
+   "n": 114,
+   "o": 19,
+   "c": 12,
+   "l": 7,
+   "t": -3.4,
+   "first": "2026-10-20T23:01:00Z",
+   "last": "2026-10-21T03:21:00Z",
    "headline": "[sample] Election count enters second day in Cairo: in pictures",
-   "headlineSource": "corriere-sample.example",
-   "headlineLang": "it",
+   "headlineSource": "nation-ke.example",
+   "headlineLang": "en",
    "entities": [
     "election commission",
     "parliament",
@@ -962,74 +790,74 @@
    ],
    "articles": [
     {
-     "title": "[sample] Election count enters second day in Cairo: analysis",
-     "url": "https://xinhua-sample.example/story/c102rh",
-     "source": "xinhua-sample.example",
-     "country": "CN",
-     "lang": "zh",
-     "time": "2026-10-21T05:00:00Z",
-     "tone": -3.5,
+     "title": "[sample] Election count enters second day in Cairo: in pictures",
+     "url": "https://nation-ke.example/story/7asdw",
+     "source": "nation-ke.example",
+     "country": "KE",
+     "lang": "en",
+     "time": "2026-10-21T03:21:00Z",
+     "tone": -5.1,
      "image": "",
-     "video": ""
+     "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
     },
     {
-     "title": "[sample] Election count enters second day in Cairo: reactions",
-     "url": "https://al-akhbar.example/story/3ede90",
+     "title": "[sample] Election count enters second day in Cairo: what we know",
+     "url": "https://al-akhbar.example/story/a7104q",
      "source": "al-akhbar.example",
      "country": "EG",
      "lang": "ar",
-     "time": "2026-10-21T04:16:00Z",
-     "tone": -4.3,
+     "time": "2026-10-21T02:56:00Z",
+     "tone": -2.1,
      "image": "",
      "video": ""
     },
     {
      "title": "[sample] Election count enters second day in Cairo: latest",
-     "url": "https://vesti-news.example/story/3pnrmw",
-     "source": "vesti-news.example",
-     "country": "RU",
-     "lang": "ru",
-     "time": "2026-10-21T03:42:00Z",
-     "tone": 0,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Cairo: analysis",
-     "url": "https://el-diario.example/story/dsk1u2",
-     "source": "el-diario.example",
-     "country": "MX",
-     "lang": "es",
-     "time": "2026-10-21T02:30:00Z",
-     "tone": 2.2,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Cairo: analysis",
-     "url": "https://la-voz.example/story/avjfb8",
-     "source": "la-voz.example",
-     "country": "AR",
-     "lang": "es",
-     "time": "2026-10-21T03:32:00Z",
-     "tone": 3.5,
+     "url": "https://corriere-sample.example/story/6sck2c",
+     "source": "corriere-sample.example",
+     "country": "IT",
+     "lang": "it",
+     "time": "2026-10-21T01:57:00Z",
+     "tone": -1.6,
      "image": "",
      "video": ""
     },
     {
      "title": "[sample] Election count enters second day in Cairo: in pictures",
-     "url": "https://corriere-sample.example/story/9yf1gr",
-     "source": "corriere-sample.example",
-     "country": "IT",
-     "lang": "it",
-     "time": "2026-10-21T02:05:00Z",
-     "tone": -3.3,
+     "url": "https://al-akhbar.example/story/cgrujv",
+     "source": "al-akhbar.example",
+     "country": "EG",
+     "lang": "ar",
+     "time": "2026-10-21T00:57:00Z",
+     "tone": -2.6,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Cairo: what we know",
+     "url": "https://el-diario.example/story/7lmjfm",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-20T23:33:00Z",
+     "tone": -4.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Cairo: in pictures",
+     "url": "https://xinhua-sample.example/story/4iqofr",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-20T23:26:00Z",
+     "tone": -4.4,
      "image": "",
      "video": ""
     }
    ]
   }
  ],
- "unclustered": 69,
+ "unclustered": 104,
  "videos": 10
 }

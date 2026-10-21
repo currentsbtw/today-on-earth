@@ -1,7 +1,7 @@
 // The time scrubber: replays the frames in history/index.json. The last frame is the
 // live snapshot (heat.json), so it never needs its own fetch.
 import { loadFrame, loadHistoryIndex, type FrameRow, type HistoryFrame } from './data';
-import { utcTime } from './format';
+import { stampOf, utcTime } from './format';
 
 const FPS = 6;
 const PREFETCH_CONCURRENCY = 3;
@@ -33,9 +33,6 @@ export interface LiveMoment {
   windowHours: number;
   totals: HistoryFrame['totals'];
 }
-
-/** "2026-10-21T04:47:14Z" -> "20261021T044714Z" */
-export const stampOf = (at: string) => at.replace(/[-:.]/g, '');
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 

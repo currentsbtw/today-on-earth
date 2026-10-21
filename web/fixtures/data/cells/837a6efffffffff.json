@@ -3,32 +3,24 @@
  "name": "Nairobi, Nairobi Area, Kenya",
  "n": 150,
  "o": 27,
- "c": 22,
- "l": 16,
- "t": -1.3,
+ "c": 21,
+ "l": 13,
+ "t": -1,
  "topOutlets": [
   [
    "nation-ke.example",
    5
   ],
   [
+   "morning-wire.example",
+   5
+  ],
+  [
+   "hindustan-post.example",
+   4
+  ],
+  [
    "global-desk.example",
-   4
-  ],
-  [
-   "la-voz.example",
-   4
-  ],
-  [
-   "nord-avis.example",
-   3
-  ],
-  [
-   "hurriyet-sample.example",
-   3
-  ],
-  [
-   "vesti-news.example",
    3
   ],
   [
@@ -36,15 +28,23 @@
    3
   ],
   [
-   "le-quotidien.example",
+   "vesti-news.example",
    3
   ],
   [
-   "tehran-times.example",
+   "wire-service.example",
+   3
+  ],
+  [
+   "gulf-report.example",
    2
   ],
   [
-   "corriere-sample.example",
+   "le-quotidien.example",
+   2
+  ],
+  [
+   "harbour-press.example",
    2
   ]
  ],
@@ -54,23 +54,15 @@
    5
   ],
   [
+   "GB",
+   5
+  ],
+  [
+   "IN",
+   4
+  ],
+  [
    "CA",
-   4
-  ],
-  [
-   "AR",
-   4
-  ],
-  [
-   "NO",
-   3
-  ],
-  [
-   "TR",
-   3
-  ],
-  [
-   "RU",
    3
   ],
   [
@@ -78,37 +70,33 @@
    3
   ],
   [
-   "FR",
+   "RU",
    3
   ],
   [
-   "IR",
+   "",
+   3
+  ],
+  [
+   "AE",
    2
   ],
   [
-   "IT",
+   "FR",
+   2
+  ],
+  [
+   "AU",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   17
-  ],
-  [
-   "es",
-   4
+   28
   ],
   [
    "ar",
-   4
-  ],
-  [
-   "no",
-   3
-  ],
-  [
-   "tr",
    3
   ],
   [
@@ -117,296 +105,44 @@
   ],
   [
    "fr",
-   3
+   2
+  ],
+  [
+   "de",
+   2
   ],
   [
    "fa",
    2
   ],
   [
-   "it",
+   "es",
    2
   ],
   [
-   "pl",
+   "he",
    2
+  ],
+  [
+   "ja",
+   2
+  ],
+  [
+   "it",
+   1
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Ministers discuss energy prices near Nairobi",
-   "url": "https://global-desk.example/news/a7q6e6",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-21T05:20:00Z",
-   "tone": -5.2,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Nairobi",
-   "url": "https://nord-avis.example/news/5fqts1",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-21T05:02:00Z",
-   "tone": -2.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Nairobi",
-   "url": "https://tehran-times.example/news/foxtk8",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-21T04:36:00Z",
-   "tone": -6.7,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Nairobi",
-   "url": "https://hurriyet-sample.example/news/clojpc",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-21T04:02:00Z",
-   "tone": -5.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Nairobi",
-   "url": "https://nation-ke.example/news/eiisab",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-21T03:36:00Z",
-   "tone": -3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Nairobi",
-   "url": "https://vesti-news.example/news/7xr7ge",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-21T03:05:00Z",
-   "tone": -0.5,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "",
-   "url": "https://la-voz.example/news/dd82am",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-21T02:35:00Z",
-   "tone": -2.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Nairobi",
-   "url": "https://seoul-daily.example/news/6kdjpj",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-21T02:17:00Z",
-   "tone": -2.7,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Nairobi",
-   "url": "https://corriere-sample.example/news/7lgee1",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-21T01:43:00Z",
-   "tone": -5.9,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Nairobi",
-   "url": "https://nation-ke.example/news/ccoxgt",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-21T01:09:00Z",
-   "tone": 4.6,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Nairobi",
-   "url": "https://hurriyet-sample.example/news/2giqbw",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-21T00:52:00Z",
-   "tone": -6.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "",
-   "url": "https://al-akhbar.example/news/ccvfmr",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T00:27:00Z",
-   "tone": -5.6,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "",
-   "url": "https://nation-ke.example/news/c9hko5",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T23:54:00Z",
-   "tone": -1.5,
-   "image": "",
-   "video": ""
-  },
-  {
    "title": "[sample] Football club confirms new coach near Nairobi",
-   "url": "https://gazeta-sample.example/news/zlkwq",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T23:31:00Z",
-   "tone": 3.8,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Nairobi",
-   "url": "https://morning-wire.example/news/6l68cg",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T22:52:00Z",
-   "tone": 4.9,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "",
-   "url": "https://nation-ke.example/news/98ze1j",
+   "url": "https://nation-ke.example/news/bbftk4",
    "source": "nation-ke.example",
    "country": "KE",
    "lang": "en",
-   "time": "2026-10-20T22:32:00Z",
-   "tone": 3.7,
+   "time": "2026-10-21T05:37:00Z",
+   "tone": -2.5,
    "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Nairobi",
-   "url": "https://tehran-times.example/news/di2gop",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T22:09:00Z",
-   "tone": -3.6,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Nairobi",
-   "url": "https://jakarta-pos.example/news/8hfm1q",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T21:43:00Z",
-   "tone": -2.7,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Nairobi",
-   "url": "https://nord-avis.example/news/ftkyj5",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T21:01:00Z",
-   "tone": 4.7,
-   "image": "",
-   "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Nairobi",
-   "url": "https://o-correio.example/news/c9knqk",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T20:33:00Z",
-   "tone": -6.4,
-   "image": "",
-   "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Nairobi",
-   "url": "https://haaretz-sample.example/news/6llmuv",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T20:05:00Z",
-   "tone": -4.7,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Nairobi",
-   "url": "https://o-correio.example/news/bp1f8r",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T19:38:00Z",
-   "tone": 4.1,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Nairobi",
-   "url": "https://cape-mail.example/news/41w2z4",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T19:11:00Z",
-   "tone": -2.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Nairobi",
-   "url": "https://xinhua-sample.example/news/4aih8p",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T18:48:00Z",
-   "tone": 2.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Nairobi",
-   "url": "https://nation-ke.example/news/65byrg",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T18:31:00Z",
-   "tone": -6.1,
-   "image": "",
-   "video": ""
+   "video": "https://www.youtube.com/shorts/aqz-KE-bpKQ"
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Nairobi",
@@ -414,7 +150,7 @@
    "source": "hindustan-post.example",
    "country": "IN",
    "lang": "en",
-   "time": "2026-10-20T18:05:00Z",
+   "time": "2026-10-21T05:22:00Z",
    "tone": 4.5,
    "image": "",
    "video": ""
@@ -425,7 +161,7 @@
    "source": "global-desk.example",
    "country": "CA",
    "lang": "en",
-   "time": "2026-10-20T17:33:00Z",
+   "time": "2026-10-21T04:50:00Z",
    "tone": 0.7,
    "image": "",
    "video": ""
@@ -436,7 +172,7 @@
    "source": "global-desk.example",
    "country": "CA",
    "lang": "en",
-   "time": "2026-10-20T17:06:00Z",
+   "time": "2026-10-21T04:24:00Z",
    "tone": -4.3,
    "image": "",
    "video": ""
@@ -447,7 +183,7 @@
    "source": "corriere-sample.example",
    "country": "IT",
    "lang": "it",
-   "time": "2026-10-20T16:33:00Z",
+   "time": "2026-10-21T03:50:00Z",
    "tone": 3.1,
    "image": "",
    "video": ""
@@ -458,7 +194,7 @@
    "source": "gulf-report.example",
    "country": "AE",
    "lang": "ar",
-   "time": "2026-10-20T16:05:00Z",
+   "time": "2026-10-21T03:23:00Z",
    "tone": 5,
    "image": "",
    "video": ""
@@ -469,7 +205,7 @@
    "source": "hurriyet-sample.example",
    "country": "TR",
    "lang": "tr",
-   "time": "2026-10-20T15:47:00Z",
+   "time": "2026-10-21T03:05:00Z",
    "tone": -1.1,
    "image": "",
    "video": ""
@@ -480,7 +216,7 @@
    "source": "le-quotidien.example",
    "country": "FR",
    "lang": "fr",
-   "time": "2026-10-20T15:01:00Z",
+   "time": "2026-10-21T02:18:00Z",
    "tone": -0.4,
    "image": "",
    "video": ""
@@ -491,7 +227,7 @@
    "source": "al-akhbar.example",
    "country": "EG",
    "lang": "ar",
-   "time": "2026-10-20T14:42:00Z",
+   "time": "2026-10-21T02:00:00Z",
    "tone": -6.1,
    "image": "",
    "video": ""
@@ -502,7 +238,7 @@
    "source": "global-desk.example",
    "country": "CA",
    "lang": "en",
-   "time": "2026-10-20T14:08:00Z",
+   "time": "2026-10-21T01:26:00Z",
    "tone": 1.2,
    "image": "",
    "video": ""
@@ -513,7 +249,7 @@
    "source": "harbour-press.example",
    "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T13:55:00Z",
+   "time": "2026-10-21T01:13:00Z",
    "tone": -4.1,
    "image": "",
    "video": ""
@@ -524,7 +260,7 @@
    "source": "cape-mail.example",
    "country": "ZA",
    "lang": "en",
-   "time": "2026-10-20T13:25:00Z",
+   "time": "2026-10-21T00:42:00Z",
    "tone": -2.9,
    "image": "",
    "video": ""
@@ -535,7 +271,7 @@
    "source": "vesti-news.example",
    "country": "RU",
    "lang": "ru",
-   "time": "2026-10-20T13:00:00Z",
+   "time": "2026-10-21T00:17:00Z",
    "tone": 1.8,
    "image": "",
    "video": ""
@@ -546,7 +282,7 @@
    "source": "hindustan-post.example",
    "country": "IN",
    "lang": "en",
-   "time": "2026-10-20T12:26:00Z",
+   "time": "2026-10-20T23:44:00Z",
    "tone": -1.5,
    "image": "",
    "video": ""
@@ -557,7 +293,7 @@
    "source": "morning-wire.example",
    "country": "GB",
    "lang": "en",
-   "time": "2026-10-20T11:50:00Z",
+   "time": "2026-10-20T23:07:00Z",
    "tone": -3.3,
    "image": "",
    "video": ""
@@ -568,7 +304,7 @@
    "source": "gulf-report.example",
    "country": "AE",
    "lang": "ar",
-   "time": "2026-10-20T11:29:00Z",
+   "time": "2026-10-20T22:47:00Z",
    "tone": -1.6,
    "image": "",
    "video": ""
@@ -579,295 +315,387 @@
    "source": "tageszeitung.example",
    "country": "DE",
    "lang": "de",
-   "time": "2026-10-20T10:52:00Z",
+   "time": "2026-10-20T22:10:00Z",
    "tone": -6.1,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Officials meet over regional dispute near Nairobi",
-   "url": "https://la-voz.example/news/ak8u8i",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T10:42:00Z",
-   "tone": 0.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Nairobi",
-   "url": "https://la-voz.example/news/2j2c5u",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T10:06:00Z",
-   "tone": -4.5,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Nairobi",
-   "url": "https://cape-mail.example/news/5f9io6",
-   "source": "cape-mail.example",
-   "country": "ZA",
+   "title": "[sample] Ministers discuss energy prices near Nairobi",
+   "url": "https://nation-ke.example/news/eaw1i",
+   "source": "nation-ke.example",
+   "country": "KE",
    "lang": "en",
-   "time": "2026-10-20T09:37:00Z",
-   "tone": -4.5,
+   "time": "2026-10-20T21:57:00Z",
+   "tone": 0.7,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Protest gathers in city centre near Nairobi",
-   "url": "https://le-quotidien.example/news/bqhdqh",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T09:18:00Z",
-   "tone": 5,
+   "title": "[sample] Officials meet over regional dispute near Nairobi",
+   "url": "https://wire-service.example/news/7yfnkk",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T21:29:00Z",
+   "tone": -5.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Nairobi",
+   "url": "https://wire-service.example/news/7cqx5y",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T20:51:00Z",
+   "tone": -3.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Nairobi",
+   "url": "https://lagos-sun.example/news/6es2kh",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T20:35:00Z",
+   "tone": 1.5,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Nairobi",
-   "url": "https://le-quotidien.example/news/ertx3u",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T08:45:00Z",
-   "tone": 3.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Nairobi",
-   "url": "https://nord-avis.example/news/cnct55",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T08:08:00Z",
-   "tone": -5.7,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Nairobi",
-   "url": "https://vesti-news.example/news/ezjypl",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T07:40:00Z",
-   "tone": 2.8,
+   "url": "https://kyiv-herald.example/news/dac7xh",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T20:08:00Z",
+   "tone": 3.7,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Nairobi",
-   "url": "https://gazeta-sample.example/news/am9eda",
+   "url": "https://morning-wire.example/news/7zb130",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T19:25:00Z",
+   "tone": 2.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Nairobi",
+   "url": "https://gazeta-sample.example/news/e40mbn",
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-20T07:20:00Z",
+   "time": "2026-10-20T19:09:00Z",
+   "tone": 3.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Nairobi",
+   "url": "https://nation-ke.example/news/1si26h",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T18:28:00Z",
+   "tone": 0.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Nairobi",
+   "url": "https://tehran-times.example/news/15y8eu",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T18:15:00Z",
+   "tone": -5.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Nairobi",
+   "url": "https://morning-wire.example/news/39d8ke",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T17:42:00Z",
+   "tone": -0.4,
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Nairobi",
+   "url": "https://el-diario.example/news/48jrsj",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T17:16:00Z",
+   "tone": 1.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Nairobi",
+   "url": "https://nation-ke.example/news/cdlmow",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T16:53:00Z",
+   "tone": -0.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://tehran-times.example/news/dj6xw3",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T16:15:00Z",
+   "tone": 2.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Nairobi",
+   "url": "https://harbour-press.example/news/g0nlng",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T15:50:00Z",
+   "tone": -0.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://lagos-sun.example/news/c0ecc0",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T15:26:00Z",
+   "tone": 0.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Nairobi",
+   "url": "https://haaretz-sample.example/news/8l0hur",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T14:48:00Z",
+   "tone": -1.4,
+   "image": "",
+   "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Nairobi",
+   "url": "https://le-quotidien.example/news/dapn03",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T14:28:00Z",
+   "tone": 4.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Nairobi",
+   "url": "https://morning-wire.example/news/e56z2f",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T13:56:00Z",
+   "tone": -5.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Nairobi",
+   "url": "https://tageszeitung.example/news/82gv4n",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T13:35:00Z",
+   "tone": -5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Nairobi",
+   "url": "https://hindustan-post.example/news/fuj7np",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T13:10:00Z",
+   "tone": -5.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://nation-ke.example/news/cjwq55",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T12:32:00Z",
+   "tone": 2.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Nairobi",
+   "url": "https://daily-ledger.example/news/32q4p7",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T12:16:00Z",
+   "tone": -1.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Nairobi",
+   "url": "https://asahi-sample.example/news/3f1a1e",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T11:47:00Z",
+   "tone": -2.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://vesti-news.example/news/5nisr7",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T11:25:00Z",
+   "tone": -7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Nairobi",
+   "url": "https://haaretz-sample.example/news/cjt48b",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T10:49:00Z",
+   "tone": -0.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Nairobi",
+   "url": "https://cape-mail.example/news/8coflj",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T10:18:00Z",
    "tone": -0.1,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Officials meet over regional dispute near Nairobi",
-   "url": "https://la-voz.example/news/1ooagw",
-   "source": "la-voz.example",
-   "country": "AR",
+   "title": "[sample] Election commission publishes turnout figures near Nairobi",
+   "url": "https://morning-wire.example/news/36vmi1",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T09:44:00Z",
+   "tone": -4.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Nairobi",
+   "url": "https://vesti-news.example/news/egrlno",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T09:21:00Z",
+   "tone": -1.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Nairobi",
+   "url": "https://hindustan-post.example/news/f9vjzf",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T09:04:00Z",
+   "tone": 0.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Nairobi",
+   "url": "https://cape-mail.example/news/35aqq7",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T08:23:00Z",
+   "tone": 1.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Nairobi",
+   "url": "https://wire-service.example/news/7rd62e",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T08:00:00Z",
+   "tone": 1.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Nairobi",
+   "url": "https://asahi-sample.example/news/8jr3ou",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T07:37:00Z",
+   "tone": -4.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Nairobi",
+   "url": "https://el-diario.example/news/d8jaei",
+   "source": "el-diario.example",
+   "country": "MX",
    "lang": "es",
-   "time": "2026-10-20T07:01:00Z",
-   "tone": -1.8,
+   "time": "2026-10-20T07:10:00Z",
+   "tone": -3.1,
    "image": "",
    "video": ""
   }
  ],
  "stories": [
   {
-   "n": 49,
-   "o": 12,
-   "c": 11,
-   "l": 8,
-   "t": -2,
-   "first": "2026-10-20T16:12:00Z",
-   "last": "2026-10-21T02:31:00Z",
-   "headline": "[sample] Central bank leaves rates unchanged in Nairobi: timeline",
-   "headlineSource": "harbour-press.example",
-   "headlineLang": "en",
-   "entities": [
-    "central bank",
-    "inflation",
-    "interest rates",
-    "nairobi"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Central bank leaves rates unchanged in Nairobi: analysis",
-     "url": "https://asahi-sample.example/story/7e6y5b",
-     "source": "asahi-sample.example",
-     "country": "JP",
-     "lang": "ja",
-     "time": "2026-10-21T02:31:00Z",
-     "tone": -5.7,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Central bank leaves rates unchanged in Nairobi: timeline",
-     "url": "https://haaretz-sample.example/story/a8mwzl",
-     "source": "haaretz-sample.example",
-     "country": "IL",
-     "lang": "he",
-     "time": "2026-10-21T01:46:00Z",
-     "tone": 3.7,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Central bank leaves rates unchanged in Nairobi: in pictures",
-     "url": "https://gazeta-sample.example/story/cntfdo",
-     "source": "gazeta-sample.example",
-     "country": "PL",
-     "lang": "pl",
-     "time": "2026-10-21T01:01:00Z",
-     "tone": -1.5,
-     "image": "",
-     "video": "https://m.youtube.com/watch?v=kJQP7kiw5Fk"
-    },
-    {
-     "title": "[sample] Central bank leaves rates unchanged in Nairobi: timeline",
-     "url": "https://harbour-press.example/story/doev4x",
-     "source": "harbour-press.example",
-     "country": "AU",
-     "lang": "en",
-     "time": "2026-10-20T23:37:00Z",
-     "tone": -4.3,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Central bank leaves rates unchanged in Nairobi: timeline",
-     "url": "https://asahi-sample.example/story/16i7kn",
-     "source": "asahi-sample.example",
-     "country": "JP",
-     "lang": "ja",
-     "time": "2026-10-20T23:55:00Z",
-     "tone": -4.6,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Central bank leaves rates unchanged in Nairobi: timeline",
-     "url": "https://global-desk.example/story/dapn03",
-     "source": "global-desk.example",
-     "country": "CA",
-     "lang": "en",
-     "time": "2026-10-20T21:36:00Z",
-     "tone": 0.6,
-     "image": "",
-     "video": "https://m.youtube.com/watch?v=kJQP7kiw5Fk"
-    }
-   ]
-  },
-  {
-   "n": 44,
-   "o": 11,
-   "c": 10,
-   "l": 7,
-   "t": -3.7,
-   "first": "2026-10-20T23:29:00Z",
-   "last": "2026-10-21T02:05:00Z",
-   "headline": "[sample] Ministers meet over energy prices in Nairobi: latest",
-   "headlineSource": "hindustan-post.example",
-   "headlineLang": "en",
-   "entities": [
-    "energy",
-    "european union",
-    "oil prices",
-    "nairobi"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Ministers meet over energy prices in Nairobi: reactions",
-     "url": "https://morning-wire.example/story/2t6na8",
-     "source": "morning-wire.example",
-     "country": "GB",
-     "lang": "en",
-     "time": "2026-10-21T02:05:00Z",
-     "tone": -3.1,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Nairobi: latest",
-     "url": "https://hindustan-post.example/story/bzqzdg",
-     "source": "hindustan-post.example",
-     "country": "IN",
-     "lang": "en",
-     "time": "2026-10-21T01:26:00Z",
-     "tone": -2.5,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Nairobi: analysis",
-     "url": "https://lagos-sun.example/story/1s39pi",
-     "source": "lagos-sun.example",
-     "country": "NG",
-     "lang": "en",
-     "time": "2026-10-21T00:07:00Z",
-     "tone": -5.6,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Nairobi: live updates",
-     "url": "https://nation-ke.example/story/d1fyai",
-     "source": "nation-ke.example",
-     "country": "KE",
-     "lang": "en",
-     "time": "2026-10-20T23:20:00Z",
-     "tone": -5.2,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Nairobi: analysis",
-     "url": "https://al-akhbar.example/story/32q4p7",
-     "source": "al-akhbar.example",
-     "country": "EG",
-     "lang": "ar",
-     "time": "2026-10-20T23:37:00Z",
-     "tone": -3.8,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Nairobi: latest",
-     "url": "https://al-akhbar.example/story/3qzbfc",
-     "source": "al-akhbar.example",
-     "country": "EG",
-     "lang": "ar",
-     "time": "2026-10-20T23:45:00Z",
-     "tone": -2.2,
-     "image": "",
-     "video": ""
-    }
-   ]
-  },
-  {
-   "n": 21,
-   "o": 6,
-   "c": 5,
-   "l": 4,
-   "t": 0.6,
-   "first": "2026-10-20T22:15:00Z",
-   "last": "2026-10-21T05:22:00Z",
-   "headline": "[sample] Wildfire forces evacuations in hills in Nairobi: latest",
-   "headlineSource": "hindustan-post.example",
-   "headlineLang": "en",
+   "n": 38,
+   "o": 9,
+   "c": 8,
+   "l": 5,
+   "t": -1.4,
+   "first": "2026-10-20T15:48:00Z",
+   "last": "2026-10-21T02:19:00Z",
+   "headline": "[sample] Wildfire forces evacuations in hills in Nairobi: explained",
+   "headlineSource": "gulf-report.example",
+   "headlineLang": "ar",
    "entities": [
     "wildfire",
     "evacuation",
@@ -876,74 +704,332 @@
    ],
    "articles": [
     {
-     "title": "[sample] Wildfire forces evacuations in hills in Nairobi: what we know",
-     "url": "https://kyiv-herald.example/story/9z5l1u",
-     "source": "kyiv-herald.example",
-     "country": "UA",
-     "lang": "uk",
-     "time": "2026-10-21T05:22:00Z",
-     "tone": -1,
-     "image": "",
-     "video": "https://www.youtube.com/channel/UC_placeholder"
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Nairobi: in pictures",
-     "url": "https://cape-mail.example/story/8u7937",
-     "source": "cape-mail.example",
-     "country": "ZA",
-     "lang": "en",
-     "time": "2026-10-21T05:01:00Z",
-     "tone": 1.5,
+     "title": "[sample] Wildfire forces evacuations in hills in Nairobi: timeline",
+     "url": "https://gazeta-sample.example/story/ez90t9",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T02:19:00Z",
+     "tone": -2,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Wildfire forces evacuations in hills in Nairobi: explained",
-     "url": "https://gazeta-sample.example/story/8coflj",
-     "source": "gazeta-sample.example",
-     "country": "PL",
-     "lang": "pl",
-     "time": "2026-10-21T03:58:00Z",
-     "tone": 3.7,
-     "image": "",
-     "video": "https://www.youtube.com/channel/UC_placeholder"
-    },
-    {
      "title": "[sample] Wildfire forces evacuations in hills in Nairobi: latest",
-     "url": "https://hindustan-post.example/story/36vmi1",
-     "source": "hindustan-post.example",
-     "country": "IN",
-     "lang": "en",
-     "time": "2026-10-21T04:01:00Z",
-     "tone": -2.4,
+     "url": "https://gulf-report.example/story/epsd6l",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T01:32:00Z",
+     "tone": -4.6,
      "image": "",
      "video": ""
     },
     {
      "title": "[sample] Wildfire forces evacuations in hills in Nairobi: reactions",
-     "url": "https://jakarta-pos.example/story/5p4skb",
+     "url": "https://jakarta-pos.example/story/floqts",
      "source": "jakarta-pos.example",
      "country": "ID",
      "lang": "id",
-     "time": "2026-10-21T01:46:00Z",
-     "tone": -1.5,
+     "time": "2026-10-21T00:29:00Z",
+     "tone": -3.7,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Wildfire forces evacuations in hills in Nairobi: timeline",
-     "url": "https://nation-ke.example/story/3qxmyk",
-     "source": "nation-ke.example",
-     "country": "KE",
+     "title": "[sample] Wildfire forces evacuations in hills in Nairobi: explained",
+     "url": "https://gulf-report.example/story/52bt04",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-20T23:34:00Z",
+     "tone": 1.7,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Nairobi: analysis",
+     "url": "https://kyiv-herald.example/story/fgmhex",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-20T23:47:00Z",
+     "tone": 3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Nairobi: live updates",
+     "url": "https://global-desk.example/story/85cj2r",
+     "source": "global-desk.example",
+     "country": "CA",
      "lang": "en",
-     "time": "2026-10-21T01:12:00Z",
-     "tone": 3.4,
+     "time": "2026-10-20T21:59:00Z",
+     "tone": -3,
+     "image": "",
+     "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
+    }
+   ]
+  },
+  {
+   "n": 31,
+   "o": 8,
+   "c": 7,
+   "l": 4,
+   "t": 0.1,
+   "first": "2026-10-21T01:11:00Z",
+   "last": "2026-10-21T04:50:00Z",
+   "headline": "[sample] Ministers meet over energy prices in Nairobi: analysis",
+   "headlineSource": "jakarta-pos.example",
+   "headlineLang": "id",
+   "entities": [
+    "energy",
+    "european union",
+    "oil prices",
+    "nairobi"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Ministers meet over energy prices in Nairobi: analysis",
+     "url": "https://jakarta-pos.example/story/fej3ke",
+     "source": "jakarta-pos.example",
+     "country": "ID",
+     "lang": "id",
+     "time": "2026-10-21T04:50:00Z",
+     "tone": 3.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Nairobi: latest",
+     "url": "https://hindustan-post.example/story/3foy62",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T04:06:00Z",
+     "tone": -2.6,
+     "image": "",
+     "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Nairobi: reactions",
+     "url": "https://tehran-times.example/story/1uyexu",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-21T03:50:00Z",
+     "tone": 2.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Nairobi: in pictures",
+     "url": "https://lagos-sun.example/story/3wrmif",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-21T03:02:00Z",
+     "tone": -4.7,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Nairobi: in pictures",
+     "url": "https://morning-wire.example/story/5b6p7a",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-21T02:50:00Z",
+     "tone": 0.9,
+     "image": "",
+     "video": "https://www.youtube.com/shorts/aqz-KE-bpKQ"
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Nairobi: in pictures",
+     "url": "https://gulf-report.example/story/g61nw2",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T01:55:00Z",
+     "tone": 1.4,
+     "image": "",
+     "video": "https://m.youtube.com/watch?v=kJQP7kiw5Fk"
+    }
+   ]
+  },
+  {
+   "n": 30,
+   "o": 8,
+   "c": 7,
+   "l": 5,
+   "t": -1.8,
+   "first": "2026-10-20T21:58:00Z",
+   "last": "2026-10-21T05:14:00Z",
+   "headline": "[sample] Election count enters second day in Nairobi: reactions",
+   "headlineSource": "seoul-daily.example",
+   "headlineLang": "ko",
+   "entities": [
+    "election commission",
+    "parliament",
+    "voters",
+    "nairobi"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Election count enters second day in Nairobi: live updates",
+     "url": "https://kyiv-herald.example/story/9h9lk7",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-21T05:14:00Z",
+     "tone": 1.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Nairobi: reactions",
+     "url": "https://seoul-daily.example/story/2f8e60",
+     "source": "seoul-daily.example",
+     "country": "KR",
+     "lang": "ko",
+     "time": "2026-10-21T04:37:00Z",
+     "tone": -2.1,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Nairobi: in pictures",
+     "url": "https://morning-wire.example/story/6r72c7",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-21T04:14:00Z",
+     "tone": -3.4,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Nairobi: live updates",
+     "url": "https://xinhua-sample.example/story/gewxgg",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-21T03:05:00Z",
+     "tone": -3.2,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Nairobi: in pictures",
+     "url": "https://global-desk.example/story/c1scjx",
+     "source": "global-desk.example",
+     "country": "CA",
+     "lang": "en",
+     "time": "2026-10-21T03:38:00Z",
+     "tone": -2.2,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Nairobi: reactions",
+     "url": "https://el-diario.example/story/5fm1ot",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T03:04:00Z",
+     "tone": -1.4,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 22,
+   "o": 6,
+   "c": 5,
+   "l": 4,
+   "t": -2.3,
+   "first": "2026-10-21T01:43:00Z",
+   "last": "2026-10-21T04:35:00Z",
+   "headline": "[sample] Court hears appeal in corruption case in Nairobi: timeline",
+   "headlineSource": "seoul-daily.example",
+   "headlineLang": "ko",
+   "entities": [
+    "supreme court",
+    "corruption",
+    "prosecutor",
+    "nairobi"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Court hears appeal in corruption case in Nairobi: analysis",
+     "url": "https://tehran-times.example/story/1hq8es",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-21T04:35:00Z",
+     "tone": 0.6,
+     "image": "",
+     "video": "https://youtu.be/jNQXAC9IVRw"
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Nairobi: timeline",
+     "url": "https://seoul-daily.example/story/mhl5s",
+     "source": "seoul-daily.example",
+     "country": "KR",
+     "lang": "ko",
+     "time": "2026-10-21T03:40:00Z",
+     "tone": -5.1,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Nairobi: what we know",
+     "url": "https://cape-mail.example/story/bsp9k5",
+     "source": "cape-mail.example",
+     "country": "ZA",
+     "lang": "en",
+     "time": "2026-10-21T02:53:00Z",
+     "tone": -5.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Nairobi: explained",
+     "url": "https://wire-service.example/story/blp1wm",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T01:44:00Z",
+     "tone": -4.4,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Nairobi: analysis",
+     "url": "https://al-akhbar.example/story/bf5qp2",
+     "source": "al-akhbar.example",
+     "country": "EG",
+     "lang": "ar",
+     "time": "2026-10-21T01:35:00Z",
+     "tone": 3,
+     "image": "",
+     "video": "https://m.youtube.com/watch?v=kJQP7kiw5Fk"
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Nairobi: analysis",
+     "url": "https://global-desk.example/story/cs3zq4",
+     "source": "global-desk.example",
+     "country": "CA",
+     "lang": "en",
+     "time": "2026-10-21T02:20:00Z",
+     "tone": -1.8,
      "image": "",
      "video": ""
     }
    ]
   }
  ],
- "unclustered": 36,
- "videos": 6
+ "unclustered": 29,
+ "videos": 9
 }

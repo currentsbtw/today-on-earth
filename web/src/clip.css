@@ -1,0 +1,74 @@
+/* clip.html: a fixed-size frame for time-lapse rendering. Sizes scale with --u (1% of the
+   frame's shorter side) so 1080x1920 and 1920x1080 frames share one layout. */
+@import './tokens.css';
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+.clip {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+/* Child selector: maplibre-gl.css sets .maplibregl-map { position: relative }. */
+.clip > .clip-map {
+  position: absolute;
+  inset: 0;
+}
+
+.clip-top,
+.clip-counts {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* The wordmark and date sit in the reserved top band, the counts in the bottom band. */
+.clip-top {
+  top: 0;
+  height: var(--top-band);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(var(--u) * 1.4);
+}
+
+.clip-wordmark {
+  margin: 0;
+  font-size: calc(var(--u) * 6.4);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+}
+
+.clip-time {
+  margin: 0;
+  color: var(--muted);
+  font-size: calc(var(--u) * 2.6);
+  font-variant-numeric: tabular-nums;
+}
+
+.clip-counts {
+  bottom: 0;
+  height: var(--bottom-band);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: calc(var(--u) * 2.2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}

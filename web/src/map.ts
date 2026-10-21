@@ -8,14 +8,13 @@ import {
   type FilterSpecification,
   type GeoJSONSource,
   type LayerSpecification,
-  type MapLayerMouseEvent,
   type StyleSpecification,
 } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 // MapLibre 6 loads its worker from a sibling file; point it at the copy Vite emits.
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import { siteUrl, type HeatCell } from './data';
-import { count, placeKey, shortName } from './format';
+import { ago, count, placeKey, safeHref, shortName } from './format';
 
 setWorkerUrl(workerUrl);
 
@@ -35,18 +34,67 @@ const lngOf = (x: number) => x * 360 - 180;
 const latOf = (y: number) => (360 / Math.PI) * Math.atan(Math.exp(Math.PI * (1 - 2 * y))) - 90;
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
+interface Padding {
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+}
+const NO_PADDING: Padding = { top: 0, bottom: 0, left: 0, right: 0 };
+
+export type HeatMode = 'articles' | 'normal';
+
+/** Below this baseline a place counts as quiet, so a handful of articles cannot read as a surge. */
+const BASELINE_FLOOR = 3;
+
+/** How many times its normal a place is covered: (n + 1) / (max(b, floor) + 1). */
+export const relativeRatio = (n: number, b: number) => (n + 1) / (Math.max(b, BASELINE_FLOOR) + 1);
+
+/**
+ * Brightness 0..1. "articles": log of n against the live snapshot's largest n.
+ * "normal": log2 of the ratio to the place's own normal over 3, so 8x normal is full
+ * brightness and anything at or below normal is dark.
+ */
+export function heatWeight(c: Pick<MapCell, 'n' | 'b'>, maxN: number, mode: HeatMode): number {
+  if (mode === 'normal') return clamp(Math.log2(relativeRatio(c.n, c.b ?? 0)) / 3, 0, 1);
+  return Math.min(1, Math.log1p(c.n) / Math.log1p(Math.max(1, maxN)));
+}
+
+/** "×2.4 normal" */
+export const ratioLabel = (c: Pick<MapCell, 'n' | 'b'>) => `×${relativeRatio(c.n, c.b ?? 0).toFixed(1)} normal`;
+
+/** Point features for the heat source, shared by the map page and the clip page. */
+export function heatFeatures(cells: MapCell[], maxN: number, mode: HeatMode): GeoJSON.Feature<GeoJSON.Point>[] {
+  return cells.map((c) => {
+    const short = c.name ? shortName(c.name) : '';
+    return {
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [c.lon, c.lat] },
+      properties: {
+        id: c.id,
+        n: c.n,
+        label: mode === 'normal' && short ? `${short}\n${ratioLabel(c)}` : short,
+        w: heatWeight(c, maxN, mode),
+      },
+    };
+  });
+}
+
 /**
  * Keeps the whole world box visible at the lowest zoom (contain, not cover) and never lets
  * the camera pan past its edges. MapLibre's default maxBounds behaviour zooms in until the
  * bounds cover the viewport, which would crop the world on load.
  */
-function worldConstrain(container: HTMLElement) {
+function worldConstrain(container: HTMLElement, padding: () => Partial<Padding>) {
   const top = mercY(LAT_NORTH);
   const bottom = mercY(LAT_SOUTH);
   return (lngLat: LngLat, zoom: number) => {
-    const w = container.clientWidth;
-    const h = container.clientHeight;
-    if (!w || !h) return { center: lngLat, zoom };
+    // With map padding (the phone sheet, or a clip page's reserved bands), MapLibre's
+    // center is the middle of the unpadded area, so fit the world into that area.
+    const pad = padding();
+    const w = container.clientWidth - (pad.left ?? 0) - (pad.right ?? 0);
+    const h = container.clientHeight - (pad.top ?? 0) - (pad.bottom ?? 0);
+    if (w <= 0 || h <= 0) return { center: lngLat, zoom };
     const fitZoom = Math.log2(Math.min(w, h / (bottom - top)) / TILE);
     const z = clamp(zoom, fitZoom, MAX_ZOOM);
     const size = TILE * 2 ** z;
@@ -93,7 +141,7 @@ function placeLabels(id: string, minzoom: number, filter: FilterSpecification): 
   };
 }
 
-function style(): StyleSpecification {
+export function style(): StyleSpecification {
   return {
     version: 8,
     projection: { type: 'mercator' },
@@ -106,6 +154,7 @@ function style(): StyleSpecification {
       'country-labels': { type: 'geojson', data: EMPTY },
       heat: { type: 'geojson', data: EMPTY },
       selected: { type: 'geojson', data: EMPTY },
+      quakes: { type: 'geojson', data: EMPTY },
     },
     layers: [
       { id: 'background', type: 'background', paint: { 'background-color': '#050608' } },
@@ -227,6 +276,24 @@ function style(): StyleSpecification {
         },
       },
       {
+        // USGS earthquakes (opt-in layer): hollow rings in a cool grey-blue, never amber.
+        id: 'quake-ring',
+        type: 'circle',
+        source: 'quakes',
+        layout: { 'circle-sort-key': ['-', 0, ['get', 'mag']] },
+        paint: {
+          // Zoom must be the outermost input of a zoom-dependent expression.
+          'circle-radius': ['interpolate', ['linear'], ['zoom'],
+            1, ['interpolate', ['linear'], ['get', 'mag'], 2.5, 3, 5, 8, 7, 18, 9, 30],
+            6, ['interpolate', ['linear'], ['get', 'mag'], 2.5, 5.4, 5, 14.4, 7, 32.4, 9, 54]],
+          'circle-color': '#8fa8c8',
+          'circle-opacity': 0,
+          'circle-stroke-color': '#8fa8c8',
+          'circle-stroke-width': ['interpolate', ['linear'], ['get', 'mag'], 2.5, 0.8, 6, 1.6],
+          'circle-stroke-opacity': 0.85,
+        },
+      },
+      {
         id: 'selected-fill',
         type: 'fill',
         source: 'selected',
@@ -277,19 +344,24 @@ function style(): StyleSpecification {
 }
 
 /** What the heat layers draw: a live cell, or a replay row with the live name when known. */
-export type MapCell = Pick<HeatCell, 'id' | 'lat' | 'lon' | 'n' | 'name'>;
+export type MapCell = Pick<HeatCell, 'id' | 'lat' | 'lon' | 'n' | 'name'> & { b?: number };
 
 export interface WorldMap {
   /** `maxN` is the live snapshot's largest n, so every frame is scaled the same way. */
-  setCells(cells: MapCell[], maxN: number): void;
+  setCells(cells: MapCell[], maxN: number, mode: HeatMode): void;
   outline(id: string | null): Promise<void>;
+  /** USGS feed features, or null to clear the layer. */
+  setQuakes(data: GeoJSON.FeatureCollection | null): void;
+  /**
+   * Phone sheet: keep the map's usable area above it (bottom padding) and, when a point is
+   * given, ease it into the middle of that area. 0 clears the padding.
+   */
+  setSheet(height: number, focus?: [lon: number, lat: number]): void;
 }
 
-export function createMap(
-  container: HTMLElement,
-  tooltip: HTMLElement,
-  onSelect: (cell: MapCell) => void,
-): Promise<WorldMap> {
+/** A non-interactive map for the clip page: same style, world fitted inside `padding`. */
+export function createClipMap(container: HTMLElement, padding: Padding): Promise<{ map: MapLibreMap; setCells: (cells: MapCell[], maxN: number) => void }> {
+  let ref: MapLibreMap | null = null;
   const map = new MapLibreMap({
     container,
     style: style(),
@@ -298,13 +370,42 @@ export function createMap(
     minZoom: -2,
     maxZoom: MAX_ZOOM,
     renderWorldCopies: false,
-    transformConstrain: worldConstrain(container),
+    interactive: false,
+    attributionControl: false,
+    fadeDuration: 0,
+    transformConstrain: worldConstrain(container, () => (ref ? ref.getPadding() : padding)),
+  });
+  ref = map;
+  map.setPadding(padding);
+  map.jumpTo({ center: [10, 20], zoom: -2 });
+  const setCells = (cells: MapCell[], maxN: number) =>
+    map.getSource<GeoJSONSource>('heat')?.setData({ type: 'FeatureCollection', features: heatFeatures(cells, maxN, 'articles') });
+  return new Promise((resolve) => map.once('load', () => resolve({ map, setCells })));
+}
+
+export function createMap(
+  container: HTMLElement,
+  tooltip: HTMLElement,
+  onSelect: (cell: MapCell) => void,
+): Promise<WorldMap> {
+  let mapRef: MapLibreMap | null = null;
+  const map = new MapLibreMap({
+    container,
+    style: style(),
+    center: [10, 20],
+    zoom: -2,
+    minZoom: -2,
+    maxZoom: MAX_ZOOM,
+    renderWorldCopies: false,
+    // The map does not exist yet while its constructor runs the first constrain.
+    transformConstrain: worldConstrain(container, () => (mapRef ? mapRef.getPadding() : NO_PADDING)),
     dragRotate: false,
     pitchWithRotate: false,
     touchPitch: false,
     maxPitch: 0,
     attributionControl: { compact: true, customAttribution: 'Natural Earth · GDELT · <a href="./about.html">How it works</a>' },
   });
+  mapRef = map;
   map.touchZoomRotate.disableRotation();
   map.keyboard.disableRotation();
   // Dev builds only: a handle for headless checks. Stripped from production bundles.
@@ -312,14 +413,15 @@ export function createMap(
 
   const byId = new Map<string, MapCell>();
   let outlineRequest = 0;
+  let heatMode: HeatMode = 'articles';
 
-  const cellAt = (e: MapLayerMouseEvent): MapCell | undefined => {
-    let best: MapCell | undefined;
-    for (const f of e.features ?? []) {
-      const cell = byId.get(String(f.properties?.id));
-      if (cell && (!best || cell.n > best.n)) best = cell;
-    }
-    return best;
+  const span = (text: string, className = '') => Object.assign(document.createElement('span'), { textContent: text, className });
+
+  const placeTooltip = (point: { x: number; y: number }) => {
+    tooltip.hidden = false;
+    const x = Math.min(point.x + 14, container.clientWidth - tooltip.offsetWidth - 8);
+    const y = point.y + 14 + tooltip.offsetHeight > container.clientHeight ? point.y - tooltip.offsetHeight - 10 : point.y + 14;
+    tooltip.style.transform = `translate(${Math.max(8, x)}px, ${y}px)`;
   };
 
   const hideTooltip = () => {
@@ -327,54 +429,79 @@ export function createMap(
     map.getCanvas().style.cursor = '';
   };
 
-  map.on('mousemove', 'cell-hit', (e) => {
-    const cell = cellAt(e);
-    if (!cell) return hideTooltip();
-    map.getCanvas().style.cursor = 'pointer';
-    const articles = Object.assign(document.createElement('span'), { textContent: `${count(cell.n)} articles` });
-    if (cell.name) {
-      tooltip.replaceChildren(Object.assign(document.createElement('strong'), { textContent: cell.name }), articles);
-    } else {
-      tooltip.replaceChildren(articles);
+  /** What is under the pointer: a quake ring wins over a news cell (it sits on top). */
+  const hit = (point: { x: number; y: number }) => {
+    const quake = map.queryRenderedFeatures([point.x, point.y], { layers: ['quake-ring'] })[0];
+    if (quake) return { quake };
+    let cell: MapCell | undefined;
+    for (const f of map.queryRenderedFeatures([point.x, point.y], { layers: ['cell-hit'] })) {
+      const c = byId.get(String(f.properties?.id));
+      if (c && (!cell || c.n > cell.n)) cell = c;
     }
-    tooltip.hidden = false;
-    const x = Math.min(e.point.x + 14, container.clientWidth - tooltip.offsetWidth - 8);
-    const y = e.point.y + 14 + tooltip.offsetHeight > container.clientHeight
-      ? e.point.y - tooltip.offsetHeight - 10
-      : e.point.y + 14;
-    tooltip.style.transform = `translate(${Math.max(8, x)}px, ${y}px)`;
+    return { cell };
+  };
+
+  map.on('mousemove', (e) => {
+    const { quake, cell } = hit(e.point);
+    if (quake) {
+      const p = quake.properties ?? {};
+      const depth = p.depth == null ? NaN : Number(p.depth);
+      // "M 5.1 · 32 km · 3h ago · <place>": numbers and the place as USGS gives it.
+      const parts = [
+        `M ${Number(p.mag).toFixed(1)}`,
+        Number.isFinite(depth) ? `${Math.round(depth)} km` : '',
+        Number.isFinite(p.time) ? ago(new Date(p.time).toISOString()) : '',
+        String(p.place ?? ''),
+      ].filter(Boolean);
+      tooltip.replaceChildren(span(parts.join(' · '), 'quake-tip'));
+    } else if (cell) {
+      const lines = [span(`${count(cell.n)} articles`)];
+      if (heatMode === 'normal') lines.push(span(ratioLabel(cell)));
+      if (cell.name) lines.unshift(Object.assign(document.createElement('strong'), { textContent: cell.name }));
+      tooltip.replaceChildren(...lines);
+    } else {
+      return hideTooltip();
+    }
+    map.getCanvas().style.cursor = 'pointer';
+    placeTooltip(e.point);
   });
-  map.on('mouseleave', 'cell-hit', hideTooltip);
+  map.on('mouseout', hideTooltip);
   map.on('movestart', hideTooltip);
-  map.on('click', 'cell-hit', (e) => {
-    const cell = cellAt(e);
-    if (cell) onSelect(cell);
+  map.on('click', (e) => {
+    const { quake, cell } = hit(e.point);
+    if (quake) {
+      const href = safeHref(String(quake.properties?.url ?? ''));
+      if (href) window.open(href, '_blank', 'noopener');
+    } else if (cell) {
+      onSelect(cell);
+    }
   });
 
   const api: WorldMap = {
-    setCells(cells, maxN) {
+    setCells(cells, maxN, mode) {
+      heatMode = mode;
       byId.clear();
-      const max = Math.log1p(Math.max(1, maxN));
+      const features = heatFeatures(cells, maxN, mode);
       const labelled = new Set<string>();
-      const features: GeoJSON.Feature<GeoJSON.Point>[] = cells.map((c) => {
+      cells.forEach((c, i) => {
         byId.set(c.id, c);
-        if (c.name && Math.log1p(c.n) / max >= CELL_LABEL_MIN_W) labelled.add(placeKey(c.name));
-        return {
-          type: 'Feature',
-          geometry: { type: 'Point', coordinates: [c.lon, c.lat] },
-          properties: {
-            id: c.id,
-            n: c.n,
-            label: c.name ? shortName(c.name) : '',
-            w: Math.min(1, Math.log1p(c.n) / max),
-          },
-        };
+        if (c.name && (features[i].properties!.w as number) >= CELL_LABEL_MIN_W) labelled.add(placeKey(c.name));
       });
       map.getSource<GeoJSONSource>('heat')?.setData({ type: 'FeatureCollection', features });
       // A city with the same name as a news label would just repeat it: hide the city.
       const notNews: ExpressionSpecification = ['!', ['in', ['get', 'key'], ['literal', [...labelled]]]];
       for (const [layer, tier] of Object.entries(PLACE_TIERS)) map.setFilter(layer, ['all', tier, notNews]);
       map.setFilter('place-dot', notNews);
+    },
+
+    setQuakes(data) {
+      map.getSource<GeoJSONSource>('quakes')?.setData(data ?? EMPTY);
+    },
+
+    setSheet(height, focus) {
+      const padding = { ...NO_PADDING, bottom: Math.max(0, Math.round(height)) };
+      if (focus) map.easeTo({ center: focus, padding, duration: 450 });
+      else map.easeTo({ padding, duration: 300 });
     },
 
     async outline(id) {

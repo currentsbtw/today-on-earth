@@ -2,609 +2,403 @@
  "id": "839b41fffffffff",
  "name": "Suva, Central, Fiji",
  "n": 23,
- "o": 14,
- "c": 13,
- "l": 8,
- "t": -0.3,
+ "o": 16,
+ "c": 16,
+ "l": 13,
+ "t": -1.9,
  "topOutlets": [
   [
-   "le-quotidien.example",
-   4
+   "tehran-times.example",
+   3
   ],
   [
    "al-akhbar.example",
    3
   ],
   [
-   "lagos-sun.example",
-   2
-  ],
-  [
    "hindustan-post.example",
    2
   ],
   [
-   "nation-ke.example",
+   "seoul-daily.example",
    2
-  ],
-  [
-   "wire-service.example",
-   2
-  ],
-  [
-   "global-desk.example",
-   1
-  ],
-  [
-   "haaretz-sample.example",
-   1
   ],
   [
    "nord-avis.example",
+   2
+  ],
+  [
+   "hurriyet-sample.example",
    1
   ],
   [
-   "cape-mail.example",
+   "asahi-sample.example",
+   1
+  ],
+  [
+   "lagos-sun.example",
+   1
+  ],
+  [
+   "le-quotidien.example",
+   1
+  ],
+  [
+   "xinhua-sample.example",
    1
   ]
  ],
  "topCountries": [
   [
-   "FR",
-   4
+   "IR",
+   3
   ],
   [
    "EG",
    3
   ],
   [
-   "NG",
-   2
-  ],
-  [
    "IN",
    2
   ],
   [
-   "KE",
+   "KR",
    2
-  ],
-  [
-   "",
-   2
-  ],
-  [
-   "CA",
-   1
-  ],
-  [
-   "IL",
-   1
   ],
   [
    "NO",
+   2
+  ],
+  [
+   "TR",
    1
   ],
   [
-   "ZA",
+   "JP",
+   1
+  ],
+  [
+   "NG",
+   1
+  ],
+  [
+   "FR",
+   1
+  ],
+  [
+   "CN",
    1
   ]
  ],
  "languages": [
   [
    "en",
-   11
-  ],
-  [
-   "fr",
    4
   ],
   [
    "ar",
+   4
+  ],
+  [
+   "fa",
    3
   ],
   [
-   "he",
-   1
+   "ko",
+   2
   ],
   [
    "no",
-   1
-  ],
-  [
-   "id",
-   1
+   2
   ],
   [
    "tr",
    1
   ],
   [
-   "es",
+   "ja",
+   1
+  ],
+  [
+   "fr",
+   1
+  ],
+  [
+   "zh",
+   1
+  ],
+  [
+   "pl",
    1
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Aid convoy reaches border crossing near Suva",
-   "url": "https://global-desk.example/news/eoh3fv",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-21T05:20:00Z",
-   "tone": 0.8,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "",
-   "url": "https://lagos-sun.example/news/g4beq7",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-21T04:32:00Z",
-   "tone": 1.5,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Suva",
-   "url": "https://le-quotidien.example/news/fqzwqv",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-21T03:29:00Z",
-   "tone": 1.9,
+   "title": "[sample] Trade talks resume after pause near Suva",
+   "url": "https://hurriyet-sample.example/news/3vo2uq",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-21T05:35:00Z",
+   "tone": -3.8,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Suva",
-   "url": "https://haaretz-sample.example/news/c7dffd",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-21T02:35:00Z",
-   "tone": 4.7,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "",
-   "url": "https://lagos-sun.example/news/7e9rj1",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-21T01:23:00Z",
-   "tone": -1.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Suva",
-   "url": "https://hindustan-post.example/news/5g4joy",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-21T00:30:00Z",
-   "tone": 3.5,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Suva",
-   "url": "https://nord-avis.example/news/e88j0q",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T23:24:00Z",
-   "tone": -5.6,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Suva",
-   "url": "https://hindustan-post.example/news/2cpvn6",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T22:16:00Z",
+   "url": "https://tehran-times.example/news/43gb6x",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-21T04:47:00Z",
    "tone": -6.1,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Election commission publishes turnout figures near Suva",
-   "url": "https://cape-mail.example/news/1ip2gr",
-   "source": "cape-mail.example",
-   "country": "ZA",
+   "title": "[sample] Wildfire forces evacuations near Suva",
+   "url": "https://hindustan-post.example/news/apbttn",
+   "source": "hindustan-post.example",
+   "country": "IN",
    "lang": "en",
-   "time": "2026-10-20T21:31:00Z",
-   "tone": -4,
+   "time": "2026-10-21T03:35:00Z",
+   "tone": -0.8,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Central bank holds interest rate near Suva",
-   "url": "https://nation-ke.example/news/662tmw",
-   "source": "nation-ke.example",
-   "country": "KE",
+   "title": "[sample] Officials meet over regional dispute near Suva",
+   "url": "https://hindustan-post.example/news/8ogyew",
+   "source": "hindustan-post.example",
+   "country": "IN",
    "lang": "en",
-   "time": "2026-10-20T20:20:00Z",
-   "tone": 3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Suva",
-   "url": "https://jakarta-pos.example/news/eahfac",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T19:29:00Z",
-   "tone": -0.7,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Suva",
-   "url": "https://hurriyet-sample.example/news/2zkda9",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T18:31:00Z",
-   "tone": 1.6,
+   "time": "2026-10-21T02:37:00Z",
+   "tone": -6.6,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Suva",
-   "url": "https://al-akhbar.example/news/94lv7e",
+   "url": "https://tehran-times.example/news/5fnb8q",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-21T01:34:00Z",
+   "tone": -1.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Suva",
+   "url": "https://asahi-sample.example/news/5wuioe",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-21T00:36:00Z",
+   "tone": -6.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Suva",
+   "url": "https://seoul-daily.example/news/8k6v12",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T23:32:00Z",
+   "tone": -6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Suva",
+   "url": "https://al-akhbar.example/news/557w1o",
    "source": "al-akhbar.example",
    "country": "EG",
    "lang": "ar",
-   "time": "2026-10-20T17:20:00Z",
-   "tone": 0.5,
+   "time": "2026-10-20T22:42:00Z",
+   "tone": -5.7,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Researchers report vaccine trial results near Suva",
-   "url": "https://wire-service.example/news/dwpiaw",
-   "source": "wire-service.example",
-   "country": "",
+   "title": "[sample] Protest gathers in city centre near Suva",
+   "url": "https://lagos-sun.example/news/d9i8wd",
+   "source": "lagos-sun.example",
+   "country": "NG",
    "lang": "en",
-   "time": "2026-10-20T16:22:00Z",
-   "tone": 0.6,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Suva",
-   "url": "https://daily-ledger.example/news/8ertet",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T15:23:00Z",
-   "tone": 3.5,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Suva",
-   "url": "https://le-quotidien.example/news/2tjoer",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T14:30:00Z",
-   "tone": -1.2,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Suva",
-   "url": "https://nation-ke.example/news/etw3qs",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T13:31:00Z",
-   "tone": -6.8,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "",
-   "url": "https://wire-service.example/news/fietje",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T12:24:00Z",
-   "tone": 3.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Suva",
-   "url": "https://le-quotidien.example/news/xhqnm",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T11:33:00Z",
-   "tone": -5.4,
+   "time": "2026-10-20T21:42:00Z",
+   "tone": -4.8,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Wildfire forces evacuations near Suva",
-   "url": "https://al-akhbar.example/news/7l7g4t",
+   "url": "https://al-akhbar.example/news/16ssqn",
    "source": "al-akhbar.example",
    "country": "EG",
    "lang": "ar",
-   "time": "2026-10-20T10:30:00Z",
-   "tone": 3.9,
+   "time": "2026-10-20T20:46:00Z",
+   "tone": 2.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Suva",
+   "url": "https://seoul-daily.example/news/ghb5gq",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T19:42:00Z",
+   "tone": 0.7,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Suva",
-   "url": "https://al-akhbar.example/news/3stx00",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T09:18:00Z",
-   "tone": -3.3,
+   "url": "https://le-quotidien.example/news/1xfhmp",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T18:33:00Z",
+   "tone": 2.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Suva",
+   "url": "https://xinhua-sample.example/news/8473v6",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T17:40:00Z",
+   "tone": 4.3,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Suva",
-   "url": "https://le-quotidien.example/news/cr95s2",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T08:17:00Z",
-   "tone": 2.4,
+   "url": "https://tehran-times.example/news/cxats3",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T16:38:00Z",
+   "tone": 2.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Suva",
+   "url": "https://gulf-report.example/news/gcn7wq",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T15:49:00Z",
+   "tone": -6.8,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Suva",
-   "url": "https://el-diario.example/news/6rpmak",
-   "source": "el-diario.example",
-   "country": "MX",
+   "url": "https://nord-avis.example/news/4lbpev",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T14:41:00Z",
+   "tone": -4.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://al-akhbar.example/news/8dwv1",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T13:41:00Z",
+   "tone": 2.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Suva",
+   "url": "https://gazeta-sample.example/news/adb8je",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T12:47:00Z",
+   "tone": -1.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Suva",
+   "url": "https://haaretz-sample.example/news/czrc01",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T11:45:00Z",
+   "tone": -4.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Suva",
+   "url": "https://tageszeitung.example/news/9g7lu4",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T10:31:00Z",
+   "tone": -3.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://nord-avis.example/news/1bv7kb",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T09:45:00Z",
+   "tone": 3.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Suva",
+   "url": "https://la-voz.example/news/e3e2cb",
+   "source": "la-voz.example",
+   "country": "AR",
    "lang": "es",
-   "time": "2026-10-20T07:16:00Z",
-   "tone": -4.6,
+   "time": "2026-10-20T08:50:00Z",
+   "tone": -3.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Suva",
+   "url": "https://cape-mail.example/news/7yipd2",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T07:48:00Z",
+   "tone": 5,
    "image": "",
    "video": ""
   }
  ],
  "stories": [
   {
-   "n": 5,
-   "o": 5,
-   "c": 4,
-   "l": 4,
-   "t": -3.1,
-   "first": "2026-10-20T17:39:00Z",
-   "last": "2026-10-21T03:49:00Z",
-   "headline": "[sample] Ministers meet over energy prices in Suva: in pictures",
-   "headlineSource": "morning-wire.example",
-   "headlineLang": "en",
-   "entities": [
-    "energy",
-    "european union",
-    "oil prices",
-    "suva"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Ministers meet over energy prices in Suva: explained",
-     "url": "https://asahi-sample.example/story/4it62f",
-     "source": "asahi-sample.example",
-     "country": "JP",
-     "lang": "ja",
-     "time": "2026-10-21T03:49:00Z",
-     "tone": -2.4,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Suva: in pictures",
-     "url": "https://morning-wire.example/story/f5wenu",
-     "source": "morning-wire.example",
-     "country": "GB",
-     "lang": "en",
-     "time": "2026-10-21T03:00:00Z",
-     "tone": -3.6,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Suva: what we know",
-     "url": "https://seoul-daily.example/story/5pdhq9",
-     "source": "seoul-daily.example",
-     "country": "KR",
-     "lang": "ko",
-     "time": "2026-10-21T02:35:00Z",
-     "tone": -5.2,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Suva: reactions",
-     "url": "https://gazeta-sample.example/story/1tosqb",
-     "source": "gazeta-sample.example",
-     "country": "PL",
-     "lang": "pl",
-     "time": "2026-10-21T01:34:00Z",
-     "tone": -1.6,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Suva: reactions",
-     "url": "https://cape-mail.example/story/d9i8wd",
-     "source": "cape-mail.example",
-     "country": "ZA",
-     "lang": "en",
-     "time": "2026-10-21T02:01:00Z",
-     "tone": -2.5,
-     "image": "",
-     "video": ""
-    }
-   ]
-  },
-  {
-   "n": 5,
-   "o": 5,
-   "c": 4,
-   "l": 5,
-   "t": 1.8,
-   "first": "2026-10-20T20:01:00Z",
-   "last": "2026-10-21T01:54:00Z",
-   "headline": "[sample] Strike halts rail services in Suva: what we know",
-   "headlineSource": "seoul-daily.example",
-   "headlineLang": "ko",
-   "entities": [
-    "trade union",
-    "rail",
-    "labour",
-    "suva"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Strike halts rail services in Suva: live updates",
-     "url": "https://le-quotidien.example/story/8c6p7c",
-     "source": "le-quotidien.example",
-     "country": "FR",
-     "lang": "fr",
-     "time": "2026-10-21T01:54:00Z",
-     "tone": 1.7,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Suva: analysis",
-     "url": "https://harbour-press.example/story/akxye0",
-     "source": "harbour-press.example",
-     "country": "AU",
-     "lang": "en",
-     "time": "2026-10-21T01:31:00Z",
-     "tone": 2.6,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Suva: reactions",
-     "url": "https://tageszeitung.example/story/1xfhmp",
-     "source": "tageszeitung.example",
-     "country": "DE",
-     "lang": "de",
-     "time": "2026-10-21T00:10:00Z",
-     "tone": -0.6,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Suva: what we know",
-     "url": "https://seoul-daily.example/story/bl6q1t",
-     "source": "seoul-daily.example",
-     "country": "KR",
-     "lang": "ko",
-     "time": "2026-10-20T23:57:00Z",
-     "tone": 3.4,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Suva: in pictures",
-     "url": "https://tehran-times.example/story/6tkr3g",
-     "source": "tehran-times.example",
-     "country": "IR",
-     "lang": "fa",
-     "time": "2026-10-20T22:30:00Z",
-     "tone": 1.8,
-     "image": "",
-     "video": ""
-    }
-   ]
-  },
-  {
-   "n": 4,
-   "o": 4,
-   "c": 3,
-   "l": 4,
-   "t": 0.3,
-   "first": "2026-10-20T19:25:00Z",
-   "last": "2026-10-21T05:17:00Z",
-   "headline": "[sample] Aid convoy reaches border crossing in Suva: in pictures",
-   "headlineSource": "hindustan-post.example",
-   "headlineLang": "en",
-   "entities": [
-    "united nations",
-    "refugees",
-    "humanitarian aid",
-    "suva"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Suva: analysis",
-     "url": "https://el-diario.example/story/gcn7wq",
-     "source": "el-diario.example",
-     "country": "MX",
-     "lang": "es",
-     "time": "2026-10-21T05:17:00Z",
-     "tone": 3.1,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Suva: in pictures",
-     "url": "https://hindustan-post.example/story/4yrorr",
-     "source": "hindustan-post.example",
-     "country": "IN",
-     "lang": "en",
-     "time": "2026-10-21T04:46:00Z",
-     "tone": -4.2,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Suva: timeline",
-     "url": "https://al-akhbar.example/story/oknaw",
-     "source": "al-akhbar.example",
-     "country": "EG",
-     "lang": "ar",
-     "time": "2026-10-21T04:37:00Z",
-     "tone": 2.1,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Suva: latest",
-     "url": "https://gazeta-sample.example/story/bsdihx",
-     "source": "gazeta-sample.example",
-     "country": "PL",
-     "lang": "pl",
-     "time": "2026-10-21T03:59:00Z",
-     "tone": 0.3,
-     "image": "",
-     "video": ""
-    }
-   ]
-  },
-  {
-   "n": 3,
-   "o": 3,
-   "c": 2,
-   "l": 3,
-   "t": -1.6,
-   "first": "2026-10-21T01:57:00Z",
-   "last": "2026-10-21T04:21:00Z",
-   "headline": "[sample] Election count enters second day in Suva: analysis",
-   "headlineSource": "le-quotidien.example",
-   "headlineLang": "fr",
+   "n": 8,
+   "o": 8,
+   "c": 8,
+   "l": 7,
+   "t": -2.9,
+   "first": "2026-10-20T19:35:00Z",
+   "last": "2026-10-21T05:23:00Z",
+   "headline": "[sample] Election count enters second day in Suva: in pictures",
+   "headlineSource": "vesti-news.example",
+   "headlineLang": "ru",
    "entities": [
     "election commission",
     "parliament",
@@ -613,41 +407,213 @@
    ],
    "articles": [
     {
-     "title": "[sample] Election count enters second day in Suva: analysis",
-     "url": "https://le-quotidien.example/story/czrc01",
-     "source": "le-quotidien.example",
-     "country": "FR",
-     "lang": "fr",
-     "time": "2026-10-21T04:21:00Z",
-     "tone": -4.7,
+     "title": "[sample] Election count enters second day in Suva: latest",
+     "url": "https://xinhua-sample.example/story/aazdu7",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-21T05:23:00Z",
+     "tone": 0.8,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Election count enters second day in Suva: analysis",
-     "url": "https://gazeta-sample.example/story/afo8jn",
+     "title": "[sample] Election count enters second day in Suva: what we know",
+     "url": "https://gazeta-sample.example/story/b87oi8",
      "source": "gazeta-sample.example",
      "country": "PL",
      "lang": "pl",
-     "time": "2026-10-21T03:39:00Z",
-     "tone": -2.8,
+     "time": "2026-10-21T04:27:00Z",
+     "tone": -1.8,
      "image": "",
      "video": ""
     },
     {
      "title": "[sample] Election count enters second day in Suva: reactions",
-     "url": "https://nord-avis.example/story/dpzfe",
-     "source": "nord-avis.example",
-     "country": "NO",
-     "lang": "no",
+     "url": "https://la-voz.example/story/7h0tv4",
+     "source": "la-voz.example",
+     "country": "AR",
+     "lang": "es",
      "time": "2026-10-21T03:35:00Z",
-     "tone": 2.7,
+     "tone": -1.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Suva: in pictures",
+     "url": "https://le-quotidien.example/story/5dlhl2",
+     "source": "le-quotidien.example",
+     "country": "FR",
+     "lang": "fr",
+     "time": "2026-10-21T03:53:00Z",
+     "tone": -5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Suva: in pictures",
+     "url": "https://vesti-news.example/story/6tc8d6",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T03:51:00Z",
+     "tone": -4.4,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Suva: explained",
+     "url": "https://xinhua-sample.example/story/3q0ac8",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-21T01:13:00Z",
+     "tone": -5.6,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "o": 6,
+   "c": 6,
+   "l": 6,
+   "t": -0.6,
+   "first": "2026-10-20T19:22:00Z",
+   "last": "2026-10-21T03:43:00Z",
+   "headline": "[sample] Court hears appeal in corruption case in Suva: latest",
+   "headlineSource": "le-quotidien.example",
+   "headlineLang": "fr",
+   "entities": [
+    "supreme court",
+    "corruption",
+    "prosecutor",
+    "suva"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Court hears appeal in corruption case in Suva: analysis",
+     "url": "https://o-correio.example/story/2hg91x",
+     "source": "o-correio.example",
+     "country": "BR",
+     "lang": "pt",
+     "time": "2026-10-21T03:43:00Z",
+     "tone": 1.7,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Suva: timeline",
+     "url": "https://gazeta-sample.example/story/eb7fs2",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T02:53:00Z",
+     "tone": -4.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Suva: latest",
+     "url": "https://le-quotidien.example/story/4l1h05",
+     "source": "le-quotidien.example",
+     "country": "FR",
+     "lang": "fr",
+     "time": "2026-10-21T02:29:00Z",
+     "tone": -3.9,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Suva: live updates",
+     "url": "https://asahi-sample.example/story/5a05qp",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T01:37:00Z",
+     "tone": 3.9,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Suva: analysis",
+     "url": "https://hindustan-post.example/story/816mta",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T00:07:00Z",
+     "tone": -1.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Suva: reactions",
+     "url": "https://nation-ke.example/story/5d06eb",
+     "source": "nation-ke.example",
+     "country": "KE",
+     "lang": "en",
+     "time": "2026-10-21T01:13:00Z",
+     "tone": 0.5,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "o": 3,
+   "c": 3,
+   "l": 3,
+   "t": -1.3,
+   "first": "2026-10-20T14:41:00Z",
+   "last": "2026-10-21T02:09:00Z",
+   "headline": "[sample] Central bank leaves rates unchanged in Suva: in pictures",
+   "headlineSource": "vesti-news.example",
+   "headlineLang": "ru",
+   "entities": [
+    "central bank",
+    "inflation",
+    "interest rates",
+    "suva"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Suva: explained",
+     "url": "https://kyiv-herald.example/story/2xufth",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-21T02:09:00Z",
+     "tone": -2.2,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Suva: in pictures",
+     "url": "https://vesti-news.example/story/1k7u8d",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T01:18:00Z",
+     "tone": -5.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Suva: reactions",
+     "url": "https://gazeta-sample.example/story/z4nla",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T00:53:00Z",
+     "tone": 3.7,
      "image": "",
      "video": ""
     }
    ]
   }
  ],
- "unclustered": 6,
+ "unclustered": 5,
  "videos": 0
 }

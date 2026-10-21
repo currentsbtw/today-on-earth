@@ -27,6 +27,12 @@
     <header class="bar">
       <h1 class="wordmark">Today On Earth</h1>
       <p class="totals" id="totals" aria-live="polite"></p>
+      <p class="mode-note" id="mode-note" hidden>vs. each place's 7-day normal</p>
+      <span class="bar-spacer"></span>
+      <div class="mode" id="mode" role="group" aria-label="Brightness" hidden>
+        <button type="button" data-mode="articles" aria-pressed="true">articles</button>
+        <button type="button" data-mode="normal" aria-pressed="false">vs. normal</button>
+      </div>
       <a class="about-link" href="./about.html" aria-label="How it works"><span class="about-text">How it works</span><span class="about-glyph" aria-hidden="true">?</span></a>
       <p class="snapshot" id="snapshot"></p>
     </header>
@@ -35,6 +41,7 @@
       <div id="tooltip" class="tooltip" hidden></div>
       <p id="status" class="status" role="status">loading</p>
       <aside id="panel" class="panel" role="dialog" aria-modal="false" aria-labelledby="panel-title" hidden>
+        <button id="sheet-handle" class="sheet-handle" type="button" aria-label="Expand" aria-expanded="false"><span aria-hidden="true"></span></button>
         <div class="panel-head">
           <h2 id="panel-title" class="panel-title" tabindex="-1"></h2>
           <button id="panel-close" class="panel-close" type="button" aria-label="Close">&times;</button>
@@ -57,6 +64,10 @@
         </div>
         <p class="scrub-label"><span id="scrub-time"></span><span id="scrub-live" class="scrub-live">live</span></p>
       </div>
+      <button id="quake-toggle" class="layer-toggle" type="button" aria-pressed="false" hidden>
+        <svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.2" /></svg>
+        <span>Quakes</span><span class="layer-state"></span>
+      </button>
     </main>
     <script type="module" src="./src/main.ts"></script>
   </body>

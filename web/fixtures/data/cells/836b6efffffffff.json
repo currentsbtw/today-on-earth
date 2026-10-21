@@ -2,41 +2,29 @@
  "id": "836b6efffffffff",
  "name": "Khartoum, Khartoum, Sudan",
  "n": 61,
- "o": 22,
- "c": 21,
+ "o": 25,
+ "c": 24,
  "l": 17,
- "t": -0.6,
+ "t": -0.5,
  "topOutlets": [
   [
-   "jakarta-pos.example",
+   "nord-avis.example",
    5
   ],
   [
-   "lagos-sun.example",
-   4
-  ],
-  [
-   "cape-mail.example",
-   4
-  ],
-  [
-   "xinhua-sample.example",
-   4
+   "harbour-press.example",
+   5
   ],
   [
    "nation-ke.example",
    3
   ],
   [
-   "wire-service.example",
+   "le-quotidien.example",
    3
   ],
   [
-   "daily-ledger.example",
-   3
-  ],
-  [
-   "hindustan-post.example",
+   "asahi-sample.example",
    3
   ],
   [
@@ -44,41 +32,41 @@
    2
   ],
   [
-   "tehran-times.example",
+   "tageszeitung.example",
+   2
+  ],
+  [
+   "vesti-news.example",
+   2
+  ],
+  [
+   "morning-wire.example",
+   2
+  ],
+  [
+   "al-akhbar.example",
    2
   ]
  ],
  "topCountries": [
   [
-   "ID",
+   "NO",
    5
   ],
   [
-   "NG",
-   4
-  ],
-  [
-   "ZA",
-   4
-  ],
-  [
-   "CN",
-   4
+   "AU",
+   5
   ],
   [
    "KE",
    3
   ],
   [
-   "",
+   "FR",
    3
   ],
   [
-   "US",
-   3
-  ],
-  [
-   "IN",
+   "JP",
    3
   ],
   [
@@ -86,33 +74,49 @@
    2
   ],
   [
-   "IR",
+   "DE",
+   2
+  ],
+  [
+   "RU",
+   2
+  ],
+  [
+   "GB",
+   2
+  ],
+  [
+   "EG",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   20
+   15
   ],
   [
-   "id",
+   "no",
    5
   ],
   [
-   "zh",
+   "ar",
    4
   ],
   [
+   "es",
+   4
+  ],
+  [
+   "fr",
+   3
+  ],
+  [
+   "ja",
+   3
+  ],
+  [
    "uk",
-   2
-  ],
-  [
-   "fa",
-   2
-  ],
-  [
-   "pl",
    2
   ],
   [
@@ -120,565 +124,561 @@
    2
   ],
   [
-   "ko",
+   "ru",
    2
   ],
   [
-   "tr",
-   2
-  ],
-  [
-   "he",
+   "it",
    2
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Election commission publishes turnout figures near Khartoum",
-   "url": "https://kyiv-herald.example/news/8y9hhj",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-21T05:31:00Z",
-   "tone": -0.6,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Khartoum",
-   "url": "https://tehran-times.example/news/54fdja",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-21T04:48:00Z",
-   "tone": 1.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "",
-   "url": "https://nation-ke.example/news/7cafog",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-21T04:29:00Z",
-   "tone": -6.5,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Khartoum",
-   "url": "https://jakarta-pos.example/news/3vsxqm",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-21T04:11:00Z",
-   "tone": -0.6,
+   "title": "[sample] Storm disrupts transport links near Khartoum",
+   "url": "https://hurriyet-sample.example/news/6bcot8",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-21T05:36:00Z",
+   "tone": 3.1,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Khartoum",
-   "url": "https://gazeta-sample.example/news/a6s2qk",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-21T03:25:00Z",
-   "tone": 2.8,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "",
-   "url": "https://lagos-sun.example/news/1ir81b",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-21T03:15:00Z",
-   "tone": 0,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Khartoum",
-   "url": "https://wire-service.example/news/bw0owc",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-21T02:34:00Z",
-   "tone": -1.8,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "",
-   "url": "https://tageszeitung.example/news/ahyjoz",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-21T02:05:00Z",
-   "tone": 2,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Khartoum",
-   "url": "https://nation-ke.example/news/pi5nk",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-21T01:44:00Z",
-   "tone": -2.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "",
-   "url": "https://jakarta-pos.example/news/gcr1my",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-21T01:19:00Z",
-   "tone": -5.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Khartoum",
-   "url": "https://kyiv-herald.example/news/5vfuzz",
+   "url": "https://kyiv-herald.example/news/aq3k9d",
    "source": "kyiv-herald.example",
    "country": "UA",
    "lang": "uk",
-   "time": "2026-10-21T00:45:00Z",
-   "tone": 4.6,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Khartoum",
-   "url": "https://seoul-daily.example/news/c5gh41",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-21T00:16:00Z",
-   "tone": -6.2,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Khartoum",
-   "url": "https://daily-ledger.example/news/86j3op",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T23:59:00Z",
-   "tone": 5,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Khartoum",
-   "url": "https://hurriyet-sample.example/news/f7evmr",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T23:27:00Z",
-   "tone": 4.8,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "",
-   "url": "https://seoul-daily.example/news/dkmbv3",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T23:06:00Z",
-   "tone": 0.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Khartoum",
-   "url": "https://cape-mail.example/news/7wr3ws",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T22:22:00Z",
-   "tone": -5.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Khartoum",
-   "url": "https://le-quotidien.example/news/4tsw98",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T21:54:00Z",
-   "tone": -3.7,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Khartoum",
-   "url": "https://xinhua-sample.example/news/cjq7hd",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T21:46:00Z",
-   "tone": -0.1,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Khartoum",
-   "url": "https://jakarta-pos.example/news/f8p6i0",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T21:12:00Z",
-   "tone": 2.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Khartoum",
-   "url": "https://hindustan-post.example/news/bvh0ab",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T20:39:00Z",
-   "tone": 2.6,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Khartoum",
-   "url": "https://hindustan-post.example/news/9uk14s",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T20:07:00Z",
-   "tone": 4.1,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Khartoum",
-   "url": "https://gazeta-sample.example/news/8j8qe9",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T19:46:00Z",
-   "tone": 0.7,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Khartoum",
-   "url": "https://lagos-sun.example/news/487yqu",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T19:28:00Z",
-   "tone": 2.1,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Khartoum",
-   "url": "https://cape-mail.example/news/dxtf6j",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T18:44:00Z",
-   "tone": -3.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Khartoum",
-   "url": "https://cape-mail.example/news/65q69r",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T18:22:00Z",
-   "tone": -0.9,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Khartoum",
-   "url": "https://corriere-sample.example/news/1on98v",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T17:55:00Z",
-   "tone": -5.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Khartoum",
-   "url": "https://wire-service.example/news/gegdml",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T17:36:00Z",
-   "tone": -3.9,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Khartoum",
-   "url": "https://lagos-sun.example/news/8cgefx",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T16:52:00Z",
-   "tone": 2.6,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Khartoum",
-   "url": "https://al-akhbar.example/news/dxe06g",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T16:27:00Z",
-   "tone": -6.5,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Khartoum",
-   "url": "https://hurriyet-sample.example/news/bcij5j",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T16:02:00Z",
-   "tone": 1,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Khartoum",
-   "url": "https://tehran-times.example/news/3w6s4j",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T15:30:00Z",
-   "tone": 1,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Khartoum",
-   "url": "https://xinhua-sample.example/news/bkk8ac",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T15:01:00Z",
-   "tone": 0.8,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Khartoum",
-   "url": "https://jakarta-pos.example/news/cc5jy0",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T14:47:00Z",
-   "tone": -3.9,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Khartoum",
-   "url": "https://o-correio.example/news/8aekg2",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T14:23:00Z",
-   "tone": 3.9,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Khartoum",
-   "url": "https://cape-mail.example/news/ex9bu7",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T13:46:00Z",
-   "tone": -2.8,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Khartoum",
-   "url": "https://tageszeitung.example/news/4o5bb0",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T13:10:00Z",
-   "tone": -6,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Khartoum",
-   "url": "https://wire-service.example/news/6840lo",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T12:45:00Z",
-   "tone": -6.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Khartoum",
-   "url": "https://hindustan-post.example/news/4bqd56",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T12:20:00Z",
-   "tone": 4.9,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Khartoum",
-   "url": "https://vesti-news.example/news/6o7z2r",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T11:53:00Z",
-   "tone": 0.2,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Khartoum",
-   "url": "https://jakarta-pos.example/news/d3fsii",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T11:34:00Z",
-   "tone": 4.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Khartoum",
-   "url": "https://la-voz.example/news/6x9fvn",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T11:06:00Z",
+   "time": "2026-10-21T05:08:00Z",
    "tone": -2.5,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Officials meet over regional dispute near Khartoum",
-   "url": "https://daily-ledger.example/news/etpuhb",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T10:26:00Z",
-   "tone": -6.1,
+   "title": "[sample] Trade talks resume after pause near Khartoum",
+   "url": "https://seoul-daily.example/news/86ix8s",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-21T04:37:00Z",
+   "tone": -5.8,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Wildfire forces evacuations near Khartoum",
-   "url": "https://xinhua-sample.example/news/2d8kqh",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T10:10:00Z",
-   "tone": -5.9,
+   "title": "[sample] Storm disrupts transport links near Khartoum",
+   "url": "https://tageszeitung.example/news/4m498",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-21T04:11:00Z",
+   "tone": 4.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Khartoum",
+   "url": "https://vesti-news.example/news/41devb",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-21T03:48:00Z",
+   "tone": -0.9,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Khartoum",
-   "url": "https://nord-avis.example/news/9r6xmm",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T09:45:00Z",
-   "tone": -1.1,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Khartoum",
-   "url": "https://daily-ledger.example/news/a0bn0t",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T09:21:00Z",
-   "tone": 2.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Khartoum",
-   "url": "https://haaretz-sample.example/news/9u0a15",
+   "url": "https://haaretz-sample.example/news/veptt",
    "source": "haaretz-sample.example",
    "country": "IL",
    "lang": "he",
-   "time": "2026-10-20T08:39:00Z",
-   "tone": 4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Khartoum",
-   "url": "https://lagos-sun.example/news/dq3n3v",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T08:10:00Z",
-   "tone": 3.8,
+   "time": "2026-10-21T03:25:00Z",
+   "tone": 3.1,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Khartoum",
-   "url": "https://haaretz-sample.example/news/566o76",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T07:40:00Z",
-   "tone": -3.6,
+   "url": "https://morning-wire.example/news/cr7tix",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-21T02:50:00Z",
+   "tone": 1.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Khartoum",
+   "url": "https://nation-ke.example/news/ciivg9",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-21T02:29:00Z",
+   "tone": -4.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Khartoum",
+   "url": "https://nation-ke.example/news/3lqkg",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-21T01:58:00Z",
+   "tone": 1.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Khartoum",
+   "url": "https://nation-ke.example/news/c23tvs",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-21T01:28:00Z",
+   "tone": 2,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Khartoum",
-   "url": "https://xinhua-sample.example/news/30n9kl",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T07:23:00Z",
-   "tone": -1.6,
+   "url": "https://vesti-news.example/news/bm1fn5",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-21T01:10:00Z",
+   "tone": -1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Khartoum",
+   "url": "https://nord-avis.example/news/26mti3",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-21T00:32:00Z",
+   "tone": 3.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Khartoum",
+   "url": "https://al-akhbar.example/news/askdug",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-21T00:17:00Z",
+   "tone": -3.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Khartoum",
+   "url": "https://le-quotidien.example/news/8l3cq1",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T23:35:00Z",
+   "tone": -2.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Khartoum",
+   "url": "https://morning-wire.example/news/275r3m",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T23:15:00Z",
+   "tone": -3.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Khartoum",
+   "url": "https://gazeta-sample.example/news/4gd7nx",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T22:51:00Z",
+   "tone": -2.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Khartoum",
+   "url": "https://harbour-press.example/news/ecznkd",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T22:15:00Z",
+   "tone": 2.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Khartoum",
+   "url": "https://corriere-sample.example/news/8vxpiu",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T21:57:00Z",
+   "tone": -2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Khartoum",
+   "url": "https://gulf-report.example/news/1791cp",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T21:33:00Z",
+   "tone": 3.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Khartoum",
+   "url": "https://le-quotidien.example/news/erd7jg",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T20:55:00Z",
+   "tone": -5.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Khartoum",
+   "url": "https://le-quotidien.example/news/5vhdzl",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T20:20:00Z",
+   "tone": 0.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://asahi-sample.example/news/4iraec",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T20:10:00Z",
+   "tone": -6.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Khartoum",
+   "url": "https://harbour-press.example/news/bpsbwh",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T19:28:00Z",
+   "tone": -0.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Khartoum",
+   "url": "https://harbour-press.example/news/b2566t",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T18:57:00Z",
+   "tone": -1.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Khartoum",
+   "url": "https://wire-service.example/news/5cwihq",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T18:30:00Z",
+   "tone": 1.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Khartoum",
+   "url": "https://kyiv-herald.example/news/8togil",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T18:15:00Z",
+   "tone": -0.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Khartoum",
+   "url": "https://la-voz.example/news/1svppp",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T17:44:00Z",
+   "tone": 4.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Khartoum",
+   "url": "https://el-diario.example/news/buoggt",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T17:15:00Z",
+   "tone": -0.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Khartoum",
+   "url": "https://harbour-press.example/news/ao7yp",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T16:55:00Z",
+   "tone": 3.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Khartoum",
+   "url": "https://lagos-sun.example/news/784sux",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T16:28:00Z",
+   "tone": -1.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Khartoum",
+   "url": "https://la-voz.example/news/5f2p0d",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T15:45:00Z",
+   "tone": -3.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Khartoum",
+   "url": "https://jakarta-pos.example/news/1h39e7",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T15:20:00Z",
+   "tone": 4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://corriere-sample.example/news/d4o9c1",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T15:05:00Z",
+   "tone": -3.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Khartoum",
+   "url": "https://el-diario.example/news/1l0537",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T14:33:00Z",
+   "tone": 1.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Khartoum",
+   "url": "https://jakarta-pos.example/news/ce1sy8",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T14:01:00Z",
+   "tone": -0.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Khartoum",
+   "url": "https://tageszeitung.example/news/3exhz3",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T13:34:00Z",
+   "tone": 3.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://daily-ledger.example/news/2jc8oo",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T13:07:00Z",
+   "tone": -3.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Khartoum",
+   "url": "https://nord-avis.example/news/6lj520",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T12:34:00Z",
+   "tone": -1.3,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Trade talks resume after pause near Khartoum",
-   "url": "https://nation-ke.example/news/2ocevs",
-   "source": "nation-ke.example",
-   "country": "KE",
+   "url": "https://al-akhbar.example/news/85lyo5",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T12:14:00Z",
+   "tone": -2.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Khartoum",
+   "url": "https://xinhua-sample.example/news/8dqcsr",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T11:45:00Z",
+   "tone": 0.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Khartoum",
+   "url": "https://harbour-press.example/news/a8kkfn",
+   "source": "harbour-press.example",
+   "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T06:48:00Z",
+   "time": "2026-10-20T11:17:00Z",
+   "tone": -4.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Khartoum",
+   "url": "https://hindustan-post.example/news/2c78sw",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T10:41:00Z",
+   "tone": 4.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Khartoum",
+   "url": "https://nord-avis.example/news/f54qmb",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T10:25:00Z",
+   "tone": -6.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Khartoum",
+   "url": "https://nord-avis.example/news/7qft44",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T09:50:00Z",
+   "tone": -6.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Khartoum",
+   "url": "https://nord-avis.example/news/9baubp",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T09:27:00Z",
+   "tone": 2.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Khartoum",
+   "url": "https://asahi-sample.example/news/f00h7q",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T08:56:00Z",
+   "tone": -3.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Khartoum",
+   "url": "https://wire-service.example/news/7wt830",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T08:40:00Z",
+   "tone": -1.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Khartoum",
+   "url": "https://asahi-sample.example/news/bki4vk",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T08:07:00Z",
+   "tone": 4.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Khartoum",
+   "url": "https://tehran-times.example/news/1yo9ut",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T07:41:00Z",
+   "tone": 1.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Khartoum",
+   "url": "https://gulf-report.example/news/e49snd",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T07:01:00Z",
    "tone": -1.1,
    "image": "",
    "video": ""
@@ -686,188 +686,102 @@
  ],
  "stories": [
   {
-   "n": 18,
-   "o": 9,
-   "c": 9,
-   "l": 7,
-   "t": -1.3,
-   "first": "2026-10-20T21:19:00Z",
-   "last": "2026-10-21T04:12:00Z",
-   "headline": "[sample] Strike halts rail services in Khartoum: explained",
-   "headlineSource": "vesti-news.example",
-   "headlineLang": "ru",
+   "n": 14,
+   "o": 8,
+   "c": 8,
+   "l": 6,
+   "t": -0.9,
+   "first": "2026-10-21T02:30:00Z",
+   "last": "2026-10-21T05:41:00Z",
+   "headline": "[sample] Court hears appeal in corruption case in Khartoum: in pictures",
+   "headlineSource": "gazeta-sample.example",
+   "headlineLang": "pl",
    "entities": [
-    "trade union",
-    "rail",
-    "labour",
+    "supreme court",
+    "corruption",
+    "prosecutor",
     "khartoum"
    ],
    "articles": [
     {
-     "title": "[sample] Strike halts rail services in Khartoum: explained",
-     "url": "https://vesti-news.example/story/ccgvwd",
-     "source": "vesti-news.example",
-     "country": "RU",
-     "lang": "ru",
-     "time": "2026-10-21T04:12:00Z",
-     "tone": -2.4,
+     "title": "[sample] Court hears appeal in corruption case in Khartoum: timeline",
+     "url": "https://o-correio.example/story/82merc",
+     "source": "o-correio.example",
+     "country": "BR",
+     "lang": "pt",
+     "time": "2026-10-21T05:41:00Z",
+     "tone": 0.6,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Strike halts rail services in Khartoum: analysis",
-     "url": "https://le-quotidien.example/story/fp3pww",
-     "source": "le-quotidien.example",
-     "country": "FR",
-     "lang": "fr",
-     "time": "2026-10-21T03:48:00Z",
+     "title": "[sample] Court hears appeal in corruption case in Khartoum: analysis",
+     "url": "https://lagos-sun.example/story/k7o5e",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-21T05:13:00Z",
+     "tone": 2.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Khartoum: explained",
+     "url": "https://gulf-report.example/story/cfeh3p",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T04:33:00Z",
+     "tone": 0,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Khartoum: in pictures",
+     "url": "https://gazeta-sample.example/story/4769uj",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T03:26:00Z",
+     "tone": -5.1,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Khartoum: reactions",
+     "url": "https://corriere-sample.example/story/q7lr2",
+     "source": "corriere-sample.example",
+     "country": "IT",
+     "lang": "it",
+     "time": "2026-10-21T02:45:00Z",
      "tone": -5.4,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Strike halts rail services in Khartoum: reactions",
-     "url": "https://haaretz-sample.example/story/2p9uoa",
-     "source": "haaretz-sample.example",
-     "country": "IL",
-     "lang": "he",
-     "time": "2026-10-21T03:06:00Z",
-     "tone": 2.4,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Khartoum: what we know",
-     "url": "https://le-quotidien.example/story/bhv52o",
-     "source": "le-quotidien.example",
-     "country": "FR",
-     "lang": "fr",
-     "time": "2026-10-21T01:51:00Z",
-     "tone": -0.5,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Khartoum: live updates",
-     "url": "https://gazeta-sample.example/story/ce1sy8",
-     "source": "gazeta-sample.example",
-     "country": "PL",
-     "lang": "pl",
-     "time": "2026-10-21T01:24:00Z",
-     "tone": -4.6,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Khartoum: reactions",
-     "url": "https://xinhua-sample.example/story/8adji1",
-     "source": "xinhua-sample.example",
-     "country": "CN",
-     "lang": "zh",
-     "time": "2026-10-21T01:52:00Z",
-     "tone": 2.6,
+     "title": "[sample] Court hears appeal in corruption case in Khartoum: live updates",
+     "url": "https://tehran-times.example/story/6e8zda",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-21T03:11:00Z",
+     "tone": 1.6,
      "image": "",
      "video": ""
     }
    ]
   },
   {
-   "n": 17,
-   "o": 8,
-   "c": 8,
-   "l": 7,
-   "t": -0.4,
-   "first": "2026-10-20T18:14:00Z",
-   "last": "2026-10-21T05:28:00Z",
-   "headline": "[sample] Aid convoy reaches border crossing in Khartoum: reactions",
-   "headlineSource": "el-diario.example",
-   "headlineLang": "es",
-   "entities": [
-    "united nations",
-    "refugees",
-    "humanitarian aid",
-    "khartoum"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Khartoum: reactions",
-     "url": "https://el-diario.example/story/f5irau",
-     "source": "el-diario.example",
-     "country": "MX",
-     "lang": "es",
-     "time": "2026-10-21T05:28:00Z",
-     "tone": 1.3,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Khartoum: timeline",
-     "url": "https://haaretz-sample.example/story/7u19f8",
-     "source": "haaretz-sample.example",
-     "country": "IL",
-     "lang": "he",
-     "time": "2026-10-21T04:55:00Z",
-     "tone": -2.2,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Khartoum: analysis",
-     "url": "https://gazeta-sample.example/story/85lyo5",
-     "source": "gazeta-sample.example",
-     "country": "PL",
-     "lang": "pl",
-     "time": "2026-10-21T04:18:00Z",
-     "tone": -0.6,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Khartoum: explained",
-     "url": "https://hindustan-post.example/story/7mbxu6",
-     "source": "hindustan-post.example",
-     "country": "IN",
-     "lang": "en",
-     "time": "2026-10-21T03:28:00Z",
-     "tone": 0.2,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Khartoum: timeline",
-     "url": "https://harbour-press.example/story/885v0g",
-     "source": "harbour-press.example",
-     "country": "AU",
-     "lang": "en",
-     "time": "2026-10-21T03:32:00Z",
-     "tone": 0.2,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Khartoum: timeline",
-     "url": "https://o-correio.example/story/ewt8tp",
-     "source": "o-correio.example",
-     "country": "BR",
-     "lang": "pt",
-     "time": "2026-10-21T02:53:00Z",
-     "tone": -1,
-     "image": "",
-     "video": ""
-    }
-   ]
-  },
-  {
-   "n": 14,
+   "n": 13,
    "o": 7,
    "c": 7,
-   "l": 6,
-   "t": -2.7,
-   "first": "2026-10-20T22:46:00Z",
-   "last": "2026-10-21T01:56:00Z",
-   "headline": "[sample] Central bank leaves rates unchanged in Khartoum: explained",
-   "headlineSource": "nord-avis.example",
-   "headlineLang": "no",
+   "l": 5,
+   "t": -1.9,
+   "first": "2026-10-21T02:19:00Z",
+   "last": "2026-10-21T05:44:00Z",
+   "headline": "[sample] Central bank leaves rates unchanged in Khartoum: in pictures",
+   "headlineSource": "gulf-report.example",
+   "headlineLang": "ar",
    "entities": [
     "central bank",
     "inflation",
@@ -876,74 +790,160 @@
    ],
    "articles": [
     {
-     "title": "[sample] Central bank leaves rates unchanged in Khartoum: explained",
-     "url": "https://kyiv-herald.example/story/96cm9h",
-     "source": "kyiv-herald.example",
-     "country": "UA",
-     "lang": "uk",
-     "time": "2026-10-21T01:56:00Z",
-     "tone": -5.6,
+     "title": "[sample] Central bank leaves rates unchanged in Khartoum: live updates",
+     "url": "https://hurriyet-sample.example/story/2bbt5b",
+     "source": "hurriyet-sample.example",
+     "country": "TR",
+     "lang": "tr",
+     "time": "2026-10-21T05:44:00Z",
+     "tone": -4.3,
      "image": "",
      "video": ""
     },
     {
      "title": "[sample] Central bank leaves rates unchanged in Khartoum: explained",
-     "url": "https://nord-avis.example/story/1m9x34",
-     "source": "nord-avis.example",
-     "country": "NO",
-     "lang": "no",
-     "time": "2026-10-21T01:05:00Z",
-     "tone": -1.3,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Central bank leaves rates unchanged in Khartoum: analysis",
-     "url": "https://daily-ledger.example/story/75ld1v",
-     "source": "daily-ledger.example",
-     "country": "US",
+     "url": "https://lagos-sun.example/story/4putrf",
+     "source": "lagos-sun.example",
+     "country": "NG",
      "lang": "en",
-     "time": "2026-10-21T00:54:00Z",
-     "tone": -3.9,
+     "time": "2026-10-21T05:18:00Z",
+     "tone": 0.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Khartoum: in pictures",
+     "url": "https://gulf-report.example/story/epw9yq",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T04:34:00Z",
+     "tone": -2.6,
      "image": "",
      "video": ""
     },
     {
      "title": "[sample] Central bank leaves rates unchanged in Khartoum: live updates",
-     "url": "https://xinhua-sample.example/story/80mta0",
+     "url": "https://xinhua-sample.example/story/43lk3w",
      "source": "xinhua-sample.example",
      "country": "CN",
      "lang": "zh",
-     "time": "2026-10-20T23:44:00Z",
-     "tone": 1.4,
+     "time": "2026-10-21T03:32:00Z",
+     "tone": -1.6,
      "image": "",
      "video": ""
     },
     {
      "title": "[sample] Central bank leaves rates unchanged in Khartoum: analysis",
-     "url": "https://tageszeitung.example/story/4w8ltm",
-     "source": "tageszeitung.example",
-     "country": "DE",
-     "lang": "de",
-     "time": "2026-10-20T22:20:00Z",
-     "tone": -5.4,
+     "url": "https://el-diario.example/story/d4wfx0",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T02:28:00Z",
+     "tone": 0.7,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Central bank leaves rates unchanged in Khartoum: analysis",
-     "url": "https://gazeta-sample.example/story/7wt830",
-     "source": "gazeta-sample.example",
-     "country": "PL",
-     "lang": "pl",
-     "time": "2026-10-20T22:46:00Z",
-     "tone": -1.3,
+     "title": "[sample] Central bank leaves rates unchanged in Khartoum: in pictures",
+     "url": "https://nation-ke.example/story/832far",
+     "source": "nation-ke.example",
+     "country": "KE",
+     "lang": "en",
+     "time": "2026-10-21T02:19:00Z",
+     "tone": -4.1,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "o": 6,
+   "c": 4,
+   "l": 5,
+   "t": -2.7,
+   "first": "2026-10-20T23:35:00Z",
+   "last": "2026-10-21T02:13:00Z",
+   "headline": "[sample] Storm damage closes main roads in Khartoum: analysis",
+   "headlineSource": "hurriyet-sample.example",
+   "headlineLang": "tr",
+   "entities": [
+    "natural disaster",
+    "transport",
+    "emergency services",
+    "khartoum"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Storm damage closes main roads in Khartoum: timeline",
+     "url": "https://asahi-sample.example/story/4tzera",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T02:13:00Z",
+     "tone": -4.1,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Khartoum: live updates",
+     "url": "https://cape-mail.example/story/9n2bct",
+     "source": "cape-mail.example",
+     "country": "ZA",
+     "lang": "en",
+     "time": "2026-10-21T01:23:00Z",
+     "tone": -3.9,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Khartoum: latest",
+     "url": "https://el-diario.example/story/7ovviz",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T01:15:00Z",
+     "tone": -3.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Khartoum: analysis",
+     "url": "https://hurriyet-sample.example/story/76rtb3",
+     "source": "hurriyet-sample.example",
+     "country": "TR",
+     "lang": "tr",
+     "time": "2026-10-21T01:04:00Z",
+     "tone": -0.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Khartoum: live updates",
+     "url": "https://jakarta-pos.example/story/5is8rb",
+     "source": "jakarta-pos.example",
+     "country": "ID",
+     "lang": "id",
+     "time": "2026-10-20T23:09:00Z",
+     "tone": 1.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Khartoum: analysis",
+     "url": "https://wire-service.example/story/2r0cms",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T00:33:00Z",
+     "tone": -6,
      "image": "",
      "video": ""
     }
    ]
   }
  ],
- "unclustered": 12,
+ "unclustered": 28,
  "videos": 0
 }

@@ -2,29 +2,25 @@
  "id": "83585dfffffffff",
  "name": "Ndjamena, Chari-Baguirmi, Chad",
  "n": 6,
- "o": 6,
- "c": 6,
- "l": 6,
- "t": -1,
+ "o": 5,
+ "c": 5,
+ "l": 5,
+ "t": -2.8,
  "topOutlets": [
   [
-   "el-diario.example",
-   1
-  ],
-  [
    "haaretz-sample.example",
+   2
+  ],
+  [
+   "tageszeitung.example",
    1
   ],
   [
-   "gazeta-sample.example",
+   "xinhua-sample.example",
    1
   ],
   [
-   "kyiv-herald.example",
-   1
-  ],
-  [
-   "hurriyet-sample.example",
+   "la-voz.example",
    1
   ],
   [
@@ -34,23 +30,19 @@
  ],
  "topCountries": [
   [
-   "MX",
-   1
-  ],
-  [
    "IL",
+   2
+  ],
+  [
+   "DE",
    1
   ],
   [
-   "PL",
+   "CN",
    1
   ],
   [
-   "UA",
-   1
-  ],
-  [
-   "TR",
+   "AR",
    1
   ],
   [
@@ -60,23 +52,19 @@
  ],
  "languages": [
   [
-   "es",
-   1
-  ],
-  [
    "he",
+   2
+  ],
+  [
+   "de",
    1
   ],
   [
-   "pl",
+   "zh",
    1
   ],
   [
-   "uk",
-   1
-  ],
-  [
-   "tr",
+   "es",
    1
   ],
   [
@@ -86,68 +74,68 @@
  ],
  "articles": [
   {
-   "title": "[sample] Central bank holds interest rate near Ndjamena",
-   "url": "https://el-diario.example/news/8rx7bg",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-21T05:30:00Z",
-   "tone": -5.9,
+   "title": "[sample] Storm disrupts transport links near Ndjamena",
+   "url": "https://tageszeitung.example/news/4sxeaz",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-21T05:48:00Z",
+   "tone": -6,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Protest gathers in city centre near Ndjamena",
-   "url": "https://haaretz-sample.example/news/z4nla",
+   "title": "[sample] Researchers report vaccine trial results near Ndjamena",
+   "url": "https://xinhua-sample.example/news/8f807h",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-21T01:59:00Z",
+   "tone": -5.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Ndjamena",
+   "url": "https://haaretz-sample.example/news/3e3gl4",
    "source": "haaretz-sample.example",
    "country": "IL",
    "lang": "he",
-   "time": "2026-10-21T01:44:00Z",
-   "tone": -1.4,
+   "time": "2026-10-20T22:02:00Z",
+   "tone": -6.3,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Central bank holds interest rate near Ndjamena",
-   "url": "https://gazeta-sample.example/news/5zxmfd",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T21:43:00Z",
-   "tone": -2.1,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Ndjamena",
-   "url": "https://kyiv-herald.example/news/2q5gfa",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T17:50:00Z",
-   "tone": 1.7,
+   "title": "[sample] Storm disrupts transport links near Ndjamena",
+   "url": "https://la-voz.example/news/w3lcp",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T18:17:00Z",
+   "tone": 1.3,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Ndjamena",
-   "url": "https://hurriyet-sample.example/news/4qwi78",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T14:12:00Z",
-   "tone": -3.4,
+   "url": "https://haaretz-sample.example/news/d0bzrk",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T14:27:00Z",
+   "tone": 0.8,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Officials meet over regional dispute near Ndjamena",
-   "url": "https://nord-avis.example/news/3etw8r",
+   "title": "[sample] Central bank holds interest rate near Ndjamena",
+   "url": "https://nord-avis.example/news/xose3",
    "source": "nord-avis.example",
    "country": "NO",
    "lang": "no",
-   "time": "2026-10-20T10:14:00Z",
-   "tone": 5,
+   "time": "2026-10-20T10:28:00Z",
+   "tone": -1,
    "image": "",
    "video": ""
   }

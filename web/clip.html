@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="robots" content="noindex" />
+    <title>Today On Earth · clip frame</title>
+  </head>
+  <body>
+    <!-- Render target for a headless time-lapse renderer: ?t=<frame stamp>&w=1080&h=1920&dark=1.
+         When the frame is drawn, window.__clipReady is true and body has data-ready="1". -->
+    <div id="clip" class="clip">
+      <div id="clip-map" class="clip-map"></div>
+      <div class="clip-top">
+        <h1 class="clip-wordmark">Today On Earth</h1>
+        <p id="clip-time" class="clip-time"></p>
+      </div>
+      <p id="clip-counts" class="clip-counts"></p>
+    </div>
+    <script type="module" src="./src/clip.ts"></script>
+  </body>
+</html>

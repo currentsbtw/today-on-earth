@@ -2,25 +2,25 @@
  "id": "836741fffffffff",
  "name": "Caracas, Distrito Federal, Venezuela",
  "n": 96,
- "o": 23,
- "c": 22,
- "l": 15,
- "t": -0.3,
+ "o": 24,
+ "c": 24,
+ "l": 17,
+ "t": -0.6,
  "topOutlets": [
   [
-   "wire-service.example",
+   "xinhua-sample.example",
    5
   ],
   [
-   "tageszeitung.example",
-   5
+   "harbour-press.example",
+   4
   ],
   [
-   "jakarta-pos.example",
-   5
+   "le-quotidien.example",
+   3
   ],
   [
-   "la-voz.example",
+   "seoul-daily.example",
    3
   ],
   [
@@ -28,41 +28,41 @@
    3
   ],
   [
+   "o-correio.example",
+   3
+  ],
+  [
    "tehran-times.example",
    3
   ],
   [
-   "lagos-sun.example",
+   "haaretz-sample.example",
    2
   ],
   [
-   "o-correio.example",
+   "gulf-report.example",
    2
   ],
   [
-   "nation-ke.example",
-   2
-  ],
-  [
-   "vesti-news.example",
+   "kyiv-herald.example",
    2
   ]
  ],
  "topCountries": [
   [
-   "",
+   "CN",
    5
   ],
   [
-   "DE",
-   5
+   "AU",
+   4
   ],
   [
-   "ID",
-   5
+   "FR",
+   3
   ],
   [
-   "AR",
+   "KR",
    3
   ],
   [
@@ -70,45 +70,53 @@
    3
   ],
   [
+   "BR",
+   3
+  ],
+  [
    "IR",
    3
   ],
   [
-   "NG",
+   "IL",
    2
   ],
   [
-   "BR",
+   "AE",
    2
   ],
   [
-   "KE",
-   2
-  ],
-  [
-   "RU",
+   "UA",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   15
-  ],
-  [
-   "de",
-   5
-  ],
-  [
-   "id",
-   5
+   9
   ],
   [
    "ar",
-   4
+   5
+  ],
+  [
+   "zh",
+   5
+  ],
+  [
+   "fr",
+   3
+  ],
+  [
+   "ko",
+   3
   ],
   [
    "es",
+   3
+  ],
+  [
+   "pt",
    3
   ],
   [
@@ -116,15 +124,7 @@
    3
   ],
   [
-   "pt",
-   2
-  ],
-  [
-   "ru",
-   2
-  ],
-  [
-   "ko",
+   "he",
    2
   ],
   [
@@ -134,452 +134,144 @@
  ],
  "articles": [
   {
-   "title": "[sample] Football club confirms new coach near Caracas",
-   "url": "https://lagos-sun.example/news/1zko94",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-21T05:18:00Z",
-   "tone": 4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Caracas",
-   "url": "https://wire-service.example/news/b6tbk9",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-21T04:51:00Z",
-   "tone": 4.7,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Caracas",
-   "url": "https://o-correio.example/news/qgq84",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-21T04:32:00Z",
-   "tone": -4.5,
-   "image": "",
-   "video": ""
-  },
-  {
    "title": "[sample] Central bank holds interest rate near Caracas",
-   "url": "https://nation-ke.example/news/edc2s0",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-21T04:01:00Z",
-   "tone": -0.6,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Caracas",
-   "url": "https://lagos-sun.example/news/fcmojk",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-21T03:32:00Z",
-   "tone": 2.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Caracas",
-   "url": "https://la-voz.example/news/2tado2",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-21T03:14:00Z",
-   "tone": -2.6,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Caracas",
-   "url": "https://vesti-news.example/news/2q52f2",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-21T02:46:00Z",
-   "tone": -0.9,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Caracas",
-   "url": "https://al-akhbar.example/news/46ahed",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T02:03:00Z",
-   "tone": 2.5,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Caracas",
-   "url": "https://haaretz-sample.example/news/ejvxz1",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-21T01:53:00Z",
-   "tone": 4.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Caracas",
-   "url": "https://tageszeitung.example/news/t5v6s",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-21T01:25:00Z",
-   "tone": 4.3,
+   "url": "https://le-quotidien.example/news/8b71is",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-21T05:36:00Z",
+   "tone": -4.3,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Trade talks resume after pause near Caracas",
-   "url": "https://tehran-times.example/news/429rgz",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-21T00:53:00Z",
-   "tone": 2.7,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Caracas",
-   "url": "https://seoul-daily.example/news/6082y",
+   "url": "https://seoul-daily.example/news/fgp6ao",
    "source": "seoul-daily.example",
    "country": "KR",
    "lang": "ko",
-   "time": "2026-10-21T00:26:00Z",
-   "tone": -4,
+   "time": "2026-10-21T05:09:00Z",
+   "tone": -1.6,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Trade talks resume after pause near Caracas",
-   "url": "https://daily-ledger.example/news/3xidyb",
+   "title": "[sample] Researchers report vaccine trial results near Caracas",
+   "url": "https://haaretz-sample.example/news/4mjaqv",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-21T04:49:00Z",
+   "tone": 0.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Caracas",
+   "url": "https://daily-ledger.example/news/38i8lr",
    "source": "daily-ledger.example",
    "country": "US",
    "lang": "en",
-   "time": "2026-10-21T00:03:00Z",
-   "tone": 2.3,
+   "time": "2026-10-21T04:19:00Z",
+   "tone": -5,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Wildfire forces evacuations near Caracas",
-   "url": "https://nation-ke.example/news/bkylqh",
-   "source": "nation-ke.example",
-   "country": "KE",
+   "title": "[sample] Football club confirms new coach near Caracas",
+   "url": "https://gulf-report.example/news/7f2w4",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-21T03:42:00Z",
+   "tone": 1.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Caracas",
+   "url": "https://harbour-press.example/news/2hzjxr",
+   "source": "harbour-press.example",
+   "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T23:17:00Z",
-   "tone": 3.8,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "",
-   "url": "https://kyiv-herald.example/news/2qmq5p",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T22:59:00Z",
-   "tone": 4.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Caracas",
-   "url": "https://wire-service.example/news/7d8mut",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T22:25:00Z",
-   "tone": 4.7,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Caracas",
-   "url": "https://la-voz.example/news/6g3wq1",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T21:57:00Z",
-   "tone": 2.4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Caracas",
-   "url": "https://tageszeitung.example/news/6q4azp",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T21:27:00Z",
-   "tone": -4.7,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Caracas",
-   "url": "https://vesti-news.example/news/74vtsf",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T21:08:00Z",
+   "time": "2026-10-21T03:24:00Z",
    "tone": -4.1,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Central bank holds interest rate near Caracas",
-   "url": "https://wire-service.example/news/51ms0q",
-   "source": "wire-service.example",
-   "country": "",
+   "title": "[sample] Protest gathers in city centre near Caracas",
+   "url": "https://harbour-press.example/news/dkktkq",
+   "source": "harbour-press.example",
+   "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T20:44:00Z",
-   "tone": -3.7,
+   "time": "2026-10-21T03:02:00Z",
+   "tone": -1,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Football club confirms new coach near Caracas",
-   "url": "https://seoul-daily.example/news/3hq65b",
+   "title": "[sample] Court hears appeal in landmark case near Caracas",
+   "url": "https://seoul-daily.example/news/3lk9n3",
    "source": "seoul-daily.example",
    "country": "KR",
    "lang": "ko",
-   "time": "2026-10-20T20:09:00Z",
-   "tone": -6.8,
+   "time": "2026-10-21T02:35:00Z",
+   "tone": 0.7,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Central bank holds interest rate near Caracas",
-   "url": "https://global-desk.example/news/4p1mk9",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T19:45:00Z",
-   "tone": -1.2,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Caracas",
-   "url": "https://jakarta-pos.example/news/7p7yyi",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T19:19:00Z",
-   "tone": -0.1,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Caracas",
-   "url": "https://corriere-sample.example/news/9tgcli",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T18:45:00Z",
-   "tone": -4,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Caracas",
-   "url": "https://wire-service.example/news/9q2ckl",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T18:25:00Z",
-   "tone": 1,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Caracas",
-   "url": "https://jakarta-pos.example/news/xbn35",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T18:04:00Z",
-   "tone": -1.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Caracas",
-   "url": "https://wire-service.example/news/bic3cv",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T17:35:00Z",
-   "tone": -4.5,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Caracas",
-   "url": "https://jakarta-pos.example/news/20z28k",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T17:02:00Z",
-   "tone": -5.9,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Caracas",
-   "url": "https://cape-mail.example/news/3phd9k",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T16:39:00Z",
-   "tone": -0.6,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Caracas",
-   "url": "https://jakarta-pos.example/news/7ga1n3",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T15:57:00Z",
-   "tone": 2.8,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Caracas",
-   "url": "https://kyiv-herald.example/news/9q9a4s",
+   "title": "[sample] Officials meet over regional dispute near Caracas",
+   "url": "https://kyiv-herald.example/news/6oeqc",
    "source": "kyiv-herald.example",
    "country": "UA",
    "lang": "uk",
-   "time": "2026-10-20T15:33:00Z",
-   "tone": -6.7,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Caracas",
-   "url": "https://hindustan-post.example/news/2r4p0k",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T15:05:00Z",
-   "tone": -2.7,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Caracas",
-   "url": "https://nord-avis.example/news/bujg5q",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T14:41:00Z",
-   "tone": 0.2,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Caracas",
-   "url": "https://tehran-times.example/news/3yz9p8",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T14:15:00Z",
-   "tone": 0,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Caracas",
-   "url": "https://tageszeitung.example/news/87kbm2",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T13:43:00Z",
-   "tone": -0.7,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Caracas",
-   "url": "https://le-quotidien.example/news/aluoeb",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T13:22:00Z",
-   "tone": -3.3,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Caracas",
-   "url": "https://tehran-times.example/news/76topw",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T12:59:00Z",
-   "tone": -0.9,
+   "time": "2026-10-21T02:01:00Z",
+   "tone": -1.8,
    "image": "",
    "video": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Caracas",
-   "url": "https://al-akhbar.example/news/3bb916",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T12:19:00Z",
-   "tone": 2.1,
-   "image": "",
-   "video": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Caracas",
-   "url": "https://nord-avis.example/news/17zp26",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T12:05:00Z",
+   "url": "https://seoul-daily.example/news/7qi8co",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-21T01:35:00Z",
    "tone": -4.6,
    "image": "",
    "video": ""
   },
   {
-   "title": "[sample] Wildfire forces evacuations near Caracas",
-   "url": "https://harbour-press.example/news/5p359t",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T11:36:00Z",
-   "tone": 4.6,
+   "title": "[sample] Ministers discuss energy prices near Caracas",
+   "url": "https://hurriyet-sample.example/news/7zn26v",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-21T00:56:00Z",
+   "tone": -6.1,
    "image": "",
    "video": ""
   },
   {
-   "title": "",
-   "url": "https://la-voz.example/news/9vtxqn",
+   "title": "[sample] Football club confirms new coach near Caracas",
+   "url": "https://la-voz.example/news/e16v0t",
    "source": "la-voz.example",
    "country": "AR",
    "lang": "es",
-   "time": "2026-10-20T11:08:00Z",
+   "time": "2026-10-21T00:35:00Z",
+   "tone": -2.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Caracas",
+   "url": "https://gazeta-sample.example/news/9vtxqn",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-21T00:15:00Z",
    "tone": 4.6,
    "image": "",
    "video": ""
@@ -590,7 +282,7 @@
    "source": "al-akhbar.example",
    "country": "EG",
    "lang": "ar",
-   "time": "2026-10-20T10:39:00Z",
+   "time": "2026-10-20T23:47:00Z",
    "tone": -5.4,
    "image": "",
    "video": ""
@@ -601,7 +293,7 @@
    "source": "asahi-sample.example",
    "country": "JP",
    "lang": "ja",
-   "time": "2026-10-20T10:08:00Z",
+   "time": "2026-10-20T23:16:00Z",
    "tone": -4,
    "image": "",
    "video": ""
@@ -612,7 +304,7 @@
    "source": "o-correio.example",
    "country": "BR",
    "lang": "pt",
-   "time": "2026-10-20T09:34:00Z",
+   "time": "2026-10-20T22:42:00Z",
    "tone": -3.9,
    "image": "",
    "video": ""
@@ -623,7 +315,7 @@
    "source": "tageszeitung.example",
    "country": "DE",
    "lang": "de",
-   "time": "2026-10-20T09:16:00Z",
+   "time": "2026-10-20T22:23:00Z",
    "tone": -5.6,
    "image": "",
    "video": ""
@@ -634,7 +326,7 @@
    "source": "harbour-press.example",
    "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T08:37:00Z",
+   "time": "2026-10-20T21:45:00Z",
    "tone": 4.3,
    "image": "",
    "video": ""
@@ -645,7 +337,7 @@
    "source": "tageszeitung.example",
    "country": "DE",
    "lang": "de",
-   "time": "2026-10-20T08:11:00Z",
+   "time": "2026-10-20T21:19:00Z",
    "tone": 2.1,
    "image": "",
    "video": ""
@@ -656,7 +348,7 @@
    "source": "gulf-report.example",
    "country": "AE",
    "lang": "ar",
-   "time": "2026-10-20T07:39:00Z",
+   "time": "2026-10-20T20:47:00Z",
    "tone": 3.9,
    "image": "",
    "video": ""
@@ -667,7 +359,7 @@
    "source": "le-quotidien.example",
    "country": "FR",
    "lang": "fr",
-   "time": "2026-10-20T07:23:00Z",
+   "time": "2026-10-20T20:30:00Z",
    "tone": -1,
    "image": "",
    "video": ""
@@ -678,8 +370,316 @@
    "source": "jakarta-pos.example",
    "country": "ID",
    "lang": "id",
-   "time": "2026-10-20T07:03:00Z",
+   "time": "2026-10-20T20:11:00Z",
    "tone": 4.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://haaretz-sample.example/news/6wc00i",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T19:38:00Z",
+   "tone": -2.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Caracas",
+   "url": "https://corriere-sample.example/news/g8ape1",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T19:11:00Z",
+   "tone": -5.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Caracas",
+   "url": "https://tehran-times.example/news/4u0kvh",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T18:32:00Z",
+   "tone": 5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Caracas",
+   "url": "https://o-correio.example/news/9yzcr7",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T18:08:00Z",
+   "tone": 4.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Caracas",
+   "url": "https://xinhua-sample.example/news/8bgtdg",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T17:46:00Z",
+   "tone": -4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Caracas",
+   "url": "https://tehran-times.example/news/2jzd4f",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T17:06:00Z",
+   "tone": -6.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Caracas",
+   "url": "https://global-desk.example/news/dq51d",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T16:39:00Z",
+   "tone": -4.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Caracas",
+   "url": "https://xinhua-sample.example/news/1lschk",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T16:18:00Z",
+   "tone": -5.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Caracas",
+   "url": "https://cape-mail.example/news/5k1f0n",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T15:44:00Z",
+   "tone": 3.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Caracas",
+   "url": "https://vesti-news.example/news/d62axw",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T15:17:00Z",
+   "tone": 1.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Caracas",
+   "url": "https://xinhua-sample.example/news/6138tv",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T15:02:00Z",
+   "tone": 2.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Caracas",
+   "url": "https://o-correio.example/news/9vcm0c",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T14:29:00Z",
+   "tone": -1.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Caracas",
+   "url": "https://xinhua-sample.example/news/abqpq4",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T13:53:00Z",
+   "tone": 3.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Caracas",
+   "url": "https://nation-ke.example/news/cq7bdw",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T13:30:00Z",
+   "tone": 2.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Caracas",
+   "url": "https://jakarta-pos.example/news/3gqnht",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T13:07:00Z",
+   "tone": 1.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Caracas",
+   "url": "https://harbour-press.example/news/12ahjj",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T12:49:00Z",
+   "tone": 1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Caracas",
+   "url": "https://al-akhbar.example/news/7svuwa",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T12:14:00Z",
+   "tone": 4.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Caracas",
+   "url": "https://el-diario.example/news/e4d2j0",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T11:37:00Z",
+   "tone": 2.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Caracas",
+   "url": "https://xinhua-sample.example/news/8a6jxn",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T11:17:00Z",
+   "tone": -0.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Caracas",
+   "url": "https://vesti-news.example/news/1pj0j9",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T10:41:00Z",
+   "tone": -1.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Caracas",
+   "url": "https://le-quotidien.example/news/cnx8i7",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T10:31:00Z",
+   "tone": -1.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Caracas",
+   "url": "https://lagos-sun.example/news/aqbz7p",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T09:47:00Z",
+   "tone": 3.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://al-akhbar.example/news/5d5x9n",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T09:31:00Z",
+   "tone": -0.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Caracas",
+   "url": "https://hurriyet-sample.example/news/266dd0",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T08:50:00Z",
+   "tone": -0.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://la-voz.example/news/belwgk",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T08:38:00Z",
+   "tone": 3.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Caracas",
+   "url": "https://corriere-sample.example/news/2uhulv",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T08:03:00Z",
+   "tone": -3.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Caracas",
+   "url": "https://kyiv-herald.example/news/8y9hhj",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T07:41:00Z",
+   "tone": -0.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Caracas",
+   "url": "https://tehran-times.example/news/54fdja",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T06:58:00Z",
+   "tone": 1.4,
    "image": "",
    "video": ""
   }
@@ -690,254 +690,82 @@
    "o": 7,
    "c": 7,
    "l": 5,
-   "t": 0.3,
-   "first": "2026-10-20T14:33:00Z",
-   "last": "2026-10-21T01:43:00Z",
-   "headline": "[sample] Aid convoy reaches border crossing in Caracas: timeline",
-   "headlineSource": "o-correio.example",
-   "headlineLang": "pt",
+   "t": -1.3,
+   "first": "2026-10-20T19:16:00Z",
+   "last": "2026-10-21T03:25:00Z",
+   "headline": "[sample] Wildfire forces evacuations in hills in Caracas: reactions",
+   "headlineSource": "nation-ke.example",
+   "headlineLang": "en",
    "entities": [
-    "united nations",
-    "refugees",
-    "humanitarian aid",
+    "wildfire",
+    "evacuation",
+    "fire service",
     "caracas"
    ],
    "articles": [
     {
-     "title": "[sample] Aid convoy reaches border crossing in Caracas: reactions",
-     "url": "https://xinhua-sample.example/story/5pishu",
-     "source": "xinhua-sample.example",
-     "country": "CN",
-     "lang": "zh",
-     "time": "2026-10-21T01:43:00Z",
-     "tone": -1,
+     "title": "[sample] Wildfire forces evacuations in hills in Caracas: live updates",
+     "url": "https://wire-service.example/story/d3dz2j",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T03:25:00Z",
+     "tone": 1.2,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Aid convoy reaches border crossing in Caracas: timeline",
-     "url": "https://o-correio.example/story/g2cm26",
-     "source": "o-correio.example",
-     "country": "BR",
-     "lang": "pt",
-     "time": "2026-10-21T00:57:00Z",
-     "tone": -4.7,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Caracas: what we know",
-     "url": "https://el-diario.example/story/eo4eyv",
-     "source": "el-diario.example",
-     "country": "MX",
-     "lang": "es",
-     "time": "2026-10-20T23:49:00Z",
-     "tone": 3.5,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Caracas: what we know",
-     "url": "https://el-diario.example/story/31ch9j",
-     "source": "el-diario.example",
-     "country": "MX",
-     "lang": "es",
-     "time": "2026-10-20T23:40:00Z",
+     "title": "[sample] Wildfire forces evacuations in hills in Caracas: what we know",
+     "url": "https://hindustan-post.example/story/eh82tv",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T03:03:00Z",
      "tone": 0.3,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Aid convoy reaches border crossing in Caracas: latest",
-     "url": "https://morning-wire.example/story/1lschk",
+     "title": "[sample] Wildfire forces evacuations in hills in Caracas: explained",
+     "url": "https://cape-mail.example/story/8o6o6a",
+     "source": "cape-mail.example",
+     "country": "ZA",
+     "lang": "en",
+     "time": "2026-10-21T02:19:00Z",
+     "tone": -4,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Caracas: timeline",
+     "url": "https://morning-wire.example/story/bpekag",
      "source": "morning-wire.example",
      "country": "GB",
      "lang": "en",
-     "time": "2026-10-21T00:03:00Z",
-     "tone": 1.4,
+     "time": "2026-10-21T01:40:00Z",
+     "tone": -5.7,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Aid convoy reaches border crossing in Caracas: latest",
-     "url": "https://nord-avis.example/story/7fkhpw",
-     "source": "nord-avis.example",
-     "country": "NO",
-     "lang": "no",
-     "time": "2026-10-20T22:58:00Z",
-     "tone": 2.6,
-     "image": "",
-     "video": ""
-    }
-   ]
-  },
-  {
-   "n": 18,
-   "o": 6,
-   "c": 6,
-   "l": 6,
-   "t": -2.5,
-   "first": "2026-10-20T22:10:00Z",
-   "last": "2026-10-21T02:15:00Z",
-   "headline": "[sample] Storm damage closes main roads in Caracas: timeline",
-   "headlineSource": "seoul-daily.example",
-   "headlineLang": "ko",
-   "entities": [
-    "natural disaster",
-    "transport",
-    "emergency services",
-    "caracas"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Storm damage closes main roads in Caracas: live updates",
-     "url": "https://jakarta-pos.example/story/c70usv",
-     "source": "jakarta-pos.example",
-     "country": "ID",
-     "lang": "id",
-     "time": "2026-10-21T02:15:00Z",
-     "tone": -3.2,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Caracas: explained",
-     "url": "https://corriere-sample.example/story/6138tv",
-     "source": "corriere-sample.example",
-     "country": "IT",
-     "lang": "it",
-     "time": "2026-10-21T01:24:00Z",
-     "tone": -3.8,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Caracas: timeline",
-     "url": "https://seoul-daily.example/story/eljmvc",
-     "source": "seoul-daily.example",
-     "country": "KR",
-     "lang": "ko",
-     "time": "2026-10-21T00:49:00Z",
-     "tone": -1.6,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Caracas: analysis",
-     "url": "https://xinhua-sample.example/story/8argl3",
-     "source": "xinhua-sample.example",
-     "country": "CN",
-     "lang": "zh",
-     "time": "2026-10-21T00:57:00Z",
-     "tone": 0.2,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Caracas: explained",
-     "url": "https://nord-avis.example/story/bmjugr",
-     "source": "nord-avis.example",
-     "country": "NO",
-     "lang": "no",
-     "time": "2026-10-20T23:59:00Z",
+     "title": "[sample] Wildfire forces evacuations in hills in Caracas: latest",
+     "url": "https://gazeta-sample.example/story/57z95f",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T00:09:00Z",
      "tone": -1.4,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Storm damage closes main roads in Caracas: live updates",
-     "url": "https://hurriyet-sample.example/story/bema6i",
-     "source": "hurriyet-sample.example",
-     "country": "TR",
-     "lang": "tr",
-     "time": "2026-10-20T23:00:00Z",
-     "tone": -5.3,
-     "image": "",
-     "video": ""
-    }
-   ]
-  },
-  {
-   "n": 15,
-   "o": 6,
-   "c": 6,
-   "l": 4,
-   "t": -1.4,
-   "first": "2026-10-21T00:28:00Z",
-   "last": "2026-10-21T02:49:00Z",
-   "headline": "[sample] Ministers meet over energy prices in Caracas: what we know",
-   "headlineSource": "harbour-press.example",
-   "headlineLang": "en",
-   "entities": [
-    "energy",
-    "european union",
-    "oil prices",
-    "caracas"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Ministers meet over energy prices in Caracas: what we know",
-     "url": "https://harbour-press.example/story/duiq3s",
-     "source": "harbour-press.example",
-     "country": "AU",
-     "lang": "en",
-     "time": "2026-10-21T02:49:00Z",
-     "tone": -5.4,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Caracas: reactions",
-     "url": "https://nation-ke.example/story/6m1c5y",
+     "title": "[sample] Wildfire forces evacuations in hills in Caracas: reactions",
+     "url": "https://nation-ke.example/story/fzajyl",
      "source": "nation-ke.example",
      "country": "KE",
      "lang": "en",
-     "time": "2026-10-21T02:02:00Z",
-     "tone": -0.8,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Caracas: analysis",
-     "url": "https://asahi-sample.example/story/2uuulu",
-     "source": "asahi-sample.example",
-     "country": "JP",
-     "lang": "ja",
-     "time": "2026-10-21T01:01:00Z",
-     "tone": 3.9,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Caracas: live updates",
-     "url": "https://xinhua-sample.example/story/cz9luu",
-     "source": "xinhua-sample.example",
-     "country": "CN",
-     "lang": "zh",
-     "time": "2026-10-21T00:43:00Z",
-     "tone": -1.4,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Caracas: in pictures",
-     "url": "https://lagos-sun.example/story/8a6jxn",
-     "source": "lagos-sun.example",
-     "country": "NG",
-     "lang": "en",
-     "time": "2026-10-21T00:09:00Z",
-     "tone": -3.2,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Caracas: live updates",
-     "url": "https://global-desk.example/story/g51sa3",
-     "source": "global-desk.example",
-     "country": "CA",
-     "lang": "en",
-     "time": "2026-10-21T00:49:00Z",
-     "tone": -1.4,
+     "time": "2026-10-21T00:05:00Z",
+     "tone": 1.7,
      "image": "",
      "video": ""
     }
@@ -946,90 +774,176 @@
   {
    "n": 9,
    "o": 6,
-   "c": 3,
-   "l": 6,
-   "t": 0.9,
-   "first": "2026-10-20T23:52:00Z",
-   "last": "2026-10-21T04:47:00Z",
-   "headline": "[sample] Court hears appeal in corruption case in Caracas: explained",
-   "headlineSource": "seoul-daily.example",
-   "headlineLang": "ko",
+   "c": 4,
+   "l": 4,
+   "t": -1.8,
+   "first": "2026-10-21T00:14:00Z",
+   "last": "2026-10-21T02:49:00Z",
+   "headline": "[sample] Storm damage closes main roads in Caracas: live updates",
+   "headlineSource": "daily-ledger.example",
+   "headlineLang": "en",
    "entities": [
-    "supreme court",
-    "corruption",
-    "prosecutor",
+    "natural disaster",
+    "transport",
+    "emergency services",
     "caracas"
    ],
    "articles": [
     {
-     "title": "[sample] Court hears appeal in corruption case in Caracas: live updates",
-     "url": "https://kyiv-herald.example/story/7gjqmc",
-     "source": "kyiv-herald.example",
-     "country": "UA",
-     "lang": "uk",
-     "time": "2026-10-21T04:47:00Z",
-     "tone": 2.1,
+     "title": "[sample] Storm damage closes main roads in Caracas: what we know",
+     "url": "https://morning-wire.example/story/45ut6w",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-21T02:49:00Z",
+     "tone": -0.5,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Court hears appeal in corruption case in Caracas: explained",
-     "url": "https://seoul-daily.example/story/aqbz7p",
-     "source": "seoul-daily.example",
-     "country": "KR",
-     "lang": "ko",
-     "time": "2026-10-21T03:51:00Z",
-     "tone": -2.4,
+     "title": "[sample] Storm damage closes main roads in Caracas: analysis",
+     "url": "https://asahi-sample.example/story/cr2puz",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T02:10:00Z",
+     "tone": -1.1,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Court hears appeal in corruption case in Caracas: what we know",
-     "url": "https://o-correio.example/story/5d5x9n",
-     "source": "o-correio.example",
-     "country": "BR",
-     "lang": "pt",
-     "time": "2026-10-21T03:25:00Z",
-     "tone": 1.6,
+     "title": "[sample] Storm damage closes main roads in Caracas: analysis",
+     "url": "https://lagos-sun.example/story/g7ap07",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-21T01:29:00Z",
+     "tone": -4.5,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Court hears appeal in corruption case in Caracas: live updates",
-     "url": "https://corriere-sample.example/story/d6kzqx",
+     "title": "[sample] Storm damage closes main roads in Caracas: live updates",
+     "url": "https://daily-ledger.example/story/a2bxfd",
+     "source": "daily-ledger.example",
+     "country": "US",
+     "lang": "en",
+     "time": "2026-10-21T00:22:00Z",
+     "tone": 3.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Caracas: analysis",
+     "url": "https://el-diario.example/story/7wr3ws",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T01:09:00Z",
+     "tone": -5.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Caracas: latest",
+     "url": "https://gazeta-sample.example/story/bt0wug",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T00:14:00Z",
+     "tone": -3.3,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 9,
+   "o": 6,
+   "c": 4,
+   "l": 5,
+   "t": -0.6,
+   "first": "2026-10-21T00:03:00Z",
+   "last": "2026-10-21T04:36:00Z",
+   "headline": "[sample] Central bank leaves rates unchanged in Caracas: latest",
+   "headlineSource": "corriere-sample.example",
+   "headlineLang": "it",
+   "entities": [
+    "central bank",
+    "inflation",
+    "interest rates",
+    "caracas"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Caracas: live updates",
+     "url": "https://el-diario.example/story/9gn98k",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T04:36:00Z",
+     "tone": -2.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Caracas: latest",
+     "url": "https://corriere-sample.example/story/f8p6i0",
      "source": "corriere-sample.example",
      "country": "IT",
      "lang": "it",
-     "time": "2026-10-21T03:32:00Z",
-     "tone": -0.8,
+     "time": "2026-10-21T03:45:00Z",
+     "tone": -1.6,
      "image": "",
      "video": ""
     },
     {
-     "title": "[sample] Court hears appeal in corruption case in Caracas: latest",
-     "url": "https://xinhua-sample.example/story/2iv8n8",
-     "source": "xinhua-sample.example",
-     "country": "CN",
-     "lang": "zh",
-     "time": "2026-10-21T03:27:00Z",
-     "tone": 0.9,
-     "image": "",
-     "video": ""
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in Caracas: analysis",
-     "url": "https://global-desk.example/story/8wb25b",
-     "source": "global-desk.example",
-     "country": "CA",
+     "title": "[sample] Central bank leaves rates unchanged in Caracas: analysis",
+     "url": "https://lagos-sun.example/story/68pmat",
+     "source": "lagos-sun.example",
+     "country": "NG",
      "lang": "en",
-     "time": "2026-10-21T02:22:00Z",
-     "tone": 3.8,
+     "time": "2026-10-21T03:00:00Z",
+     "tone": 2,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Caracas: live updates",
+     "url": "https://hindustan-post.example/story/464ea8",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T03:24:00Z",
+     "tone": 0,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Caracas: analysis",
+     "url": "https://nord-avis.example/story/7vkkv6",
+     "source": "nord-avis.example",
+     "country": "NO",
+     "lang": "no",
+     "time": "2026-10-21T02:24:00Z",
+     "tone": 3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Caracas: explained",
+     "url": "https://seoul-daily.example/story/am8dyj",
+     "source": "seoul-daily.example",
+     "country": "KR",
+     "lang": "ko",
+     "time": "2026-10-21T02:51:00Z",
+     "tone": -4.5,
      "image": "",
      "video": ""
     }
    ]
   }
  ],
- "unclustered": 34,
+ "unclustered": 58,
  "videos": 0
 }
