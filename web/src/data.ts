@@ -37,6 +37,8 @@ export interface Article {
   time: string;
   tone: number;
   image?: string;
+  /** A youtube.com / youtu.be URL, "" when none. */
+  video?: string;
 }
 
 export interface CellDetail {
@@ -53,6 +55,8 @@ export interface CellDetail {
   articles: Article[];
   /** Groups of the cell's articles about the same thing, by n descending. May be absent. */
   stories?: Story[];
+  /** Articles in the cell (whole window) that carry a video. */
+  videos?: number;
   /** Articles in no story; sum(stories.n) + unclustered == n. */
   unclustered?: number;
 }

@@ -1,0 +1,14 @@
+/* Design tokens shared by the map (style.css) and the methodology page (about.css). */
+:root {
+  --bg: #050608;
+  --surface: #0b0e12;
+  --line: #1c232c;
+  --text: #e9e6e0;
+  --muted: #8b929b;
+  --faint: #5b626b;
+  --heat: #f2a64a;
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --panel-w: 400px;
+  color-scheme: dark;
+}
+

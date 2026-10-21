@@ -1,6 +1,6 @@
 // The side panel (bottom sheet on narrow screens) listing every article for one cell.
 import type { Article, CellDetail, HeatCell, Story } from './data';
-import { ago, count, host, plural, safeHref, utcTime } from './format';
+import { ago, count, host, plural, safeHref, utcTime, youtubeId } from './format';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -11,6 +11,7 @@ const state = $<HTMLParagraphElement>('panel-state');
 const note = $<HTMLParagraphElement>('panel-note');
 const list = $<HTMLOListElement>('panel-list');
 const stories = $<HTMLDivElement>('panel-stories');
+const videos = $<HTMLElement>('panel-videos');
 const closeButton = $<HTMLButtonElement>('panel-close');
 
 let returnFocus: HTMLElement | null = null;
@@ -113,6 +114,98 @@ function storyCard(story: Story, now: number): HTMLElement {
   return card;
 }
 
+// Videos --------------------------------------------------------------------
+// Thumbnails come from YouTube's image host; the player is youtube-nocookie.com and only
+// loads when someone presses a thumbnail. Never autoplay.
+
+const MAX_CLIPS = 8;
+const PLAY_SVG = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z"/></svg>';
+
+interface Clip {
+  id: string;
+  source: string;
+  time: string;
+}
+
+/** Distinct videos in the cell's articles and story articles, newest first. */
+function collectClips(detail: CellDetail): Clip[] {
+  const all = [...detail.articles, ...(detail.stories ?? []).flatMap((st) => st.articles)];
+  all.sort((a, b) => Date.parse(b.time) - Date.parse(a.time));
+  const seen = new Map<string, Clip>();
+  for (const a of all) {
+    const id = youtubeId(a.video ?? '');
+    if (id && !seen.has(id)) seen.set(id, { id, source: a.source || host(a.url), time: a.time });
+    if (seen.size >= MAX_CLIPS) break;
+  }
+  return [...seen.values()];
+}
+
+function clipItem(clip: Clip): HTMLLIElement {
+  const li = el('li', 'video');
+  li.dataset.id = clip.id;
+  const button = el('button', 'video-thumb');
+  button.type = 'button';
+  button.setAttribute('aria-label', `Play video from ${clip.source}`);
+  const img = document.createElement('img');
+  img.src = `https://i.ytimg.com/vi/${clip.id}/mqdefault.jpg`;
+  img.alt = '';
+  img.loading = 'lazy';
+  img.width = 160;
+  img.height = 90;
+  const glyph = el('span', 'video-glyph');
+  glyph.innerHTML = PLAY_SVG;
+  button.append(img, glyph);
+  button.addEventListener('click', () => playClip(li));
+  li.append(button, el('span', 'video-source', clip.source));
+  return li;
+}
+
+/** Swaps the thumbnail for the YouTube player, in place. */
+function playClip(li: HTMLElement) {
+  const thumb = li.querySelector('.video-thumb');
+  if (!thumb) return;
+  const frame = document.createElement('iframe');
+  frame.src = `https://www.youtube-nocookie.com/embed/${li.dataset.id}`;
+  frame.title = `YouTube video from ${li.querySelector('.video-source')?.textContent ?? ''}`;
+  frame.allow = 'accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+  frame.allowFullscreen = true;
+  frame.loading = 'lazy';
+  frame.referrerPolicy = 'strict-origin-when-cross-origin';
+  li.classList.add('is-playing');
+  thumb.replaceWith(frame);
+  li.scrollIntoView({ block: 'nearest', inline: 'start' });
+  frame.focus();
+}
+
+/** From an article row: open that video in the strip (adding it if it was not among the first 8). */
+function playFromRow(id: string, source: string) {
+  let strip = videos.querySelector<HTMLOListElement>('.video-strip');
+  if (!strip) {
+    strip = el('ol', 'video-strip');
+    videos.replaceChildren(el('h3', 'panel-section', 'Videos'), strip);
+  }
+  videos.hidden = false;
+  let li = strip.querySelector<HTMLLIElement>(`li[data-id="${id}"]`);
+  if (!li) {
+    li = clipItem({ id, source, time: '' });
+    strip.prepend(li);
+  }
+  playClip(li);
+}
+
+function renderVideos(detail: CellDetail | null) {
+  const clips = detail && (detail.videos ?? 0) > 0 ? collectClips(detail) : [];
+  if (!clips.length) {
+    videos.replaceChildren();
+    videos.hidden = true;
+    return;
+  }
+  const strip = el('ol', 'video-strip');
+  strip.append(...clips.map(clipItem));
+  videos.replaceChildren(el('h3', 'panel-section', 'Videos'), strip);
+  videos.hidden = false;
+}
+
 /** Stories first (when the cell file has them), then the "All newest" heading for the flat list. */
 function renderStories(detail: CellDetail | null, now: number) {
   const groups = detail?.stories ?? [];
@@ -170,7 +263,20 @@ function articleItem(a: Article, now: number): HTMLLIElement {
     meta.append(span);
   }
   meta.append(toneMarker(a.tone));
-  li.append(headline, meta);
+  const id = youtubeId(a.video ?? '');
+  if (id) {
+    // A small play control next to the title opens the same in-place player.
+    const head = el('div', 'article-head');
+    const play = el('button', 'article-play');
+    play.type = 'button';
+    play.setAttribute('aria-label', 'Play video');
+    play.innerHTML = PLAY_SVG;
+    play.addEventListener('click', () => playFromRow(id, a.source || host(a.url)));
+    head.append(headline, play);
+    li.append(head, meta);
+  } else {
+    li.append(headline, meta);
+  }
   return li;
 }
 
@@ -190,6 +296,7 @@ export function openLoading(cell: HeatCell, windowHours: number) {
   why.textContent = whyLine(cell, windowHours);
   list.replaceChildren();
   renderStories(null, 0);
+  renderVideos(null);
   setState('loading');
   show();
 }
@@ -198,6 +305,7 @@ export function showDetail(detail: CellDetail, windowHours: number) {
   title.textContent = detail.name;
   why.textContent = whyLine(detail, windowHours);
   const now = Date.now();
+  renderVideos(detail);
   renderStories(detail, now);
   list.replaceChildren(...detail.articles.map((a) => articleItem(a, now)));
   const shown = detail.articles.length;
@@ -212,6 +320,7 @@ export function openMissing(n: number) {
   why.textContent = '';
   list.replaceChildren();
   renderStories(null, 0);
+  renderVideos(null);
   setState('No current details for this place.');
   show();
 }
@@ -225,6 +334,7 @@ export function setNote(text: string) {
 export function showError() {
   list.replaceChildren();
   renderStories(null, 0);
+  renderVideos(null);
   setState('Could not load the articles for this place.');
 }
 

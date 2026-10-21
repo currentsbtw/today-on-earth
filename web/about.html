@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#050608" />
+    <meta name="description" content="How Today On Earth builds its map of news coverage from GDELT, with no editor and no feed." />
+    <link rel="canonical" href="https://currentsbtw.github.io/today-on-earth/about.html" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 fill=%27%23050608%27/%3E%3Ccircle cx=%278%27 cy=%278%27 r=%274%27 fill=%27%23f2a64a%27/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="./src/about.css" />
+    <title>How Today On Earth works</title>
+  </head>
+  <body>
+    <header class="bar">
+      <a class="wordmark" href="./">Today On Earth</a>
+      <a class="back" href="./">Back to the map</a>
+    </header>
+    <main class="doc">
+      <h1>How Today On Earth works</h1>
+
+      <h2>What you are looking at</h2>
+      <p>
+        A map of where the world's news is pointing right now. Each glow is a place that articles published in the
+        last 24 hours are about. Brighter means more articles. That is all it means. It is not a map of what
+        matters, and it is not a map of what happened; it is a map of coverage.
+      </p>
+
+      <h2>Where the articles come from</h2>
+      <p>
+        Every article comes from the GDELT Project, an open dataset that monitors news websites around the world in
+        more than 100 languages and publishes what it found every 15 minutes. We read two of its feeds: the English
+        feed and the translated feed, which covers articles written in other languages. We do not choose outlets.
+        If GDELT saw it, it is here.
+      </p>
+
+      <h2>How a place is chosen for an article</h2>
+      <p>
+        GDELT lists the places each article mentions. We take the first place that is more specific than a whole
+        country: a city, a region, a landmark. Articles that only mention countries are counted in the totals but
+        are not drawn anywhere, because a country's centre is not where anything happened. The header tells you how
+        many articles were left unplaced for this reason.
+      </p>
+      <p>Places are grouped into hexagonal cells about 100 km across, so "Paris" and its suburbs glow together.</p>
+
+      <h2>What the numbers mean</h2>
+      <dl>
+        <dt>Articles</dt>
+        <dd>Distinct URLs in the window.</dd>
+        <dt>Outlets</dt>
+        <dd>Distinct website domains.</dd>
+        <dt>Countries</dt>
+        <dd>
+          The countries those outlets are based in, from GDELT's own list of news domains by country. Unknown
+          outlets count as unknown, not as any country.
+        </dd>
+        <dt>Languages</dt>
+        <dd>The language the article was written in, as GDELT recorded it.</dd>
+        <dt>Tone</dt>
+        <dd>
+          GDELT's tone score for the article, from negative to positive. We show it as a small mark, never as a word.
+        </dd>
+      </dl>
+
+      <h2>How "hot" is decided</h2>
+      <p>
+        Brightness is the article count on a logarithmic scale, squared so that only the busiest places reach
+        white. Nothing else feeds into it: not what the articles say, not which outlets wrote them, not what we
+        think. Places with heavy media presence (Washington, London) will usually be bright; that is a fact about
+        coverage, and we show it rather than correct it. A relative view, comparing each place with its own normal,
+        is planned once enough days of history exist.
+      </p>
+
+      <h2>Stories</h2>
+      <p>
+        Inside a place, articles are grouped into stories using only what GDELT already tagged for each article:
+        the people, organisations and themes it mentions, plus the words in its title. The headline shown for a
+        story is the title of one of its articles, chosen because it overlaps most with the others. We never write
+        or edit a headline. Articles that fit no group are listed below, unfiltered.
+      </p>
+
+      <h2>What this site does not do</h2>
+      <ul>
+        <li>It does not rank, recommend or summarise.</li>
+        <li>
+          It does not host articles or videos. Links go to the outlet; videos play from YouTube's own player when an
+          outlet embedded one.
+        </li>
+        <li>It does not know what is true. A place can glow because of a rumour.</li>
+        <li>
+          It does not see everything. GDELT misses outlets, geocodes wrongly sometimes, and sees more of the
+          English-language web than any other. Dark areas mean no coverage was found, which is not the same as
+          nothing happening.
+        </li>
+        <li>It has no editor and no feed. What you see is the same for everyone.</li>
+      </ul>
+
+      <h2>Replay</h2>
+      <p>
+        The scrubber under the map replays the last 24 hours in 15-minute steps. Each step is a snapshot of the
+        same rolling window at that time.
+      </p>
+
+      <h2>Freshness</h2>
+      <p>
+        A new snapshot is built every 15 minutes. The header shows the time of the one you are looking at, in UTC.
+      </p>
+
+      <h2>Data, code, attribution</h2>
+      <p>
+        The site is open source. Map outlines are from
+        <a href="https://www.naturalearthdata.com/" rel="noopener">Natural Earth</a> (public domain). News data is
+        from the <a href="https://www.gdeltproject.org/" rel="noopener">GDELT Project</a>, used under its open terms
+        with attribution.
+      </p>
+
+      <p class="back-foot"><a href="./">Back to the map</a></p>
+    </main>
+  </body>
+</html>

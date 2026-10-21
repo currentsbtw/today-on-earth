@@ -69,3 +69,24 @@ export function placeKey(name: string): string {
     .replace(/\s+(d\.c\.|city|metropolitan)$/, '')
     .trim();
 }
+
+/**
+ * The 11-character id of a YouTube video URL, or null. Accepts youtube.com/watch?v=<id>,
+ * youtu.be/<id>, youtube.com/shorts/<id> and youtube.com/embed/<id>; rejects everything else.
+ */
+export function youtubeId(url: string): string | null {
+  let u: URL;
+  try {
+    u = new URL(url);
+  } catch {
+    return null;
+  }
+  if (u.protocol !== 'https:' && u.protocol !== 'http:') return null;
+  const host = u.hostname.replace(/^(www|m)\./, '');
+  const parts = u.pathname.split('/').filter(Boolean);
+  let id: string | null = null;
+  if (host === 'youtu.be' && parts.length === 1) id = parts[0];
+  else if (host === 'youtube.com' && parts.length === 1 && parts[0] === 'watch') id = u.searchParams.get('v');
+  else if (host === 'youtube.com' && parts.length === 2 && (parts[0] === 'shorts' || parts[0] === 'embed')) id = parts[1];
+  return id && /^[A-Za-z0-9_-]{11}$/.test(id) ? id : null;
+}

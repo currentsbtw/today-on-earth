@@ -3,32 +3,36 @@
  "name": "New Delhi, Delhi, India",
  "n": 980,
  "o": 69,
- "c": 23,
- "l": 17,
- "t": -0.6,
+ "c": 22,
+ "l": 16,
+ "t": -1.4,
  "topOutlets": [
   [
    "hindustan-post.example",
    5
   ],
   [
+   "jakarta-pos.example",
+   4
+  ],
+  [
+   "harbour-press.example",
+   4
+  ],
+  [
+   "haaretz-sample.example",
+   3
+  ],
+  [
+   "gulf-report.example",
+   3
+  ],
+  [
    "nation-ke.example",
-   4
-  ],
-  [
-   "al-akhbar.example",
-   4
-  ],
-  [
-   "global-desk.example",
    3
   ],
   [
-   "wire-service.example",
-   3
-  ],
-  [
-   "kyiv-herald.example",
+   "asahi-sample.example",
    3
   ],
   [
@@ -36,15 +40,11 @@
    3
   ],
   [
-   "seoul-daily.example",
-   2
+   "el-diario.example",
+   3
   ],
   [
-   "o-correio.example",
-   2
-  ],
-  [
-   "le-quotidien.example",
+   "lagos-sun.example",
    2
   ]
  ],
@@ -54,23 +54,27 @@
    5
   ],
   [
+   "ID",
+   4
+  ],
+  [
+   "AU",
+   4
+  ],
+  [
+   "IL",
+   3
+  ],
+  [
+   "AE",
+   3
+  ],
+  [
    "KE",
-   4
-  ],
-  [
-   "EG",
-   4
-  ],
-  [
-   "CA",
    3
   ],
   [
-   "",
-   3
-  ],
-  [
-   "UA",
+   "JP",
    3
   ],
   [
@@ -78,29 +82,33 @@
    3
   ],
   [
-   "KR",
-   2
+   "MX",
+   3
   ],
   [
-   "BR",
-   2
-  ],
-  [
-   "FR",
+   "NG",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   20
+   17
   ],
   [
    "ar",
    4
   ],
   [
-   "uk",
+   "id",
+   4
+  ],
+  [
+   "he",
+   3
+  ],
+  [
+   "ja",
    3
   ],
   [
@@ -109,543 +117,585 @@
   ],
   [
    "es",
-   2
-  ],
-  [
-   "ko",
-   2
-  ],
-  [
-   "pt",
-   2
-  ],
-  [
-   "fr",
-   2
-  ],
-  [
-   "it",
-   2
+   3
   ],
   [
    "no",
+   2
+  ],
+  [
+   "zh",
+   2
+  ],
+  [
+   "ru",
    2
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Wildfire forces evacuations near New Delhi",
-   "url": "https://nation-ke.example/news/2u3sfc",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-21T05:22:00Z",
-   "tone": -2.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near New Delhi",
-   "url": "https://al-akhbar.example/news/8pbvjd",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T04:51:00Z",
-   "tone": -3.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near New Delhi",
-   "url": "https://el-diario.example/news/3e0gn3",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-21T04:36:00Z",
-   "tone": -4.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near New Delhi",
-   "url": "https://nation-ke.example/news/805wg5",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-21T03:56:00Z",
-   "tone": -4.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near New Delhi",
-   "url": "https://hindustan-post.example/news/erihn",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-21T03:32:00Z",
-   "tone": 0.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near New Delhi",
-   "url": "https://al-akhbar.example/news/f753ls",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T03:16:00Z",
-   "tone": -0.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near New Delhi",
-   "url": "https://hindustan-post.example/news/ehba8j",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-21T02:31:00Z",
-   "tone": -6.9,
-   "image": ""
-  },
-  {
    "title": "[sample] Researchers report vaccine trial results near New Delhi",
-   "url": "https://haaretz-sample.example/news/5h4lr6",
+   "url": "https://haaretz-sample.example/news/57avde",
    "source": "haaretz-sample.example",
    "country": "IL",
    "lang": "he",
-   "time": "2026-10-21T02:12:00Z",
-   "tone": -6,
-   "image": ""
+   "time": "2026-10-21T05:16:00Z",
+   "tone": -5.1,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "",
-   "url": "https://seoul-daily.example/news/3kxy8k",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-21T01:37:00Z",
-   "tone": -0.8,
-   "image": ""
+   "title": "[sample] Storm disrupts transport links near New Delhi",
+   "url": "https://gulf-report.example/news/18ughj",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-21T04:50:00Z",
+   "tone": -5,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Aid convoy reaches border crossing near New Delhi",
-   "url": "https://global-desk.example/news/36p085",
-   "source": "global-desk.example",
-   "country": "CA",
+   "title": "[sample] Central bank holds interest rate near New Delhi",
+   "url": "https://nation-ke.example/news/dwhpc3",
+   "source": "nation-ke.example",
+   "country": "KE",
    "lang": "en",
-   "time": "2026-10-21T01:22:00Z",
-   "tone": -4.7,
-   "image": ""
+   "time": "2026-10-21T04:26:00Z",
+   "tone": -0.7,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Protest gathers in city centre near New Delhi",
-   "url": "https://global-desk.example/news/b568s2",
-   "source": "global-desk.example",
-   "country": "CA",
+   "title": "[sample] Central bank holds interest rate near New Delhi",
+   "url": "https://lagos-sun.example/news/464qmg",
+   "source": "lagos-sun.example",
+   "country": "NG",
    "lang": "en",
-   "time": "2026-10-21T00:59:00Z",
-   "tone": -6.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near New Delhi",
-   "url": "https://wire-service.example/news/2nwi18",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-21T00:30:00Z",
+   "time": "2026-10-21T04:00:00Z",
    "tone": 1.8,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://o-correio.example/news/fc50fr",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-21T00:04:00Z",
-   "tone": -0.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near New Delhi",
-   "url": "https://al-akhbar.example/news/6oduwv",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T23:27:00Z",
-   "tone": 0,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near New Delhi",
-   "url": "https://le-quotidien.example/news/9nhoxm",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T23:06:00Z",
-   "tone": 4.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near New Delhi",
-   "url": "https://hurriyet-sample.example/news/dwf1dt",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T22:29:00Z",
-   "tone": -0.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near New Delhi",
-   "url": "https://la-voz.example/news/3670e5",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T22:14:00Z",
-   "tone": 1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near New Delhi",
-   "url": "https://tageszeitung.example/news/9oeca7",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T21:34:00Z",
-   "tone": -1.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near New Delhi",
-   "url": "https://hindustan-post.example/news/1l37ty",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T21:06:00Z",
-   "tone": 0.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near New Delhi",
-   "url": "https://corriere-sample.example/news/f5a0v0",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T20:47:00Z",
-   "tone": -1.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near New Delhi",
-   "url": "https://seoul-daily.example/news/f6gj3l",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T20:18:00Z",
-   "tone": -1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near New Delhi",
-   "url": "https://morning-wire.example/news/36nxso",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T19:52:00Z",
-   "tone": -3.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near New Delhi",
-   "url": "https://kyiv-herald.example/news/1ka29x",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T19:20:00Z",
-   "tone": -1.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near New Delhi",
-   "url": "https://lagos-sun.example/news/51lyuw",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T18:54:00Z",
-   "tone": -2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near New Delhi",
-   "url": "https://hindustan-post.example/news/qli2r",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T18:24:00Z",
-   "tone": 4.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near New Delhi",
-   "url": "https://vesti-news.example/news/2gecgk",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T17:58:00Z",
-   "tone": -1.2,
-   "image": ""
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near New Delhi",
-   "url": "https://nord-avis.example/news/18onaj",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T17:32:00Z",
-   "tone": 3.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near New Delhi",
-   "url": "https://o-correio.example/news/5zumjd",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T17:08:00Z",
-   "tone": 1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near New Delhi",
-   "url": "https://wire-service.example/news/6den1q",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T16:29:00Z",
-   "tone": 3.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near New Delhi",
-   "url": "https://tehran-times.example/news/dif727",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T16:07:00Z",
-   "tone": -5.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near New Delhi",
-   "url": "https://tehran-times.example/news/cwvfr8",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T15:32:00Z",
-   "tone": 0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near New Delhi",
-   "url": "https://nation-ke.example/news/9kos04",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T15:17:00Z",
-   "tone": 3.8,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://asahi-sample.example/news/f3s0xq",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T14:36:00Z",
-   "tone": 4.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near New Delhi",
-   "url": "https://harbour-press.example/news/939sm3",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T14:14:00Z",
-   "tone": -2.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near New Delhi",
-   "url": "https://kyiv-herald.example/news/3gzcr1",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T13:51:00Z",
-   "tone": -1.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near New Delhi",
-   "url": "https://corriere-sample.example/news/5d12zr",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T13:17:00Z",
-   "tone": -0.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near New Delhi",
-   "url": "https://wire-service.example/news/3orqco",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T12:58:00Z",
-   "tone": 0.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near New Delhi",
-   "url": "https://hindustan-post.example/news/2qrqfb",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T12:34:00Z",
-   "tone": 2.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near New Delhi",
-   "url": "https://harbour-press.example/news/gcfd9g",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T11:58:00Z",
-   "tone": -3.5,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://xinhua-sample.example/news/9y5y4l",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T11:24:00Z",
-   "tone": -4,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://nord-avis.example/news/ewci25",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T11:11:00Z",
-   "tone": 4.9,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://nation-ke.example/news/afured",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T10:25:00Z",
-   "tone": -4.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near New Delhi",
-   "url": "https://lagos-sun.example/news/dwl5a9",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T09:57:00Z",
-   "tone": 3.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near New Delhi",
-   "url": "https://al-akhbar.example/news/bzbbw2",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T09:39:00Z",
-   "tone": 4.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near New Delhi",
-   "url": "https://global-desk.example/news/3q5efq",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T09:17:00Z",
-   "tone": 3.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near New Delhi",
-   "url": "https://kyiv-herald.example/news/c4jsea",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T08:47:00Z",
-   "tone": 0.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near New Delhi",
-   "url": "https://le-quotidien.example/news/6ic5m2",
+   "url": "https://le-quotidien.example/news/g41hkf",
    "source": "le-quotidien.example",
    "country": "FR",
    "lang": "fr",
-   "time": "2026-10-20T08:17:00Z",
-   "tone": 2.2,
-   "image": ""
+   "time": "2026-10-21T03:34:00Z",
+   "tone": -4.2,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Aid convoy reaches border crossing near New Delhi",
-   "url": "https://xinhua-sample.example/news/9eg4em",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T07:48:00Z",
-   "tone": -5.4,
-   "image": ""
+   "title": "[sample] Wildfire forces evacuations near New Delhi",
+   "url": "https://lagos-sun.example/news/bngoei",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-21T03:07:00Z",
+   "tone": -6.2,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Election commission publishes turnout figures near New Delhi",
-   "url": "https://tehran-times.example/news/bpho2t",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T07:20:00Z",
-   "tone": -0.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near New Delhi",
-   "url": "https://jakarta-pos.example/news/drnvvy",
+   "title": "[sample] Officials meet over regional dispute near New Delhi",
+   "url": "https://jakarta-pos.example/news/bc3kc2",
    "source": "jakarta-pos.example",
    "country": "ID",
    "lang": "id",
-   "time": "2026-10-20T06:58:00Z",
-   "tone": 2.6,
-   "image": ""
+   "time": "2026-10-21T02:46:00Z",
+   "tone": -3.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near New Delhi",
+   "url": "https://nord-avis.example/news/d5g1fd",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-21T02:13:00Z",
+   "tone": 1.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near New Delhi",
+   "url": "https://haaretz-sample.example/news/eytkxd",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-21T01:52:00Z",
+   "tone": 4.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near New Delhi",
+   "url": "https://harbour-press.example/news/4v6ln",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-21T01:12:00Z",
+   "tone": 4.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near New Delhi",
+   "url": "https://nation-ke.example/news/f2uoiv",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-21T00:57:00Z",
+   "tone": -2.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near New Delhi",
+   "url": "https://asahi-sample.example/news/7ex67w",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-21T00:27:00Z",
+   "tone": -2.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near New Delhi",
+   "url": "https://asahi-sample.example/news/9qzgdb",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T23:53:00Z",
+   "tone": 0.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near New Delhi",
+   "url": "https://wire-service.example/news/bjjzzn",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T23:29:00Z",
+   "tone": 4.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near New Delhi",
+   "url": "https://haaretz-sample.example/news/cwi7zc",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T22:59:00Z",
+   "tone": -3.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near New Delhi",
+   "url": "https://hindustan-post.example/news/8zs0fg",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T22:39:00Z",
+   "tone": -6.6,
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near New Delhi",
+   "url": "https://tehran-times.example/news/8o8van",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T22:00:00Z",
+   "tone": -6.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near New Delhi",
+   "url": "https://hindustan-post.example/news/5nfnyb",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T21:29:00Z",
+   "tone": 1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near New Delhi",
+   "url": "https://al-akhbar.example/news/3gwaor",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T21:11:00Z",
+   "tone": -7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near New Delhi",
+   "url": "https://global-desk.example/news/cjh79c",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T20:45:00Z",
+   "tone": -5.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near New Delhi",
+   "url": "https://gulf-report.example/news/arq0rw",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T20:23:00Z",
+   "tone": -3.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near New Delhi",
+   "url": "https://corriere-sample.example/news/dfrzs1",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T19:40:00Z",
+   "tone": 1.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near New Delhi",
+   "url": "https://jakarta-pos.example/news/df0mb8",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T19:20:00Z",
+   "tone": 2.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near New Delhi",
+   "url": "https://xinhua-sample.example/news/9yg3q6",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T18:52:00Z",
+   "tone": 4.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near New Delhi",
+   "url": "https://harbour-press.example/news/6jllx1",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T18:23:00Z",
+   "tone": 0.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near New Delhi",
+   "url": "https://daily-ledger.example/news/9wywr8",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T17:46:00Z",
+   "tone": 3.9,
+   "image": "",
+   "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near New Delhi",
+   "url": "https://hindustan-post.example/news/e5jeg9",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T17:26:00Z",
+   "tone": -4.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near New Delhi",
+   "url": "https://el-diario.example/news/f9kf3y",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T17:10:00Z",
+   "tone": 2.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near New Delhi",
+   "url": "https://tehran-times.example/news/15va8c",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T16:34:00Z",
+   "tone": -6.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near New Delhi",
+   "url": "https://harbour-press.example/news/8kbrzp",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T16:02:00Z",
+   "tone": 3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near New Delhi",
+   "url": "https://jakarta-pos.example/news/f4mdz4",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T15:31:00Z",
+   "tone": 3.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near New Delhi",
+   "url": "https://tehran-times.example/news/er32ls",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T15:04:00Z",
+   "tone": 3.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near New Delhi",
+   "url": "https://gulf-report.example/news/dxajt6",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T14:40:00Z",
+   "tone": 2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near New Delhi",
+   "url": "https://gazeta-sample.example/news/3tgije",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T14:17:00Z",
+   "tone": -3.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near New Delhi",
+   "url": "https://asahi-sample.example/news/dnjdr1",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T13:44:00Z",
+   "tone": 4.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near New Delhi",
+   "url": "https://hurriyet-sample.example/news/d1kukb",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T13:10:00Z",
+   "tone": -5.4,
+   "image": "",
+   "video": "https://www.youtube.com/shorts/aqz-KE-bpKQ"
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near New Delhi",
+   "url": "https://el-diario.example/news/fg65yb",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T12:57:00Z",
+   "tone": -5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near New Delhi",
+   "url": "https://hindustan-post.example/news/881lh3",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T12:29:00Z",
+   "tone": -6.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near New Delhi",
+   "url": "https://vesti-news.example/news/epc4z1",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T12:05:00Z",
+   "tone": -2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near New Delhi",
+   "url": "https://harbour-press.example/news/151z53",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T11:33:00Z",
+   "tone": 4.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near New Delhi",
+   "url": "https://kyiv-herald.example/news/apwy99",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T11:03:00Z",
+   "tone": 4.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near New Delhi",
+   "url": "https://el-diario.example/news/4a23qp",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T10:34:00Z",
+   "tone": -5.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near New Delhi",
+   "url": "https://jakarta-pos.example/news/fhv4dl",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T10:05:00Z",
+   "tone": -6.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near New Delhi",
+   "url": "https://xinhua-sample.example/news/2l20q2",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T09:29:00Z",
+   "tone": -6.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near New Delhi",
+   "url": "https://nord-avis.example/news/dzrjmy",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T09:18:00Z",
+   "tone": -5.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near New Delhi",
+   "url": "https://vesti-news.example/news/2p14td",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T08:39:00Z",
+   "tone": -3.6,
+   "image": "",
+   "video": "https://www.youtube.com/channel/UC_placeholder"
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near New Delhi",
+   "url": "https://seoul-daily.example/news/fiqrg2",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T08:10:00Z",
+   "tone": -3.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near New Delhi",
+   "url": "https://hindustan-post.example/news/e5g86o",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T07:49:00Z",
+   "tone": 1.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://nation-ke.example/news/3oxp0x",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T07:29:00Z",
+   "tone": 1.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near New Delhi",
+   "url": "https://seoul-daily.example/news/37vr66",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T06:46:00Z",
+   "tone": -6.5,
+   "image": "",
+   "video": ""
   }
  ],
  "stories": [
   {
-   "n": 323,
-   "o": 32,
-   "c": 12,
+   "n": 311,
+   "o": 31,
+   "c": 11,
    "l": 8,
-   "t": -0.3,
-   "first": "2026-10-21T01:19:00Z",
-   "last": "2026-10-21T05:24:00Z",
-   "headline": "[sample] Ministers meet over energy prices in New Delhi: analysis",
-   "headlineSource": "harbour-press.example",
-   "headlineLang": "en",
+   "t": -1.3,
+   "first": "2026-10-20T23:44:00Z",
+   "last": "2026-10-21T02:55:00Z",
+   "headline": "[sample] Ministers meet over energy prices in New Delhi: timeline",
+   "headlineSource": "gazeta-sample.example",
+   "headlineLang": "pl",
    "entities": [
     "energy",
     "european union",
@@ -654,78 +704,84 @@
    ],
    "articles": [
     {
-     "title": "[sample] Ministers meet over energy prices in New Delhi: reactions",
-     "url": "https://kyiv-herald.example/story/1992vs",
-     "source": "kyiv-herald.example",
-     "country": "UA",
-     "lang": "uk",
-     "time": "2026-10-21T05:24:00Z",
-     "tone": 1.5,
-     "image": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in New Delhi: what we know",
-     "url": "https://tehran-times.example/story/9xxxkg",
-     "source": "tehran-times.example",
-     "country": "IR",
-     "lang": "fa",
-     "time": "2026-10-21T04:34:00Z",
-     "tone": -2.4,
-     "image": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in New Delhi: reactions",
-     "url": "https://la-voz.example/story/7oo3k6",
-     "source": "la-voz.example",
-     "country": "AR",
-     "lang": "es",
-     "time": "2026-10-21T04:22:00Z",
-     "tone": -4.7,
-     "image": ""
+     "title": "[sample] Ministers meet over energy prices in New Delhi: explained",
+     "url": "https://cape-mail.example/story/5y2v26",
+     "source": "cape-mail.example",
+     "country": "ZA",
+     "lang": "en",
+     "time": "2026-10-21T02:55:00Z",
+     "tone": 0.4,
+     "image": "",
+     "video": ""
     },
     {
      "title": "[sample] Ministers meet over energy prices in New Delhi: live updates",
-     "url": "https://la-voz.example/story/cc6jle",
-     "source": "la-voz.example",
-     "country": "AR",
-     "lang": "es",
-     "time": "2026-10-21T04:06:00Z",
-     "tone": 3.6,
-     "image": ""
+     "url": "https://nation-ke.example/story/gi193h",
+     "source": "nation-ke.example",
+     "country": "KE",
+     "lang": "en",
+     "time": "2026-10-21T02:10:00Z",
+     "tone": -1.6,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Ministers meet over energy prices in New Delhi: live updates",
-     "url": "https://hindustan-post.example/story/4fabf3",
-     "source": "hindustan-post.example",
-     "country": "IN",
-     "lang": "en",
-     "time": "2026-10-21T02:04:00Z",
-     "tone": -2.9,
-     "image": ""
+     "title": "[sample] Ministers meet over energy prices in New Delhi: timeline",
+     "url": "https://gazeta-sample.example/story/ejg76i",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T01:57:00Z",
+     "tone": -0.4,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Ministers meet over energy prices in New Delhi: analysis",
-     "url": "https://harbour-press.example/story/841t8s",
-     "source": "harbour-press.example",
-     "country": "AU",
+     "title": "[sample] Ministers meet over energy prices in New Delhi: reactions",
+     "url": "https://daily-ledger.example/story/5nej1v",
+     "source": "daily-ledger.example",
+     "country": "US",
      "lang": "en",
-     "time": "2026-10-21T01:19:00Z",
-     "tone": 3.2,
-     "image": ""
+     "time": "2026-10-21T01:04:00Z",
+     "tone": -0.6,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in New Delhi: in pictures",
+     "url": "https://corriere-sample.example/story/3hmsmn",
+     "source": "corriere-sample.example",
+     "country": "IT",
+     "lang": "it",
+     "time": "2026-10-20T23:19:00Z",
+     "tone": -3.1,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in New Delhi: timeline",
+     "url": "https://nation-ke.example/story/2rj02k",
+     "source": "nation-ke.example",
+     "country": "KE",
+     "lang": "en",
+     "time": "2026-10-20T23:45:00Z",
+     "tone": -2.6,
+     "image": "",
+     "video": ""
     }
    ]
   },
   {
-   "n": 277,
-   "o": 27,
-   "c": 10,
-   "l": 7,
-   "t": 1,
-   "first": "2026-10-20T17:12:00Z",
-   "last": "2026-10-21T02:28:00Z",
-   "headline": "[sample] Election count enters second day in New Delhi: live updates",
-   "headlineSource": "seoul-daily.example",
-   "headlineLang": "ko",
+   "n": 251,
+   "o": 25,
+   "c": 9,
+   "l": 6,
+   "t": -0.7,
+   "first": "2026-10-20T22:14:00Z",
+   "last": "2026-10-21T03:53:00Z",
+   "headline": "[sample] Election count enters second day in New Delhi: latest",
+   "headlineSource": "nation-ke.example",
+   "headlineLang": "en",
    "entities": [
     "election commission",
     "parliament",
@@ -734,147 +790,246 @@
    ],
    "articles": [
     {
-     "title": "[sample] Election count enters second day in New Delhi: explained",
-     "url": "https://nord-avis.example/story/8y4hjd",
-     "source": "nord-avis.example",
-     "country": "NO",
-     "lang": "no",
-     "time": "2026-10-21T02:28:00Z",
-     "tone": -3.3,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in New Delhi: analysis",
-     "url": "https://hindustan-post.example/story/7tpnky",
-     "source": "hindustan-post.example",
-     "country": "IN",
-     "lang": "en",
-     "time": "2026-10-21T01:30:00Z",
-     "tone": 1.5,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in New Delhi: in pictures",
-     "url": "https://hurriyet-sample.example/story/fkjudx",
+     "title": "[sample] Election count enters second day in New Delhi: live updates",
+     "url": "https://hurriyet-sample.example/story/4al321",
      "source": "hurriyet-sample.example",
      "country": "TR",
      "lang": "tr",
-     "time": "2026-10-21T01:08:00Z",
-     "tone": 3.9,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in New Delhi: live updates",
-     "url": "https://seoul-daily.example/story/a0i24j",
-     "source": "seoul-daily.example",
-     "country": "KR",
-     "lang": "ko",
-     "time": "2026-10-21T00:52:00Z",
-     "tone": 1.8,
-     "image": ""
+     "time": "2026-10-21T03:53:00Z",
+     "tone": -3.3,
+     "image": "",
+     "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     },
     {
      "title": "[sample] Election count enters second day in New Delhi: what we know",
-     "url": "https://tageszeitung.example/story/c8huue",
-     "source": "tageszeitung.example",
-     "country": "DE",
-     "lang": "de",
-     "time": "2026-10-20T23:28:00Z",
-     "tone": -1.1,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in New Delhi: reactions",
-     "url": "https://hindustan-post.example/story/92x6sn",
+     "url": "https://hindustan-post.example/story/5n1svx",
      "source": "hindustan-post.example",
      "country": "IN",
      "lang": "en",
+     "time": "2026-10-21T03:31:00Z",
+     "tone": 3.1,
+     "image": "",
+     "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    },
+    {
+     "title": "[sample] Election count enters second day in New Delhi: latest",
+     "url": "https://nation-ke.example/story/7t4jjf",
+     "source": "nation-ke.example",
+     "country": "KE",
+     "lang": "en",
+     "time": "2026-10-21T02:43:00Z",
+     "tone": 1.6,
+     "image": "",
+     "video": "https://www.youtube.com/channel/UC_placeholder"
+    },
+    {
+     "title": "[sample] Election count enters second day in New Delhi: explained",
+     "url": "https://morning-wire.example/story/bndpy8",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-21T02:05:00Z",
+     "tone": -5.9,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in New Delhi: in pictures",
+     "url": "https://gulf-report.example/story/39ea6u",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T00:41:00Z",
+     "tone": -3.1,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in New Delhi: in pictures",
+     "url": "https://el-diario.example/story/dt1njc",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
      "time": "2026-10-20T23:38:00Z",
      "tone": 3.3,
-     "image": ""
+     "image": "",
+     "video": ""
     }
    ]
   },
   {
-   "n": 160,
-   "o": 16,
-   "c": 6,
-   "l": 5,
-   "t": -0.8,
-   "first": "2026-10-20T17:22:00Z",
-   "last": "2026-10-21T01:48:00Z",
-   "headline": "[sample] Court hears appeal in corruption case in New Delhi: latest",
-   "headlineSource": "nation-ke.example",
-   "headlineLang": "en",
+   "n": 144,
+   "o": 14,
+   "c": 5,
+   "l": 4,
+   "t": -0.5,
+   "first": "2026-10-20T20:42:00Z",
+   "last": "2026-10-21T04:17:00Z",
+   "headline": "[sample] Wildfire forces evacuations in hills in New Delhi: in pictures",
+   "headlineSource": "xinhua-sample.example",
+   "headlineLang": "zh",
    "entities": [
-    "supreme court",
-    "corruption",
-    "prosecutor",
+    "wildfire",
+    "evacuation",
+    "fire service",
     "new delhi"
    ],
    "articles": [
     {
-     "title": "[sample] Court hears appeal in corruption case in New Delhi: analysis",
-     "url": "https://el-diario.example/story/cnr74x",
-     "source": "el-diario.example",
-     "country": "MX",
-     "lang": "es",
-     "time": "2026-10-21T01:48:00Z",
-     "tone": 3.8,
-     "image": ""
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in New Delhi: what we know",
-     "url": "https://vesti-news.example/story/dazew8",
-     "source": "vesti-news.example",
-     "country": "RU",
-     "lang": "ru",
-     "time": "2026-10-21T01:24:00Z",
-     "tone": -4.8,
-     "image": ""
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in New Delhi: analysis",
-     "url": "https://haaretz-sample.example/story/1u7ghq",
-     "source": "haaretz-sample.example",
-     "country": "IL",
-     "lang": "he",
-     "time": "2026-10-21T00:06:00Z",
-     "tone": -2.9,
-     "image": ""
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in New Delhi: timeline",
-     "url": "https://le-quotidien.example/story/741tzl",
+     "title": "[sample] Wildfire forces evacuations in hills in New Delhi: what we know",
+     "url": "https://le-quotidien.example/story/2hag6i",
      "source": "le-quotidien.example",
      "country": "FR",
      "lang": "fr",
-     "time": "2026-10-20T23:06:00Z",
-     "tone": -1.1,
-     "image": ""
+     "time": "2026-10-21T04:17:00Z",
+     "tone": 0.7,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Court hears appeal in corruption case in New Delhi: what we know",
-     "url": "https://morning-wire.example/story/2szi66",
-     "source": "morning-wire.example",
-     "country": "GB",
+     "title": "[sample] Wildfire forces evacuations in hills in New Delhi: in pictures",
+     "url": "https://xinhua-sample.example/story/fn117n",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-21T03:18:00Z",
+     "tone": -3.5,
+     "image": "",
+     "video": "https://youtu.be/jNQXAC9IVRw"
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in New Delhi: latest",
+     "url": "https://hindustan-post.example/story/a8pywd",
+     "source": "hindustan-post.example",
+     "country": "IN",
      "lang": "en",
-     "time": "2026-10-20T22:20:00Z",
-     "tone": 0.9,
-     "image": ""
+     "time": "2026-10-21T02:39:00Z",
+     "tone": 3,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Court hears appeal in corruption case in New Delhi: latest",
-     "url": "https://nation-ke.example/story/59jde4",
+     "title": "[sample] Wildfire forces evacuations in hills in New Delhi: analysis",
+     "url": "https://vesti-news.example/story/nvlpm",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T03:08:00Z",
+     "tone": -1.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in New Delhi: live updates",
+     "url": "https://vesti-news.example/story/bc3nai",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T01:09:00Z",
+     "tone": -2.9,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in New Delhi: latest",
+     "url": "https://nation-ke.example/story/f0nv9s",
      "source": "nation-ke.example",
      "country": "KE",
      "lang": "en",
-     "time": "2026-10-20T21:23:00Z",
-     "tone": -0.8,
-     "image": ""
+     "time": "2026-10-20T23:57:00Z",
+     "tone": 1.4,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 78,
+   "o": 8,
+   "c": 3,
+   "l": 4,
+   "t": -1.1,
+   "first": "2026-10-20T19:31:00Z",
+   "last": "2026-10-21T02:24:00Z",
+   "headline": "[sample] Storm damage closes main roads in New Delhi: reactions",
+   "headlineSource": "o-correio.example",
+   "headlineLang": "pt",
+   "entities": [
+    "natural disaster",
+    "transport",
+    "emergency services",
+    "new delhi"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Storm damage closes main roads in New Delhi: analysis",
+     "url": "https://nord-avis.example/story/bxqtj6",
+     "source": "nord-avis.example",
+     "country": "NO",
+     "lang": "no",
+     "time": "2026-10-21T02:24:00Z",
+     "tone": -3.6,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in New Delhi: in pictures",
+     "url": "https://jakarta-pos.example/story/f6ev2x",
+     "source": "jakarta-pos.example",
+     "country": "ID",
+     "lang": "id",
+     "time": "2026-10-21T02:03:00Z",
+     "tone": 1.9,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in New Delhi: timeline",
+     "url": "https://la-voz.example/story/fnakgf",
+     "source": "la-voz.example",
+     "country": "AR",
+     "lang": "es",
+     "time": "2026-10-21T01:10:00Z",
+     "tone": 3.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in New Delhi: reactions",
+     "url": "https://o-correio.example/story/qpfc8",
+     "source": "o-correio.example",
+     "country": "BR",
+     "lang": "pt",
+     "time": "2026-10-21T00:06:00Z",
+     "tone": -1.7,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in New Delhi: what we know",
+     "url": "https://jakarta-pos.example/story/3246ad",
+     "source": "jakarta-pos.example",
+     "country": "ID",
+     "lang": "id",
+     "time": "2026-10-21T00:08:00Z",
+     "tone": -2.9,
+     "image": "",
+     "video": "https://youtu.be/jNQXAC9IVRw"
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in New Delhi: reactions",
+     "url": "https://el-diario.example/story/bipj97",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T00:29:00Z",
+     "tone": -4,
+     "image": "",
+     "video": ""
     }
    ]
   }
  ],
- "unclustered": 220
+ "unclustered": 196,
+ "videos": 29
 }

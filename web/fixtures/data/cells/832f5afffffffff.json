@@ -3,32 +3,28 @@
  "name": "Tokyo, Tokyo, Japan",
  "n": 760,
  "o": 61,
- "c": 24,
+ "c": 21,
  "l": 16,
- "t": -0.9,
+ "t": -0.5,
  "topOutlets": [
   [
    "asahi-sample.example",
+   5
+  ],
+  [
+   "tageszeitung.example",
    4
-  ],
-  [
-   "nation-ke.example",
-   4
-  ],
-  [
-   "le-quotidien.example",
-   3
-  ],
-  [
-   "harbour-press.example",
-   3
   ],
   [
    "haaretz-sample.example",
    3
   ],
   [
-   "corriere-sample.example",
+   "morning-wire.example",
+   3
+  ],
+  [
+   "xinhua-sample.example",
    3
   ],
   [
@@ -36,41 +32,41 @@
    3
   ],
   [
-   "lagos-sun.example",
-   2
+   "vesti-news.example",
+   3
   ],
   [
-   "daily-ledger.example",
-   2
+   "wire-service.example",
+   3
   ],
   [
-   "morning-wire.example",
+   "tehran-times.example",
+   3
+  ],
+  [
+   "al-akhbar.example",
    2
   ]
  ],
  "topCountries": [
   [
    "JP",
+   5
+  ],
+  [
+   "DE",
    4
-  ],
-  [
-   "KE",
-   4
-  ],
-  [
-   "FR",
-   3
-  ],
-  [
-   "AU",
-   3
   ],
   [
    "IL",
    3
   ],
   [
-   "IT",
+   "GB",
+   3
+  ],
+  [
+   "CN",
    3
   ],
   [
@@ -78,654 +74,628 @@
    3
   ],
   [
-   "NG",
-   2
+   "RU",
+   3
   ],
   [
-   "US",
-   2
+   "",
+   3
   ],
   [
-   "GB",
+   "IR",
+   3
+  ],
+  [
+   "EG",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   18
+   13
   ],
   [
    "ja",
-   4
-  ],
-  [
-   "fr",
-   3
-  ],
-  [
-   "es",
-   3
+   5
   ],
   [
    "ar",
-   3
+   4
+  ],
+  [
+   "de",
+   4
   ],
   [
    "he",
    3
   ],
   [
-   "it",
+   "zh",
    3
   ],
   [
-   "uk",
+   "ru",
+   3
+  ],
+  [
+   "fa",
+   3
+  ],
+  [
+   "tr",
    2
   ],
   [
-   "id",
-   2
-  ],
-  [
-   "no",
+   "pl",
    2
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Central bank holds interest rate near Tokyo",
-   "url": "https://lagos-sun.example/news/c51gyv",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-21T05:16:00Z",
-   "tone": 3.3,
-   "image": ""
+   "title": "[sample] Court hears appeal in landmark case near Tokyo",
+   "url": "https://haaretz-sample.example/news/6tss10",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-21T05:23:00Z",
+   "tone": -6.1,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Tokyo",
-   "url": "https://le-quotidien.example/news/g41hkf",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-21T04:56:00Z",
-   "tone": -4.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Tokyo",
-   "url": "https://o-correio.example/news/ecjsf5",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-21T04:27:00Z",
-   "tone": 1.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Tokyo",
-   "url": "https://asahi-sample.example/news/8u3b8k",
+   "url": "https://asahi-sample.example/news/5kuybk",
    "source": "asahi-sample.example",
    "country": "JP",
    "lang": "ja",
-   "time": "2026-10-21T03:55:00Z",
-   "tone": -6.6,
-   "image": ""
+   "time": "2026-10-21T04:48:00Z",
+   "tone": 0.7,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Wildfire forces evacuations near Tokyo",
-   "url": "https://nation-ke.example/news/7nrbfh",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-21T03:39:00Z",
-   "tone": -1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Tokyo",
-   "url": "https://daily-ledger.example/news/dleuw6",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-21T03:02:00Z",
-   "tone": -5.3,
-   "image": ""
+   "title": "[sample] Football club confirms new coach near Tokyo",
+   "url": "https://asahi-sample.example/news/a98sq0",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-21T04:32:00Z",
+   "tone": 4.5,
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
   },
   {
    "title": "[sample] Trade talks resume after pause near Tokyo",
-   "url": "https://le-quotidien.example/news/5zjje8",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-21T02:35:00Z",
-   "tone": 0.5,
-   "image": ""
+   "url": "https://al-akhbar.example/news/6o8vcb",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-21T04:04:00Z",
+   "tone": -4.5,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Officials meet over regional dispute near Tokyo",
-   "url": "https://hurriyet-sample.example/news/ge4jjj",
+   "title": "[sample] Court hears appeal in landmark case near Tokyo",
+   "url": "https://hurriyet-sample.example/news/etpvm2",
    "source": "hurriyet-sample.example",
    "country": "TR",
    "lang": "tr",
-   "time": "2026-10-21T02:10:00Z",
-   "tone": -5.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Tokyo",
-   "url": "https://nation-ke.example/news/f2uoiv",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-21T01:52:00Z",
-   "tone": -2.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Tokyo",
-   "url": "https://morning-wire.example/news/augkxh",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-21T01:17:00Z",
-   "tone": -1.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Tokyo",
-   "url": "https://kyiv-herald.example/news/g1rw9f",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-21T00:55:00Z",
-   "tone": 2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Tokyo",
-   "url": "https://xinhua-sample.example/news/61pwiw",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-21T00:19:00Z",
-   "tone": -1.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Tokyo",
-   "url": "https://el-diario.example/news/d9jypf",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T23:50:00Z",
+   "time": "2026-10-21T03:35:00Z",
    "tone": -0.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Tokyo",
-   "url": "https://jakarta-pos.example/news/8q7ngw",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T23:26:00Z",
-   "tone": -6.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Tokyo",
-   "url": "https://morning-wire.example/news/lj65j",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T22:54:00Z",
-   "tone": -6.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Tokyo",
-   "url": "https://harbour-press.example/news/9fyj4d",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T22:32:00Z",
-   "tone": -0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Tokyo",
-   "url": "https://asahi-sample.example/news/1uju2d",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T22:07:00Z",
-   "tone": 4.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Tokyo",
-   "url": "https://kyiv-herald.example/news/6mtn1k",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T21:33:00Z",
-   "tone": 0.7,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://asahi-sample.example/news/f51xyb",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T21:15:00Z",
-   "tone": 3.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Tokyo",
-   "url": "https://vesti-news.example/news/2i1u2x",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T20:31:00Z",
-   "tone": -1.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Tokyo",
-   "url": "https://gulf-report.example/news/arq0rw",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T20:23:00Z",
-   "tone": -3.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Tokyo",
-   "url": "https://haaretz-sample.example/news/ac93n9",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T19:37:00Z",
-   "tone": 2.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Tokyo",
-   "url": "https://nation-ke.example/news/1trpsn",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T19:25:00Z",
-   "tone": -3.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Tokyo",
-   "url": "https://haaretz-sample.example/news/7gqitg",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T18:44:00Z",
-   "tone": -1.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Tokyo",
-   "url": "https://haaretz-sample.example/news/a2l1yz",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T18:21:00Z",
-   "tone": -1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Tokyo",
-   "url": "https://al-akhbar.example/news/1f84hh",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T17:50:00Z",
-   "tone": -5.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Tokyo",
-   "url": "https://corriere-sample.example/news/f0au9w",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T17:25:00Z",
-   "tone": -6.1,
-   "image": ""
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Tokyo",
-   "url": "https://hindustan-post.example/news/7mj6ip",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T17:00:00Z",
-   "tone": 3.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Tokyo",
-   "url": "https://el-diario.example/news/epdylm",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T16:27:00Z",
-   "tone": 4.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Tokyo",
-   "url": "https://nord-avis.example/news/7eabbl",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T15:59:00Z",
-   "tone": -4.9,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://gazeta-sample.example/news/a0470e",
+   "url": "https://gazeta-sample.example/news/aaaf3y",
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-20T15:46:00Z",
-   "tone": 0.4,
-   "image": ""
+   "time": "2026-10-21T03:11:00Z",
+   "tone": 1.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Tokyo",
+   "url": "https://morning-wire.example/news/7snwnv",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-21T02:33:00Z",
+   "tone": -1.4,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Tokyo",
-   "url": "https://nation-ke.example/news/dqcc3m",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T15:04:00Z",
-   "tone": -5.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Tokyo",
-   "url": "https://jakarta-pos.example/news/f4mdz4",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T14:36:00Z",
-   "tone": 3.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Tokyo",
-   "url": "https://hindustan-post.example/news/1s9jf5",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T14:15:00Z",
-   "tone": 3.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Tokyo",
-   "url": "https://global-desk.example/news/4njkle",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T13:46:00Z",
-   "tone": 0.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Tokyo",
-   "url": "https://wire-service.example/news/6gr7my",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T13:15:00Z",
-   "tone": -0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Tokyo",
-   "url": "https://le-quotidien.example/news/8bfrjq",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T12:57:00Z",
-   "tone": 0.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Tokyo",
-   "url": "https://harbour-press.example/news/em5611",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T12:15:00Z",
-   "tone": 2.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Tokyo",
-   "url": "https://corriere-sample.example/news/28wtiu",
+   "url": "https://corriere-sample.example/news/9o7h8z",
    "source": "corriere-sample.example",
    "country": "IT",
    "lang": "it",
-   "time": "2026-10-20T11:58:00Z",
-   "tone": -6.1,
-   "image": ""
+   "time": "2026-10-21T02:15:00Z",
+   "tone": -0.6,
+   "image": "",
+   "video": "https://www.youtube.com/shorts/aqz-KE-bpKQ"
   },
   {
-   "title": "[sample] Protest gathers in city centre near Tokyo",
-   "url": "https://al-akhbar.example/news/auq00l",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T11:35:00Z",
-   "tone": 4.2,
-   "image": ""
+   "title": "[sample] Election commission publishes turnout figures near Tokyo",
+   "url": "https://asahi-sample.example/news/9cszmt",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-21T01:54:00Z",
+   "tone": 3.8,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "",
-   "url": "https://tageszeitung.example/news/4q78y8",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T10:54:00Z",
-   "tone": 3.2,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://lagos-sun.example/news/640dke",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T10:34:00Z",
-   "tone": -3.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Tokyo",
-   "url": "https://daily-ledger.example/news/6xs922",
+   "title": "[sample] Election commission publishes turnout figures near Tokyo",
+   "url": "https://daily-ledger.example/news/ag3sl1",
    "source": "daily-ledger.example",
    "country": "US",
    "lang": "en",
-   "time": "2026-10-20T10:13:00Z",
-   "tone": -4.6,
-   "image": ""
+   "time": "2026-10-21T01:12:00Z",
+   "tone": 1.4,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Aid convoy reaches border crossing near Tokyo",
-   "url": "https://harbour-press.example/news/151z53",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T09:43:00Z",
-   "tone": 4.8,
-   "image": ""
+   "title": "[sample] Wildfire forces evacuations near Tokyo",
+   "url": "https://xinhua-sample.example/news/dt0drh",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-21T00:48:00Z",
+   "tone": -6.4,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Court hears appeal in landmark case near Tokyo",
-   "url": "https://hindustan-post.example/news/2roaoo",
+   "title": "[sample] Officials meet over regional dispute near Tokyo",
+   "url": "https://hindustan-post.example/news/3r3v5h",
    "source": "hindustan-post.example",
    "country": "IN",
    "lang": "en",
-   "time": "2026-10-20T09:14:00Z",
-   "tone": 0.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Tokyo",
-   "url": "https://corriere-sample.example/news/1ut7pt",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T08:38:00Z",
-   "tone": -2.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Tokyo",
-   "url": "https://la-voz.example/news/9gj69b",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T08:24:00Z",
-   "tone": 0.7,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://asahi-sample.example/news/3k1olc",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T07:40:00Z",
-   "tone": 0.1,
-   "image": ""
+   "time": "2026-10-21T00:31:00Z",
+   "tone": -2.2,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Tokyo",
-   "url": "https://gazeta-sample.example/news/106aq0",
+   "url": "https://vesti-news.example/news/fa3dto",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T23:46:00Z",
+   "tone": 0.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Tokyo",
+   "url": "https://daily-ledger.example/news/1firjw",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T23:33:00Z",
+   "tone": -1.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Tokyo",
+   "url": "https://asahi-sample.example/news/fsye7q",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T23:00:00Z",
+   "tone": 0.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Tokyo",
+   "url": "https://wire-service.example/news/cvadxn",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T22:28:00Z",
+   "tone": -6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Tokyo",
+   "url": "https://corriere-sample.example/news/5lrfgx",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T21:55:00Z",
+   "tone": 2.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Tokyo",
+   "url": "https://jakarta-pos.example/news/4xj330",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T21:29:00Z",
+   "tone": -1.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Tokyo",
+   "url": "https://wire-service.example/news/4ecnpf",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T21:14:00Z",
+   "tone": 2.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Tokyo",
+   "url": "https://tageszeitung.example/news/8k9hb6",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T20:41:00Z",
+   "tone": -1.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Tokyo",
+   "url": "https://tageszeitung.example/news/7p63p0",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T20:05:00Z",
+   "tone": -1.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Tokyo",
+   "url": "https://tageszeitung.example/news/b5rrug",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T19:46:00Z",
+   "tone": -6.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Tokyo",
+   "url": "https://wire-service.example/news/an3o26",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T19:27:00Z",
+   "tone": -3.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Tokyo",
+   "url": "https://tehran-times.example/news/4ssnm9",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T18:43:00Z",
+   "tone": 3.5,
+   "image": "",
+   "video": "https://www.youtube.com/channel/UC_placeholder"
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Tokyo",
+   "url": "https://vesti-news.example/news/ena0nn",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T18:29:00Z",
+   "tone": -3.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Tokyo",
+   "url": "https://al-akhbar.example/news/cgqmye",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T17:58:00Z",
+   "tone": 0.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Tokyo",
+   "url": "https://gulf-report.example/news/cb5i1j",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T17:30:00Z",
+   "tone": -2.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Tokyo",
+   "url": "https://hindustan-post.example/news/abjnt3",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T17:01:00Z",
+   "tone": -5.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Tokyo",
+   "url": "https://le-quotidien.example/news/dnw5lt",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T16:36:00Z",
+   "tone": 5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Tokyo",
+   "url": "https://haaretz-sample.example/news/624vcl",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T15:57:00Z",
+   "tone": 2.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Tokyo",
+   "url": "https://gazeta-sample.example/news/5ic6mf",
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-20T07:26:00Z",
-   "tone": 2.5,
-   "image": ""
+   "time": "2026-10-20T15:41:00Z",
+   "tone": -1.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Tokyo",
+   "url": "https://tageszeitung.example/news/1t1wxn",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T15:01:00Z",
+   "tone": -0.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Tokyo",
+   "url": "https://vesti-news.example/news/1jf45r",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T14:41:00Z",
+   "tone": -6.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Tokyo",
+   "url": "https://asahi-sample.example/news/bgssjm",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T14:12:00Z",
+   "tone": 0,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Tokyo",
+   "url": "https://xinhua-sample.example/news/4qfwai",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T13:38:00Z",
+   "tone": -1.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://hurriyet-sample.example/news/c4sqjs",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T13:14:00Z",
+   "tone": 0,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Tokyo",
-   "url": "https://nord-avis.example/news/dzrjmy",
+   "url": "https://haaretz-sample.example/news/fa0xct",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T12:48:00Z",
+   "tone": 1.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Tokyo",
+   "url": "https://kyiv-herald.example/news/3h8rgd",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T12:17:00Z",
+   "tone": -5.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Tokyo",
+   "url": "https://morning-wire.example/news/en81ta",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T11:51:00Z",
+   "tone": -1.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Tokyo",
+   "url": "https://xinhua-sample.example/news/exxfan",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T11:30:00Z",
+   "tone": 0.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Tokyo",
+   "url": "https://kyiv-herald.example/news/dv79dj",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T10:59:00Z",
+   "tone": 1.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Tokyo",
+   "url": "https://morning-wire.example/news/7jen1i",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T10:35:00Z",
+   "tone": 3.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Tokyo",
+   "url": "https://hindustan-post.example/news/blwhux",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T10:15:00Z",
+   "tone": 4.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Tokyo",
+   "url": "https://global-desk.example/news/1pna34",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T09:40:00Z",
+   "tone": 1.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://gulf-report.example/news/3kub9f",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T09:11:00Z",
+   "tone": 4.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Tokyo",
+   "url": "https://cape-mail.example/news/ffmvlp",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T08:45:00Z",
+   "tone": -3.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Tokyo",
+   "url": "https://la-voz.example/news/18d9nl",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T08:25:00Z",
+   "tone": -4.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Tokyo",
+   "url": "https://tehran-times.example/news/5z7mok",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T07:42:00Z",
+   "tone": 2.5,
+   "image": "",
+   "video": "https://www.youtube.com/channel/UC_placeholder"
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Tokyo",
+   "url": "https://tehran-times.example/news/g4ial1",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T07:12:00Z",
+   "tone": -2.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Tokyo",
+   "url": "https://nord-avis.example/news/1o28na",
    "source": "nord-avis.example",
    "country": "NO",
    "lang": "no",
-   "time": "2026-10-20T07:00:00Z",
-   "tone": -5.6,
-   "image": ""
+   "time": "2026-10-20T06:57:00Z",
+   "tone": 4.8,
+   "image": "",
+   "video": ""
   }
  ],
  "stories": [
   {
-   "n": 205,
-   "o": 23,
+   "n": 223,
+   "o": 25,
    "c": 10,
-   "l": 6,
-   "t": -3.6,
-   "first": "2026-10-20T22:58:00Z",
-   "last": "2026-10-21T04:43:00Z",
-   "headline": "[sample] Central bank leaves rates unchanged in Tokyo: analysis",
-   "headlineSource": "nord-avis.example",
-   "headlineLang": "no",
-   "entities": [
-    "central bank",
-    "inflation",
-    "interest rates",
-    "tokyo"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Central bank leaves rates unchanged in Tokyo: explained",
-     "url": "https://wire-service.example/story/7r00ab",
-     "source": "wire-service.example",
-     "country": "",
-     "lang": "en",
-     "time": "2026-10-21T04:43:00Z",
-     "tone": -4.9,
-     "image": ""
-    },
-    {
-     "title": "[sample] Central bank leaves rates unchanged in Tokyo: latest",
-     "url": "https://asahi-sample.example/story/bjkvi9",
-     "source": "asahi-sample.example",
-     "country": "JP",
-     "lang": "ja",
-     "time": "2026-10-21T03:44:00Z",
-     "tone": -0.7,
-     "image": ""
-    },
-    {
-     "title": "[sample] Central bank leaves rates unchanged in Tokyo: reactions",
-     "url": "https://wire-service.example/story/96oxjz",
-     "source": "wire-service.example",
-     "country": "",
-     "lang": "en",
-     "time": "2026-10-21T03:49:00Z",
-     "tone": -5.6,
-     "image": ""
-    },
-    {
-     "title": "[sample] Central bank leaves rates unchanged in Tokyo: analysis",
-     "url": "https://nord-avis.example/story/4a76mx",
-     "source": "nord-avis.example",
-     "country": "NO",
-     "lang": "no",
-     "time": "2026-10-21T02:28:00Z",
-     "tone": -5.8,
-     "image": ""
-    },
-    {
-     "title": "[sample] Central bank leaves rates unchanged in Tokyo: live updates",
-     "url": "https://global-desk.example/story/a5hb04",
-     "source": "global-desk.example",
-     "country": "CA",
-     "lang": "en",
-     "time": "2026-10-21T01:47:00Z",
-     "tone": 0,
-     "image": ""
-    },
-    {
-     "title": "[sample] Central bank leaves rates unchanged in Tokyo: in pictures",
-     "url": "https://asahi-sample.example/story/bborec",
-     "source": "asahi-sample.example",
-     "country": "JP",
-     "lang": "ja",
-     "time": "2026-10-21T00:53:00Z",
-     "tone": -4.5,
-     "image": ""
-    }
-   ]
-  },
-  {
-   "n": 177,
-   "o": 20,
-   "c": 9,
-   "l": 6,
-   "t": 1.3,
-   "first": "2026-10-20T17:15:00Z",
-   "last": "2026-10-21T02:50:00Z",
-   "headline": "[sample] Wildfire forces evacuations in hills in Tokyo: explained",
-   "headlineSource": "haaretz-sample.example",
-   "headlineLang": "he",
+   "l": 7,
+   "t": -2.1,
+   "first": "2026-10-20T18:59:00Z",
+   "last": "2026-10-21T03:08:00Z",
+   "headline": "[sample] Wildfire forces evacuations in hills in Tokyo: reactions",
+   "headlineSource": "vesti-news.example",
+   "headlineLang": "ru",
    "entities": [
     "wildfire",
     "evacuation",
@@ -734,158 +704,170 @@
    ],
    "articles": [
     {
-     "title": "[sample] Wildfire forces evacuations in hills in Tokyo: explained",
-     "url": "https://la-voz.example/story/cdvocd",
-     "source": "la-voz.example",
-     "country": "AR",
-     "lang": "es",
-     "time": "2026-10-21T02:50:00Z",
-     "tone": -2.4,
-     "image": ""
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Tokyo: explained",
-     "url": "https://haaretz-sample.example/story/4c6s19",
-     "source": "haaretz-sample.example",
-     "country": "IL",
-     "lang": "he",
-     "time": "2026-10-21T02:04:00Z",
-     "tone": 1.6,
-     "image": ""
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Tokyo: explained",
-     "url": "https://gazeta-sample.example/story/7cxrau",
-     "source": "gazeta-sample.example",
-     "country": "PL",
-     "lang": "pl",
-     "time": "2026-10-21T01:48:00Z",
-     "tone": 3.9,
-     "image": ""
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Tokyo: analysis",
-     "url": "https://tehran-times.example/story/41g63k",
-     "source": "tehran-times.example",
-     "country": "IR",
-     "lang": "fa",
-     "time": "2026-10-21T00:44:00Z",
-     "tone": 2.5,
-     "image": ""
+     "title": "[sample] Wildfire forces evacuations in hills in Tokyo: live updates",
+     "url": "https://gulf-report.example/story/21pyuz",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T03:08:00Z",
+     "tone": -3.6,
+     "image": "",
+     "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
     },
     {
      "title": "[sample] Wildfire forces evacuations in hills in Tokyo: reactions",
-     "url": "https://daily-ledger.example/story/5nej1v",
-     "source": "daily-ledger.example",
-     "country": "US",
-     "lang": "en",
-     "time": "2026-10-21T00:22:00Z",
-     "tone": -0.6,
-     "image": ""
+     "url": "https://vesti-news.example/story/bp0hxy",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T02:45:00Z",
+     "tone": -5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Tokyo: timeline",
+     "url": "https://xinhua-sample.example/story/5hlqr2",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-21T02:22:00Z",
+     "tone": -4.9,
+     "image": "",
+     "video": ""
     },
     {
      "title": "[sample] Wildfire forces evacuations in hills in Tokyo: analysis",
-     "url": "https://el-diario.example/story/9xfs5q",
-     "source": "el-diario.example",
-     "country": "MX",
+     "url": "https://asahi-sample.example/story/8t4luk",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T00:29:00Z",
+     "tone": -3.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Tokyo: reactions",
+     "url": "https://tageszeitung.example/story/a5ssjm",
+     "source": "tageszeitung.example",
+     "country": "DE",
+     "lang": "de",
+     "time": "2026-10-20T23:52:00Z",
+     "tone": 1.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Tokyo: reactions",
+     "url": "https://la-voz.example/story/9drop8",
+     "source": "la-voz.example",
+     "country": "AR",
      "lang": "es",
-     "time": "2026-10-21T00:30:00Z",
-     "tone": 2.7,
-     "image": ""
+     "time": "2026-10-21T00:08:00Z",
+     "tone": 2.8,
+     "image": "",
+     "video": "https://m.youtube.com/watch?v=kJQP7kiw5Fk"
     }
    ]
   },
   {
-   "n": 117,
-   "o": 13,
-   "c": 6,
-   "l": 5,
-   "t": -1.2,
-   "first": "2026-10-20T17:41:00Z",
-   "last": "2026-10-21T02:43:00Z",
-   "headline": "[sample] Storm damage closes main roads in Tokyo: what we know",
-   "headlineSource": "le-quotidien.example",
-   "headlineLang": "fr",
+   "n": 203,
+   "o": 23,
+   "c": 9,
+   "l": 6,
+   "t": -0.7,
+   "first": "2026-10-20T17:38:00Z",
+   "last": "2026-10-21T02:09:00Z",
+   "headline": "[sample] Strike halts rail services in Tokyo: in pictures",
+   "headlineSource": "nord-avis.example",
+   "headlineLang": "no",
    "entities": [
-    "natural disaster",
-    "transport",
-    "emergency services",
+    "trade union",
+    "rail",
+    "labour",
     "tokyo"
    ],
    "articles": [
     {
-     "title": "[sample] Storm damage closes main roads in Tokyo: latest",
-     "url": "https://hindustan-post.example/story/7gmjje",
-     "source": "hindustan-post.example",
-     "country": "IN",
+     "title": "[sample] Strike halts rail services in Tokyo: timeline",
+     "url": "https://daily-ledger.example/story/3enhtu",
+     "source": "daily-ledger.example",
+     "country": "US",
      "lang": "en",
-     "time": "2026-10-21T02:43:00Z",
-     "tone": -1.3,
-     "image": ""
+     "time": "2026-10-21T02:09:00Z",
+     "tone": 1.2,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Storm damage closes main roads in Tokyo: what we know",
-     "url": "https://hindustan-post.example/story/6p7cjt",
-     "source": "hindustan-post.example",
-     "country": "IN",
-     "lang": "en",
-     "time": "2026-10-21T01:53:00Z",
-     "tone": 2,
-     "image": ""
+     "title": "[sample] Strike halts rail services in Tokyo: analysis",
+     "url": "https://kyiv-herald.example/story/4h87a9",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-21T01:48:00Z",
+     "tone": -0.4,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Storm damage closes main roads in Tokyo: latest",
-     "url": "https://la-voz.example/story/4g2oai",
+     "title": "[sample] Strike halts rail services in Tokyo: reactions",
+     "url": "https://gulf-report.example/story/bfugvm",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T00:13:00Z",
+     "tone": -3.6,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Tokyo: in pictures",
+     "url": "https://nord-avis.example/story/ck3ftd",
+     "source": "nord-avis.example",
+     "country": "NO",
+     "lang": "no",
+     "time": "2026-10-21T00:54:00Z",
+     "tone": 3.4,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Tokyo: live updates",
+     "url": "https://la-voz.example/story/cj4s5x",
      "source": "la-voz.example",
      "country": "AR",
      "lang": "es",
-     "time": "2026-10-21T02:03:00Z",
-     "tone": -5,
-     "image": ""
+     "time": "2026-10-20T23:05:00Z",
+     "tone": -4.5,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Storm damage closes main roads in Tokyo: what we know",
-     "url": "https://asahi-sample.example/story/5n1svx",
-     "source": "asahi-sample.example",
-     "country": "JP",
-     "lang": "ja",
-     "time": "2026-10-21T01:37:00Z",
-     "tone": 3.1,
-     "image": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Tokyo: what we know",
-     "url": "https://le-quotidien.example/story/bjsddb",
-     "source": "le-quotidien.example",
-     "country": "FR",
-     "lang": "fr",
-     "time": "2026-10-21T01:03:00Z",
-     "tone": -1.3,
-     "image": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Tokyo: live updates",
-     "url": "https://al-akhbar.example/story/3063u9",
-     "source": "al-akhbar.example",
-     "country": "EG",
-     "lang": "ar",
-     "time": "2026-10-20T22:13:00Z",
-     "tone": -4.7,
-     "image": ""
+     "title": "[sample] Strike halts rail services in Tokyo: analysis",
+     "url": "https://morning-wire.example/story/ck2qjn",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-20T22:29:00Z",
+     "tone": -0.5,
+     "image": "",
+     "video": ""
     }
    ]
   },
   {
-   "n": 108,
-   "o": 12,
-   "c": 5,
-   "l": 5,
-   "t": -2.6,
-   "first": "2026-10-21T00:26:00Z",
-   "last": "2026-10-21T03:49:00Z",
-   "headline": "[sample] Aid convoy reaches border crossing in Tokyo: live updates",
-   "headlineSource": "wire-service.example",
-   "headlineLang": "en",
+   "n": 183,
+   "o": 21,
+   "c": 8,
+   "l": 6,
+   "t": -1,
+   "first": "2026-10-20T16:36:00Z",
+   "last": "2026-10-21T02:31:00Z",
+   "headline": "[sample] Aid convoy reaches border crossing in Tokyo: what we know",
+   "headlineSource": "gazeta-sample.example",
+   "headlineLang": "pl",
    "entities": [
     "united nations",
     "refugees",
@@ -894,67 +876,74 @@
    ],
    "articles": [
     {
-     "title": "[sample] Aid convoy reaches border crossing in Tokyo: in pictures",
-     "url": "https://asahi-sample.example/story/6vb8o5",
-     "source": "asahi-sample.example",
-     "country": "JP",
-     "lang": "ja",
-     "time": "2026-10-21T03:49:00Z",
-     "tone": -4,
-     "image": ""
+     "title": "[sample] Aid convoy reaches border crossing in Tokyo: what we know",
+     "url": "https://gazeta-sample.example/story/9lfbmn",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T02:31:00Z",
+     "tone": 2.7,
+     "image": "",
+     "video": "https://www.youtube.com/shorts/aqz-KE-bpKQ"
     },
     {
-     "title": "[sample] Aid convoy reaches border crossing in Tokyo: reactions",
-     "url": "https://jakarta-pos.example/story/f7pqzb",
-     "source": "jakarta-pos.example",
-     "country": "ID",
-     "lang": "id",
-     "time": "2026-10-21T03:21:00Z",
-     "tone": -0.9,
-     "image": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Tokyo: live updates",
-     "url": "https://wire-service.example/story/fb3jty",
-     "source": "wire-service.example",
-     "country": "",
+     "title": "[sample] Aid convoy reaches border crossing in Tokyo: timeline",
+     "url": "https://global-desk.example/story/9hm47v",
+     "source": "global-desk.example",
+     "country": "CA",
      "lang": "en",
-     "time": "2026-10-21T02:45:00Z",
-     "tone": -1.8,
-     "image": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Tokyo: reactions",
-     "url": "https://kyiv-herald.example/story/2iq385",
-     "source": "kyiv-herald.example",
-     "country": "UA",
-     "lang": "uk",
-     "time": "2026-10-21T02:49:00Z",
-     "tone": -4.5,
-     "image": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Tokyo: explained",
-     "url": "https://lagos-sun.example/story/brmxfy",
-     "source": "lagos-sun.example",
-     "country": "NG",
-     "lang": "en",
-     "time": "2026-10-21T00:57:00Z",
-     "tone": -0.6,
-     "image": ""
+     "time": "2026-10-21T01:32:00Z",
+     "tone": 0.7,
+     "image": "",
+     "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
     },
     {
      "title": "[sample] Aid convoy reaches border crossing in Tokyo: analysis",
-     "url": "https://corriere-sample.example/story/42nj50",
-     "source": "corriere-sample.example",
-     "country": "IT",
-     "lang": "it",
-     "time": "2026-10-21T01:54:00Z",
-     "tone": -4.1,
-     "image": ""
+     "url": "https://o-correio.example/story/fl4fkx",
+     "source": "o-correio.example",
+     "country": "BR",
+     "lang": "pt",
+     "time": "2026-10-21T01:17:00Z",
+     "tone": -4.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Tokyo: live updates",
+     "url": "https://daily-ledger.example/story/vgumy",
+     "source": "daily-ledger.example",
+     "country": "US",
+     "lang": "en",
+     "time": "2026-10-21T00:28:00Z",
+     "tone": 2,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Tokyo: explained",
+     "url": "https://cape-mail.example/story/59nqv9",
+     "source": "cape-mail.example",
+     "country": "ZA",
+     "lang": "en",
+     "time": "2026-10-20T23:43:00Z",
+     "tone": -1.5,
+     "image": "",
+     "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Tokyo: timeline",
+     "url": "https://lagos-sun.example/story/6xuhwx",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-20T22:46:00Z",
+     "tone": -5.6,
+     "image": "",
+     "video": ""
     }
    ]
   }
  ],
- "unclustered": 153
+ "unclustered": 151,
+ "videos": 23
 }

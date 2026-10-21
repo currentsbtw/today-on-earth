@@ -2,132 +2,155 @@
  "id": "83585dfffffffff",
  "name": "Ndjamena, Chari-Baguirmi, Chad",
  "n": 6,
- "o": 5,
- "c": 4,
- "l": 4,
- "t": 0.2,
+ "o": 6,
+ "c": 6,
+ "l": 6,
+ "t": -1,
  "topOutlets": [
   [
-   "wire-service.example",
-   2
-  ],
-  [
-   "xinhua-sample.example",
+   "el-diario.example",
    1
   ],
   [
-   "asahi-sample.example",
+   "haaretz-sample.example",
    1
   ],
   [
-   "morning-wire.example",
+   "gazeta-sample.example",
    1
   ],
   [
-   "tageszeitung.example",
+   "kyiv-herald.example",
+   1
+  ],
+  [
+   "hurriyet-sample.example",
+   1
+  ],
+  [
+   "nord-avis.example",
    1
   ]
  ],
  "topCountries": [
   [
-   "",
-   2
-  ],
-  [
-   "CN",
+   "MX",
    1
   ],
   [
-   "JP",
+   "IL",
    1
   ],
   [
-   "GB",
+   "PL",
    1
   ],
   [
-   "DE",
+   "UA",
+   1
+  ],
+  [
+   "TR",
+   1
+  ],
+  [
+   "NO",
    1
   ]
  ],
  "languages": [
   [
-   "en",
-   3
-  ],
-  [
-   "zh",
+   "es",
    1
   ],
   [
-   "ja",
+   "he",
    1
   ],
   [
-   "de",
+   "pl",
+   1
+  ],
+  [
+   "uk",
+   1
+  ],
+  [
+   "tr",
+   1
+  ],
+  [
+   "no",
    1
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Researchers report vaccine trial results near Ndjamena",
-   "url": "https://xinhua-sample.example/news/ejbnke",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-21T05:29:00Z",
-   "tone": -3.5,
-   "image": ""
+   "title": "[sample] Central bank holds interest rate near Ndjamena",
+   "url": "https://el-diario.example/news/8rx7bg",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-21T05:30:00Z",
+   "tone": -5.9,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Court hears appeal in landmark case near Ndjamena",
-   "url": "https://asahi-sample.example/news/1tg1ip",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-21T01:34:00Z",
-   "tone": 0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Ndjamena",
-   "url": "https://morning-wire.example/news/5hz80e",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T21:53:00Z",
-   "tone": 3.8,
-   "image": ""
+   "title": "[sample] Protest gathers in city centre near Ndjamena",
+   "url": "https://haaretz-sample.example/news/z4nla",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-21T01:44:00Z",
+   "tone": -1.4,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Ndjamena",
-   "url": "https://tageszeitung.example/news/ej44jp",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T18:02:00Z",
-   "tone": 0.7,
-   "image": ""
+   "url": "https://gazeta-sample.example/news/5zxmfd",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T21:43:00Z",
+   "tone": -2.1,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Storm disrupts transport links near Ndjamena",
-   "url": "https://wire-service.example/news/f6k29x",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T13:56:00Z",
-   "tone": 3.2,
-   "image": ""
+   "title": "[sample] Officials meet over regional dispute near Ndjamena",
+   "url": "https://kyiv-herald.example/news/2q5gfa",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T17:50:00Z",
+   "tone": 1.7,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Football club confirms new coach near Ndjamena",
-   "url": "https://wire-service.example/news/g5l9pl",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T10:10:00Z",
-   "tone": -4,
-   "image": ""
+   "title": "[sample] Court hears appeal in landmark case near Ndjamena",
+   "url": "https://hurriyet-sample.example/news/4qwi78",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T14:12:00Z",
+   "tone": -3.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Ndjamena",
+   "url": "https://nord-avis.example/news/3etw8r",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T10:14:00Z",
+   "tone": 5,
+   "image": "",
+   "video": ""
   }
- ]
+ ],
+ "videos": 0
 }

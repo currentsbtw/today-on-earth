@@ -4,27 +4,39 @@
  "n": 2480,
  "o": 110,
  "c": 28,
- "l": 15,
- "t": -0.7,
+ "l": 14,
+ "t": -1.3,
  "topOutlets": [
   [
-   "kyiv-herald.example",
-   5
-  ],
-  [
-   "vesti-news.example",
-   4
-  ],
-  [
-   "gazeta-sample.example",
+   "gulf-report.example",
    4
   ],
   [
    "cape-mail.example",
+   4
+  ],
+  [
+   "harbour-press.example",
+   4
+  ],
+  [
+   "al-akhbar.example",
+   4
+  ],
+  [
+   "jakarta-pos.example",
    3
   ],
   [
-   "hurriyet-sample.example",
+   "kyiv-herald.example",
+   3
+  ],
+  [
+   "morning-wire.example",
+   3
+  ],
+  [
+   "xinhua-sample.example",
    3
   ],
   [
@@ -32,41 +44,41 @@
    3
   ],
   [
-   "harbour-press.example",
+   "vesti-news.example",
    3
-  ],
-  [
-   "tageszeitung.example",
-   2
-  ],
-  [
-   "nation-ke.example",
-   2
-  ],
-  [
-   "lagos-sun.example",
-   2
   ]
  ],
  "topCountries": [
   [
-   "UA",
-   5
-  ],
-  [
-   "RU",
-   4
-  ],
-  [
-   "PL",
+   "AE",
    4
   ],
   [
    "ZA",
+   4
+  ],
+  [
+   "AU",
+   4
+  ],
+  [
+   "EG",
+   4
+  ],
+  [
+   "ID",
    3
   ],
   [
-   "TR",
+   "UA",
+   3
+  ],
+  [
+   "GB",
+   3
+  ],
+  [
+   "CN",
    3
   ],
   [
@@ -74,45 +86,29 @@
    3
   ],
   [
-   "AU",
+   "RU",
    3
-  ],
-  [
-   "DE",
-   2
-  ],
-  [
-   "KE",
-   2
-  ],
-  [
-   "NG",
-   2
   ]
  ],
  "languages": [
   [
    "en",
-   17
-  ],
-  [
-   "uk",
-   5
-  ],
-  [
-   "ru",
-   4
-  ],
-  [
-   "pl",
-   4
+   18
   ],
   [
    "ar",
+   8
+  ],
+  [
+   "id",
    3
   ],
   [
-   "tr",
+   "uk",
+   3
+  ],
+  [
+   "zh",
    3
   ],
   [
@@ -120,178 +116,77 @@
    3
   ],
   [
-   "de",
+   "ru",
+   3
+  ],
+  [
+   "es",
    2
   ],
   [
-   "id",
+   "he",
    2
   ],
   [
-   "ja",
-   2
+   "fa",
+   1
   ]
  ],
  "articles": [
-  {
-   "title": "[sample] Protest gathers in city centre near Kyiv",
-   "url": "https://tageszeitung.example/news/eoe934",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-21T05:19:00Z",
-   "tone": 3.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Kyiv",
-   "url": "https://nation-ke.example/news/2h32ah",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-21T05:02:00Z",
-   "tone": -6.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Kyiv",
-   "url": "https://cape-mail.example/news/ap1h7j",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-21T04:36:00Z",
-   "tone": 1.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Kyiv",
-   "url": "https://morning-wire.example/news/e5kout",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-21T04:12:00Z",
-   "tone": -3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Kyiv",
-   "url": "https://al-akhbar.example/news/3ihc7s",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T03:25:00Z",
-   "tone": 4.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Kyiv",
-   "url": "https://vesti-news.example/news/d09wyu",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-21T03:11:00Z",
-   "tone": -3.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Kyiv",
-   "url": "https://lagos-sun.example/news/ek1ujv",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-21T02:42:00Z",
-   "tone": -0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Kyiv",
-   "url": "https://tehran-times.example/news/25abzc",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-21T02:04:00Z",
-   "tone": -1.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Kyiv",
-   "url": "https://hindustan-post.example/news/gh4hny",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-21T01:51:00Z",
-   "tone": -2.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Kyiv",
-   "url": "https://xinhua-sample.example/news/24eq5s",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-21T01:25:00Z",
-   "tone": 3.6,
-   "image": ""
-  },
   {
    "title": "[sample] Election commission publishes turnout figures near Kyiv",
    "url": "https://jakarta-pos.example/news/wkobt",
    "source": "jakarta-pos.example",
    "country": "ID",
    "lang": "id",
-   "time": "2026-10-21T00:47:00Z",
+   "time": "2026-10-21T05:23:00Z",
    "tone": -3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Kyiv",
-   "url": "https://hurriyet-sample.example/news/980u60",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-21T00:23:00Z",
-   "tone": -0.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Kyiv",
-   "url": "https://kyiv-herald.example/news/g51id6",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-21T00:03:00Z",
-   "tone": 1.6,
-   "image": ""
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Kyiv",
-   "url": "https://global-desk.example/news/245z91",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T23:21:00Z",
-   "tone": -0.3,
-   "image": ""
+   "url": "https://gulf-report.example/news/9fmcz1",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-21T05:05:00Z",
+   "tone": -2.9,
+   "image": "",
+   "video": "https://www.youtube.com/channel/UC_placeholder"
   },
   {
-   "title": "[sample] Election commission publishes turnout figures near Kyiv",
-   "url": "https://lagos-sun.example/news/a46ve4",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T22:55:00Z",
-   "tone": 0,
-   "image": ""
+   "title": "[sample] Wildfire forces evacuations near Kyiv",
+   "url": "https://kyiv-herald.example/news/ct8b5q",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-21T04:21:00Z",
+   "tone": -4,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Storm disrupts transport links near Kyiv",
-   "url": "https://nord-avis.example/news/7xt47g",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T22:23:00Z",
-   "tone": 3.3,
-   "image": ""
+   "title": "[sample] Football club confirms new coach near Kyiv",
+   "url": "https://morning-wire.example/news/7lgdz6",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-21T04:02:00Z",
+   "tone": -4.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Kyiv",
+   "url": "https://xinhua-sample.example/news/1f4uge",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-21T03:27:00Z",
+   "tone": -1.2,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Kyiv",
@@ -299,69 +194,65 @@
    "source": "global-desk.example",
    "country": "CA",
    "lang": "en",
-   "time": "2026-10-20T22:02:00Z",
+   "time": "2026-10-21T03:05:00Z",
    "tone": 2.7,
-   "image": ""
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Court hears appeal in landmark case near Kyiv",
-   "url": "https://hurriyet-sample.example/news/bjyt9h",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T21:31:00Z",
-   "tone": -2.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Kyiv",
-   "url": "https://kyiv-herald.example/news/5odkue",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T21:15:00Z",
-   "tone": -2.2,
-   "image": ""
+   "title": "[sample] Football club confirms new coach near Kyiv",
+   "url": "https://cape-mail.example/news/68y7sc",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-21T02:43:00Z",
+   "tone": -2.8,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Kyiv",
-   "url": "https://kyiv-herald.example/news/8hpde7",
+   "url": "https://wire-service.example/news/5s5i8m",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-21T02:12:00Z",
+   "tone": -0.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Kyiv",
+   "url": "https://kyiv-herald.example/news/6i8zgd",
    "source": "kyiv-herald.example",
    "country": "UA",
    "lang": "uk",
-   "time": "2026-10-20T20:40:00Z",
-   "tone": -3.5,
-   "image": ""
+   "time": "2026-10-21T01:44:00Z",
+   "tone": -1,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Kyiv",
-   "url": "https://harbour-press.example/news/3p6kun",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T20:16:00Z",
-   "tone": 0.6,
-   "image": ""
+   "url": "https://el-diario.example/news/bebx7h",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-21T01:14:00Z",
+   "tone": 3.7,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Wildfire forces evacuations near Kyiv",
-   "url": "https://gazeta-sample.example/news/a3psmp",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T19:53:00Z",
-   "tone": -2.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Kyiv",
-   "url": "https://harbour-press.example/news/3zyjdw",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T19:20:00Z",
-   "tone": 0,
-   "image": ""
+   "title": "[sample] Researchers report vaccine trial results near Kyiv",
+   "url": "https://gulf-report.example/news/8wnlno",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-21T00:47:00Z",
+   "tone": -4.1,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Kyiv",
@@ -369,69 +260,65 @@
    "source": "nord-avis.example",
    "country": "NO",
    "lang": "no",
-   "time": "2026-10-20T19:01:00Z",
+   "time": "2026-10-21T00:32:00Z",
    "tone": -5.5,
-   "image": ""
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Wildfire forces evacuations near Kyiv",
-   "url": "https://nation-ke.example/news/3wd4b4",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T18:15:00Z",
-   "tone": 3.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Kyiv",
-   "url": "https://el-diario.example/news/7gi85k",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T18:03:00Z",
-   "tone": -5.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Kyiv",
-   "url": "https://gazeta-sample.example/news/f2z571",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T17:35:00Z",
-   "tone": 5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Kyiv",
-   "url": "https://vesti-news.example/news/eorefo",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T16:53:00Z",
-   "tone": 4.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Kyiv",
-   "url": "https://gulf-report.example/news/48e67s",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T16:32:00Z",
-   "tone": 3,
-   "image": ""
+   "title": "[sample] Election commission publishes turnout figures near Kyiv",
+   "url": "https://nord-avis.example/news/f0qxby",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T23:59:00Z",
+   "tone": -4.3,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Kyiv",
-   "url": "https://kyiv-herald.example/news/amnoks",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T16:00:00Z",
-   "tone": 3,
-   "image": ""
+   "url": "https://jakarta-pos.example/news/g1hvrh",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T23:27:00Z",
+   "tone": -5.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Kyiv",
+   "url": "https://cape-mail.example/news/edv7mv",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T22:51:00Z",
+   "tone": -0.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Kyiv",
+   "url": "https://global-desk.example/news/1th8j8",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T22:22:00Z",
+   "tone": -1.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Kyiv",
+   "url": "https://wire-service.example/news/1jmnlx",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T22:13:00Z",
+   "tone": 0.7,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Kyiv",
@@ -439,69 +326,65 @@
    "source": "hindustan-post.example",
    "country": "IN",
    "lang": "en",
-   "time": "2026-10-20T15:31:00Z",
+   "time": "2026-10-20T21:30:00Z",
    "tone": -4.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Kyiv",
-   "url": "https://nord-avis.example/news/ch14br",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T15:03:00Z",
-   "tone": 1.9,
-   "image": ""
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Kyiv",
-   "url": "https://asahi-sample.example/news/4d3xxe",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T14:42:00Z",
-   "tone": -5,
-   "image": ""
+   "url": "https://haaretz-sample.example/news/c78h78",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T21:12:00Z",
+   "tone": -1,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Aid convoy reaches border crossing near Kyiv",
-   "url": "https://gazeta-sample.example/news/8scmeg",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T14:22:00Z",
-   "tone": -0.6,
-   "image": ""
+   "title": "[sample] Election commission publishes turnout figures near Kyiv",
+   "url": "https://kyiv-herald.example/news/gdtr3u",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T20:35:00Z",
+   "tone": -5.1,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Storm disrupts transport links near Kyiv",
-   "url": "https://wire-service.example/news/7kuum4",
-   "source": "wire-service.example",
-   "country": "",
+   "title": "[sample] Wildfire forces evacuations near Kyiv",
+   "url": "https://harbour-press.example/news/1zwh2d",
+   "source": "harbour-press.example",
+   "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T13:55:00Z",
-   "tone": -0.2,
-   "image": ""
+   "time": "2026-10-20T20:13:00Z",
+   "tone": -3,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Ministers discuss energy prices near Kyiv",
-   "url": "https://asahi-sample.example/news/7fblfd",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T13:15:00Z",
-   "tone": -2.3,
-   "image": ""
+   "title": "[sample] Football club confirms new coach near Kyiv",
+   "url": "https://tehran-times.example/news/82p6ah",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T19:45:00Z",
+   "tone": -0.7,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Court hears appeal in landmark case near Kyiv",
-   "url": "https://cape-mail.example/news/5o0n24",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T12:55:00Z",
-   "tone": 0.1,
-   "image": ""
+   "title": "[sample] Football club confirms new coach near Kyiv",
+   "url": "https://al-akhbar.example/news/7d1hr4",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T19:14:00Z",
+   "tone": -2.9,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Aid convoy reaches border crossing near Kyiv",
@@ -509,69 +392,65 @@
    "source": "gulf-report.example",
    "country": "AE",
    "lang": "ar",
-   "time": "2026-10-20T12:16:00Z",
+   "time": "2026-10-20T18:43:00Z",
    "tone": -6.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Kyiv",
-   "url": "https://tageszeitung.example/news/34xa4t",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T11:52:00Z",
-   "tone": -3.2,
-   "image": ""
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Kyiv",
-   "url": "https://kyiv-herald.example/news/emr8fr",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T11:31:00Z",
-   "tone": -0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Kyiv",
-   "url": "https://vesti-news.example/news/de798b",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T10:57:00Z",
-   "tone": -1.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Kyiv",
-   "url": "https://wire-service.example/news/5fuka9",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T10:30:00Z",
-   "tone": -0.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Kyiv",
-   "url": "https://vesti-news.example/news/2q7vvi",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T10:06:00Z",
-   "tone": -2.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Kyiv",
-   "url": "https://cape-mail.example/news/46y3yb",
+   "url": "https://cape-mail.example/news/5877s7",
    "source": "cape-mail.example",
    "country": "ZA",
    "lang": "en",
-   "time": "2026-10-20T09:42:00Z",
-   "tone": 0.6,
-   "image": ""
+   "time": "2026-10-20T18:28:00Z",
+   "tone": -6.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Kyiv",
+   "url": "https://vesti-news.example/news/52naeq",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T18:02:00Z",
+   "tone": 1.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Kyiv",
+   "url": "https://xinhua-sample.example/news/blavjd",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T17:22:00Z",
+   "tone": 4.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Kyiv",
+   "url": "https://vesti-news.example/news/6dn7ls",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T16:59:00Z",
+   "tone": -0.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Kyiv",
+   "url": "https://al-akhbar.example/news/fn257d",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T16:28:00Z",
+   "tone": -4,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Kyiv",
@@ -579,73 +458,244 @@
    "source": "harbour-press.example",
    "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T09:15:00Z",
+   "time": "2026-10-20T16:09:00Z",
    "tone": 1.6,
-   "image": ""
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Ministers discuss energy prices near Kyiv",
-   "url": "https://corriere-sample.example/news/2r57zq",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T08:39:00Z",
-   "tone": -3.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Kyiv",
-   "url": "https://hurriyet-sample.example/news/f7ohjf",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T08:07:00Z",
-   "tone": -4.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Kyiv",
-   "url": "https://haaretz-sample.example/news/9lbsnk",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T07:58:00Z",
-   "tone": -1.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Kyiv",
-   "url": "https://jakarta-pos.example/news/18maop",
+   "title": "[sample] Storm disrupts transport links near Kyiv",
+   "url": "https://jakarta-pos.example/news/4wz0jj",
    "source": "jakarta-pos.example",
    "country": "ID",
    "lang": "id",
-   "time": "2026-10-20T07:23:00Z",
-   "tone": -2.5,
-   "image": ""
+   "time": "2026-10-20T15:42:00Z",
+   "tone": 2.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Kyiv",
+   "url": "https://lagos-sun.example/news/dbfggl",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T15:10:00Z",
+   "tone": -6.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Kyiv",
+   "url": "https://o-correio.example/news/6ge78o",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T14:41:00Z",
+   "tone": -6.1,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Kyiv",
-   "url": "https://gazeta-sample.example/news/2pfz2m",
+   "url": "https://daily-ledger.example/news/g9ueyh",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T14:17:00Z",
+   "tone": -0.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Kyiv",
+   "url": "https://hurriyet-sample.example/news/2rkchf",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T13:56:00Z",
+   "tone": 3.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Kyiv",
+   "url": "https://harbour-press.example/news/5kg7ox",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T13:19:00Z",
+   "tone": 4.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Kyiv",
+   "url": "https://el-diario.example/news/269sc",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T12:44:00Z",
+   "tone": 3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Kyiv",
+   "url": "https://harbour-press.example/news/cbyhla",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T12:33:00Z",
+   "tone": -0.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Kyiv",
+   "url": "https://gulf-report.example/news/414bkj",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T11:52:00Z",
+   "tone": -1.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Kyiv",
+   "url": "https://morning-wire.example/news/co8avt",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T11:21:00Z",
+   "tone": 3.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Kyiv",
+   "url": "https://cape-mail.example/news/3ciw4r",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T10:58:00Z",
+   "tone": 4.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Kyiv",
+   "url": "https://morning-wire.example/news/5ntfdj",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T10:39:00Z",
+   "tone": -2.2,
+   "image": "",
+   "video": "https://www.youtube.com/channel/UC_placeholder"
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Kyiv",
+   "url": "https://corriere-sample.example/news/6aokrv",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T09:57:00Z",
+   "tone": -3.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Kyiv",
+   "url": "https://al-akhbar.example/news/8ax8gp",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T09:46:00Z",
+   "tone": 0.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Kyiv",
+   "url": "https://vesti-news.example/news/e4gv8f",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T09:09:00Z",
+   "tone": 1.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Kyiv",
+   "url": "https://haaretz-sample.example/news/ggiwq1",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T08:52:00Z",
+   "tone": -3.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Kyiv",
+   "url": "https://gazeta-sample.example/news/fndtkm",
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-20T06:52:00Z",
+   "time": "2026-10-20T08:21:00Z",
+   "tone": -6,
+   "image": "",
+   "video": "https://youtu.be/jNQXAC9IVRw"
+  },
+  {
+   "title": "",
+   "url": "https://al-akhbar.example/news/ghqtx2",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T07:46:00Z",
+   "tone": -3.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Kyiv",
+   "url": "https://xinhua-sample.example/news/18rsf9",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T07:28:00Z",
+   "tone": 4.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Kyiv",
+   "url": "https://nord-avis.example/news/egb4go",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T06:53:00Z",
    "tone": 2.5,
-   "image": ""
+   "image": "",
+   "video": ""
   }
  ],
  "stories": [
   {
-   "n": 826,
-   "o": 51,
-   "c": 15,
-   "l": 7,
-   "t": 0.6,
-   "first": "2026-10-20T21:41:00Z",
-   "last": "2026-10-21T03:06:00Z",
-   "headline": "[sample] Court hears appeal in corruption case in Kyiv: timeline",
-   "headlineSource": "gazeta-sample.example",
-   "headlineLang": "pl",
+   "n": 754,
+   "o": 47,
+   "c": 14,
+   "l": 6,
+   "t": 1,
+   "first": "2026-10-20T15:28:00Z",
+   "last": "2026-10-21T02:19:00Z",
+   "headline": "[sample] Court hears appeal in corruption case in Kyiv: what we know",
+   "headlineSource": "kyiv-herald.example",
+   "headlineLang": "uk",
    "entities": [
     "supreme court",
     "corruption",
@@ -654,147 +704,160 @@
    ],
    "articles": [
     {
-     "title": "[sample] Court hears appeal in corruption case in Kyiv: explained",
-     "url": "https://kyiv-herald.example/story/bri7s",
-     "source": "kyiv-herald.example",
-     "country": "UA",
-     "lang": "uk",
-     "time": "2026-10-21T03:06:00Z",
-     "tone": -0.4,
-     "image": ""
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in Kyiv: timeline",
-     "url": "https://hurriyet-sample.example/story/cdp7dk",
-     "source": "hurriyet-sample.example",
-     "country": "TR",
-     "lang": "tr",
-     "time": "2026-10-21T02:42:00Z",
-     "tone": 1.1,
-     "image": ""
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in Kyiv: timeline",
-     "url": "https://la-voz.example/story/2dlo6u",
-     "source": "la-voz.example",
-     "country": "AR",
-     "lang": "es",
-     "time": "2026-10-21T02:18:00Z",
-     "tone": 3.1,
-     "image": ""
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in Kyiv: latest",
-     "url": "https://le-quotidien.example/story/co8avt",
+     "title": "[sample] Court hears appeal in corruption case in Kyiv: analysis",
+     "url": "https://le-quotidien.example/story/ffr5s5",
      "source": "le-quotidien.example",
      "country": "FR",
      "lang": "fr",
-     "time": "2026-10-21T00:27:00Z",
-     "tone": 1,
-     "image": ""
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in Kyiv: explained",
-     "url": "https://cape-mail.example/story/46hu34",
-     "source": "cape-mail.example",
-     "country": "ZA",
-     "lang": "en",
-     "time": "2026-10-20T23:42:00Z",
-     "tone": -4,
-     "image": ""
+     "time": "2026-10-21T02:19:00Z",
+     "tone": 2.6,
+     "image": "",
+     "video": ""
     },
     {
      "title": "[sample] Court hears appeal in corruption case in Kyiv: timeline",
-     "url": "https://gazeta-sample.example/story/1upzri",
-     "source": "gazeta-sample.example",
-     "country": "PL",
-     "lang": "pl",
-     "time": "2026-10-21T00:41:00Z",
-     "tone": 2.7,
-     "image": ""
+     "url": "https://seoul-daily.example/story/81t1oy",
+     "source": "seoul-daily.example",
+     "country": "KR",
+     "lang": "ko",
+     "time": "2026-10-21T01:40:00Z",
+     "tone": 0,
+     "image": "",
+     "video": "https://www.youtube.com/shorts/aqz-KE-bpKQ"
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Kyiv: reactions",
+     "url": "https://el-diario.example/story/c7mezg",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T00:23:00Z",
+     "tone": -0.5,
+     "image": "",
+     "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Kyiv: explained",
+     "url": "https://wire-service.example/story/f5shf",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T00:31:00Z",
+     "tone": 1.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Kyiv: in pictures",
+     "url": "https://hindustan-post.example/story/aixrbu",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T00:11:00Z",
+     "tone": 3.6,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Kyiv: what we know",
+     "url": "https://kyiv-herald.example/story/6qh3cc",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-20T23:49:00Z",
+     "tone": -1,
+     "image": "",
+     "video": ""
     }
    ]
   },
   {
-   "n": 719,
-   "o": 45,
-   "c": 13,
-   "l": 7,
-   "t": -2.5,
-   "first": "2026-10-20T23:31:00Z",
-   "last": "2026-10-21T03:54:00Z",
-   "headline": "[sample] Election count enters second day in Kyiv: reactions",
-   "headlineSource": "jakarta-pos.example",
-   "headlineLang": "id",
+   "n": 660,
+   "o": 41,
+   "c": 12,
+   "l": 6,
+   "t": -0.6,
+   "first": "2026-10-20T18:32:00Z",
+   "last": "2026-10-21T01:52:00Z",
+   "headline": "[sample] Ministers meet over energy prices in Kyiv: in pictures",
+   "headlineSource": "nord-avis.example",
+   "headlineLang": "no",
    "entities": [
-    "election commission",
-    "parliament",
-    "voters",
+    "energy",
+    "european union",
+    "oil prices",
     "kyiv"
    ],
    "articles": [
     {
-     "title": "[sample] Election count enters second day in Kyiv: analysis",
-     "url": "https://kyiv-herald.example/story/fr8o2u",
+     "title": "[sample] Ministers meet over energy prices in Kyiv: in pictures",
+     "url": "https://daily-ledger.example/story/eix48n",
+     "source": "daily-ledger.example",
+     "country": "US",
+     "lang": "en",
+     "time": "2026-10-21T01:52:00Z",
+     "tone": -2,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Kyiv: analysis",
+     "url": "https://asahi-sample.example/story/daixm8",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T01:22:00Z",
+     "tone": 0.3,
+     "image": "",
+     "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Kyiv: in pictures",
+     "url": "https://nord-avis.example/story/9ygucc",
+     "source": "nord-avis.example",
+     "country": "NO",
+     "lang": "no",
+     "time": "2026-10-21T00:46:00Z",
+     "tone": -0.2,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Kyiv: explained",
+     "url": "https://gulf-report.example/story/6lwya5",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T00:40:00Z",
+     "tone": 1.9,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Kyiv: analysis",
+     "url": "https://kyiv-herald.example/story/edgro5",
      "source": "kyiv-herald.example",
      "country": "UA",
      "lang": "uk",
-     "time": "2026-10-21T03:54:00Z",
-     "tone": -2,
-     "image": ""
+     "time": "2026-10-20T22:16:00Z",
+     "tone": -1.7,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Election count enters second day in Kyiv: timeline",
-     "url": "https://hurriyet-sample.example/story/4su1vk",
-     "source": "hurriyet-sample.example",
-     "country": "TR",
-     "lang": "tr",
-     "time": "2026-10-21T03:23:00Z",
-     "tone": -2.2,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Kyiv: explained",
-     "url": "https://morning-wire.example/story/2dh10s",
-     "source": "morning-wire.example",
-     "country": "GB",
+     "title": "[sample] Ministers meet over energy prices in Kyiv: what we know",
+     "url": "https://harbour-press.example/story/6ryx5f",
+     "source": "harbour-press.example",
+     "country": "AU",
      "lang": "en",
-     "time": "2026-10-21T02:34:00Z",
-     "tone": 0,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Kyiv: reactions",
-     "url": "https://nation-ke.example/story/9lz5ur",
-     "source": "nation-ke.example",
-     "country": "KE",
-     "lang": "en",
-     "time": "2026-10-21T02:39:00Z",
-     "tone": -0.2,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Kyiv: explained",
-     "url": "https://wire-service.example/story/2cpn66",
-     "source": "wire-service.example",
-     "country": "",
-     "lang": "en",
-     "time": "2026-10-21T00:26:00Z",
-     "tone": -5.5,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Kyiv: reactions",
-     "url": "https://jakarta-pos.example/story/ggiwq1",
-     "source": "jakarta-pos.example",
-     "country": "ID",
-     "lang": "id",
-     "time": "2026-10-21T01:19:00Z",
-     "tone": -4.9,
-     "image": ""
+     "time": "2026-10-20T22:22:00Z",
+     "tone": -1.8,
+     "image": "",
+     "video": ""
     }
    ]
   }
  ],
- "unclustered": 935
+ "unclustered": 1066,
+ "videos": 74
 }

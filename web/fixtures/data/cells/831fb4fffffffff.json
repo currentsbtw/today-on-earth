@@ -4,594 +4,156 @@
  "n": 1210,
  "o": 77,
  "c": 23,
- "l": 16,
- "t": -0.4,
+ "l": 15,
+ "t": -1.6,
  "topOutlets": [
   [
    "le-quotidien.example",
-   5
-  ],
-  [
-   "gazeta-sample.example",
-   5
-  ],
-  [
-   "corriere-sample.example",
    4
   ],
   [
-   "al-akhbar.example",
-   3
-  ],
-  [
-   "lagos-sun.example",
-   3
+   "wire-service.example",
+   4
   ],
   [
    "harbour-press.example",
    3
   ],
   [
-   "gulf-report.example",
-   2
+   "kyiv-herald.example",
+   3
+  ],
+  [
+   "global-desk.example",
+   3
   ],
   [
    "seoul-daily.example",
-   2
-  ],
-  [
-   "tehran-times.example",
-   2
+   3
   ],
   [
    "morning-wire.example",
+   3
+  ],
+  [
+   "hindustan-post.example",
+   3
+  ],
+  [
+   "nation-ke.example",
+   2
+  ],
+  [
+   "daily-ledger.example",
    2
   ]
  ],
  "topCountries": [
   [
    "FR",
-   5
-  ],
-  [
-   "PL",
-   5
-  ],
-  [
-   "IT",
    4
   ],
   [
-   "EG",
-   3
-  ],
-  [
-   "NG",
-   3
+   "",
+   4
   ],
   [
    "AU",
    3
   ],
   [
-   "AE",
-   2
+   "UA",
+   3
+  ],
+  [
+   "CA",
+   3
   ],
   [
    "KR",
-   2
-  ],
-  [
-   "IR",
-   2
+   3
   ],
   [
    "GB",
+   3
+  ],
+  [
+   "IN",
+   3
+  ],
+  [
+   "KE",
+   2
+  ],
+  [
+   "US",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   16
-  ],
-  [
-   "ar",
-   5
+   23
   ],
   [
    "fr",
-   5
-  ],
-  [
-   "pl",
-   5
-  ],
-  [
-   "it",
    4
   ],
   [
-   "ko",
-   2
-  ],
-  [
-   "fa",
-   2
-  ],
-  [
    "uk",
+   3
+  ],
+  [
+   "ko",
+   3
+  ],
+  [
+   "it",
    2
   ],
   [
-   "tr",
+   "no",
    2
   ],
   [
-   "id",
-   1
+   "zh",
+   2
+  ],
+  [
+   "es",
+   2
+  ],
+  [
+   "he",
+   2
+  ],
+  [
+   "de",
+   2
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Election commission publishes turnout figures near Paris",
-   "url": "https://al-akhbar.example/news/d34174",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T05:16:00Z",
-   "tone": 2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Paris",
-   "url": "https://le-quotidien.example/news/tx8ut",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-21T04:51:00Z",
-   "tone": -4.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Paris",
-   "url": "https://jakarta-pos.example/news/b0bej3",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-21T04:22:00Z",
-   "tone": 4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Paris",
-   "url": "https://lagos-sun.example/news/azhenx",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-21T04:05:00Z",
-   "tone": -2.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Paris",
-   "url": "https://al-akhbar.example/news/clsrdy",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T03:32:00Z",
-   "tone": -2.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Paris",
-   "url": "https://gazeta-sample.example/news/82x2hr",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-21T03:09:00Z",
-   "tone": 0.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Paris",
-   "url": "https://o-correio.example/news/fj59ii",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-21T02:37:00Z",
-   "tone": -1.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Paris",
-   "url": "https://asahi-sample.example/news/8vroyx",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-21T02:12:00Z",
-   "tone": -3.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Paris",
-   "url": "https://gulf-report.example/news/6csxt8",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-21T01:46:00Z",
-   "tone": 0,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Paris",
-   "url": "https://corriere-sample.example/news/p7176",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-21T01:20:00Z",
-   "tone": -0.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Paris",
-   "url": "https://corriere-sample.example/news/fvu5x0",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-21T00:43:00Z",
-   "tone": -2.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Paris",
-   "url": "https://seoul-daily.example/news/dm71hr",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-21T00:21:00Z",
-   "tone": 3.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Paris",
-   "url": "https://tehran-times.example/news/eojoy5",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T23:55:00Z",
-   "tone": -2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Paris",
-   "url": "https://morning-wire.example/news/7yynp4",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T23:23:00Z",
-   "tone": 4.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Paris",
-   "url": "https://nation-ke.example/news/54dil5",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T22:56:00Z",
-   "tone": -3.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Paris",
-   "url": "https://seoul-daily.example/news/9xfl41",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T22:36:00Z",
-   "tone": -6.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Paris",
-   "url": "https://le-quotidien.example/news/8xgfbz",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T22:02:00Z",
-   "tone": 1.9,
-   "image": ""
-  },
-  {
    "title": "",
-   "url": "https://kyiv-herald.example/news/1fc3ui",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T21:26:00Z",
-   "tone": -2.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Paris",
-   "url": "https://le-quotidien.example/news/bgp009",
+   "url": "https://le-quotidien.example/news/a03oie",
    "source": "le-quotidien.example",
    "country": "FR",
    "lang": "fr",
-   "time": "2026-10-20T21:04:00Z",
-   "tone": -6.6,
-   "image": ""
+   "time": "2026-10-21T05:32:00Z",
+   "tone": 1.5,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Storm disrupts transport links near Paris",
-   "url": "https://le-quotidien.example/news/7o2q1b",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T20:49:00Z",
-   "tone": -3.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Paris",
-   "url": "https://gazeta-sample.example/news/aoyjdj",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T20:21:00Z",
-   "tone": -2.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Paris",
-   "url": "https://harbour-press.example/news/26gxmr",
+   "title": "[sample] Researchers report vaccine trial results near Paris",
+   "url": "https://harbour-press.example/news/3869ft",
    "source": "harbour-press.example",
    "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T19:54:00Z",
-   "tone": 3.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Paris",
-   "url": "https://xinhua-sample.example/news/slvqz",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T19:20:00Z",
-   "tone": 4.4,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://hindustan-post.example/news/ekt1hf",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T18:55:00Z",
-   "tone": -3.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Paris",
-   "url": "https://lagos-sun.example/news/aib1fk",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T18:33:00Z",
-   "tone": 4.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Paris",
-   "url": "https://lagos-sun.example/news/43xgoe",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T17:46:00Z",
-   "tone": -5.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Paris",
-   "url": "https://harbour-press.example/news/bcw2pv",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T17:36:00Z",
-   "tone": -1.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Paris",
-   "url": "https://tehran-times.example/news/fskxhw",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T17:03:00Z",
-   "tone": 4.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Paris",
-   "url": "https://le-quotidien.example/news/39sfp3",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T16:30:00Z",
-   "tone": 3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Paris",
-   "url": "https://gulf-report.example/news/3nnnux",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T16:09:00Z",
-   "tone": 2.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Paris",
-   "url": "https://wire-service.example/news/5kw74a",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T15:29:00Z",
-   "tone": -3.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Paris",
-   "url": "https://gazeta-sample.example/news/b6wjc1",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T15:03:00Z",
-   "tone": 1.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Paris",
-   "url": "https://morning-wire.example/news/2d22kf",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T14:38:00Z",
-   "tone": 4.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Paris",
-   "url": "https://kyiv-herald.example/news/1pi0vy",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T14:20:00Z",
-   "tone": -0.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Paris",
-   "url": "https://tageszeitung.example/news/3x36k7",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T13:41:00Z",
-   "tone": 4.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Paris",
-   "url": "https://gazeta-sample.example/news/d4sgw9",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T13:29:00Z",
-   "tone": -4.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Paris",
-   "url": "https://corriere-sample.example/news/6pcvm0",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T12:51:00Z",
-   "tone": -4.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Paris",
-   "url": "https://hindustan-post.example/news/9kuire",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T12:16:00Z",
-   "tone": 4.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Paris",
-   "url": "https://wire-service.example/news/boeeqi",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T11:53:00Z",
-   "tone": 0.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Paris",
-   "url": "https://al-akhbar.example/news/dfq965",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T11:20:00Z",
-   "tone": 0.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Paris",
-   "url": "https://harbour-press.example/news/jr65z",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T11:04:00Z",
-   "tone": 3.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Paris",
-   "url": "https://haaretz-sample.example/news/ecetdu",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T10:42:00Z",
-   "tone": -1.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Paris",
-   "url": "https://hurriyet-sample.example/news/52d5ci",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T09:58:00Z",
-   "tone": -4.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Paris",
-   "url": "https://hurriyet-sample.example/news/fip9x6",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T09:46:00Z",
-   "tone": 2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Paris",
-   "url": "https://la-voz.example/news/4fv17u",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T09:20:00Z",
-   "tone": 0.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Paris",
-   "url": "https://corriere-sample.example/news/s51dk",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T08:37:00Z",
-   "tone": 3.4,
-   "image": ""
+   "time": "2026-10-21T04:49:00Z",
+   "tone": -6.4,
+   "image": "",
+   "video": ""
   },
   {
    "title": "",
@@ -599,53 +161,541 @@
    "source": "nation-ke.example",
    "country": "KE",
    "lang": "en",
-   "time": "2026-10-20T08:07:00Z",
+   "time": "2026-10-21T04:22:00Z",
    "tone": -5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Paris",
-   "url": "https://cape-mail.example/news/ehm8h4",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T07:57:00Z",
-   "tone": -1.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Paris",
-   "url": "https://gazeta-sample.example/news/7mvmbc",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T07:29:00Z",
-   "tone": 3.2,
-   "image": ""
+   "image": "",
+   "video": "https://m.youtube.com/watch?v=kJQP7kiw5Fk"
   },
   {
    "title": "[sample] Wildfire forces evacuations near Paris",
-   "url": "https://daily-ledger.example/news/1rbda5",
+   "url": "https://daily-ledger.example/news/7tim0t",
    "source": "daily-ledger.example",
    "country": "US",
    "lang": "en",
-   "time": "2026-10-20T06:48:00Z",
-   "tone": -4.5,
-   "image": ""
+   "time": "2026-10-21T03:56:00Z",
+   "tone": 4.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Paris",
+   "url": "https://wire-service.example/news/1cnml3",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-21T03:38:00Z",
+   "tone": 2.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Paris",
+   "url": "https://wire-service.example/news/ccefhg",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-21T03:15:00Z",
+   "tone": -0.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Paris",
+   "url": "https://al-akhbar.example/news/aeqxq1",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-21T02:38:00Z",
+   "tone": -1.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://kyiv-herald.example/news/axy3st",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-21T02:04:00Z",
+   "tone": 1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Paris",
+   "url": "https://lagos-sun.example/news/bpndh5",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-21T01:36:00Z",
+   "tone": 0.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Paris",
+   "url": "https://global-desk.example/news/efxq1m",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-21T01:25:00Z",
+   "tone": -5.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Paris",
+   "url": "https://cape-mail.example/news/976k7u",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-21T00:46:00Z",
+   "tone": -3.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Paris",
+   "url": "https://kyiv-herald.example/news/4o7hdu",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-21T00:31:00Z",
+   "tone": -0.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Paris",
+   "url": "https://seoul-daily.example/news/3515ga",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-21T00:00:00Z",
+   "tone": 3.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Paris",
+   "url": "https://jakarta-pos.example/news/doxdvo",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T23:18:00Z",
+   "tone": -3.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Paris",
+   "url": "https://vesti-news.example/news/2z13nb",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T22:57:00Z",
+   "tone": -2.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Paris",
+   "url": "https://o-correio.example/news/6vowaa",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T22:23:00Z",
+   "tone": -5.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Paris",
+   "url": "https://nation-ke.example/news/g995u1",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T22:05:00Z",
+   "tone": -6.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Paris",
+   "url": "https://corriere-sample.example/news/byedoz",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T21:37:00Z",
+   "tone": -6.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Paris",
+   "url": "https://nord-avis.example/news/bc319y",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T21:02:00Z",
+   "tone": -4.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Paris",
+   "url": "https://xinhua-sample.example/news/firvl5",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T20:42:00Z",
+   "tone": 3.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Paris",
+   "url": "https://el-diario.example/news/7w140k",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T20:18:00Z",
+   "tone": -4.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Paris",
+   "url": "https://haaretz-sample.example/news/g2sv1p",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T19:52:00Z",
+   "tone": 0.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Paris",
+   "url": "https://tageszeitung.example/news/7a693v",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T19:15:00Z",
+   "tone": 1.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Paris",
+   "url": "https://hurriyet-sample.example/news/dup2u5",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T18:48:00Z",
+   "tone": 1.9,
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Paris",
+   "url": "https://morning-wire.example/news/73ck22",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T18:28:00Z",
+   "tone": 4.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Paris",
+   "url": "https://nord-avis.example/news/9h92db",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T17:53:00Z",
+   "tone": -2.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Paris",
+   "url": "https://hindustan-post.example/news/3ehjqg",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T17:30:00Z",
+   "tone": -5.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Paris",
+   "url": "https://kyiv-herald.example/news/39xbb3",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T16:57:00Z",
+   "tone": 1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Paris",
+   "url": "https://harbour-press.example/news/8jsmxo",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T16:37:00Z",
+   "tone": -2.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Paris",
+   "url": "https://xinhua-sample.example/news/by2a0p",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T16:06:00Z",
+   "tone": -4.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Paris",
+   "url": "https://le-quotidien.example/news/419thj",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T15:28:00Z",
+   "tone": -2.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Paris",
+   "url": "https://daily-ledger.example/news/4y39dx",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T15:16:00Z",
+   "tone": -4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Paris",
+   "url": "https://la-voz.example/news/d6pevx",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T14:47:00Z",
+   "tone": -1.8,
+   "image": "",
+   "video": "https://www.youtube.com/shorts/aqz-KE-bpKQ"
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Paris",
+   "url": "https://cape-mail.example/news/2r5bil",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T14:05:00Z",
+   "tone": 3.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Paris",
+   "url": "https://wire-service.example/news/drdmz4",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T13:41:00Z",
+   "tone": 4.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Paris",
+   "url": "https://haaretz-sample.example/news/8oxppg",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T13:29:00Z",
+   "tone": -1.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Paris",
+   "url": "https://harbour-press.example/news/9p2e08",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T12:57:00Z",
+   "tone": 5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://global-desk.example/news/dx526h",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T12:19:00Z",
+   "tone": -2,
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Paris",
+   "url": "https://corriere-sample.example/news/9gfvpl",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T11:54:00Z",
+   "tone": 3.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Paris",
+   "url": "https://hindustan-post.example/news/9g5syn",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T11:38:00Z",
+   "tone": -2.5,
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Paris",
+   "url": "https://morning-wire.example/news/ehwbtt",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T10:56:00Z",
+   "tone": -3.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Paris",
+   "url": "https://global-desk.example/news/42ygf",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T10:41:00Z",
+   "tone": 4.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://le-quotidien.example/news/antw8q",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T10:14:00Z",
+   "tone": -5.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Paris",
+   "url": "https://seoul-daily.example/news/etni3r",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T09:41:00Z",
+   "tone": -6.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Paris",
+   "url": "https://morning-wire.example/news/aqwara",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T09:06:00Z",
+   "tone": -6.8,
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Paris",
+   "url": "https://wire-service.example/news/c4xzi1",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T08:42:00Z",
+   "tone": -4.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://seoul-daily.example/news/b76twt",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T08:07:00Z",
+   "tone": -5.3,
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Paris",
+   "url": "https://tageszeitung.example/news/ycn9i",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T07:39:00Z",
+   "tone": -3.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Paris",
+   "url": "https://le-quotidien.example/news/7lb9o2",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T07:14:00Z",
+   "tone": 0.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Paris",
+   "url": "https://hindustan-post.example/news/9ruzfx",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T06:56:00Z",
+   "tone": -4,
+   "image": "",
+   "video": ""
   }
  ],
  "stories": [
   {
-   "n": 326,
-   "o": 29,
-   "c": 10,
-   "l": 6,
-   "t": 0.4,
-   "first": "2026-10-20T16:20:00Z",
-   "last": "2026-10-21T01:32:00Z",
-   "headline": "[sample] Ministers meet over energy prices in Paris: explained",
-   "headlineSource": "cape-mail.example",
-   "headlineLang": "en",
+   "n": 285,
+   "o": 25,
+   "c": 9,
+   "l": 5,
+   "t": -1,
+   "first": "2026-10-20T18:08:00Z",
+   "last": "2026-10-21T02:19:00Z",
+   "headline": "[sample] Ministers meet over energy prices in Paris: live updates",
+   "headlineSource": "la-voz.example",
+   "headlineLang": "es",
    "entities": [
     "energy",
     "european union",
@@ -654,237 +704,83 @@
    ],
    "articles": [
     {
-     "title": "[sample] Ministers meet over energy prices in Paris: explained",
-     "url": "https://jakarta-pos.example/story/724yf5",
-     "source": "jakarta-pos.example",
-     "country": "ID",
-     "lang": "id",
-     "time": "2026-10-21T01:32:00Z",
-     "tone": -4.8,
-     "image": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Paris: timeline",
-     "url": "https://le-quotidien.example/story/efxq1m",
-     "source": "le-quotidien.example",
-     "country": "FR",
-     "lang": "fr",
-     "time": "2026-10-21T01:08:00Z",
-     "tone": 2,
-     "image": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Paris: explained",
-     "url": "https://cape-mail.example/story/1r7sz0",
-     "source": "cape-mail.example",
-     "country": "ZA",
-     "lang": "en",
-     "time": "2026-10-21T00:20:00Z",
-     "tone": -0.4,
-     "image": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Paris: latest",
-     "url": "https://vesti-news.example/story/5ziqur",
-     "source": "vesti-news.example",
-     "country": "RU",
-     "lang": "ru",
-     "time": "2026-10-21T00:26:00Z",
-     "tone": 3.4,
-     "image": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Paris: reactions",
-     "url": "https://le-quotidien.example/story/8hjo3a",
-     "source": "le-quotidien.example",
-     "country": "FR",
-     "lang": "fr",
-     "time": "2026-10-20T23:08:00Z",
-     "tone": -0.6,
-     "image": ""
-    },
-    {
      "title": "[sample] Ministers meet over energy prices in Paris: what we know",
-     "url": "https://el-diario.example/story/8a8yxh",
-     "source": "el-diario.example",
-     "country": "MX",
-     "lang": "es",
-     "time": "2026-10-20T23:17:00Z",
-     "tone": 2.6,
-     "image": ""
-    }
-   ]
-  },
-  {
-   "n": 271,
-   "o": 24,
-   "c": 8,
-   "l": 5,
-   "t": -1.5,
-   "first": "2026-10-20T21:52:00Z",
-   "last": "2026-10-21T01:47:00Z",
-   "headline": "[sample] Court hears appeal in corruption case in Paris: latest",
-   "headlineSource": "gulf-report.example",
-   "headlineLang": "ar",
-   "entities": [
-    "supreme court",
-    "corruption",
-    "prosecutor",
-    "paris"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Court hears appeal in corruption case in Paris: explained",
-     "url": "https://morning-wire.example/story/doxdvo",
-     "source": "morning-wire.example",
-     "country": "GB",
-     "lang": "en",
-     "time": "2026-10-21T01:47:00Z",
-     "tone": -4.5,
-     "image": ""
+     "url": "https://kyiv-herald.example/story/8kxk7g",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-21T02:19:00Z",
+     "tone": 1.2,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Court hears appeal in corruption case in Paris: in pictures",
-     "url": "https://vesti-news.example/story/bf56bu",
-     "source": "vesti-news.example",
-     "country": "RU",
-     "lang": "ru",
-     "time": "2026-10-21T00:59:00Z",
-     "tone": -4.2,
-     "image": ""
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in Paris: reactions",
-     "url": "https://al-akhbar.example/story/4llv1i",
-     "source": "al-akhbar.example",
-     "country": "EG",
-     "lang": "ar",
-     "time": "2026-10-20T23:53:00Z",
-     "tone": 2.3,
-     "image": ""
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in Paris: timeline",
-     "url": "https://xinhua-sample.example/story/2djyla",
-     "source": "xinhua-sample.example",
-     "country": "CN",
-     "lang": "zh",
-     "time": "2026-10-21T00:20:00Z",
-     "tone": 0.7,
-     "image": ""
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in Paris: latest",
-     "url": "https://gulf-report.example/story/dhd5nj",
-     "source": "gulf-report.example",
-     "country": "AE",
-     "lang": "ar",
-     "time": "2026-10-20T21:51:00Z",
-     "tone": -5.9,
-     "image": ""
-    },
-    {
-     "title": "[sample] Court hears appeal in corruption case in Paris: analysis",
-     "url": "https://gazeta-sample.example/story/8157a2",
-     "source": "gazeta-sample.example",
-     "country": "PL",
-     "lang": "pl",
-     "time": "2026-10-20T21:52:00Z",
-     "tone": 2.6,
-     "image": ""
-    }
-   ]
-  },
-  {
-   "n": 212,
-   "o": 19,
-   "c": 6,
-   "l": 4,
-   "t": -2.1,
-   "first": "2026-10-20T18:44:00Z",
-   "last": "2026-10-21T04:56:00Z",
-   "headline": "[sample] Aid convoy reaches border crossing in Paris: analysis",
-   "headlineSource": "el-diario.example",
-   "headlineLang": "es",
-   "entities": [
-    "united nations",
-    "refugees",
-    "humanitarian aid",
-    "paris"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Paris: live updates",
-     "url": "https://nord-avis.example/story/1vyu2z",
-     "source": "nord-avis.example",
-     "country": "NO",
-     "lang": "no",
-     "time": "2026-10-21T04:56:00Z",
-     "tone": 0.9,
-     "image": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Paris: analysis",
-     "url": "https://el-diario.example/story/9k4jjy",
-     "source": "el-diario.example",
-     "country": "MX",
-     "lang": "es",
-     "time": "2026-10-21T04:18:00Z",
-     "tone": -1.8,
-     "image": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Paris: analysis",
-     "url": "https://nord-avis.example/story/e4u88f",
-     "source": "nord-avis.example",
-     "country": "NO",
-     "lang": "no",
-     "time": "2026-10-21T03:52:00Z",
-     "tone": -3.7,
-     "image": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Paris: live updates",
-     "url": "https://o-correio.example/story/7sbhby",
-     "source": "o-correio.example",
-     "country": "BR",
-     "lang": "pt",
-     "time": "2026-10-21T02:59:00Z",
-     "tone": -4,
-     "image": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Paris: live updates",
-     "url": "https://la-voz.example/story/3d2hei",
+     "title": "[sample] Ministers meet over energy prices in Paris: live updates",
+     "url": "https://la-voz.example/story/4st5xo",
      "source": "la-voz.example",
      "country": "AR",
      "lang": "es",
-     "time": "2026-10-21T02:32:00Z",
-     "tone": -4.3,
-     "image": ""
+     "time": "2026-10-21T01:44:00Z",
+     "tone": 3.8,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Aid convoy reaches border crossing in Paris: in pictures",
-     "url": "https://gazeta-sample.example/story/7hwllz",
-     "source": "gazeta-sample.example",
-     "country": "PL",
-     "lang": "pl",
-     "time": "2026-10-21T02:41:00Z",
-     "tone": 0.4,
-     "image": ""
+     "title": "[sample] Ministers meet over energy prices in Paris: live updates",
+     "url": "https://tehran-times.example/story/84ol8z",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-21T00:47:00Z",
+     "tone": -5.9,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Paris: reactions",
+     "url": "https://nation-ke.example/story/7lljng",
+     "source": "nation-ke.example",
+     "country": "KE",
+     "lang": "en",
+     "time": "2026-10-20T23:52:00Z",
+     "tone": -4.7,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Paris: timeline",
+     "url": "https://hurriyet-sample.example/story/3j7wbm",
+     "source": "hurriyet-sample.example",
+     "country": "TR",
+     "lang": "tr",
+     "time": "2026-10-20T23:47:00Z",
+     "tone": -1.2,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Paris: analysis",
+     "url": "https://lagos-sun.example/story/ej6kuh",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-21T00:19:00Z",
+     "tone": 0.6,
+     "image": "",
+     "video": ""
     }
    ]
   },
   {
-   "n": 159,
-   "o": 14,
-   "c": 5,
+   "n": 239,
+   "o": 21,
+   "c": 7,
    "l": 4,
-   "t": -1.7,
-   "first": "2026-10-20T22:18:00Z",
-   "last": "2026-10-21T03:45:00Z",
-   "headline": "[sample] Election count enters second day in Paris: latest",
-   "headlineSource": "morning-wire.example",
+   "t": -1.2,
+   "first": "2026-10-21T00:46:00Z",
+   "last": "2026-10-21T05:16:00Z",
+   "headline": "[sample] Election count enters second day in Paris: what we know",
+   "headlineSource": "daily-ledger.example",
    "headlineLang": "en",
    "entities": [
     "election commission",
@@ -894,67 +790,246 @@
    ],
    "articles": [
     {
-     "title": "[sample] Election count enters second day in Paris: explained",
-     "url": "https://jakarta-pos.example/story/d5xa3y",
-     "source": "jakarta-pos.example",
-     "country": "ID",
-     "lang": "id",
-     "time": "2026-10-21T03:45:00Z",
-     "tone": 3.6,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Paris: live updates",
-     "url": "https://nation-ke.example/story/cbydmn",
-     "source": "nation-ke.example",
-     "country": "KE",
-     "lang": "en",
-     "time": "2026-10-21T03:25:00Z",
-     "tone": -5.8,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Paris: latest",
-     "url": "https://morning-wire.example/story/3887qn",
+     "title": "[sample] Election count enters second day in Paris: what we know",
+     "url": "https://morning-wire.example/story/ckqap3",
      "source": "morning-wire.example",
      "country": "GB",
      "lang": "en",
-     "time": "2026-10-21T02:09:00Z",
-     "tone": -1.7,
-     "image": ""
+     "time": "2026-10-21T05:16:00Z",
+     "tone": -2.2,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Election count enters second day in Paris: analysis",
-     "url": "https://corriere-sample.example/story/f9c5vk",
-     "source": "corriere-sample.example",
-     "country": "IT",
-     "lang": "it",
-     "time": "2026-10-21T01:30:00Z",
-     "tone": -0.4,
-     "image": ""
+     "title": "[sample] Election count enters second day in Paris: live updates",
+     "url": "https://xinhua-sample.example/story/alim53",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-21T04:36:00Z",
+     "tone": -4.1,
+     "image": "",
+     "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
     },
     {
-     "title": "[sample] Election count enters second day in Paris: in pictures",
-     "url": "https://harbour-press.example/story/6tccal",
-     "source": "harbour-press.example",
-     "country": "AU",
-     "lang": "en",
-     "time": "2026-10-21T00:57:00Z",
-     "tone": -1.1,
-     "image": ""
+     "title": "[sample] Election count enters second day in Paris: latest",
+     "url": "https://tehran-times.example/story/1s8kys",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-21T03:52:00Z",
+     "tone": 0.4,
+     "image": "",
+     "video": ""
     },
     {
      "title": "[sample] Election count enters second day in Paris: what we know",
-     "url": "https://al-akhbar.example/story/2wy646",
+     "url": "https://al-akhbar.example/story/8znev9",
      "source": "al-akhbar.example",
      "country": "EG",
      "lang": "ar",
-     "time": "2026-10-21T01:25:00Z",
-     "tone": -5,
-     "image": ""
+     "time": "2026-10-21T02:31:00Z",
+     "tone": -4.9,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Paris: what we know",
+     "url": "https://lagos-sun.example/story/72y32x",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-21T03:44:00Z",
+     "tone": 0,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Paris: what we know",
+     "url": "https://daily-ledger.example/story/65h28k",
+     "source": "daily-ledger.example",
+     "country": "US",
+     "lang": "en",
+     "time": "2026-10-21T00:46:00Z",
+     "tone": 3.4,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 236,
+   "o": 21,
+   "c": 7,
+   "l": 6,
+   "t": -0.8,
+   "first": "2026-10-20T23:39:00Z",
+   "last": "2026-10-21T03:59:00Z",
+   "headline": "[sample] Aid convoy reaches border crossing in Paris: what we know",
+   "headlineSource": "asahi-sample.example",
+   "headlineLang": "ja",
+   "entities": [
+    "united nations",
+    "refugees",
+    "humanitarian aid",
+    "paris"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Paris: analysis",
+     "url": "https://le-quotidien.example/story/fc33vp",
+     "source": "le-quotidien.example",
+     "country": "FR",
+     "lang": "fr",
+     "time": "2026-10-21T03:59:00Z",
+     "tone": -2.4,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Paris: analysis",
+     "url": "https://wire-service.example/story/3a2omk",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T03:12:00Z",
+     "tone": 0,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Paris: analysis",
+     "url": "https://vesti-news.example/story/dti31o",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T02:15:00Z",
+     "tone": -1.6,
+     "image": "",
+     "video": "https://www.youtube.com/channel/UC_placeholder"
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Paris: reactions",
+     "url": "https://tageszeitung.example/story/51rscw",
+     "source": "tageszeitung.example",
+     "country": "DE",
+     "lang": "de",
+     "time": "2026-10-21T02:23:00Z",
+     "tone": 1.6,
+     "image": "",
+     "video": "https://youtu.be/jNQXAC9IVRw"
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Paris: what we know",
+     "url": "https://asahi-sample.example/story/ebhv4f",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T01:27:00Z",
+     "tone": -2.3,
+     "image": "",
+     "video": "https://youtu.be/jNQXAC9IVRw"
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Paris: in pictures",
+     "url": "https://nord-avis.example/story/d8bh92",
+     "source": "nord-avis.example",
+     "country": "NO",
+     "lang": "no",
+     "time": "2026-10-20T23:39:00Z",
+     "tone": -0.4,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 208,
+   "o": 19,
+   "c": 6,
+   "l": 4,
+   "t": -2.9,
+   "first": "2026-10-20T18:55:00Z",
+   "last": "2026-10-21T03:47:00Z",
+   "headline": "[sample] Court hears appeal in corruption case in Paris: in pictures",
+   "headlineSource": "cape-mail.example",
+   "headlineLang": "en",
+   "entities": [
+    "supreme court",
+    "corruption",
+    "prosecutor",
+    "paris"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Court hears appeal in corruption case in Paris: timeline",
+     "url": "https://morning-wire.example/story/51sejd",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-21T03:47:00Z",
+     "tone": -4.6,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Paris: what we know",
+     "url": "https://la-voz.example/story/3z2r42",
+     "source": "la-voz.example",
+     "country": "AR",
+     "lang": "es",
+     "time": "2026-10-21T03:22:00Z",
+     "tone": 0.1,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Paris: in pictures",
+     "url": "https://cape-mail.example/story/88t8nq",
+     "source": "cape-mail.example",
+     "country": "ZA",
+     "lang": "en",
+     "time": "2026-10-21T01:59:00Z",
+     "tone": -4.4,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Paris: what we know",
+     "url": "https://le-quotidien.example/story/5b0g2g",
+     "source": "le-quotidien.example",
+     "country": "FR",
+     "lang": "fr",
+     "time": "2026-10-21T01:38:00Z",
+     "tone": -3.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Paris: analysis",
+     "url": "https://wire-service.example/story/7qrfsc",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T01:59:00Z",
+     "tone": -3.6,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Paris: in pictures",
+     "url": "https://gazeta-sample.example/story/1tmyhw",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-20T23:37:00Z",
+     "tone": -1.9,
+     "image": "",
+     "video": ""
     }
    ]
   }
  ],
- "unclustered": 242
+ "unclustered": 242,
+ "videos": 36
 }

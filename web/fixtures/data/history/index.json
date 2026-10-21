@@ -5,11 +5,11 @@
    "file": "20261020T074500Z.json",
    "windowHours": 6,
    "totals": {
-    "articles": 6350,
-    "outlets": 717,
-    "countries": 30,
+    "articles": 6802,
+    "outlets": 742,
+    "countries": 31,
     "cells": 29,
-    "unplaced": 969
+    "unplaced": 1038
    }
   },
   {
@@ -17,11 +17,11 @@
    "file": "20261020T094500Z.json",
    "windowHours": 8,
    "totals": {
-    "articles": 9615,
-    "outlets": 883,
+    "articles": 9493,
+    "outlets": 877,
     "countries": 39,
     "cells": 29,
-    "unplaced": 1467
+    "unplaced": 1448
    }
   },
   {
@@ -29,11 +29,11 @@
    "file": "20261020T114500Z.json",
    "windowHours": 10,
    "totals": {
-    "articles": 12779,
-    "outlets": 1017,
-    "countries": 48,
+    "articles": 12609,
+    "outlets": 1011,
+    "countries": 47,
     "cells": 29,
-    "unplaced": 1949
+    "unplaced": 1923
    }
   },
   {
@@ -41,11 +41,11 @@
    "file": "20261020T134500Z.json",
    "windowHours": 12,
    "totals": {
-    "articles": 14850,
-    "outlets": 1097,
-    "countries": 53,
+    "articles": 15070,
+    "outlets": 1105,
+    "countries": 54,
     "cells": 29,
-    "unplaced": 2265
+    "unplaced": 2299
    }
   },
   {
@@ -53,11 +53,11 @@
    "file": "20261020T154500Z.json",
    "windowHours": 14,
    "totals": {
-    "articles": 18137,
-    "outlets": 1212,
-    "countries": 62,
+    "articles": 17140,
+    "outlets": 1178,
+    "countries": 59,
     "cells": 30,
-    "unplaced": 2767
+    "unplaced": 2615
    }
   },
   {
@@ -65,11 +65,11 @@
    "file": "20261020T174500Z.json",
    "windowHours": 16,
    "totals": {
-    "articles": 17883,
+    "articles": 17890,
     "outlets": 1204,
     "countries": 61,
     "cells": 30,
-    "unplaced": 2728
+    "unplaced": 2729
    }
   },
   {
@@ -77,11 +77,11 @@
    "file": "20261020T194500Z.json",
    "windowHours": 18,
    "totals": {
-    "articles": 18980,
-    "outlets": 1240,
+    "articles": 20281,
+    "outlets": 1282,
     "countries": 64,
     "cells": 30,
-    "unplaced": 2895
+    "unplaced": 3094
    }
   },
   {
@@ -89,11 +89,11 @@
    "file": "20261020T214500Z.json",
    "windowHours": 20,
    "totals": {
-    "articles": 20115,
-    "outlets": 1276,
+    "articles": 19009,
+    "outlets": 1241,
     "countries": 64,
     "cells": 30,
-    "unplaced": 3068
+    "unplaced": 2900
    }
   },
   {
@@ -101,11 +101,11 @@
    "file": "20261020T234500Z.json",
    "windowHours": 22,
    "totals": {
-    "articles": 20812,
-    "outlets": 1298,
+    "articles": 21723,
+    "outlets": 1326,
     "countries": 64,
     "cells": 30,
-    "unplaced": 3175
+    "unplaced": 3314
    }
   },
   {
@@ -113,11 +113,11 @@
    "file": "20261021T014500Z.json",
    "windowHours": 24,
    "totals": {
-    "articles": 22690,
-    "outlets": 1356,
+    "articles": 23055,
+    "outlets": 1367,
     "countries": 64,
     "cells": 30,
-    "unplaced": 3461
+    "unplaced": 3517
    }
   },
   {
@@ -125,11 +125,11 @@
    "file": "20261021T034500Z.json",
    "windowHours": 24,
    "totals": {
-    "articles": 23917,
-    "outlets": 1392,
+    "articles": 22910,
+    "outlets": 1362,
     "countries": 64,
     "cells": 30,
-    "unplaced": 3648
+    "unplaced": 3495
    }
   },
   {

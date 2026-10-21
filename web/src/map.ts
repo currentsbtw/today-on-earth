@@ -303,7 +303,7 @@ export function createMap(
     pitchWithRotate: false,
     touchPitch: false,
     maxPitch: 0,
-    attributionControl: { compact: true, customAttribution: 'Natural Earth · GDELT' },
+    attributionControl: { compact: true, customAttribution: 'Natural Earth · GDELT · <a href="./about.html">How it works</a>' },
   });
   map.touchZoomRotate.disableRotation();
   map.keyboard.disableRotation();

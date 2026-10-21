@@ -4,39 +4,27 @@
  "n": 2210,
  "o": 103,
  "c": 26,
- "l": 16,
- "t": -0.9,
+ "l": 15,
+ "t": -0.7,
  "topOutlets": [
+  [
+   "seoul-daily.example",
+   5
+  ],
+  [
+   "haaretz-sample.example",
+   5
+  ],
+  [
+   "kyiv-herald.example",
+   4
+  ],
   [
    "corriere-sample.example",
    4
   ],
   [
-   "seoul-daily.example",
-   4
-  ],
-  [
-   "hurriyet-sample.example",
-   4
-  ],
-  [
-   "harbour-press.example",
-   4
-  ],
-  [
-   "hindustan-post.example",
-   3
-  ],
-  [
-   "global-desk.example",
-   3
-  ],
-  [
-   "vesti-news.example",
-   3
-  ],
-  [
-   "haaretz-sample.example",
+   "gulf-report.example",
    3
   ],
   [
@@ -44,41 +32,41 @@
    3
   ],
   [
-   "tageszeitung.example",
+   "wire-service.example",
+   3
+  ],
+  [
+   "hurriyet-sample.example",
+   3
+  ],
+  [
+   "o-correio.example",
+   3
+  ],
+  [
+   "tehran-times.example",
    2
   ]
  ],
  "topCountries": [
   [
+   "KR",
+   5
+  ],
+  [
+   "IL",
+   5
+  ],
+  [
+   "UA",
+   4
+  ],
+  [
    "IT",
    4
   ],
   [
-   "KR",
-   4
-  ],
-  [
-   "TR",
-   4
-  ],
-  [
-   "AU",
-   4
-  ],
-  [
-   "IN",
-   3
-  ],
-  [
-   "CA",
-   3
-  ],
-  [
-   "RU",
-   3
-  ],
-  [
-   "IL",
+   "AE",
    3
   ],
   [
@@ -86,292 +74,86 @@
    3
   ],
   [
-   "DE",
+   "",
+   3
+  ],
+  [
+   "TR",
+   3
+  ],
+  [
+   "BR",
+   3
+  ],
+  [
+   "IR",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   14
+   10
+  ],
+  [
+   "ko",
+   5
+  ],
+  [
+   "he",
+   5
+  ],
+  [
+   "ar",
+   4
+  ],
+  [
+   "uk",
+   4
   ],
   [
    "it",
    4
   ],
   [
-   "ko",
-   4
-  ],
-  [
-   "tr",
-   4
-  ],
-  [
-   "ar",
-   3
-  ],
-  [
-   "ru",
-   3
-  ],
-  [
-   "he",
-   3
-  ],
-  [
    "es",
    3
   ],
   [
-   "de",
-   2
+   "tr",
+   3
   ],
   [
    "pt",
+   3
+  ],
+  [
+   "fa",
    2
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Officials meet over regional dispute near Gaza",
-   "url": "https://hindustan-post.example/news/5qblj",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-21T05:33:00Z",
-   "tone": -4.2,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://al-akhbar.example/news/ghqtx2",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T04:56:00Z",
-   "tone": -3.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Gaza",
-   "url": "https://global-desk.example/news/21rezj",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-21T04:29:00Z",
-   "tone": -6.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Gaza",
-   "url": "https://corriere-sample.example/news/alenmx",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-21T04:10:00Z",
-   "tone": -5.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Gaza",
-   "url": "https://global-desk.example/news/ccmb7c",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-21T03:29:00Z",
-   "tone": 0.4,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://corriere-sample.example/news/cda53t",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-21T03:16:00Z",
-   "tone": -3.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Gaza",
-   "url": "https://cape-mail.example/news/3gfrdq",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-21T02:45:00Z",
-   "tone": 2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Gaza",
-   "url": "https://seoul-daily.example/news/1o4m6l",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-21T02:18:00Z",
-   "tone": -1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Gaza",
-   "url": "https://hurriyet-sample.example/news/eu4s3v",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-21T01:52:00Z",
-   "tone": 3.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Gaza",
-   "url": "https://seoul-daily.example/news/81qtjr",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-21T01:16:00Z",
-   "tone": 0.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Gaza",
-   "url": "https://tageszeitung.example/news/c7mezg",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-21T00:51:00Z",
-   "tone": 4.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Gaza",
-   "url": "https://seoul-daily.example/news/bphpou",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-21T00:28:00Z",
-   "tone": -6.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Gaza",
-   "url": "https://gulf-report.example/news/91hyfa",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T23:49:00Z",
-   "tone": 0.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Gaza",
-   "url": "https://vesti-news.example/news/1y1wi2",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T23:17:00Z",
-   "tone": -2.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Gaza",
-   "url": "https://o-correio.example/news/enh3g8",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T22:59:00Z",
-   "tone": 3.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Gaza",
-   "url": "https://daily-ledger.example/news/6jq7s9",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T22:30:00Z",
-   "tone": -1.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Gaza",
-   "url": "https://asahi-sample.example/news/afrulu",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T21:56:00Z",
-   "tone": -5.3,
-   "image": ""
-  },
-  {
    "title": "[sample] Aid convoy reaches border crossing near Gaza",
-   "url": "https://haaretz-sample.example/news/5ozt12",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T21:28:00Z",
-   "tone": -0.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Gaza",
-   "url": "https://tehran-times.example/news/1o522s",
+   "url": "https://tehran-times.example/news/6sx18x",
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T21:10:00Z",
-   "tone": 2.5,
-   "image": ""
+   "time": "2026-10-21T05:24:00Z",
+   "tone": 3.1,
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
   },
   {
-   "title": "[sample] Wildfire forces evacuations near Gaza",
-   "url": "https://jakarta-pos.example/news/ed0o0n",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T20:50:00Z",
-   "tone": -1.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Gaza",
-   "url": "https://o-correio.example/news/98k19g",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T20:11:00Z",
-   "tone": -2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Gaza",
-   "url": "https://vesti-news.example/news/9ftec4",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T19:48:00Z",
-   "tone": 3.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Gaza",
-   "url": "https://xinhua-sample.example/news/23k2sh",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T19:20:00Z",
-   "tone": 1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Gaza",
-   "url": "https://el-diario.example/news/actaq8",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T18:49:00Z",
-   "tone": -3.5,
-   "image": ""
+   "title": "[sample] Ministers discuss energy prices near Gaza",
+   "url": "https://nation-ke.example/news/6xcj8z",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-21T05:04:00Z",
+   "tone": 0.5,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Gaza",
@@ -379,49 +161,43 @@
    "source": "harbour-press.example",
    "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T18:32:00Z",
+   "time": "2026-10-21T04:39:00Z",
    "tone": 4.2,
-   "image": ""
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
   },
   {
-   "title": "[sample] Central bank holds interest rate near Gaza",
-   "url": "https://haaretz-sample.example/news/e8jtsa",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T17:52:00Z",
-   "tone": 0.2,
-   "image": ""
+   "title": "[sample] Aid convoy reaches border crossing near Gaza",
+   "url": "https://gulf-report.example/news/fgergy",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-21T04:07:00Z",
+   "tone": 3.4,
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
   },
   {
    "title": "",
-   "url": "https://corriere-sample.example/news/9vohec",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T17:21:00Z",
-   "tone": -2,
-   "image": ""
+   "url": "https://gulf-report.example/news/45wkvm",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-21T03:27:00Z",
+   "tone": -6.3,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Officials meet over regional dispute near Gaza",
-   "url": "https://nord-avis.example/news/e2bron",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T17:10:00Z",
-   "tone": -4.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Gaza",
-   "url": "https://el-diario.example/news/4fyeq",
+   "title": "[sample] Court hears appeal in landmark case near Gaza",
+   "url": "https://el-diario.example/news/475io9",
    "source": "el-diario.example",
    "country": "MX",
    "lang": "es",
-   "time": "2026-10-20T16:28:00Z",
-   "tone": -2,
-   "image": ""
+   "time": "2026-10-21T03:13:00Z",
+   "tone": -6.9,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Gaza",
@@ -429,129 +205,120 @@
    "source": "kyiv-herald.example",
    "country": "UA",
    "lang": "uk",
-   "time": "2026-10-20T16:08:00Z",
+   "time": "2026-10-21T02:43:00Z",
    "tone": 4.5,
-   "image": ""
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Gaza",
-   "url": "https://xinhua-sample.example/news/7tgojg",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T15:31:00Z",
-   "tone": -5.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Gaza",
-   "url": "https://hurriyet-sample.example/news/794elz",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T15:17:00Z",
-   "tone": -1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Gaza",
-   "url": "https://tageszeitung.example/news/531ek3",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T14:46:00Z",
-   "tone": 3.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Gaza",
-   "url": "https://harbour-press.example/news/cv22m1",
-   "source": "harbour-press.example",
-   "country": "AU",
+   "url": "https://wire-service.example/news/1hfmce",
+   "source": "wire-service.example",
+   "country": "",
    "lang": "en",
-   "time": "2026-10-20T14:12:00Z",
-   "tone": -2.5,
-   "image": ""
+   "time": "2026-10-21T02:10:00Z",
+   "tone": 2.2,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Trade talks resume after pause near Gaza",
-   "url": "https://seoul-daily.example/news/3rnwym",
+   "title": "[sample] Court hears appeal in landmark case near Gaza",
+   "url": "https://gazeta-sample.example/news/31yx4n",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-21T01:35:00Z",
+   "tone": -3.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Gaza",
+   "url": "https://seoul-daily.example/news/agrkqx",
    "source": "seoul-daily.example",
    "country": "KR",
    "lang": "ko",
-   "time": "2026-10-20T13:39:00Z",
-   "tone": -0.9,
-   "image": ""
+   "time": "2026-10-21T01:21:00Z",
+   "tone": 0.7,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Election commission publishes turnout figures near Gaza",
-   "url": "https://hindustan-post.example/news/dwysq8",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T13:14:00Z",
-   "tone": -6.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Gaza",
-   "url": "https://harbour-press.example/news/csr458",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T12:58:00Z",
-   "tone": 3.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Gaza",
-   "url": "https://vesti-news.example/news/27fw1r",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T12:23:00Z",
-   "tone": -0.6,
-   "image": ""
+   "title": "[sample] Wildfire forces evacuations near Gaza",
+   "url": "https://hurriyet-sample.example/news/7g5qfn",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-21T00:52:00Z",
+   "tone": 5,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Trade talks resume after pause near Gaza",
-   "url": "https://global-desk.example/news/6313ez",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T11:52:00Z",
-   "tone": -3.1,
-   "image": ""
+   "url": "https://asahi-sample.example/news/3liqkk",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-21T00:22:00Z",
+   "tone": 3.1,
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
   },
   {
-   "title": "[sample] Storm disrupts transport links near Gaza",
-   "url": "https://hindustan-post.example/news/60ytr9",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T11:36:00Z",
-   "tone": 0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Gaza",
-   "url": "https://morning-wire.example/news/877wmr",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T10:58:00Z",
-   "tone": -3.6,
-   "image": ""
+   "title": "[sample] Researchers report vaccine trial results near Gaza",
+   "url": "https://tageszeitung.example/news/evcw0a",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-21T00:01:00Z",
+   "tone": -3.2,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Gaza",
-   "url": "https://gulf-report.example/news/d6u7l2",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T10:40:00Z",
-   "tone": 4.8,
-   "image": ""
+   "url": "https://haaretz-sample.example/news/eq9e0n",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T23:20:00Z",
+   "tone": 1.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Gaza",
+   "url": "https://gazeta-sample.example/news/2naphl",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T23:02:00Z",
+   "tone": -3.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Gaza",
+   "url": "https://kyiv-herald.example/news/8jqsmh",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T22:29:00Z",
+   "tone": -3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Gaza",
+   "url": "https://o-correio.example/news/8cx52f",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T22:06:00Z",
+   "tone": 2.6,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Trade talks resume after pause near Gaza",
@@ -559,59 +326,54 @@
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T10:12:00Z",
+   "time": "2026-10-20T21:42:00Z",
    "tone": -4.7,
-   "image": ""
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
   },
   {
-   "title": "[sample] Wildfire forces evacuations near Gaza",
-   "url": "https://haaretz-sample.example/news/8ve34l",
+   "title": "[sample] Ministers discuss energy prices near Gaza",
+   "url": "https://lagos-sun.example/news/aasvs8",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T21:01:00Z",
+   "tone": -0.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Gaza",
+   "url": "https://haaretz-sample.example/news/39da88",
    "source": "haaretz-sample.example",
    "country": "IL",
    "lang": "he",
-   "time": "2026-10-20T09:36:00Z",
-   "tone": -0.2,
-   "image": ""
+   "time": "2026-10-20T20:37:00Z",
+   "tone": -5.4,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Researchers report vaccine trial results near Gaza",
-   "url": "https://harbour-press.example/news/b9xobr",
-   "source": "harbour-press.example",
-   "country": "AU",
+   "title": "[sample] Ministers discuss energy prices near Gaza",
+   "url": "https://wire-service.example/news/1udj7a",
+   "source": "wire-service.example",
+   "country": "",
    "lang": "en",
-   "time": "2026-10-20T09:11:00Z",
-   "tone": -1.7,
-   "image": ""
+   "time": "2026-10-20T20:11:00Z",
+   "tone": 0,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Storm disrupts transport links near Gaza",
-   "url": "https://el-diario.example/news/eb1lqi",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T08:50:00Z",
-   "tone": 0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Gaza",
-   "url": "https://corriere-sample.example/news/dbzj40",
+   "title": "[sample] Wildfire forces evacuations near Gaza",
+   "url": "https://corriere-sample.example/news/b8j1eq",
    "source": "corriere-sample.example",
    "country": "IT",
    "lang": "it",
-   "time": "2026-10-20T08:15:00Z",
-   "tone": 4.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Gaza",
-   "url": "https://morning-wire.example/news/giidym",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T07:49:00Z",
-   "tone": -2.8,
-   "image": ""
+   "time": "2026-10-20T19:54:00Z",
+   "tone": 5,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Aid convoy reaches border crossing near Gaza",
@@ -619,113 +381,321 @@
    "source": "hurriyet-sample.example",
    "country": "TR",
    "lang": "tr",
-   "time": "2026-10-20T07:29:00Z",
+   "time": "2026-10-20T19:27:00Z",
    "tone": -0.6,
-   "image": ""
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Gaza",
+   "url": "https://haaretz-sample.example/news/2zs1g2",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T18:47:00Z",
+   "tone": -1.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Gaza",
+   "url": "https://seoul-daily.example/news/c2wuqs",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T18:23:00Z",
+   "tone": 1.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Gaza",
+   "url": "https://o-correio.example/news/6vb1by",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T17:51:00Z",
+   "tone": 2.5,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Gaza",
-   "url": "https://hurriyet-sample.example/news/e4trhf",
+   "url": "https://morning-wire.example/news/62x3v4",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T17:31:00Z",
+   "tone": 0.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Gaza",
+   "url": "https://al-akhbar.example/news/5zoxat",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T17:02:00Z",
+   "tone": 4.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Gaza",
+   "url": "https://gulf-report.example/news/789jc7",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T16:27:00Z",
+   "tone": -4.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Gaza",
+   "url": "https://corriere-sample.example/news/8ymib3",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T16:15:00Z",
+   "tone": 3.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Gaza",
+   "url": "https://hindustan-post.example/news/cmuv3b",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T15:32:00Z",
+   "tone": -1.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Gaza",
+   "url": "https://corriere-sample.example/news/fc993v",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T15:11:00Z",
+   "tone": 3.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Gaza",
+   "url": "https://harbour-press.example/news/2e5yk0",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T14:51:00Z",
+   "tone": 1.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://wire-service.example/news/96kvkh",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T14:19:00Z",
+   "tone": -3.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Gaza",
+   "url": "https://kyiv-herald.example/news/338gz0",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T13:47:00Z",
+   "tone": 2.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Gaza",
+   "url": "https://daily-ledger.example/news/8ecjms",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T13:28:00Z",
+   "tone": 3.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Gaza",
+   "url": "https://kyiv-herald.example/news/5j5vut",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T12:44:00Z",
+   "tone": -6.3,
+   "image": "",
+   "video": "https://m.youtube.com/watch?v=kJQP7kiw5Fk"
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Gaza",
+   "url": "https://el-diario.example/news/bx9az4",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T12:14:00Z",
+   "tone": -5.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://seoul-daily.example/news/bdhojq",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T11:53:00Z",
+   "tone": -2.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Gaza",
+   "url": "https://seoul-daily.example/news/1h0jmq",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T11:29:00Z",
+   "tone": -6.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Gaza",
+   "url": "https://seoul-daily.example/news/74p71q",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T11:02:00Z",
+   "tone": -4.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Gaza",
+   "url": "https://hurriyet-sample.example/news/79jx1s",
    "source": "hurriyet-sample.example",
    "country": "TR",
    "lang": "tr",
-   "time": "2026-10-20T07:03:00Z",
-   "tone": -4.8,
-   "image": ""
+   "time": "2026-10-20T10:30:00Z",
+   "tone": -5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Gaza",
+   "url": "https://o-correio.example/news/a74bt3",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T09:59:00Z",
+   "tone": -3.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Gaza",
+   "url": "https://haaretz-sample.example/news/3153m8",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T09:38:00Z",
+   "tone": -1.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Gaza",
+   "url": "https://vesti-news.example/news/cmubux",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T09:12:00Z",
+   "tone": 4.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Gaza",
+   "url": "https://tageszeitung.example/news/bead73",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T08:39:00Z",
+   "tone": -6.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Gaza",
+   "url": "https://corriere-sample.example/news/6mi4zv",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T08:08:00Z",
+   "tone": -1.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Gaza",
+   "url": "https://haaretz-sample.example/news/4bkknx",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T07:51:00Z",
+   "tone": -4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Gaza",
+   "url": "https://el-diario.example/news/fsft62",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T07:18:00Z",
+   "tone": -2.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Gaza",
+   "url": "https://le-quotidien.example/news/ae2xr8",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T07:01:00Z",
+   "tone": 1.1,
+   "image": "",
+   "video": ""
   }
  ],
  "stories": [
   {
-   "n": 550,
-   "o": 36,
-   "c": 10,
-   "l": 6,
-   "t": -0.1,
-   "first": "2026-10-20T17:09:00Z",
-   "last": "2026-10-21T04:40:00Z",
-   "headline": "[sample] Wildfire forces evacuations in hills in Gaza: live updates",
-   "headlineSource": "gulf-report.example",
-   "headlineLang": "ar",
-   "entities": [
-    "wildfire",
-    "evacuation",
-    "fire service",
-    "gaza"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Gaza: explained",
-     "url": "https://al-akhbar.example/story/dhriph",
-     "source": "al-akhbar.example",
-     "country": "EG",
-     "lang": "ar",
-     "time": "2026-10-21T04:40:00Z",
-     "tone": -1.6,
-     "image": ""
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Gaza: timeline",
-     "url": "https://xinhua-sample.example/story/5zoxat",
-     "source": "xinhua-sample.example",
-     "country": "CN",
-     "lang": "zh",
-     "time": "2026-10-21T03:44:00Z",
-     "tone": 2.9,
-     "image": ""
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Gaza: live updates",
-     "url": "https://gulf-report.example/story/blhy63",
-     "source": "gulf-report.example",
-     "country": "AE",
-     "lang": "ar",
-     "time": "2026-10-21T03:40:00Z",
-     "tone": -1.6,
-     "image": ""
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Gaza: in pictures",
-     "url": "https://el-diario.example/story/fiphfw",
-     "source": "el-diario.example",
-     "country": "MX",
-     "lang": "es",
-     "time": "2026-10-21T03:40:00Z",
-     "tone": 2.6,
-     "image": ""
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Gaza: in pictures",
-     "url": "https://daily-ledger.example/story/elcjl0",
-     "source": "daily-ledger.example",
-     "country": "US",
-     "lang": "en",
-     "time": "2026-10-21T01:00:00Z",
-     "tone": -1.2,
-     "image": ""
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Gaza: explained",
-     "url": "https://hurriyet-sample.example/story/a6qp41",
-     "source": "hurriyet-sample.example",
-     "country": "TR",
-     "lang": "tr",
-     "time": "2026-10-21T00:30:00Z",
-     "tone": -1.7,
-     "image": ""
-    }
-   ]
-  },
-  {
-   "n": 522,
-   "o": 34,
-   "c": 10,
-   "l": 6,
-   "t": -1.2,
-   "first": "2026-10-20T19:40:00Z",
-   "last": "2026-10-21T03:42:00Z",
-   "headline": "[sample] Ministers meet over energy prices in Gaza: what we know",
-   "headlineSource": "daily-ledger.example",
-   "headlineLang": "en",
+   "n": 280,
+   "o": 18,
+   "c": 5,
+   "l": 4,
+   "t": -0.8,
+   "first": "2026-10-21T00:09:00Z",
+   "last": "2026-10-21T04:59:00Z",
+   "headline": "[sample] Ministers meet over energy prices in Gaza: analysis",
+   "headlineSource": "la-voz.example",
+   "headlineLang": "es",
    "entities": [
     "energy",
     "european union",
@@ -734,147 +704,160 @@
    ],
    "articles": [
     {
-     "title": "[sample] Ministers meet over energy prices in Gaza: what we know",
-     "url": "https://lagos-sun.example/story/fc993v",
-     "source": "lagos-sun.example",
-     "country": "NG",
-     "lang": "en",
-     "time": "2026-10-21T03:42:00Z",
-     "tone": 1.1,
-     "image": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Gaza: what we know",
-     "url": "https://harbour-press.example/story/co0w3s",
-     "source": "harbour-press.example",
-     "country": "AU",
-     "lang": "en",
-     "time": "2026-10-21T03:09:00Z",
-     "tone": -4.6,
-     "image": ""
-    },
-    {
      "title": "[sample] Ministers meet over energy prices in Gaza: live updates",
-     "url": "https://nation-ke.example/story/e3d19q",
-     "source": "nation-ke.example",
-     "country": "KE",
+     "url": "https://hurriyet-sample.example/story/3865mu",
+     "source": "hurriyet-sample.example",
+     "country": "TR",
+     "lang": "tr",
+     "time": "2026-10-21T04:59:00Z",
+     "tone": 0.7,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Gaza: in pictures",
+     "url": "https://global-desk.example/story/69g1tq",
+     "source": "global-desk.example",
+     "country": "CA",
      "lang": "en",
-     "time": "2026-10-21T02:38:00Z",
+     "time": "2026-10-21T04:25:00Z",
+     "tone": -5.7,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Gaza: timeline",
+     "url": "https://la-voz.example/story/9kpdts",
+     "source": "la-voz.example",
+     "country": "AR",
+     "lang": "es",
+     "time": "2026-10-21T03:01:00Z",
      "tone": -5.8,
-     "image": ""
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Ministers meet over energy prices in Gaza: reactions",
-     "url": "https://seoul-daily.example/story/5m7lyy",
-     "source": "seoul-daily.example",
-     "country": "KR",
-     "lang": "ko",
-     "time": "2026-10-21T02:03:00Z",
-     "tone": -0.9,
-     "image": ""
+     "title": "[sample] Ministers meet over energy prices in Gaza: analysis",
+     "url": "https://jakarta-pos.example/story/66dkuq",
+     "source": "jakarta-pos.example",
+     "country": "ID",
+     "lang": "id",
+     "time": "2026-10-21T03:44:00Z",
+     "tone": 3.5,
+     "image": "",
+     "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
     },
     {
-     "title": "[sample] Ministers meet over energy prices in Gaza: reactions",
-     "url": "https://morning-wire.example/story/338gz0",
-     "source": "morning-wire.example",
-     "country": "GB",
-     "lang": "en",
-     "time": "2026-10-21T00:14:00Z",
-     "tone": 3.6,
-     "image": ""
+     "title": "[sample] Ministers meet over energy prices in Gaza: analysis",
+     "url": "https://la-voz.example/story/8cshwv",
+     "source": "la-voz.example",
+     "country": "AR",
+     "lang": "es",
+     "time": "2026-10-21T03:07:00Z",
+     "tone": -1.2,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Ministers meet over energy prices in Gaza: what we know",
-     "url": "https://daily-ledger.example/story/9ye9qj",
+     "title": "[sample] Ministers meet over energy prices in Gaza: analysis",
+     "url": "https://daily-ledger.example/story/5vixsb",
      "source": "daily-ledger.example",
      "country": "US",
      "lang": "en",
-     "time": "2026-10-21T00:12:00Z",
-     "tone": -0.9,
-     "image": ""
+     "time": "2026-10-21T00:09:00Z",
+     "tone": 3.9,
+     "image": "",
+     "video": "https://m.youtube.com/watch?v=kJQP7kiw5Fk"
     }
    ]
   },
   {
-   "n": 501,
-   "o": 33,
-   "c": 9,
-   "l": 5,
-   "t": -2.3,
-   "first": "2026-10-20T21:50:00Z",
-   "last": "2026-10-21T04:08:00Z",
-   "headline": "[sample] Election count enters second day in Gaza: live updates",
-   "headlineSource": "haaretz-sample.example",
-   "headlineLang": "he",
+   "n": 263,
+   "o": 17,
+   "c": 5,
+   "l": 6,
+   "t": 0.4,
+   "first": "2026-10-20T16:03:00Z",
+   "last": "2026-10-21T03:22:00Z",
+   "headline": "[sample] Court hears appeal in corruption case in Gaza: analysis",
+   "headlineSource": "xinhua-sample.example",
+   "headlineLang": "zh",
    "entities": [
-    "election commission",
-    "parliament",
-    "voters",
+    "supreme court",
+    "corruption",
+    "prosecutor",
     "gaza"
    ],
    "articles": [
     {
-     "title": "[sample] Election count enters second day in Gaza: timeline",
-     "url": "https://global-desk.example/story/6yl08v",
+     "title": "[sample] Court hears appeal in corruption case in Gaza: explained",
+     "url": "https://global-desk.example/story/937562",
      "source": "global-desk.example",
      "country": "CA",
      "lang": "en",
-     "time": "2026-10-21T04:08:00Z",
-     "tone": -5.4,
-     "image": ""
+     "time": "2026-10-21T03:22:00Z",
+     "tone": 3.9,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Election count enters second day in Gaza: explained",
-     "url": "https://haaretz-sample.example/story/3eql3w",
+     "title": "[sample] Court hears appeal in corruption case in Gaza: latest",
+     "url": "https://haaretz-sample.example/story/5zlzfd",
      "source": "haaretz-sample.example",
      "country": "IL",
      "lang": "he",
-     "time": "2026-10-21T03:09:00Z",
-     "tone": 1.2,
-     "image": ""
+     "time": "2026-10-21T02:41:00Z",
+     "tone": -0.7,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Election count enters second day in Gaza: explained",
-     "url": "https://asahi-sample.example/story/1qme1o",
+     "title": "[sample] Court hears appeal in corruption case in Gaza: latest",
+     "url": "https://kyiv-herald.example/story/d48b4a",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-21T01:58:00Z",
+     "tone": 2,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Gaza: reactions",
+     "url": "https://asahi-sample.example/story/byi7wa",
      "source": "asahi-sample.example",
      "country": "JP",
      "lang": "ja",
-     "time": "2026-10-21T03:00:00Z",
-     "tone": -0.4,
-     "image": ""
+     "time": "2026-10-21T02:04:00Z",
+     "tone": -3.2,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Election count enters second day in Gaza: what we know",
-     "url": "https://nation-ke.example/story/bdhojq",
-     "source": "nation-ke.example",
-     "country": "KE",
-     "lang": "en",
-     "time": "2026-10-21T02:20:00Z",
-     "tone": -0.3,
-     "image": ""
+     "title": "[sample] Court hears appeal in corruption case in Gaza: analysis",
+     "url": "https://xinhua-sample.example/story/fvukfr",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-21T00:14:00Z",
+     "tone": 1.7,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Election count enters second day in Gaza: timeline",
-     "url": "https://seoul-daily.example/story/2szeym",
-     "source": "seoul-daily.example",
-     "country": "KR",
-     "lang": "ko",
-     "time": "2026-10-21T00:28:00Z",
-     "tone": -5.1,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Gaza: live updates",
-     "url": "https://haaretz-sample.example/story/9ctf7f",
-     "source": "haaretz-sample.example",
-     "country": "IL",
-     "lang": "he",
-     "time": "2026-10-21T00:53:00Z",
-     "tone": -4.1,
-     "image": ""
+     "title": "[sample] Court hears appeal in corruption case in Gaza: reactions",
+     "url": "https://o-correio.example/story/4zqesn",
+     "source": "o-correio.example",
+     "country": "BR",
+     "lang": "pt",
+     "time": "2026-10-20T22:52:00Z",
+     "tone": -1.6,
+     "image": "",
+     "video": ""
     }
    ]
   }
  ],
- "unclustered": 637
+ "unclustered": 1667,
+ "videos": 66
 }

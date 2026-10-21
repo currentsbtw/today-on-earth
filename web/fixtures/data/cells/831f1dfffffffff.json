@@ -3,40 +3,40 @@
  "name": "Berlin, Berlin, Germany",
  "n": 640,
  "o": 56,
- "c": 23,
+ "c": 24,
  "l": 16,
- "t": -0.9,
+ "t": -0.7,
  "topOutlets": [
   [
    "tageszeitung.example",
    5
   ],
   [
-   "nord-avis.example",
-   4
-  ],
-  [
-   "corriere-sample.example",
-   4
-  ],
-  [
-   "al-akhbar.example",
-   4
-  ],
-  [
-   "vesti-news.example",
+   "hindustan-post.example",
    3
   ],
   [
-   "morning-wire.example",
+   "el-diario.example",
    3
   ],
   [
-   "harbour-press.example",
-   2
+   "tehran-times.example",
+   3
   ],
   [
-   "wire-service.example",
+   "hurriyet-sample.example",
+   3
+  ],
+  [
+   "gazeta-sample.example",
+   3
+  ],
+  [
+   "jakarta-pos.example",
+   3
+  ],
+  [
+   "o-correio.example",
    2
   ],
   [
@@ -54,31 +54,31 @@
    5
   ],
   [
-   "NO",
-   4
-  ],
-  [
-   "IT",
-   4
-  ],
-  [
-   "EG",
-   4
-  ],
-  [
-   "RU",
+   "IN",
    3
   ],
   [
-   "GB",
+   "MX",
    3
   ],
   [
-   "AU",
-   2
+   "IR",
+   3
   ],
   [
-   "",
+   "TR",
+   3
+  ],
+  [
+   "PL",
+   3
+  ],
+  [
+   "ID",
+   3
+  ],
+  [
+   "BR",
    2
   ],
   [
@@ -93,638 +93,866 @@
  "languages": [
   [
    "en",
-   16
+   13
+  ],
+  [
+   "es",
+   5
   ],
   [
    "de",
    5
   ],
   [
-   "no",
-   4
-  ],
-  [
-   "it",
-   4
-  ],
-  [
-   "ar",
-   4
-  ],
-  [
-   "ru",
+   "fa",
    3
   ],
   [
-   "ja",
-   2
+   "tr",
+   3
   ],
   [
-   "fr",
-   2
+   "pl",
+   3
   ],
   [
-   "es",
-   2
+   "id",
+   3
   ],
   [
    "pt",
+   2
+  ],
+  [
+   "ar",
+   2
+  ],
+  [
+   "ja",
    2
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Election commission publishes turnout figures near Berlin",
-   "url": "https://harbour-press.example/news/5brwz9",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-21T05:21:00Z",
-   "tone": 3.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Berlin",
-   "url": "https://tageszeitung.example/news/561h5r",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-21T05:06:00Z",
-   "tone": 2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Berlin",
-   "url": "https://nation-ke.example/news/b7z0nz",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-21T04:26:00Z",
-   "tone": -4.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Berlin",
-   "url": "https://nord-avis.example/news/5462bi",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-21T03:57:00Z",
-   "tone": -0.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Berlin",
-   "url": "https://hurriyet-sample.example/news/5woob4",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-21T03:27:00Z",
-   "tone": -4.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Berlin",
-   "url": "https://corriere-sample.example/news/gs5yp",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-21T03:03:00Z",
-   "tone": 2.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Berlin",
-   "url": "https://global-desk.example/news/770qhn",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-21T02:45:00Z",
-   "tone": 4.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Berlin",
-   "url": "https://wire-service.example/news/aymc3v",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-21T02:17:00Z",
-   "tone": -1.8,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://corriere-sample.example/news/3246ad",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-21T01:40:00Z",
-   "tone": -2.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Berlin",
-   "url": "https://vesti-news.example/news/5zwe26",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-21T01:25:00Z",
-   "tone": 1.4,
-   "image": ""
+   "title": "[sample] Researchers report vaccine trial results near Berlin",
+   "url": "https://o-correio.example/news/8huhka",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-21T05:25:00Z",
+   "tone": 0.1,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Berlin",
-   "url": "https://daily-ledger.example/news/837kdz",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-21T00:56:00Z",
-   "tone": 2.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Berlin",
-   "url": "https://lagos-sun.example/news/17tosc",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-21T00:14:00Z",
-   "tone": 0.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Berlin",
-   "url": "https://tageszeitung.example/news/5kuybk",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T23:44:00Z",
-   "tone": 0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Berlin",
-   "url": "https://al-akhbar.example/news/c7er0b",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T23:36:00Z",
-   "tone": 0.4,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://corriere-sample.example/news/632437",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T23:08:00Z",
-   "tone": -1.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Berlin",
-   "url": "https://cape-mail.example/news/dtqkzl",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T22:22:00Z",
-   "tone": 2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Berlin",
-   "url": "https://asahi-sample.example/news/8l5g3s",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T22:10:00Z",
-   "tone": 4.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Berlin",
-   "url": "https://gazeta-sample.example/news/aaaf3y",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T21:40:00Z",
-   "tone": 1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Berlin",
-   "url": "https://morning-wire.example/news/bulubl",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T21:17:00Z",
-   "tone": -1.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Berlin",
-   "url": "https://hindustan-post.example/news/e6zq14",
+   "url": "https://hindustan-post.example/news/3hxuli",
    "source": "hindustan-post.example",
    "country": "IN",
    "lang": "en",
-   "time": "2026-10-20T20:38:00Z",
-   "tone": -0.6,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://xinhua-sample.example/news/60o5vi",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T20:13:00Z",
-   "tone": -0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Berlin",
-   "url": "https://tageszeitung.example/news/etwih6",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T19:45:00Z",
-   "tone": 2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Berlin",
-   "url": "https://daily-ledger.example/news/ag3sl1",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T19:13:00Z",
-   "tone": 1.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Berlin",
-   "url": "https://le-quotidien.example/news/dwlsw3",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T18:49:00Z",
-   "tone": 3,
-   "image": ""
+   "time": "2026-10-21T05:02:00Z",
+   "tone": -2.5,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Berlin",
-   "url": "https://tageszeitung.example/news/72p8lp",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T18:23:00Z",
-   "tone": -6.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Berlin",
-   "url": "https://el-diario.example/news/f47a08",
+   "url": "https://el-diario.example/news/1x51g8",
    "source": "el-diario.example",
    "country": "MX",
    "lang": "es",
-   "time": "2026-10-20T17:58:00Z",
-   "tone": -2,
-   "image": ""
+   "time": "2026-10-21T04:33:00Z",
+   "tone": -3.4,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Ministers discuss energy prices near Berlin",
-   "url": "https://morning-wire.example/news/1ecpwq",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T17:19:00Z",
-   "tone": -4.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Berlin",
-   "url": "https://nord-avis.example/news/2jxngu",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T16:58:00Z",
-   "tone": -6.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Berlin",
-   "url": "https://tehran-times.example/news/acpdex",
+   "title": "",
+   "url": "https://tehran-times.example/news/cl5kvy",
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T16:37:00Z",
-   "tone": -1.6,
-   "image": ""
+   "time": "2026-10-21T04:00:00Z",
+   "tone": -5.1,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Trade talks resume after pause near Berlin",
-   "url": "https://wire-service.example/news/cvadxn",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T16:01:00Z",
-   "tone": -6,
-   "image": ""
+   "title": "[sample] Storm disrupts transport links near Berlin",
+   "url": "https://hurriyet-sample.example/news/9y12m3",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-21T03:32:00Z",
+   "tone": 0.5,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Researchers report vaccine trial results near Berlin",
-   "url": "https://kyiv-herald.example/news/crb94v",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T15:29:00Z",
-   "tone": -2.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Berlin",
-   "url": "https://cape-mail.example/news/gacc36",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T15:17:00Z",
-   "tone": -4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Berlin",
-   "url": "https://o-correio.example/news/3qezhb",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T14:43:00Z",
-   "tone": -4.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Berlin",
-   "url": "https://morning-wire.example/news/39cdhw",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T14:19:00Z",
-   "tone": -0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Berlin",
-   "url": "https://asahi-sample.example/news/eaqtzl",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T13:41:00Z",
-   "tone": -4.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Berlin",
-   "url": "https://nord-avis.example/news/7rd8rn",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T13:20:00Z",
-   "tone": -0.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Berlin",
-   "url": "https://tageszeitung.example/news/b5rrug",
+   "title": "[sample] Protest gathers in city centre near Berlin",
+   "url": "https://tageszeitung.example/news/7ko1ii",
    "source": "tageszeitung.example",
    "country": "DE",
    "lang": "de",
-   "time": "2026-10-20T12:52:00Z",
-   "tone": -6.8,
-   "image": ""
+   "time": "2026-10-21T03:04:00Z",
+   "tone": 3,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "",
-   "url": "https://al-akhbar.example/news/11sytd",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T12:17:00Z",
-   "tone": -6.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Berlin",
-   "url": "https://lagos-sun.example/news/f072of",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T12:01:00Z",
-   "tone": -0.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Berlin",
-   "url": "https://o-correio.example/news/g3cq6t",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T11:33:00Z",
-   "tone": -3.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Berlin",
-   "url": "https://el-diario.example/news/4c4osm",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T11:04:00Z",
-   "tone": -2.6,
-   "image": ""
+   "title": "[sample] Ministers discuss energy prices near Berlin",
+   "url": "https://gazeta-sample.example/news/4uxa9x",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-21T02:46:00Z",
+   "tone": 4,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Berlin",
-   "url": "https://al-akhbar.example/news/cgqmye",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T10:36:00Z",
-   "tone": 0.9,
-   "image": ""
+   "url": "https://gazeta-sample.example/news/7eqek3",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-21T02:15:00Z",
+   "tone": 1.6,
+   "image": "",
+   "video": "https://www.youtube.com/channel/UC_placeholder"
   },
   {
-   "title": "[sample] Storm disrupts transport links near Berlin",
-   "url": "https://le-quotidien.example/news/bu57zs",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T10:08:00Z",
-   "tone": 1.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Berlin",
-   "url": "https://al-akhbar.example/news/3mk9tq",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T09:38:00Z",
-   "tone": 2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Berlin",
-   "url": "https://harbour-press.example/news/5tyty1",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T09:18:00Z",
-   "tone": 1.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Berlin",
-   "url": "https://nord-avis.example/news/d9ycol",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T08:37:00Z",
-   "tone": 3.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Berlin",
-   "url": "https://haaretz-sample.example/news/89j5v2",
+   "title": "[sample] Ministers discuss energy prices near Berlin",
+   "url": "https://haaretz-sample.example/news/1zjr5d",
    "source": "haaretz-sample.example",
    "country": "IL",
    "lang": "he",
-   "time": "2026-10-20T08:17:00Z",
-   "tone": 4.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Berlin",
-   "url": "https://vesti-news.example/news/805vlj",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T07:54:00Z",
-   "tone": -2.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Berlin",
-   "url": "https://corriere-sample.example/news/8pm0bq",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T07:22:00Z",
-   "tone": -4.3,
-   "image": ""
+   "time": "2026-10-21T01:39:00Z",
+   "tone": -0.9,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Berlin",
-   "url": "https://vesti-news.example/news/1jf45r",
+   "url": "https://daily-ledger.example/news/fiinw9",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-21T01:08:00Z",
+   "tone": -3.1,
+   "image": "",
+   "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Berlin",
+   "url": "https://gulf-report.example/news/g83375",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-21T00:57:00Z",
+   "tone": 0.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Berlin",
+   "url": "https://gazeta-sample.example/news/d6m7xc",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-21T00:14:00Z",
+   "tone": -1.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Berlin",
+   "url": "https://hindustan-post.example/news/9iha3p",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T23:47:00Z",
+   "tone": -5.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Berlin",
+   "url": "https://lagos-sun.example/news/dfbi28",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T23:28:00Z",
+   "tone": 3.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Berlin",
+   "url": "https://lagos-sun.example/news/fi3bhq",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T23:08:00Z",
+   "tone": 1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://al-akhbar.example/news/992n0t",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T22:32:00Z",
+   "tone": -4.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Berlin",
+   "url": "https://daily-ledger.example/news/bl57ls",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T22:12:00Z",
+   "tone": -6.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Berlin",
+   "url": "https://hurriyet-sample.example/news/gee6t0",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T21:36:00Z",
+   "tone": -4.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Berlin",
+   "url": "https://global-desk.example/news/fz6jr",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T21:10:00Z",
+   "tone": 3.9,
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Berlin",
+   "url": "https://cape-mail.example/news/47idx4",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T20:46:00Z",
+   "tone": -3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Berlin",
+   "url": "https://harbour-press.example/news/8qd6pz",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T20:23:00Z",
+   "tone": 3.1,
+   "image": "",
+   "video": "https://www.youtube.com/channel/UC_placeholder"
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Berlin",
+   "url": "https://jakarta-pos.example/news/7aziud",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T19:44:00Z",
+   "tone": 3.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Berlin",
+   "url": "https://hurriyet-sample.example/news/dy21ct",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T19:09:00Z",
+   "tone": -2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Berlin",
+   "url": "https://nation-ke.example/news/6t5tcz",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T18:48:00Z",
+   "tone": 2.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Berlin",
+   "url": "https://harbour-press.example/news/4154ce",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T18:20:00Z",
+   "tone": -0.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Berlin",
+   "url": "https://tageszeitung.example/news/fpwd47",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T17:54:00Z",
+   "tone": 0.8,
+   "image": "",
+   "video": "https://www.youtube.com/channel/UC_placeholder"
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Berlin",
+   "url": "https://jakarta-pos.example/news/7lki1k",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T17:21:00Z",
+   "tone": 0.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Berlin",
+   "url": "https://cape-mail.example/news/ci646y",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T17:10:00Z",
+   "tone": -0.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Berlin",
+   "url": "https://jakarta-pos.example/news/ef2brx",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T16:27:00Z",
+   "tone": 3.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Berlin",
+   "url": "https://la-voz.example/news/cj24e0",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T16:13:00Z",
+   "tone": -6.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Berlin",
+   "url": "https://la-voz.example/news/9ymd8o",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T15:43:00Z",
+   "tone": -2.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Berlin",
+   "url": "https://tageszeitung.example/news/ba79f6",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T15:19:00Z",
+   "tone": 3.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Berlin",
+   "url": "https://asahi-sample.example/news/aw39z7",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T14:40:00Z",
+   "tone": 2.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Berlin",
+   "url": "https://asahi-sample.example/news/f2i2s8",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T14:25:00Z",
+   "tone": -0.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Berlin",
+   "url": "https://seoul-daily.example/news/3kmnw9",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T13:54:00Z",
+   "tone": 4.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Berlin",
+   "url": "https://tageszeitung.example/news/f57ii",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T13:10:00Z",
+   "tone": -4.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Berlin",
+   "url": "https://le-quotidien.example/news/6ctocq",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T12:45:00Z",
+   "tone": 3.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Berlin",
+   "url": "https://hindustan-post.example/news/86j755",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T12:16:00Z",
+   "tone": -1.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Berlin",
+   "url": "https://o-correio.example/news/26pum9",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T11:53:00Z",
+   "tone": -3.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Berlin",
+   "url": "https://vesti-news.example/news/fqk8sf",
    "source": "vesti-news.example",
    "country": "RU",
    "lang": "ru",
-   "time": "2026-10-20T06:52:00Z",
-   "tone": -6.2,
-   "image": ""
+   "time": "2026-10-20T11:29:00Z",
+   "tone": -5.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Berlin",
+   "url": "https://le-quotidien.example/news/axqql4",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T11:00:00Z",
+   "tone": -0.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Berlin",
+   "url": "https://corriere-sample.example/news/bmlkki",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T10:38:00Z",
+   "tone": -3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Berlin",
+   "url": "https://el-diario.example/news/6kcbq4",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T09:58:00Z",
+   "tone": -1.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Berlin",
+   "url": "https://nord-avis.example/news/44701p",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T09:46:00Z",
+   "tone": 3.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Berlin",
+   "url": "https://nord-avis.example/news/fp637k",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T09:02:00Z",
+   "tone": -5.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Berlin",
+   "url": "https://corriere-sample.example/news/7r3viq",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T08:34:00Z",
+   "tone": -6.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://el-diario.example/news/1weej6",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T08:17:00Z",
+   "tone": 1.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Berlin",
+   "url": "https://tageszeitung.example/news/h394g",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T07:38:00Z",
+   "tone": 3.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Berlin",
+   "url": "https://tehran-times.example/news/g7a6ez",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T07:14:00Z",
+   "tone": -2.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Berlin",
+   "url": "https://tehran-times.example/news/9ac5b3",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T06:54:00Z",
+   "tone": -2.3,
+   "image": "",
+   "video": ""
   }
  ],
  "stories": [
   {
-   "n": 174,
-   "o": 21,
-   "c": 10,
-   "l": 7,
-   "t": -1.1,
-   "first": "2026-10-20T19:54:00Z",
-   "last": "2026-10-21T03:45:00Z",
-   "headline": "[sample] Ministers meet over energy prices in Berlin: timeline",
-   "headlineSource": "cape-mail.example",
-   "headlineLang": "en",
+   "n": 156,
+   "o": 19,
+   "c": 9,
+   "l": 6,
+   "t": -3,
+   "first": "2026-10-20T22:11:00Z",
+   "last": "2026-10-21T03:01:00Z",
+   "headline": "[sample] Central bank leaves rates unchanged in Berlin: reactions",
+   "headlineSource": "nord-avis.example",
+   "headlineLang": "no",
    "entities": [
-    "energy",
-    "european union",
-    "oil prices",
+    "central bank",
+    "inflation",
+    "interest rates",
     "berlin"
    ],
    "articles": [
     {
-     "title": "[sample] Ministers meet over energy prices in Berlin: reactions",
-     "url": "https://tehran-times.example/story/7x1cxa",
-     "source": "tehran-times.example",
-     "country": "IR",
-     "lang": "fa",
-     "time": "2026-10-21T03:45:00Z",
-     "tone": 1.8,
-     "image": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Berlin: what we know",
-     "url": "https://cape-mail.example/story/c4sqjs",
-     "source": "cape-mail.example",
-     "country": "ZA",
-     "lang": "en",
-     "time": "2026-10-21T03:02:00Z",
-     "tone": -1.8,
-     "image": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Berlin: explained",
-     "url": "https://haaretz-sample.example/story/8cw2xo",
+     "title": "[sample] Central bank leaves rates unchanged in Berlin: latest",
+     "url": "https://haaretz-sample.example/story/6o0qln",
      "source": "haaretz-sample.example",
      "country": "IL",
      "lang": "he",
-     "time": "2026-10-21T02:23:00Z",
-     "tone": 3.2,
-     "image": ""
+     "time": "2026-10-21T03:01:00Z",
+     "tone": -5.5,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Ministers meet over energy prices in Berlin: timeline",
-     "url": "https://cape-mail.example/story/5o6gpe",
-     "source": "cape-mail.example",
-     "country": "ZA",
-     "lang": "en",
-     "time": "2026-10-21T01:03:00Z",
-     "tone": -3.3,
-     "image": ""
+     "title": "[sample] Central bank leaves rates unchanged in Berlin: what we know",
+     "url": "https://le-quotidien.example/story/78hxh",
+     "source": "le-quotidien.example",
+     "country": "FR",
+     "lang": "fr",
+     "time": "2026-10-21T02:20:00Z",
+     "tone": -1.8,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Ministers meet over energy prices in Berlin: latest",
-     "url": "https://global-desk.example/story/1ksblu",
-     "source": "global-desk.example",
-     "country": "CA",
-     "lang": "en",
-     "time": "2026-10-21T01:13:00Z",
+     "title": "[sample] Central bank leaves rates unchanged in Berlin: reactions",
+     "url": "https://nord-avis.example/story/4dvhbj",
+     "source": "nord-avis.example",
+     "country": "NO",
+     "lang": "no",
+     "time": "2026-10-21T01:15:00Z",
+     "tone": 1.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Berlin: explained",
+     "url": "https://tageszeitung.example/story/46y0nc",
+     "source": "tageszeitung.example",
+     "country": "DE",
+     "lang": "de",
+     "time": "2026-10-21T01:01:00Z",
+     "tone": -5.7,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Berlin: latest",
+     "url": "https://la-voz.example/story/d0zbt",
+     "source": "la-voz.example",
+     "country": "AR",
+     "lang": "es",
+     "time": "2026-10-21T00:45:00Z",
+     "tone": -1.9,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Berlin: live updates",
+     "url": "https://tehran-times.example/story/5zfpvf",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-20T22:11:00Z",
      "tone": -4.7,
-     "image": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Berlin: reactions",
-     "url": "https://hurriyet-sample.example/story/dp8d48",
-     "source": "hurriyet-sample.example",
-     "country": "TR",
-     "lang": "tr",
-     "time": "2026-10-20T23:10:00Z",
-     "tone": -1.6,
-     "image": ""
+     "image": "",
+     "video": ""
     }
    ]
   },
   {
-   "n": 59,
-   "o": 7,
-   "c": 3,
-   "l": 4,
-   "t": 0.9,
-   "first": "2026-10-20T18:36:00Z",
-   "last": "2026-10-21T03:41:00Z",
-   "headline": "[sample] Election count enters second day in Berlin: explained",
-   "headlineSource": "harbour-press.example",
+   "n": 150,
+   "o": 18,
+   "c": 9,
+   "l": 6,
+   "t": -2.9,
+   "first": "2026-10-20T22:19:00Z",
+   "last": "2026-10-21T04:20:00Z",
+   "headline": "[sample] Storm damage closes main roads in Berlin: analysis",
+   "headlineSource": "haaretz-sample.example",
+   "headlineLang": "he",
+   "entities": [
+    "natural disaster",
+    "transport",
+    "emergency services",
+    "berlin"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Storm damage closes main roads in Berlin: in pictures",
+     "url": "https://gulf-report.example/story/daf7jj",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T04:20:00Z",
+     "tone": 0.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Berlin: latest",
+     "url": "https://wire-service.example/story/2trixs",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T03:22:00Z",
+     "tone": -4.6,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Berlin: reactions",
+     "url": "https://haaretz-sample.example/story/78k4n5",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-21T02:38:00Z",
+     "tone": -1.4,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Berlin: in pictures",
+     "url": "https://la-voz.example/story/a1je9",
+     "source": "la-voz.example",
+     "country": "AR",
+     "lang": "es",
+     "time": "2026-10-21T02:38:00Z",
+     "tone": -5.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Berlin: analysis",
+     "url": "https://haaretz-sample.example/story/9x7sky",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-21T00:48:00Z",
+     "tone": -3.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Berlin: timeline",
+     "url": "https://gulf-report.example/story/4tlcqe",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T00:55:00Z",
+     "tone": -3.4,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 131,
+   "o": 16,
+   "c": 8,
+   "l": 5,
+   "t": -2.1,
+   "first": "2026-10-20T21:41:00Z",
+   "last": "2026-10-21T01:32:00Z",
+   "headline": "[sample] Court hears appeal in corruption case in Berlin: live updates",
+   "headlineSource": "xinhua-sample.example",
+   "headlineLang": "zh",
+   "entities": [
+    "supreme court",
+    "corruption",
+    "prosecutor",
+    "berlin"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Court hears appeal in corruption case in Berlin: analysis",
+     "url": "https://gulf-report.example/story/8p3m5t",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T01:32:00Z",
+     "tone": -5.9,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Berlin: what we know",
+     "url": "https://morning-wire.example/story/a51zwq",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-21T00:41:00Z",
+     "tone": -5.2,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Berlin: what we know",
+     "url": "https://al-akhbar.example/story/f2ah71",
+     "source": "al-akhbar.example",
+     "country": "EG",
+     "lang": "ar",
+     "time": "2026-10-21T00:22:00Z",
+     "tone": 2.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Berlin: latest",
+     "url": "https://tageszeitung.example/story/3xmw8e",
+     "source": "tageszeitung.example",
+     "country": "DE",
+     "lang": "de",
+     "time": "2026-10-20T22:50:00Z",
+     "tone": -5.1,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Berlin: live updates",
+     "url": "https://xinhua-sample.example/story/bawiog",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-20T23:16:00Z",
+     "tone": -0.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Berlin: latest",
+     "url": "https://morning-wire.example/story/bxu9wq",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-20T21:42:00Z",
+     "tone": 2.1,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 75,
+   "o": 9,
+   "c": 4,
+   "l": 5,
+   "t": -2.3,
+   "first": "2026-10-20T23:53:00Z",
+   "last": "2026-10-21T04:02:00Z",
+   "headline": "[sample] Election count enters second day in Berlin: in pictures",
+   "headlineSource": "wire-service.example",
    "headlineLang": "en",
    "entities": [
     "election commission",
@@ -734,67 +962,74 @@
    ],
    "articles": [
     {
-     "title": "[sample] Election count enters second day in Berlin: explained",
-     "url": "https://harbour-press.example/story/exxfan",
-     "source": "harbour-press.example",
-     "country": "AU",
-     "lang": "en",
-     "time": "2026-10-21T03:41:00Z",
-     "tone": 3.6,
-     "image": ""
+     "title": "[sample] Election count enters second day in Berlin: latest",
+     "url": "https://gulf-report.example/story/ghc1hj",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T04:02:00Z",
+     "tone": -0.3,
+     "image": "",
+     "video": ""
     },
     {
      "title": "[sample] Election count enters second day in Berlin: in pictures",
-     "url": "https://kyiv-herald.example/story/54kgek",
-     "source": "kyiv-herald.example",
-     "country": "UA",
-     "lang": "uk",
-     "time": "2026-10-21T03:14:00Z",
-     "tone": 2.4,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Berlin: analysis",
-     "url": "https://jakarta-pos.example/story/1wblcv",
-     "source": "jakarta-pos.example",
-     "country": "ID",
-     "lang": "id",
-     "time": "2026-10-21T02:27:00Z",
-     "tone": -1.8,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Berlin: timeline",
-     "url": "https://kyiv-herald.example/story/f19y7l",
-     "source": "kyiv-herald.example",
-     "country": "UA",
-     "lang": "uk",
-     "time": "2026-10-21T01:23:00Z",
-     "tone": -1.3,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Berlin: reactions",
-     "url": "https://daily-ledger.example/story/1vjdtk",
-     "source": "daily-ledger.example",
-     "country": "US",
+     "url": "https://morning-wire.example/story/dw6or1",
+     "source": "morning-wire.example",
+     "country": "GB",
      "lang": "en",
-     "time": "2026-10-21T00:29:00Z",
-     "tone": 3.8,
-     "image": ""
+     "time": "2026-10-21T03:42:00Z",
+     "tone": -3.8,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Election count enters second day in Berlin: analysis",
-     "url": "https://tageszeitung.example/story/7997sg",
-     "source": "tageszeitung.example",
-     "country": "DE",
-     "lang": "de",
-     "time": "2026-10-21T01:46:00Z",
-     "tone": -1.6,
-     "image": ""
+     "title": "[sample] Election count enters second day in Berlin: what we know",
+     "url": "https://gazeta-sample.example/story/dtpwbc",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T02:38:00Z",
+     "tone": -4.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Berlin: live updates",
+     "url": "https://seoul-daily.example/story/2nw1wk",
+     "source": "seoul-daily.example",
+     "country": "KR",
+     "lang": "ko",
+     "time": "2026-10-21T01:11:00Z",
+     "tone": 0.2,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Berlin: in pictures",
+     "url": "https://xinhua-sample.example/story/dsdw65",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-21T01:10:00Z",
+     "tone": -0.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Berlin: in pictures",
+     "url": "https://wire-service.example/story/1hwqcd",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T00:22:00Z",
+     "tone": -4.8,
+     "image": "",
+     "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
     }
    ]
   }
  ],
- "unclustered": 407
+ "unclustered": 128,
+ "videos": 19
 }

@@ -4,31 +4,35 @@
  "n": 196,
  "o": 31,
  "c": 23,
- "l": 14,
- "t": -0.1,
+ "l": 16,
+ "t": -1.5,
  "topOutlets": [
   [
-   "corriere-sample.example",
+   "hurriyet-sample.example",
    5
   ],
   [
-   "lagos-sun.example",
+   "seoul-daily.example",
    4
   ],
   [
-   "hurriyet-sample.example",
-   4
+   "hindustan-post.example",
+   3
   ],
   [
-   "al-akhbar.example",
-   4
+   "cape-mail.example",
+   3
   ],
   [
    "gazeta-sample.example",
    3
   ],
   [
-   "tageszeitung.example",
+   "vesti-news.example",
+   3
+  ],
+  [
+   "jakarta-pos.example",
    3
   ],
   [
@@ -36,41 +40,41 @@
    2
   ],
   [
-   "haaretz-sample.example",
-   2
-  ],
-  [
    "nord-avis.example",
    2
   ],
   [
-   "morning-wire.example",
+   "tehran-times.example",
    2
   ]
  ],
  "topCountries": [
   [
-   "IT",
+   "TR",
    5
   ],
   [
-   "NG",
+   "KR",
    4
   ],
   [
-   "TR",
-   4
+   "IN",
+   3
   ],
   [
-   "EG",
-   4
+   "ZA",
+   3
   ],
   [
    "PL",
    3
   ],
   [
-   "DE",
+   "RU",
+   3
+  ],
+  [
+   "ID",
    3
   ],
   [
@@ -78,33 +82,25 @@
    2
   ],
   [
-   "IL",
-   2
-  ],
-  [
    "NO",
    2
   ],
   [
-   "GB",
+   "IR",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   16
-  ],
-  [
-   "ar",
-   6
-  ],
-  [
-   "it",
-   5
+   15
   ],
   [
    "tr",
+   5
+  ],
+  [
+   "ko",
    4
   ],
   [
@@ -112,11 +108,15 @@
    3
   ],
   [
-   "es",
+   "ru",
    3
   ],
   [
-   "de",
+   "id",
+   3
+  ],
+  [
+   "es",
    3
   ],
   [
@@ -124,608 +124,836 @@
    2
   ],
   [
-   "he",
+   "no",
    2
   ],
   [
-   "no",
+   "fa",
    2
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Central bank holds interest rate near Istanbul",
-   "url": "https://xinhua-sample.example/news/7momb4",
+   "title": "",
+   "url": "https://al-akhbar.example/news/b9bcd4",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-21T05:34:00Z",
+   "tone": -5.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Istanbul",
+   "url": "https://xinhua-sample.example/news/edgujq",
    "source": "xinhua-sample.example",
    "country": "CN",
    "lang": "zh",
-   "time": "2026-10-21T05:32:00Z",
-   "tone": -4.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Istanbul",
-   "url": "https://haaretz-sample.example/news/arjcxw",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-21T05:04:00Z",
-   "tone": 3.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Istanbul",
-   "url": "https://nord-avis.example/news/19j61f",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-21T04:26:00Z",
-   "tone": -5.4,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://gazeta-sample.example/news/dli5l5",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-21T04:01:00Z",
-   "tone": -4.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Istanbul",
-   "url": "https://morning-wire.example/news/7z4sz1",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-21T03:37:00Z",
-   "tone": -3.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Istanbul",
-   "url": "https://global-desk.example/news/5e0mj4",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-21T03:08:00Z",
-   "tone": 2.9,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://lagos-sun.example/news/dwrg7b",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-21T02:39:00Z",
-   "tone": -1.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Istanbul",
-   "url": "https://gulf-report.example/news/dy88cz",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-21T02:09:00Z",
-   "tone": -1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Istanbul",
-   "url": "https://seoul-daily.example/news/aedppa",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-21T01:50:00Z",
-   "tone": -0.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Istanbul",
-   "url": "https://nation-ke.example/news/1kevlj",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-21T01:17:00Z",
-   "tone": -2.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Istanbul",
-   "url": "https://hurriyet-sample.example/news/dwt3n8",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-21T00:50:00Z",
-   "tone": 0.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Istanbul",
-   "url": "https://cape-mail.example/news/764tm7",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-21T00:23:00Z",
-   "tone": -0.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Istanbul",
-   "url": "https://nord-avis.example/news/d8x83i",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T23:48:00Z",
-   "tone": 0.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Istanbul",
-   "url": "https://hindustan-post.example/news/7h8zln",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T23:29:00Z",
-   "tone": -0.8,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://corriere-sample.example/news/gb0763",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T22:53:00Z",
-   "tone": -1.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Istanbul",
-   "url": "https://o-correio.example/news/a0gd4z",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T22:28:00Z",
-   "tone": 2.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Istanbul",
-   "url": "https://el-diario.example/news/3ykh37",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T22:03:00Z",
-   "tone": 0.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Istanbul",
-   "url": "https://corriere-sample.example/news/3smys",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T21:32:00Z",
-   "tone": -0.4,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://al-akhbar.example/news/20ot1k",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T21:00:00Z",
-   "tone": 0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Istanbul",
-   "url": "https://corriere-sample.example/news/3tw9mb",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T20:31:00Z",
-   "tone": 0.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Istanbul",
-   "url": "https://lagos-sun.example/news/c51zip",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T20:15:00Z",
-   "tone": 3.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Istanbul",
-   "url": "https://corriere-sample.example/news/5vi886",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T19:46:00Z",
-   "tone": 2.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Istanbul",
-   "url": "https://hindustan-post.example/news/8kamkd",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T19:27:00Z",
-   "tone": -1.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Istanbul",
-   "url": "https://global-desk.example/news/17d9f9",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T18:56:00Z",
-   "tone": 4.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Istanbul",
-   "url": "https://hurriyet-sample.example/news/fx0iog",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T18:15:00Z",
-   "tone": 0.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Istanbul",
-   "url": "https://tageszeitung.example/news/adqfyb",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T17:55:00Z",
-   "tone": -2.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Istanbul",
-   "url": "https://harbour-press.example/news/ax4yel",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T17:28:00Z",
-   "tone": 3.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Istanbul",
-   "url": "https://tageszeitung.example/news/5n9c3i",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T17:00:00Z",
-   "tone": -5.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Istanbul",
-   "url": "https://vesti-news.example/news/263690",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T16:36:00Z",
-   "tone": -4.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Istanbul",
-   "url": "https://morning-wire.example/news/2x0tt7",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T15:57:00Z",
-   "tone": 0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Istanbul",
-   "url": "https://gazeta-sample.example/news/52yvdk",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T15:29:00Z",
-   "tone": -4.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Istanbul",
-   "url": "https://lagos-sun.example/news/1st5xa",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T15:11:00Z",
-   "tone": 4.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Istanbul",
-   "url": "https://gulf-report.example/news/4sf6ik",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T14:40:00Z",
-   "tone": -2.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Istanbul",
-   "url": "https://hurriyet-sample.example/news/qqhzk",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T14:17:00Z",
-   "tone": -6.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Istanbul",
-   "url": "https://tageszeitung.example/news/3uotso",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T13:47:00Z",
-   "tone": 0.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Istanbul",
-   "url": "https://lagos-sun.example/news/4e1pql",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T13:11:00Z",
-   "tone": 4.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Istanbul",
-   "url": "https://haaretz-sample.example/news/7smjbv",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T12:58:00Z",
-   "tone": -6.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Istanbul",
-   "url": "https://la-voz.example/news/ah9i61",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T12:21:00Z",
-   "tone": 4.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Istanbul",
-   "url": "https://daily-ledger.example/news/3zqqw1",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T11:50:00Z",
-   "tone": -1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Istanbul",
-   "url": "https://el-diario.example/news/tf190",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T11:27:00Z",
-   "tone": 4.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Istanbul",
-   "url": "https://wire-service.example/news/a5lj75",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T11:05:00Z",
-   "tone": 4.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Istanbul",
-   "url": "https://al-akhbar.example/news/en49hg",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T10:26:00Z",
-   "tone": -2.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Istanbul",
-   "url": "https://xinhua-sample.example/news/85ohk7",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T10:06:00Z",
-   "tone": -1.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Istanbul",
-   "url": "https://al-akhbar.example/news/6fek0n",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T09:48:00Z",
-   "tone": 3.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Istanbul",
-   "url": "https://nation-ke.example/news/d3iw7b",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T09:09:00Z",
-   "tone": 3.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Istanbul",
-   "url": "https://hurriyet-sample.example/news/4oincp",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T08:35:00Z",
-   "tone": 0.8,
-   "image": ""
+   "time": "2026-10-21T04:48:00Z",
+   "tone": -6.1,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Istanbul",
-   "url": "https://gazeta-sample.example/news/2dnuw1",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T08:26:00Z",
-   "tone": 3.7,
-   "image": ""
+   "url": "https://seoul-daily.example/news/sdv7x",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-21T04:31:00Z",
+   "tone": -0.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Istanbul",
+   "url": "https://hindustan-post.example/news/3jag3w",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-21T04:05:00Z",
+   "tone": -1.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Istanbul",
+   "url": "https://cape-mail.example/news/b1sx24",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-21T03:36:00Z",
+   "tone": 3.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Istanbul",
+   "url": "https://nord-avis.example/news/8xd0i7",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-21T03:00:00Z",
+   "tone": 2.3,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Aid convoy reaches border crossing near Istanbul",
-   "url": "https://corriere-sample.example/news/wwbxh",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T07:54:00Z",
-   "tone": -0.9,
-   "image": ""
+   "url": "https://hindustan-post.example/news/cbv0n8",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-21T02:42:00Z",
+   "tone": -6.7,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Aid convoy reaches border crossing near Istanbul",
-   "url": "https://al-akhbar.example/news/ckxvh4",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T07:22:00Z",
+   "title": "[sample] Researchers report vaccine trial results near Istanbul",
+   "url": "https://hurriyet-sample.example/news/emjiv6",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-21T02:13:00Z",
    "tone": 1.6,
-   "image": ""
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Election commission publishes turnout figures near Istanbul",
-   "url": "https://tehran-times.example/news/axcadn",
+   "title": "[sample] Wildfire forces evacuations near Istanbul",
+   "url": "https://harbour-press.example/news/dvezb1",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-21T01:35:00Z",
+   "tone": -3.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Istanbul",
+   "url": "https://tehran-times.example/news/4c2a6k",
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T06:47:00Z",
-   "tone": -3,
-   "image": ""
+   "time": "2026-10-21T01:25:00Z",
+   "tone": -0.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Istanbul",
+   "url": "https://kyiv-herald.example/news/dpwp3k",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-21T00:40:00Z",
+   "tone": -0.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Istanbul",
+   "url": "https://gazeta-sample.example/news/9223om",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-21T00:15:00Z",
+   "tone": -4.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Istanbul",
+   "url": "https://tehran-times.example/news/eph210",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-21T00:04:00Z",
+   "tone": -2.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Istanbul",
+   "url": "https://xinhua-sample.example/news/2hn305",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T23:32:00Z",
+   "tone": 2.5,
+   "image": "",
+   "video": "https://m.youtube.com/watch?v=kJQP7kiw5Fk"
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Istanbul",
+   "url": "https://corriere-sample.example/news/ejqxnj",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T22:52:00Z",
+   "tone": 4.4,
+   "image": "",
+   "video": "https://www.youtube.com/channel/UC_placeholder"
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Istanbul",
+   "url": "https://vesti-news.example/news/63y6jo",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T22:25:00Z",
+   "tone": 3.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Istanbul",
+   "url": "https://nord-avis.example/news/gf49pt",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T21:58:00Z",
+   "tone": 1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Istanbul",
+   "url": "https://kyiv-herald.example/news/78fzz4",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T21:29:00Z",
+   "tone": -6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Istanbul",
+   "url": "https://cape-mail.example/news/eim9j1",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T21:12:00Z",
+   "tone": -0.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Istanbul",
+   "url": "https://hurriyet-sample.example/news/5oj2g3",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T20:49:00Z",
+   "tone": 1.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Istanbul",
+   "url": "https://jakarta-pos.example/news/b1iub6",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T20:10:00Z",
+   "tone": -2.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Istanbul",
+   "url": "https://jakarta-pos.example/news/b1k1tb",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T19:36:00Z",
+   "tone": -4.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Istanbul",
+   "url": "https://global-desk.example/news/9k99mz",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T19:16:00Z",
+   "tone": -2.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Istanbul",
+   "url": "https://el-diario.example/news/169on2",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T18:48:00Z",
+   "tone": -2.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Istanbul",
+   "url": "https://gazeta-sample.example/news/e6k783",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T18:25:00Z",
+   "tone": -6.3,
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Istanbul",
+   "url": "https://lagos-sun.example/news/6o59xy",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T17:51:00Z",
+   "tone": -6.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Istanbul",
+   "url": "https://gazeta-sample.example/news/e3z454",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T17:23:00Z",
+   "tone": -6.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Istanbul",
+   "url": "https://seoul-daily.example/news/flda84",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T17:04:00Z",
+   "tone": 2.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Istanbul",
+   "url": "https://jakarta-pos.example/news/44b4c0",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T16:33:00Z",
+   "tone": 1.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Istanbul",
+   "url": "https://hurriyet-sample.example/news/5qfzf4",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T16:09:00Z",
+   "tone": 1.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Istanbul",
+   "url": "https://hurriyet-sample.example/news/bcmmrq",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T15:36:00Z",
+   "tone": -5.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Istanbul",
+   "url": "https://wire-service.example/news/9qajdo",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T15:04:00Z",
+   "tone": 0.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://hurriyet-sample.example/news/25fps1",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T14:41:00Z",
+   "tone": -1.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Istanbul",
+   "url": "https://seoul-daily.example/news/f5p50c",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T14:13:00Z",
+   "tone": -3.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Istanbul",
+   "url": "https://hindustan-post.example/news/fofkg7",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T13:52:00Z",
+   "tone": -1.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Istanbul",
+   "url": "https://o-correio.example/news/bhzmba",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T13:28:00Z",
+   "tone": -0.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Istanbul",
+   "url": "https://lagos-sun.example/news/efpo6u",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T13:02:00Z",
+   "tone": 2.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Istanbul",
+   "url": "https://asahi-sample.example/news/db7spy",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T12:15:00Z",
+   "tone": -4.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Istanbul",
+   "url": "https://el-diario.example/news/5w9li2",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T12:03:00Z",
+   "tone": -3.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Istanbul",
+   "url": "https://seoul-daily.example/news/7otykj",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T11:22:00Z",
+   "tone": -1.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Istanbul",
+   "url": "https://haaretz-sample.example/news/cn6xn8",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T10:53:00Z",
+   "tone": 3.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Istanbul",
+   "url": "https://cape-mail.example/news/dtn3ht",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T10:39:00Z",
+   "tone": -6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Istanbul",
+   "url": "https://asahi-sample.example/news/8wmi6e",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T10:12:00Z",
+   "tone": -6.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Istanbul",
+   "url": "https://wire-service.example/news/32763p",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T09:39:00Z",
+   "tone": 4.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Istanbul",
+   "url": "https://vesti-news.example/news/3qwiev",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T09:06:00Z",
+   "tone": -3.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Istanbul",
+   "url": "https://vesti-news.example/news/2h4la4",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T08:51:00Z",
+   "tone": 1.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Istanbul",
+   "url": "https://la-voz.example/news/4dacu7",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T08:22:00Z",
+   "tone": -3.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Istanbul",
+   "url": "https://morning-wire.example/news/c5fx2n",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T07:44:00Z",
+   "tone": 3.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Istanbul",
+   "url": "https://global-desk.example/news/24r0xz",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T07:13:00Z",
+   "tone": -6.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Istanbul",
+   "url": "https://nation-ke.example/news/cpfz5n",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T07:02:00Z",
+   "tone": 0.1,
+   "image": "",
+   "video": ""
   }
  ],
  "stories": [
   {
-   "n": 37,
-   "o": 8,
-   "c": 7,
-   "l": 6,
-   "t": 0.3,
-   "first": "2026-10-21T00:03:00Z",
-   "last": "2026-10-21T03:20:00Z",
-   "headline": "[sample] Storm damage closes main roads in Istanbul: what we know",
-   "headlineSource": "gazeta-sample.example",
-   "headlineLang": "pl",
+   "n": 55,
+   "o": 12,
+   "c": 10,
+   "l": 7,
+   "t": 0.9,
+   "first": "2026-10-21T00:11:00Z",
+   "last": "2026-10-21T04:45:00Z",
+   "headline": "[sample] Wildfire forces evacuations in hills in Istanbul: in pictures",
+   "headlineSource": "hurriyet-sample.example",
+   "headlineLang": "tr",
    "entities": [
-    "natural disaster",
-    "transport",
-    "emergency services",
+    "wildfire",
+    "evacuation",
+    "fire service",
     "istanbul"
    ],
    "articles": [
     {
-     "title": "[sample] Storm damage closes main roads in Istanbul: live updates",
-     "url": "https://kyiv-herald.example/story/6aga4",
-     "source": "kyiv-herald.example",
-     "country": "UA",
-     "lang": "uk",
-     "time": "2026-10-21T03:20:00Z",
+     "title": "[sample] Wildfire forces evacuations in hills in Istanbul: explained",
+     "url": "https://harbour-press.example/story/ao8jfu",
+     "source": "harbour-press.example",
+     "country": "AU",
+     "lang": "en",
+     "time": "2026-10-21T04:45:00Z",
      "tone": 3.4,
-     "image": ""
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Storm damage closes main roads in Istanbul: what we know",
-     "url": "https://la-voz.example/story/4979fn",
-     "source": "la-voz.example",
-     "country": "AR",
-     "lang": "es",
-     "time": "2026-10-21T02:24:00Z",
-     "tone": -5.8,
-     "image": ""
+     "title": "[sample] Wildfire forces evacuations in hills in Istanbul: in pictures",
+     "url": "https://hurriyet-sample.example/story/k9qev",
+     "source": "hurriyet-sample.example",
+     "country": "TR",
+     "lang": "tr",
+     "time": "2026-10-21T04:09:00Z",
+     "tone": 3.1,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Storm damage closes main roads in Istanbul: what we know",
-     "url": "https://seoul-daily.example/story/3o33f7",
-     "source": "seoul-daily.example",
-     "country": "KR",
-     "lang": "ko",
-     "time": "2026-10-21T02:18:00Z",
-     "tone": 2.2,
-     "image": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Istanbul: live updates",
-     "url": "https://morning-wire.example/story/efcyol",
+     "title": "[sample] Wildfire forces evacuations in hills in Istanbul: in pictures",
+     "url": "https://morning-wire.example/story/1mroo2",
      "source": "morning-wire.example",
      "country": "GB",
      "lang": "en",
-     "time": "2026-10-21T00:35:00Z",
-     "tone": 3.6,
-     "image": ""
+     "time": "2026-10-21T03:25:00Z",
+     "tone": -2.9,
+     "image": "",
+     "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
     },
     {
-     "title": "[sample] Storm damage closes main roads in Istanbul: explained",
-     "url": "https://nord-avis.example/story/7wzop6",
-     "source": "nord-avis.example",
-     "country": "NO",
-     "lang": "no",
-     "time": "2026-10-21T01:20:00Z",
-     "tone": -4.4,
-     "image": ""
+     "title": "[sample] Wildfire forces evacuations in hills in Istanbul: in pictures",
+     "url": "https://o-correio.example/story/28u72e",
+     "source": "o-correio.example",
+     "country": "BR",
+     "lang": "pt",
+     "time": "2026-10-21T03:09:00Z",
+     "tone": 3.9,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Storm damage closes main roads in Istanbul: what we know",
-     "url": "https://gazeta-sample.example/story/44voz1",
-     "source": "gazeta-sample.example",
-     "country": "PL",
-     "lang": "pl",
-     "time": "2026-10-21T00:10:00Z",
-     "tone": 2.8,
-     "image": ""
+     "title": "[sample] Wildfire forces evacuations in hills in Istanbul: explained",
+     "url": "https://morning-wire.example/story/fz3yx0",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-21T03:01:00Z",
+     "tone": -0.9,
+     "image": "",
+     "video": "https://www.youtube.com/shorts/aqz-KE-bpKQ"
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Istanbul: timeline",
+     "url": "https://hindustan-post.example/story/5mkzmr",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T01:50:00Z",
+     "tone": -1.3,
+     "image": "",
+     "video": "https://youtu.be/jNQXAC9IVRw"
     }
    ]
   },
   {
-   "n": 18,
-   "o": 6,
-   "c": 3,
+   "n": 43,
+   "o": 9,
+   "c": 8,
    "l": 5,
-   "t": 0,
-   "first": "2026-10-20T18:56:00Z",
-   "last": "2026-10-21T05:19:00Z",
-   "headline": "[sample] Aid convoy reaches border crossing in Istanbul: timeline",
-   "headlineSource": "cape-mail.example",
-   "headlineLang": "en",
+   "t": -0.7,
+   "first": "2026-10-20T18:29:00Z",
+   "last": "2026-10-21T02:15:00Z",
+   "headline": "[sample] Court hears appeal in corruption case in Istanbul: latest",
+   "headlineSource": "nord-avis.example",
+   "headlineLang": "no",
+   "entities": [
+    "supreme court",
+    "corruption",
+    "prosecutor",
+    "istanbul"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Court hears appeal in corruption case in Istanbul: reactions",
+     "url": "https://al-akhbar.example/story/4rb8sd",
+     "source": "al-akhbar.example",
+     "country": "EG",
+     "lang": "ar",
+     "time": "2026-10-21T02:15:00Z",
+     "tone": 3.7,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Istanbul: latest",
+     "url": "https://nord-avis.example/story/ca4mz8",
+     "source": "nord-avis.example",
+     "country": "NO",
+     "lang": "no",
+     "time": "2026-10-21T01:31:00Z",
+     "tone": -2.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Istanbul: in pictures",
+     "url": "https://cape-mail.example/story/ffxtlw",
+     "source": "cape-mail.example",
+     "country": "ZA",
+     "lang": "en",
+     "time": "2026-10-21T01:15:00Z",
+     "tone": -5.7,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Istanbul: in pictures",
+     "url": "https://el-diario.example/story/69vi5i",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T00:18:00Z",
+     "tone": 1.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Istanbul: latest",
+     "url": "https://cape-mail.example/story/29ublo",
+     "source": "cape-mail.example",
+     "country": "ZA",
+     "lang": "en",
+     "time": "2026-10-20T22:39:00Z",
+     "tone": -2.7,
+     "image": "",
+     "video": "https://m.youtube.com/watch?v=kJQP7kiw5Fk"
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Istanbul: reactions",
+     "url": "https://corriere-sample.example/story/992r1",
+     "source": "corriere-sample.example",
+     "country": "IT",
+     "lang": "it",
+     "time": "2026-10-20T21:20:00Z",
+     "tone": 1.8,
+     "image": "",
+     "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
+    }
+   ]
+  },
+  {
+   "n": 34,
+   "o": 7,
+   "c": 6,
+   "l": 5,
+   "t": 0.4,
+   "first": "2026-10-20T22:14:00Z",
+   "last": "2026-10-21T04:02:00Z",
+   "headline": "[sample] Strike halts rail services in Istanbul: explained",
+   "headlineSource": "asahi-sample.example",
+   "headlineLang": "ja",
+   "entities": [
+    "trade union",
+    "rail",
+    "labour",
+    "istanbul"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Strike halts rail services in Istanbul: what we know",
+     "url": "https://hindustan-post.example/story/3lsgcw",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T04:02:00Z",
+     "tone": -1.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Istanbul: explained",
+     "url": "https://asahi-sample.example/story/43rk2d",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T03:23:00Z",
+     "tone": 0.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Istanbul: in pictures",
+     "url": "https://asahi-sample.example/story/g5xc8",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T02:30:00Z",
+     "tone": 2.2,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Istanbul: what we know",
+     "url": "https://tageszeitung.example/story/3ahmd2",
+     "source": "tageszeitung.example",
+     "country": "DE",
+     "lang": "de",
+     "time": "2026-10-21T01:38:00Z",
+     "tone": 3.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Istanbul: what we know",
+     "url": "https://el-diario.example/story/4obzic",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T02:02:00Z",
+     "tone": -0.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Istanbul: analysis",
+     "url": "https://hurriyet-sample.example/story/3grv2c",
+     "source": "hurriyet-sample.example",
+     "country": "TR",
+     "lang": "tr",
+     "time": "2026-10-21T00:12:00Z",
+     "tone": -1.6,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 25,
+   "o": 6,
+   "c": 5,
+   "l": 5,
+   "t": -0.6,
+   "first": "2026-10-20T21:20:00Z",
+   "last": "2026-10-21T01:56:00Z",
+   "headline": "[sample] Aid convoy reaches border crossing in Istanbul: what we know",
+   "headlineSource": "o-correio.example",
+   "headlineLang": "pt",
    "entities": [
     "united nations",
     "refugees",
@@ -734,67 +962,74 @@
    ],
    "articles": [
     {
-     "title": "[sample] Aid convoy reaches border crossing in Istanbul: reactions",
-     "url": "https://daily-ledger.example/story/94me76",
-     "source": "daily-ledger.example",
-     "country": "US",
+     "title": "[sample] Aid convoy reaches border crossing in Istanbul: timeline",
+     "url": "https://hindustan-post.example/story/h5vfv",
+     "source": "hindustan-post.example",
+     "country": "IN",
      "lang": "en",
-     "time": "2026-10-21T05:19:00Z",
-     "tone": -2.1,
-     "image": ""
+     "time": "2026-10-21T01:56:00Z",
+     "tone": 2.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Istanbul: live updates",
+     "url": "https://la-voz.example/story/9g9k9r",
+     "source": "la-voz.example",
+     "country": "AR",
+     "lang": "es",
+     "time": "2026-10-21T01:26:00Z",
+     "tone": -4.7,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Istanbul: latest",
+     "url": "https://harbour-press.example/story/antsjy",
+     "source": "harbour-press.example",
+     "country": "AU",
+     "lang": "en",
+     "time": "2026-10-21T01:06:00Z",
+     "tone": -5.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Istanbul: what we know",
+     "url": "https://o-correio.example/story/whqxt",
+     "source": "o-correio.example",
+     "country": "BR",
+     "lang": "pt",
+     "time": "2026-10-20T22:59:00Z",
+     "tone": 1.7,
+     "image": "",
+     "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
     },
     {
      "title": "[sample] Aid convoy reaches border crossing in Istanbul: timeline",
-     "url": "https://cape-mail.example/story/4ui536",
-     "source": "cape-mail.example",
-     "country": "ZA",
-     "lang": "en",
-     "time": "2026-10-21T04:27:00Z",
-     "tone": -0.1,
-     "image": ""
+     "url": "https://gazeta-sample.example/story/ex9rwv",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T00:32:00Z",
+     "tone": -0.4,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Aid convoy reaches border crossing in Istanbul: what we know",
-     "url": "https://al-akhbar.example/story/b8nity",
-     "source": "al-akhbar.example",
-     "country": "EG",
-     "lang": "ar",
-     "time": "2026-10-21T04:23:00Z",
-     "tone": -0.1,
-     "image": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Istanbul: what we know",
-     "url": "https://seoul-daily.example/story/exemgd",
-     "source": "seoul-daily.example",
-     "country": "KR",
-     "lang": "ko",
-     "time": "2026-10-21T03:13:00Z",
-     "tone": 2.9,
-     "image": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Istanbul: analysis",
-     "url": "https://el-diario.example/story/b9d52q",
-     "source": "el-diario.example",
-     "country": "MX",
-     "lang": "es",
-     "time": "2026-10-21T02:07:00Z",
-     "tone": -3.2,
-     "image": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Istanbul: reactions",
-     "url": "https://tageszeitung.example/story/cumjbn",
-     "source": "tageszeitung.example",
-     "country": "DE",
-     "lang": "de",
-     "time": "2026-10-21T00:49:00Z",
-     "tone": 2.4,
-     "image": ""
+     "title": "[sample] Aid convoy reaches border crossing in Istanbul: explained",
+     "url": "https://jakarta-pos.example/story/7raxww",
+     "source": "jakarta-pos.example",
+     "country": "ID",
+     "lang": "id",
+     "time": "2026-10-20T21:31:00Z",
+     "tone": 2.6,
+     "image": "",
+     "video": ""
     }
    ]
   }
  ],
- "unclustered": 141
+ "unclustered": 39,
+ "videos": 9
 }

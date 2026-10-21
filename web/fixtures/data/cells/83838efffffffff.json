@@ -2,114 +2,126 @@
  "id": "83838efffffffff",
  "name": "Kinshasa, Kinshasa, Democratic Republic of the Congo",
  "n": 44,
- "o": 24,
- "c": 23,
- "l": 15,
- "t": -0.1,
+ "o": 22,
+ "c": 21,
+ "l": 16,
+ "t": -1.2,
  "topOutlets": [
   [
-   "global-desk.example",
+   "xinhua-sample.example",
    5
   ],
   [
-   "o-correio.example",
-   5
-  ],
-  [
-   "haaretz-sample.example",
+   "asahi-sample.example",
    4
   ],
   [
-   "cape-mail.example",
-   3
-  ],
-  [
-   "al-akhbar.example",
-   2
-  ],
-  [
-   "seoul-daily.example",
-   2
-  ],
-  [
    "harbour-press.example",
+   4
+  ],
+  [
+   "tehran-times.example",
+   2
+  ],
+  [
+   "wire-service.example",
+   2
+  ],
+  [
+   "morning-wire.example",
+   2
+  ],
+  [
+   "haaretz-sample.example",
+   2
+  ],
+  [
+   "la-voz.example",
+   2
+  ],
+  [
+   "corriere-sample.example",
    2
   ],
   [
    "el-diario.example",
    2
-  ],
-  [
-   "hindustan-post.example",
-   2
-  ],
-  [
-   "hurriyet-sample.example",
-   2
   ]
  ],
  "topCountries": [
   [
-   "CA",
+   "CN",
    5
   ],
   [
-   "BR",
-   5
-  ],
-  [
-   "IL",
+   "JP",
    4
   ],
   [
-   "ZA",
-   3
-  ],
-  [
-   "EG",
-   2
-  ],
-  [
-   "KR",
-   2
-  ],
-  [
    "AU",
+   4
+  ],
+  [
+   "IR",
+   2
+  ],
+  [
+   "",
+   2
+  ],
+  [
+   "GB",
+   2
+  ],
+  [
+   "IL",
+   2
+  ],
+  [
+   "AR",
+   2
+  ],
+  [
+   "IT",
    2
   ],
   [
    "MX",
-   2
-  ],
-  [
-   "IN",
-   2
-  ],
-  [
-   "TR",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   16
+   13
   ],
   [
-   "pt",
+   "zh",
    5
   ],
   [
-   "he",
+   "ja",
    4
   ],
   [
-   "ar",
-   3
+   "es",
+   4
   ],
   [
-   "es",
-   3
+   "fa",
+   2
+  ],
+  [
+   "he",
+   2
+  ],
+  [
+   "it",
+   2
+  ],
+  [
+   "pt",
+   2
   ],
   [
    "ko",
@@ -118,704 +130,506 @@
   [
    "tr",
    2
-  ],
-  [
-   "ja",
-   2
-  ],
-  [
-   "pl",
-   1
-  ],
-  [
-   "id",
-   1
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Researchers report vaccine trial results near Kinshasa",
-   "url": "https://gazeta-sample.example/news/b4evur",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-21T05:33:00Z",
-   "tone": -3.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Kinshasa",
-   "url": "https://jakarta-pos.example/news/4iolnx",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-21T04:56:00Z",
-   "tone": -2.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Kinshasa",
-   "url": "https://al-akhbar.example/news/4r5ocq",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T04:13:00Z",
-   "tone": -0.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Kinshasa",
-   "url": "https://global-desk.example/news/fb1pmv",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-21T03:56:00Z",
-   "tone": -0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Kinshasa",
-   "url": "https://seoul-daily.example/news/ccja9z",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-21T03:13:00Z",
-   "tone": 0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Kinshasa",
-   "url": "https://daily-ledger.example/news/c9emqx",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-21T02:41:00Z",
-   "tone": 4.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Kinshasa",
-   "url": "https://global-desk.example/news/9rdswi",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-21T02:27:00Z",
-   "tone": 4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Kinshasa",
-   "url": "https://global-desk.example/news/5labin",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-21T01:39:00Z",
-   "tone": -6.9,
-   "image": ""
-  },
-  {
    "title": "[sample] Court hears appeal in landmark case near Kinshasa",
-   "url": "https://harbour-press.example/news/76sj2q",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-21T01:19:00Z",
-   "tone": 1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Kinshasa",
-   "url": "https://kyiv-herald.example/news/9eu7dw",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-21T00:52:00Z",
-   "tone": 2.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Kinshasa",
-   "url": "https://harbour-press.example/news/4x9uuj",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-21T00:14:00Z",
-   "tone": 1.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Kinshasa",
-   "url": "https://o-correio.example/news/fc6hp1",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T23:45:00Z",
-   "tone": -1.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Kinshasa",
-   "url": "https://al-akhbar.example/news/d591p0",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T23:01:00Z",
-   "tone": 0.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Kinshasa",
-   "url": "https://global-desk.example/news/cxfnhc",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T22:33:00Z",
-   "tone": -0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Kinshasa",
-   "url": "https://o-correio.example/news/fl4d62",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T22:04:00Z",
-   "tone": -4.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Kinshasa",
-   "url": "https://lagos-sun.example/news/51mmbn",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T21:38:00Z",
-   "tone": 4.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Kinshasa",
-   "url": "https://la-voz.example/news/94kf6m",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T20:55:00Z",
-   "tone": -2.2,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://cape-mail.example/news/2zacec",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T20:29:00Z",
-   "tone": -4.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Kinshasa",
-   "url": "https://o-correio.example/news/38r985",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T19:59:00Z",
-   "tone": -1.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Kinshasa",
-   "url": "https://el-diario.example/news/fogmzi",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T19:35:00Z",
-   "tone": 0.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Kinshasa",
-   "url": "https://hindustan-post.example/news/3sef71",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T18:57:00Z",
-   "tone": -7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Kinshasa",
-   "url": "https://el-diario.example/news/d5nyjq",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T18:25:00Z",
-   "tone": 2.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Kinshasa",
-   "url": "https://nation-ke.example/news/7to1z4",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T17:58:00Z",
-   "tone": 1.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Kinshasa",
-   "url": "https://o-correio.example/news/hahcr",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T17:27:00Z",
-   "tone": -4.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Kinshasa",
-   "url": "https://hindustan-post.example/news/9kc8x",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T16:57:00Z",
-   "tone": 1.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Kinshasa",
-   "url": "https://global-desk.example/news/5zuk3",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T16:14:00Z",
-   "tone": -6.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Kinshasa",
-   "url": "https://hurriyet-sample.example/news/dhrjee",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T15:49:00Z",
-   "tone": 3.5,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://cape-mail.example/news/fa12qk",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T15:21:00Z",
-   "tone": -2.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Kinshasa",
-   "url": "https://haaretz-sample.example/news/9bfs9e",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T14:47:00Z",
-   "tone": 0.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Kinshasa",
-   "url": "https://tageszeitung.example/news/avvrnh",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T14:25:00Z",
-   "tone": 0.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Kinshasa",
-   "url": "https://gulf-report.example/news/dyd9sx",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T13:37:00Z",
-   "tone": 3.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Kinshasa",
-   "url": "https://cape-mail.example/news/bigo5o",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T13:20:00Z",
-   "tone": 1.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Kinshasa",
-   "url": "https://seoul-daily.example/news/gfmtx7",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T12:43:00Z",
-   "tone": -5.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Kinshasa",
-   "url": "https://hurriyet-sample.example/news/925ocx",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T12:15:00Z",
-   "tone": 2.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Kinshasa",
-   "url": "https://haaretz-sample.example/news/19hhzd",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T11:36:00Z",
-   "tone": -0.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Kinshasa",
-   "url": "https://tehran-times.example/news/73l1z9",
+   "url": "https://tehran-times.example/news/3t641y",
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T11:16:00Z",
-   "tone": 3.7,
-   "image": ""
+   "time": "2026-10-21T05:22:00Z",
+   "tone": -1.6,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Aid convoy reaches border crossing near Kinshasa",
-   "url": "https://haaretz-sample.example/news/1b5pb2",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T10:38:00Z",
-   "tone": 4.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Kinshasa",
-   "url": "https://asahi-sample.example/news/811fr4",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T10:12:00Z",
-   "tone": -3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Kinshasa",
-   "url": "https://wire-service.example/news/8qastf",
+   "title": "[sample] Protest gathers in city centre near Kinshasa",
+   "url": "https://wire-service.example/news/eaezkv",
    "source": "wire-service.example",
    "country": "",
    "lang": "en",
-   "time": "2026-10-20T09:40:00Z",
-   "tone": -0.6,
-   "image": ""
+   "time": "2026-10-21T05:02:00Z",
+   "tone": -3.1,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Storm disrupts transport links near Kinshasa",
-   "url": "https://xinhua-sample.example/news/67090",
+   "title": "[sample] Court hears appeal in landmark case near Kinshasa",
+   "url": "https://xinhua-sample.example/news/8aicia",
    "source": "xinhua-sample.example",
    "country": "CN",
    "lang": "zh",
-   "time": "2026-10-20T08:59:00Z",
-   "tone": 4.7,
-   "image": ""
+   "time": "2026-10-21T04:16:00Z",
+   "tone": -1.9,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Aid convoy reaches border crossing near Kinshasa",
-   "url": "https://o-correio.example/news/z0vus",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T08:30:00Z",
-   "tone": 0.9,
-   "image": ""
+   "title": "[sample] Protest gathers in city centre near Kinshasa",
+   "url": "https://morning-wire.example/news/7k2jyz",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-21T03:51:00Z",
+   "tone": -5.5,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Officials meet over regional dispute near Kinshasa",
-   "url": "https://asahi-sample.example/news/6leic5",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T07:54:00Z",
-   "tone": 2.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Kinshasa",
-   "url": "https://le-quotidien.example/news/j9den",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T07:22:00Z",
-   "tone": 0.1,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://haaretz-sample.example/news/dg70m5",
+   "title": "[sample] Wildfire forces evacuations near Kinshasa",
+   "url": "https://haaretz-sample.example/news/fl4z6s",
    "source": "haaretz-sample.example",
    "country": "IL",
    "lang": "he",
-   "time": "2026-10-20T06:58:00Z",
-   "tone": -2.3,
-   "image": ""
+   "time": "2026-10-21T03:11:00Z",
+   "tone": 1.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://asahi-sample.example/news/3z0pkc",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-21T02:56:00Z",
+   "tone": -1.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Kinshasa",
+   "url": "https://asahi-sample.example/news/eshceh",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-21T02:11:00Z",
+   "tone": -6.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Kinshasa",
+   "url": "https://la-voz.example/news/cfeh3p",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-21T01:38:00Z",
+   "tone": -2.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Kinshasa",
+   "url": "https://harbour-press.example/news/adtdzk",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-21T01:05:00Z",
+   "tone": -6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://corriere-sample.example/news/a5hkxw",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-21T00:46:00Z",
+   "tone": -6.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Kinshasa",
+   "url": "https://tehran-times.example/news/cn958e",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-21T00:06:00Z",
+   "tone": -0.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Kinshasa",
+   "url": "https://tageszeitung.example/news/2bbt5b",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T23:50:00Z",
+   "tone": 1.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Kinshasa",
+   "url": "https://el-diario.example/news/2mj107",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T23:07:00Z",
+   "tone": 0.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Kinshasa",
+   "url": "https://gulf-report.example/news/5jqk3e",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T22:35:00Z",
+   "tone": -0.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Kinshasa",
+   "url": "https://global-desk.example/news/2vrj4o",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T22:11:00Z",
+   "tone": 3.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Kinshasa",
+   "url": "https://haaretz-sample.example/news/a6urxk",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T21:30:00Z",
+   "tone": -1.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Kinshasa",
+   "url": "https://xinhua-sample.example/news/enkn6x",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T21:10:00Z",
+   "tone": -1.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Kinshasa",
+   "url": "https://hindustan-post.example/news/bxoqm9",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T20:36:00Z",
+   "tone": 2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Kinshasa",
+   "url": "https://harbour-press.example/news/3kcrnq",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T19:56:00Z",
+   "tone": -1.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Kinshasa",
+   "url": "https://o-correio.example/news/76rtb3",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T19:35:00Z",
+   "tone": -5.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Kinshasa",
+   "url": "https://xinhua-sample.example/news/as13n7",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T18:55:00Z",
+   "tone": 1.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Kinshasa",
+   "url": "https://wire-service.example/news/21jzv",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T18:19:00Z",
+   "tone": -0.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Kinshasa",
+   "url": "https://morning-wire.example/news/c3jz1s",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T18:03:00Z",
+   "tone": -4.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Kinshasa",
+   "url": "https://asahi-sample.example/news/7auk27",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T17:22:00Z",
+   "tone": -4.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Kinshasa",
+   "url": "https://hindustan-post.example/news/19441a",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T16:49:00Z",
+   "tone": 3.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Kinshasa",
+   "url": "https://global-desk.example/news/21tesb",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T16:16:00Z",
+   "tone": 4.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Kinshasa",
+   "url": "https://el-diario.example/news/g71x6",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T15:55:00Z",
+   "tone": -4.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Kinshasa",
+   "url": "https://gazeta-sample.example/news/5v2175",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T15:22:00Z",
+   "tone": -5.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Kinshasa",
+   "url": "https://lagos-sun.example/news/349rpz",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T14:37:00Z",
+   "tone": -2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Kinshasa",
+   "url": "https://harbour-press.example/news/dm2xr2",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T14:16:00Z",
+   "tone": -5.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Kinshasa",
+   "url": "https://o-correio.example/news/6q267z",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T13:44:00Z",
+   "tone": 0,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Kinshasa",
+   "url": "https://xinhua-sample.example/news/24edj2",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T13:11:00Z",
+   "tone": 0.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Kinshasa",
+   "url": "https://seoul-daily.example/news/gitirl",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T12:48:00Z",
+   "tone": 4.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Kinshasa",
+   "url": "https://nord-avis.example/news/cyk4v6",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T12:07:00Z",
+   "tone": -2.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Kinshasa",
+   "url": "https://corriere-sample.example/news/4i6ysz",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T11:32:00Z",
+   "tone": 3.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Kinshasa",
+   "url": "https://le-quotidien.example/news/6bknme",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T11:01:00Z",
+   "tone": -0.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Kinshasa",
+   "url": "https://hurriyet-sample.example/news/achgqm",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T10:42:00Z",
+   "tone": -2.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Kinshasa",
+   "url": "https://xinhua-sample.example/news/dw61i6",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T10:08:00Z",
+   "tone": 3.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Kinshasa",
+   "url": "https://harbour-press.example/news/d1cnxc",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T09:31:00Z",
+   "tone": -0.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Kinshasa",
+   "url": "https://asahi-sample.example/news/g4gpgx",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T09:12:00Z",
+   "tone": -4.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Kinshasa",
+   "url": "https://seoul-daily.example/news/4ict3y",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T08:37:00Z",
+   "tone": -0.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Kinshasa",
+   "url": "https://kyiv-herald.example/news/fj04bi",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T07:57:00Z",
+   "tone": 4.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://la-voz.example/news/1phfb9",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T07:23:00Z",
+   "tone": -6.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Kinshasa",
+   "url": "https://hurriyet-sample.example/news/27zyqs",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T06:56:00Z",
+   "tone": -0.4,
+   "image": "",
+   "video": ""
   }
  ],
  "stories": [
   {
-   "n": 13,
-   "o": 10,
-   "c": 10,
-   "l": 7,
-   "t": 0.6,
-   "first": "2026-10-20T14:48:00Z",
-   "last": "2026-10-21T02:32:00Z",
-   "headline": "[sample] Storm damage closes main roads in Kinshasa: timeline",
-   "headlineSource": "hindustan-post.example",
-   "headlineLang": "en",
-   "entities": [
-    "natural disaster",
-    "transport",
-    "emergency services",
-    "kinshasa"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Storm damage closes main roads in Kinshasa: reactions",
-     "url": "https://al-akhbar.example/story/a26s15",
-     "source": "al-akhbar.example",
-     "country": "EG",
-     "lang": "ar",
-     "time": "2026-10-21T02:32:00Z",
-     "tone": -3.7,
-     "image": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Kinshasa: timeline",
-     "url": "https://nord-avis.example/story/4u42td",
-     "source": "nord-avis.example",
-     "country": "NO",
-     "lang": "no",
-     "time": "2026-10-21T01:45:00Z",
-     "tone": 0.7,
-     "image": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Kinshasa: analysis",
-     "url": "https://global-desk.example/story/1swu3p",
-     "source": "global-desk.example",
-     "country": "CA",
-     "lang": "en",
-     "time": "2026-10-21T01:44:00Z",
-     "tone": 2.2,
-     "image": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Kinshasa: reactions",
-     "url": "https://global-desk.example/story/100jnb",
-     "source": "global-desk.example",
-     "country": "CA",
-     "lang": "en",
-     "time": "2026-10-21T01:23:00Z",
-     "tone": -0.2,
-     "image": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Kinshasa: timeline",
-     "url": "https://hindustan-post.example/story/3q2ze8",
-     "source": "hindustan-post.example",
-     "country": "IN",
-     "lang": "en",
-     "time": "2026-10-21T00:52:00Z",
-     "tone": 1.5,
-     "image": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Kinshasa: timeline",
-     "url": "https://nord-avis.example/story/9hapw0",
-     "source": "nord-avis.example",
-     "country": "NO",
-     "lang": "no",
-     "time": "2026-10-20T22:12:00Z",
-     "tone": 3.1,
-     "image": ""
-    }
-   ]
-  },
-  {
-   "n": 8,
+   "n": 9,
    "o": 6,
    "c": 6,
-   "l": 4,
-   "t": -1.2,
-   "first": "2026-10-20T23:06:00Z",
-   "last": "2026-10-21T02:46:00Z",
-   "headline": "[sample] Election count enters second day in Kinshasa: explained",
-   "headlineSource": "vesti-news.example",
-   "headlineLang": "ru",
-   "entities": [
-    "election commission",
-    "parliament",
-    "voters",
-    "kinshasa"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Election count enters second day in Kinshasa: explained",
-     "url": "https://vesti-news.example/story/6oa9nq",
-     "source": "vesti-news.example",
-     "country": "RU",
-     "lang": "ru",
-     "time": "2026-10-21T02:46:00Z",
-     "tone": -4.5,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Kinshasa: what we know",
-     "url": "https://global-desk.example/story/1amlzk",
-     "source": "global-desk.example",
-     "country": "CA",
-     "lang": "en",
-     "time": "2026-10-21T02:15:00Z",
-     "tone": 1.5,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Kinshasa: analysis",
-     "url": "https://lagos-sun.example/story/2mc2a3",
-     "source": "lagos-sun.example",
-     "country": "NG",
-     "lang": "en",
-     "time": "2026-10-21T01:04:00Z",
-     "tone": 2.2,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Kinshasa: explained",
-     "url": "https://daily-ledger.example/story/6tm8zw",
-     "source": "daily-ledger.example",
-     "country": "US",
-     "lang": "en",
-     "time": "2026-10-21T01:40:00Z",
-     "tone": -0.6,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Kinshasa: reactions",
-     "url": "https://tageszeitung.example/story/4cgrhv",
-     "source": "tageszeitung.example",
-     "country": "DE",
-     "lang": "de",
-     "time": "2026-10-21T01:10:00Z",
-     "tone": -0.3,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Kinshasa: reactions",
-     "url": "https://hindustan-post.example/story/1zzigb",
-     "source": "hindustan-post.example",
-     "country": "IN",
-     "lang": "en",
-     "time": "2026-10-21T00:06:00Z",
-     "tone": -5.6,
-     "image": ""
-    }
-   ]
-  },
-  {
-   "n": 5,
-   "o": 5,
-   "c": 4,
    "l": 5,
-   "t": -0.3,
-   "first": "2026-10-20T20:33:00Z",
-   "last": "2026-10-21T02:16:00Z",
-   "headline": "[sample] Ministers meet over energy prices in Kinshasa: timeline",
-   "headlineSource": "corriere-sample.example",
-   "headlineLang": "it",
-   "entities": [
-    "energy",
-    "european union",
-    "oil prices",
-    "kinshasa"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Ministers meet over energy prices in Kinshasa: latest",
-     "url": "https://tehran-times.example/story/9inzzk",
-     "source": "tehran-times.example",
-     "country": "IR",
-     "lang": "fa",
-     "time": "2026-10-21T02:16:00Z",
-     "tone": 1.5,
-     "image": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Kinshasa: latest",
-     "url": "https://tageszeitung.example/story/ftuyr8",
-     "source": "tageszeitung.example",
-     "country": "DE",
-     "lang": "de",
-     "time": "2026-10-21T01:54:00Z",
-     "tone": -2.5,
-     "image": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Kinshasa: reactions",
-     "url": "https://harbour-press.example/story/1fihtr",
-     "source": "harbour-press.example",
-     "country": "AU",
-     "lang": "en",
-     "time": "2026-10-21T00:58:00Z",
-     "tone": -1.5,
-     "image": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Kinshasa: timeline",
-     "url": "https://corriere-sample.example/story/d3ldvc",
-     "source": "corriere-sample.example",
-     "country": "IT",
-     "lang": "it",
-     "time": "2026-10-21T00:40:00Z",
-     "tone": 0.1,
-     "image": ""
-    },
-    {
-     "title": "[sample] Ministers meet over energy prices in Kinshasa: in pictures",
-     "url": "https://le-quotidien.example/story/9nwfqa",
-     "source": "le-quotidien.example",
-     "country": "FR",
-     "lang": "fr",
-     "time": "2026-10-20T22:20:00Z",
-     "tone": 1,
-     "image": ""
-    }
-   ]
-  },
-  {
-   "n": 5,
-   "o": 5,
-   "c": 4,
-   "l": 5,
-   "t": -0.8,
-   "first": "2026-10-21T00:40:00Z",
-   "last": "2026-10-21T03:36:00Z",
-   "headline": "[sample] Wildfire forces evacuations in hills in Kinshasa: latest",
-   "headlineSource": "corriere-sample.example",
-   "headlineLang": "it",
+   "t": -2,
+   "first": "2026-10-20T17:44:00Z",
+   "last": "2026-10-21T02:03:00Z",
+   "headline": "[sample] Wildfire forces evacuations in hills in Kinshasa: explained",
+   "headlineSource": "lagos-sun.example",
+   "headlineLang": "en",
    "entities": [
     "wildfire",
     "evacuation",
@@ -824,57 +638,160 @@
    ],
    "articles": [
     {
-     "title": "[sample] Wildfire forces evacuations in hills in Kinshasa: latest",
-     "url": "https://corriere-sample.example/story/ge0reg",
-     "source": "corriere-sample.example",
-     "country": "IT",
-     "lang": "it",
-     "time": "2026-10-21T03:36:00Z",
-     "tone": -1.4,
-     "image": ""
-    },
-    {
-     "title": "[sample] Wildfire forces evacuations in hills in Kinshasa: latest",
-     "url": "https://global-desk.example/story/cjqrs6",
-     "source": "global-desk.example",
-     "country": "CA",
-     "lang": "en",
-     "time": "2026-10-21T03:02:00Z",
-     "tone": 3.6,
-     "image": ""
-    },
-    {
      "title": "[sample] Wildfire forces evacuations in hills in Kinshasa: explained",
-     "url": "https://al-akhbar.example/story/e0x4ey",
+     "url": "https://lagos-sun.example/story/9p35t3",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-21T02:03:00Z",
+     "tone": 3.2,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Kinshasa: what we know",
+     "url": "https://asahi-sample.example/story/bmyxmv",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T01:40:00Z",
+     "tone": -2.1,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Kinshasa: reactions",
+     "url": "https://cape-mail.example/story/1ndoys",
+     "source": "cape-mail.example",
+     "country": "ZA",
+     "lang": "en",
+     "time": "2026-10-21T00:29:00Z",
+     "tone": -0.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Kinshasa: reactions",
+     "url": "https://al-akhbar.example/story/7kwepz",
      "source": "al-akhbar.example",
      "country": "EG",
      "lang": "ar",
-     "time": "2026-10-21T02:56:00Z",
+     "time": "2026-10-20T23:51:00Z",
+     "tone": -5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Kinshasa: what we know",
+     "url": "https://kyiv-herald.example/story/fiohem",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-20T23:59:00Z",
+     "tone": -4.6,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Kinshasa: explained",
+     "url": "https://xinhua-sample.example/story/6usxot",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-21T00:18:00Z",
+     "tone": -2.5,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 9,
+   "o": 6,
+   "c": 6,
+   "l": 5,
+   "t": -0.8,
+   "first": "2026-10-20T17:24:00Z",
+   "last": "2026-10-21T04:02:00Z",
+   "headline": "[sample] Central bank leaves rates unchanged in Kinshasa: what we know",
+   "headlineSource": "nation-ke.example",
+   "headlineLang": "en",
+   "entities": [
+    "central bank",
+    "inflation",
+    "interest rates",
+    "kinshasa"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Kinshasa: what we know",
+     "url": "https://nation-ke.example/story/bz58gl",
+     "source": "nation-ke.example",
+     "country": "KE",
+     "lang": "en",
+     "time": "2026-10-21T04:02:00Z",
+     "tone": 1.7,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Kinshasa: live updates",
+     "url": "https://tehran-times.example/story/gceflv",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-21T03:15:00Z",
      "tone": 0.8,
-     "image": ""
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Wildfire forces evacuations in hills in Kinshasa: analysis",
-     "url": "https://gazeta-sample.example/story/8asij3",
-     "source": "gazeta-sample.example",
-     "country": "PL",
-     "lang": "pl",
+     "title": "[sample] Central bank leaves rates unchanged in Kinshasa: explained",
+     "url": "https://lagos-sun.example/story/df8f4d",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
      "time": "2026-10-21T02:36:00Z",
-     "tone": -1.6,
-     "image": ""
+     "tone": -5.6,
+     "image": "",
+     "video": ""
     },
     {
-     "title": "[sample] Wildfire forces evacuations in hills in Kinshasa: analysis",
-     "url": "https://la-voz.example/story/o8hzb",
-     "source": "la-voz.example",
-     "country": "AR",
-     "lang": "es",
-     "time": "2026-10-21T00:40:00Z",
-     "tone": -5.2,
-     "image": ""
+     "title": "[sample] Central bank leaves rates unchanged in Kinshasa: timeline",
+     "url": "https://hindustan-post.example/story/dyya9c",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T01:35:00Z",
+     "tone": -5.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Kinshasa: latest",
+     "url": "https://lagos-sun.example/story/4ndhdz",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-21T00:50:00Z",
+     "tone": 0.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Kinshasa: reactions",
+     "url": "https://tehran-times.example/story/e5jgjq",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-20T23:52:00Z",
+     "tone": 3.3,
+     "image": "",
+     "video": ""
     }
    ]
   }
  ],
- "unclustered": 13
+ "unclustered": 26,
+ "videos": 0
 }

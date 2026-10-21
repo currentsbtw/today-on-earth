@@ -86,6 +86,20 @@ const STORY_TOPICS = [
   ['Strike halts rail services', ['trade union', 'rail', 'labour']],
   ['Wildfire forces evacuations in hills', ['wildfire', 'evacuation', 'fire service']],
 ];
+// Placeholder YouTube links (well-known public videos), in each URL form the contract allows,
+// plus one channel URL the frontend must reject.
+const VIDEO_URLS = [
+  'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+  'https://youtu.be/jNQXAC9IVRw',
+  'https://www.youtube.com/shorts/aqz-KE-bpKQ',
+  'https://www.youtube.com/embed/M7lc1UVf-VE',
+  'https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s',
+  'https://m.youtube.com/watch?v=kJQP7kiw5Fk',
+  'https://www.youtube.com/channel/UC_placeholder',
+];
+/** Some articles in busier cells carry a video; quieter cells carry none. */
+const videoFor = (n, chance) => (n >= 100 && rand() < chance ? pick(VIDEO_URLS) : '');
+
 const ANGLES = ['what we know', 'latest', 'reactions', 'timeline', 'in pictures', 'explained', 'live updates', 'analysis'];
 
 /** 2-4 stories whose n sum to at most the cell's n; the rest is `unclustered`. */
@@ -117,6 +131,7 @@ function makeStories(place, n, stats, pool) {
         time: iso(new Date(now.getTime() - (newest + arts.length * (20 + Math.floor(rand() * 40))) * 60000)),
         tone: round1(rand() * 10 - 6),
         image: '',
+        video: videoFor(n, 0.2),
       });
     }
     const medoid = arts[Math.floor(rand() * arts.length)];
@@ -174,6 +189,7 @@ for (const [name, lat, lon, n, home] of PLACES) {
       time: iso(new Date(now.getTime() - minutesAgo * 60000)),
       tone: round1(rand() * 12 - 7),
       image: '',
+      video: videoFor(n, 0.08),
     });
   }
   const tally = (key) => {
@@ -204,6 +220,9 @@ for (const [name, lat, lon, n, home] of PLACES) {
   // Stories for cells with n >= 20; smaller cells keep the old shape (no `stories` key)
   // so the panel's no-stories layout stays covered.
   if (n >= 20) Object.assign(detail, makeStories(name, n, stats, pool));
+  // Whole-window count of articles with a video: at least the ones listed here.
+  const listed = [...articles, ...(detail.stories ?? []).flatMap((st) => st.articles)].filter((a) => a.video).length;
+  detail.videos = listed ? Math.max(listed, Math.round(n * 0.03)) : 0;
   writeFileSync(new URL(`cells/${id}.json`, OUT), JSON.stringify(detail, null, 1) + '\n');
 }
 

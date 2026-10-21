@@ -3,889 +3,699 @@
  "name": "Brasilia, Distrito Federal, Brazil",
  "n": 520,
  "o": 50,
- "c": 18,
- "l": 12,
- "t": -0.2,
+ "c": 23,
+ "l": 16,
+ "t": -1,
  "topOutlets": [
   [
-   "daily-ledger.example",
-   5
-  ],
-  [
-   "gazeta-sample.example",
-   5
-  ],
-  [
    "o-correio.example",
-   4
+   5
   ],
   [
-   "tehran-times.example",
-   4
-  ],
-  [
-   "vesti-news.example",
-   4
-  ],
-  [
-   "jakarta-pos.example",
-   3
-  ],
-  [
-   "la-voz.example",
-   3
-  ],
-  [
-   "wire-service.example",
-   3
+   "morning-wire.example",
+   5
   ],
   [
    "cape-mail.example",
+   4
+  ],
+  [
+   "le-quotidien.example",
+   4
+  ],
+  [
+   "haaretz-sample.example",
    3
   ],
   [
-   "xinhua-sample.example",
+   "global-desk.example",
+   2
+  ],
+  [
+   "corriere-sample.example",
+   2
+  ],
+  [
+   "harbour-press.example",
+   2
+  ],
+  [
+   "jakarta-pos.example",
+   2
+  ],
+  [
+   "kyiv-herald.example",
    2
   ]
  ],
  "topCountries": [
   [
-   "US",
-   5
-  ],
-  [
-   "PL",
-   5
-  ],
-  [
    "BR",
-   4
+   5
   ],
   [
-   "IR",
-   4
-  ],
-  [
-   "RU",
-   4
-  ],
-  [
-   "ID",
-   3
-  ],
-  [
-   "AR",
-   3
-  ],
-  [
-   "",
-   3
+   "GB",
+   5
   ],
   [
    "ZA",
+   4
+  ],
+  [
+   "FR",
+   4
+  ],
+  [
+   "IL",
    3
   ],
   [
-   "CN",
+   "CA",
+   2
+  ],
+  [
+   "IT",
+   2
+  ],
+  [
+   "AU",
+   2
+  ],
+  [
+   "ID",
+   2
+  ],
+  [
+   "UA",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   17
-  ],
-  [
-   "pl",
-   5
-  ],
-  [
-   "es",
-   5
+   19
   ],
   [
    "pt",
+   5
+  ],
+  [
+   "fr",
    4
-  ],
-  [
-   "fa",
-   4
-  ],
-  [
-   "ru",
-   4
-  ],
-  [
-   "id",
-   3
-  ],
-  [
-   "zh",
-   2
   ],
   [
    "he",
+   3
+  ],
+  [
+   "it",
+   2
+  ],
+  [
+   "id",
+   2
+  ],
+  [
+   "uk",
+   2
+  ],
+  [
+   "ja",
    2
   ],
   [
    "ar",
    2
+  ],
+  [
+   "ko",
+   2
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Officials meet over regional dispute near Brasilia",
-   "url": "https://nation-ke.example/news/3kub9f",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-21T05:27:00Z",
-   "tone": 4.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Brasilia",
-   "url": "https://xinhua-sample.example/news/dp1m8g",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-21T04:53:00Z",
-   "tone": 4.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Brasilia",
-   "url": "https://o-correio.example/news/6vm1wd",
+   "title": "[sample] Storm disrupts transport links near Brasilia",
+   "url": "https://o-correio.example/news/5lnyja",
    "source": "o-correio.example",
    "country": "BR",
    "lang": "pt",
-   "time": "2026-10-21T04:24:00Z",
-   "tone": -3.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Brasilia",
-   "url": "https://daily-ledger.example/news/6xsaq8",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-21T04:09:00Z",
-   "tone": 2.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Brasilia",
-   "url": "https://tehran-times.example/news/ds8xs",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-21T03:43:00Z",
-   "tone": 4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Brasilia",
-   "url": "https://tehran-times.example/news/g4ial1",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-21T02:59:00Z",
-   "tone": -2.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Brasilia",
-   "url": "https://jakarta-pos.example/news/8m0r2e",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-21T02:32:00Z",
-   "tone": -5.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Brasilia",
-   "url": "https://gazeta-sample.example/news/bbmvbi",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-21T02:17:00Z",
-   "tone": 2.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Brasilia",
-   "url": "https://el-diario.example/news/7ditr7",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-21T01:45:00Z",
-   "tone": -1.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Brasilia",
-   "url": "https://vesti-news.example/news/21pyuz",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-21T01:15:00Z",
-   "tone": 0.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Brasilia",
-   "url": "https://la-voz.example/news/5hzbmq",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-21T00:58:00Z",
-   "tone": 1.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Brasilia",
-   "url": "https://daily-ledger.example/news/875cem",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-21T00:30:00Z",
-   "tone": -3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Brasilia",
-   "url": "https://daily-ledger.example/news/fi9drn",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-21T00:02:00Z",
-   "tone": -0.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Brasilia",
-   "url": "https://haaretz-sample.example/news/53t406",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T23:32:00Z",
-   "tone": 0.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Brasilia",
-   "url": "https://jakarta-pos.example/news/61i1co",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T22:53:00Z",
-   "tone": -0.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Brasilia",
-   "url": "https://gulf-report.example/news/3od4on",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T22:24:00Z",
-   "tone": 0.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Brasilia",
-   "url": "https://wire-service.example/news/fm0t3o",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T22:12:00Z",
-   "tone": 1.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Brasilia",
-   "url": "https://gazeta-sample.example/news/rsts5",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T21:40:00Z",
-   "tone": -0.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Brasilia",
-   "url": "https://cape-mail.example/news/g0st9m",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T21:11:00Z",
-   "tone": -4.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Brasilia",
-   "url": "https://global-desk.example/news/25ajn1",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T20:33:00Z",
-   "tone": 4.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Brasilia",
-   "url": "https://nord-avis.example/news/b1boy3",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T20:18:00Z",
-   "tone": -5.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Brasilia",
-   "url": "https://tehran-times.example/news/a75z99",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T19:54:00Z",
-   "tone": -0.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Brasilia",
-   "url": "https://wire-service.example/news/gif0ug",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T19:18:00Z",
-   "tone": -6.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Brasilia",
-   "url": "https://xinhua-sample.example/news/57jd6w",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T18:53:00Z",
-   "tone": 3.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Brasilia",
-   "url": "https://gulf-report.example/news/2d5h7j",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T18:22:00Z",
-   "tone": -1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Brasilia",
-   "url": "https://o-correio.example/news/2i7w38",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T17:48:00Z",
-   "tone": 1.8,
-   "image": ""
+   "time": "2026-10-21T05:19:00Z",
+   "tone": -4,
+   "image": "",
+   "video": ""
   },
   {
    "title": "",
-   "url": "https://daily-ledger.example/news/8vzt9b",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T17:22:00Z",
-   "tone": 2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Brasilia",
-   "url": "https://gazeta-sample.example/news/94o491",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T16:55:00Z",
-   "tone": -1.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Brasilia",
-   "url": "https://o-correio.example/news/6xuhwx",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T16:31:00Z",
-   "tone": 0.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Brasilia",
-   "url": "https://o-correio.example/news/4sic5j",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T16:02:00Z",
-   "tone": -0.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Brasilia",
-   "url": "https://daily-ledger.example/news/5agox5",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T15:32:00Z",
-   "tone": -1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Brasilia",
-   "url": "https://vesti-news.example/news/68lj6r",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T15:06:00Z",
-   "tone": -2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Brasilia",
-   "url": "https://el-diario.example/news/1x51g8",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T14:45:00Z",
-   "tone": -3.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Brasilia",
-   "url": "https://cape-mail.example/news/cl5kvy",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T14:16:00Z",
-   "tone": -5.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Brasilia",
-   "url": "https://cape-mail.example/news/2dlt1q",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T13:42:00Z",
-   "tone": 0.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Brasilia",
-   "url": "https://harbour-press.example/news/bfpyth",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T13:23:00Z",
-   "tone": -2.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Brasilia",
-   "url": "https://tehran-times.example/news/3g0yz5",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T12:45:00Z",
-   "tone": -3.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Brasilia",
-   "url": "https://asahi-sample.example/news/g999pa",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T12:28:00Z",
-   "tone": -2.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Brasilia",
-   "url": "https://wire-service.example/news/18p40b",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T11:52:00Z",
-   "tone": 4.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Brasilia",
-   "url": "https://haaretz-sample.example/news/1zjr5d",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T11:23:00Z",
-   "tone": -0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Brasilia",
-   "url": "https://vesti-news.example/news/c4snxl",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T11:10:00Z",
-   "tone": 4.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Brasilia",
-   "url": "https://vesti-news.example/news/25e5eh",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T10:43:00Z",
-   "tone": 3.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Brasilia",
-   "url": "https://gazeta-sample.example/news/g9k6lb",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T09:57:00Z",
-   "tone": 3.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Brasilia",
-   "url": "https://gazeta-sample.example/news/6ho40s",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T09:38:00Z",
-   "tone": -1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Brasilia",
-   "url": "https://global-desk.example/news/2a22iz",
+   "url": "https://global-desk.example/news/2limgs",
    "source": "global-desk.example",
    "country": "CA",
    "lang": "en",
-   "time": "2026-10-20T09:17:00Z",
-   "tone": -0.3,
-   "image": ""
+   "time": "2026-10-21T04:49:00Z",
+   "tone": -0.7,
+   "image": "",
+   "video": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Brasilia",
-   "url": "https://lagos-sun.example/news/dfbi28",
-   "source": "lagos-sun.example",
-   "country": "NG",
+   "url": "https://o-correio.example/news/4ar5wb",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-21T04:40:00Z",
+   "tone": -3.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Brasilia",
+   "url": "https://corriere-sample.example/news/cippv6",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-21T03:59:00Z",
+   "tone": 2.7,
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Brasilia",
+   "url": "https://o-correio.example/news/r566n",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-21T03:41:00Z",
+   "tone": -1.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Brasilia",
+   "url": "https://cape-mail.example/news/e9bw0d",
+   "source": "cape-mail.example",
+   "country": "ZA",
    "lang": "en",
-   "time": "2026-10-20T08:44:00Z",
-   "tone": 3.9,
-   "image": ""
+   "time": "2026-10-21T03:11:00Z",
+   "tone": 3.5,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Storm disrupts transport links near Brasilia",
-   "url": "https://la-voz.example/news/er7oku",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T08:13:00Z",
-   "tone": 4.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Brasilia",
-   "url": "https://lagos-sun.example/news/bn1ql",
-   "source": "lagos-sun.example",
-   "country": "NG",
+   "title": "[sample] Trade talks resume after pause near Brasilia",
+   "url": "https://harbour-press.example/news/5dr0rz",
+   "source": "harbour-press.example",
+   "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T07:47:00Z",
-   "tone": -0.3,
-   "image": ""
+   "time": "2026-10-21T02:46:00Z",
+   "tone": 4.5,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Storm disrupts transport links near Brasilia",
-   "url": "https://la-voz.example/news/aud7ea",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T07:27:00Z",
-   "tone": -3.7,
-   "image": ""
+   "title": "[sample] Ministers discuss energy prices near Brasilia",
+   "url": "https://o-correio.example/news/f7ejt3",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-21T02:07:00Z",
+   "tone": -1.3,
+   "image": "",
+   "video": ""
   },
   {
-   "title": "[sample] Researchers report vaccine trial results near Brasilia",
-   "url": "https://jakarta-pos.example/news/8svj6u",
+   "title": "",
+   "url": "https://jakarta-pos.example/news/8n1o4m",
    "source": "jakarta-pos.example",
    "country": "ID",
    "lang": "id",
-   "time": "2026-10-20T07:02:00Z",
-   "tone": -5.2,
-   "image": ""
+   "time": "2026-10-21T01:41:00Z",
+   "tone": -4.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Brasilia",
+   "url": "https://o-correio.example/news/ggy459",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-21T01:10:00Z",
+   "tone": -4.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Brasilia",
+   "url": "https://jakarta-pos.example/news/cog4ce",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-21T00:57:00Z",
+   "tone": -6.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Brasilia",
+   "url": "https://global-desk.example/news/9hdm74",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-21T00:13:00Z",
+   "tone": 2.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Brasilia",
+   "url": "https://morning-wire.example/news/chdz6n",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T23:46:00Z",
+   "tone": -4.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Brasilia",
+   "url": "https://le-quotidien.example/news/47j4kf",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T23:33:00Z",
+   "tone": 2.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Brasilia",
+   "url": "https://kyiv-herald.example/news/fub5g8",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T22:58:00Z",
+   "tone": -6.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Brasilia",
+   "url": "https://asahi-sample.example/news/7hrgqe",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T22:27:00Z",
+   "tone": -2.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://gulf-report.example/news/2ii5gn",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T22:13:00Z",
+   "tone": -0.3,
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
+  },
+  {
+   "title": "",
+   "url": "https://nord-avis.example/news/5yb6db",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T21:43:00Z",
+   "tone": -1.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Brasilia",
+   "url": "https://vesti-news.example/news/2iboi",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T21:10:00Z",
+   "tone": 3.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://seoul-daily.example/news/1y3unn",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T20:32:00Z",
+   "tone": 2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Brasilia",
+   "url": "https://haaretz-sample.example/news/9tptew",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T20:14:00Z",
+   "tone": -1.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Brasilia",
+   "url": "https://cape-mail.example/news/1qoo43",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T19:55:00Z",
+   "tone": -2.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Brasilia",
+   "url": "https://harbour-press.example/news/2p43in",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T19:20:00Z",
+   "tone": -1.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Brasilia",
+   "url": "https://le-quotidien.example/news/afg6o6",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T18:44:00Z",
+   "tone": -4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Brasilia",
+   "url": "https://gulf-report.example/news/ghwd53",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T18:21:00Z",
+   "tone": -6.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Brasilia",
+   "url": "https://morning-wire.example/news/g2ck3u",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T17:52:00Z",
+   "tone": -1.7,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Brasilia",
+   "url": "https://asahi-sample.example/news/1meawf",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T17:30:00Z",
+   "tone": -4.2,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Brasilia",
+   "url": "https://haaretz-sample.example/news/dhvqzk",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T16:58:00Z",
+   "tone": 3.6,
+   "image": "",
+   "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Brasilia",
+   "url": "https://haaretz-sample.example/news/dftfug",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T16:26:00Z",
+   "tone": -6.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "",
+   "url": "https://seoul-daily.example/news/9x5kn4",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T16:05:00Z",
+   "tone": -2.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Brasilia",
+   "url": "https://xinhua-sample.example/news/bquub7",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T15:40:00Z",
+   "tone": -3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Brasilia",
+   "url": "https://daily-ledger.example/news/7lovbx",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T15:02:00Z",
+   "tone": 4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Brasilia",
+   "url": "https://xinhua-sample.example/news/6ncouv",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T14:32:00Z",
+   "tone": -5.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Brasilia",
+   "url": "https://morning-wire.example/news/4lidg",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T14:17:00Z",
+   "tone": 2.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Brasilia",
+   "url": "https://kyiv-herald.example/news/2xapi8",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T13:56:00Z",
+   "tone": 4.5,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Brasilia",
+   "url": "https://le-quotidien.example/news/gckanv",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T13:21:00Z",
+   "tone": 4.8,
+   "image": "",
+   "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Brasilia",
+   "url": "https://morning-wire.example/news/6jgxu0",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T12:51:00Z",
+   "tone": -6.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Brasilia",
+   "url": "https://gazeta-sample.example/news/z5w31",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T12:28:00Z",
+   "tone": -1.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Brasilia",
+   "url": "https://hindustan-post.example/news/mkmhj",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T11:58:00Z",
+   "tone": 1.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Brasilia",
+   "url": "https://la-voz.example/news/fgng8j",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T11:24:00Z",
+   "tone": -0.1,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Brasilia",
+   "url": "https://nation-ke.example/news/2kssur",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T10:56:00Z",
+   "tone": -5.3,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Brasilia",
+   "url": "https://cape-mail.example/news/7yjs6l",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T10:30:00Z",
+   "tone": 1.9,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Brasilia",
+   "url": "https://morning-wire.example/news/55xjcm",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T10:12:00Z",
+   "tone": 3.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Brasilia",
+   "url": "https://wire-service.example/news/455g0d",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T09:41:00Z",
+   "tone": 1.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Brasilia",
+   "url": "https://lagos-sun.example/news/age8kj",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T09:20:00Z",
+   "tone": 2.4,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Brasilia",
+   "url": "https://le-quotidien.example/news/ddc1lo",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T08:34:00Z",
+   "tone": -0.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Brasilia",
+   "url": "https://nation-ke.example/news/dtpqv6",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T08:18:00Z",
+   "tone": 2.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Brasilia",
+   "url": "https://cape-mail.example/news/e6itm1",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T07:44:00Z",
+   "tone": -6.6,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Brasilia",
+   "url": "https://corriere-sample.example/news/1gjg7w",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T07:25:00Z",
+   "tone": -1.8,
+   "image": "",
+   "video": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Brasilia",
+   "url": "https://hurriyet-sample.example/news/aytvdi",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T07:03:00Z",
+   "tone": 0.4,
+   "image": "",
+   "video": ""
   }
  ],
  "stories": [
   {
-   "n": 135,
-   "o": 18,
-   "c": 7,
-   "l": 5,
-   "t": -0.1,
-   "first": "2026-10-20T21:22:00Z",
-   "last": "2026-10-21T04:40:00Z",
-   "headline": "[sample] Storm damage closes main roads in Brasilia: timeline",
-   "headlineSource": "wire-service.example",
-   "headlineLang": "en",
-   "entities": [
-    "natural disaster",
-    "transport",
-    "emergency services",
-    "brasilia"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Storm damage closes main roads in Brasilia: live updates",
-     "url": "https://asahi-sample.example/story/99t4q",
-     "source": "asahi-sample.example",
-     "country": "JP",
-     "lang": "ja",
-     "time": "2026-10-21T04:40:00Z",
-     "tone": 1.2,
-     "image": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Brasilia: analysis",
-     "url": "https://harbour-press.example/story/3ro9g5",
-     "source": "harbour-press.example",
-     "country": "AU",
-     "lang": "en",
-     "time": "2026-10-21T04:03:00Z",
-     "tone": 2.5,
-     "image": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Brasilia: live updates",
-     "url": "https://al-akhbar.example/story/fsghc7",
-     "source": "al-akhbar.example",
-     "country": "EG",
-     "lang": "ar",
-     "time": "2026-10-21T03:22:00Z",
-     "tone": -3.1,
-     "image": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Brasilia: timeline",
-     "url": "https://wire-service.example/story/2baude",
-     "source": "wire-service.example",
-     "country": "",
-     "lang": "en",
-     "time": "2026-10-21T02:22:00Z",
-     "tone": 0.4,
-     "image": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Brasilia: timeline",
-     "url": "https://lagos-sun.example/story/6t5tcz",
-     "source": "lagos-sun.example",
-     "country": "NG",
-     "lang": "en",
-     "time": "2026-10-21T01:20:00Z",
-     "tone": 2.1,
-     "image": ""
-    },
-    {
-     "title": "[sample] Storm damage closes main roads in Brasilia: explained",
-     "url": "https://harbour-press.example/story/9odaee",
-     "source": "harbour-press.example",
-     "country": "AU",
-     "lang": "en",
-     "time": "2026-10-21T00:40:00Z",
-     "tone": -3.6,
-     "image": ""
-    }
-   ]
-  },
-  {
-   "n": 124,
+   "n": 126,
    "o": 17,
-   "c": 7,
-   "l": 4,
-   "t": 0.2,
-   "first": "2026-10-20T19:47:00Z",
-   "last": "2026-10-21T05:18:00Z",
-   "headline": "[sample] Strike halts rail services in Brasilia: analysis",
-   "headlineSource": "o-correio.example",
-   "headlineLang": "pt",
-   "entities": [
-    "trade union",
-    "rail",
-    "labour",
-    "brasilia"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Strike halts rail services in Brasilia: timeline",
-     "url": "https://seoul-daily.example/story/e21z9e",
-     "source": "seoul-daily.example",
-     "country": "KR",
-     "lang": "ko",
-     "time": "2026-10-21T05:18:00Z",
-     "tone": 0.5,
-     "image": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Brasilia: analysis",
-     "url": "https://o-correio.example/story/c0x8xi",
-     "source": "o-correio.example",
-     "country": "BR",
-     "lang": "pt",
-     "time": "2026-10-21T04:26:00Z",
-     "tone": 2.1,
-     "image": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Brasilia: timeline",
-     "url": "https://tageszeitung.example/story/a4xj1a",
-     "source": "tageszeitung.example",
-     "country": "DE",
-     "lang": "de",
-     "time": "2026-10-21T03:38:00Z",
-     "tone": 1.6,
-     "image": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Brasilia: timeline",
-     "url": "https://o-correio.example/story/f00s38",
-     "source": "o-correio.example",
-     "country": "BR",
-     "lang": "pt",
-     "time": "2026-10-21T02:48:00Z",
-     "tone": -0.9,
-     "image": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Brasilia: explained",
-     "url": "https://tageszeitung.example/story/cqc51j",
-     "source": "tageszeitung.example",
-     "country": "DE",
-     "lang": "de",
-     "time": "2026-10-21T02:54:00Z",
-     "tone": 2.5,
-     "image": ""
-    },
-    {
-     "title": "[sample] Strike halts rail services in Brasilia: live updates",
-     "url": "https://global-desk.example/story/b5ad7q",
-     "source": "global-desk.example",
-     "country": "CA",
-     "lang": "en",
-     "time": "2026-10-21T02:53:00Z",
-     "tone": -4.8,
-     "image": ""
-    }
-   ]
-  },
-  {
-   "n": 104,
-   "o": 14,
-   "c": 6,
-   "l": 4,
-   "t": -0.9,
-   "first": "2026-10-20T22:47:00Z",
-   "last": "2026-10-21T02:29:00Z",
-   "headline": "[sample] Aid convoy reaches border crossing in Brasilia: in pictures",
-   "headlineSource": "tehran-times.example",
-   "headlineLang": "fa",
-   "entities": [
-    "united nations",
-    "refugees",
-    "humanitarian aid",
-    "brasilia"
-   ],
-   "articles": [
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Brasilia: analysis",
-     "url": "https://o-correio.example/story/47fxc1",
-     "source": "o-correio.example",
-     "country": "BR",
-     "lang": "pt",
-     "time": "2026-10-21T02:29:00Z",
-     "tone": 1.6,
-     "image": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Brasilia: in pictures",
-     "url": "https://morning-wire.example/story/6tddwo",
-     "source": "morning-wire.example",
-     "country": "GB",
-     "lang": "en",
-     "time": "2026-10-21T01:41:00Z",
-     "tone": -5.5,
-     "image": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Brasilia: latest",
-     "url": "https://o-correio.example/story/93kmme",
-     "source": "o-correio.example",
-     "country": "BR",
-     "lang": "pt",
-     "time": "2026-10-21T00:55:00Z",
-     "tone": 2.9,
-     "image": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Brasilia: in pictures",
-     "url": "https://tehran-times.example/story/a3sdue",
-     "source": "tehran-times.example",
-     "country": "IR",
-     "lang": "fa",
-     "time": "2026-10-21T00:32:00Z",
-     "tone": -1.6,
-     "image": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Brasilia: live updates",
-     "url": "https://lagos-sun.example/story/ephxme",
-     "source": "lagos-sun.example",
-     "country": "NG",
-     "lang": "en",
-     "time": "2026-10-20T23:49:00Z",
-     "tone": -5.9,
-     "image": ""
-    },
-    {
-     "title": "[sample] Aid convoy reaches border crossing in Brasilia: live updates",
-     "url": "https://jakarta-pos.example/story/f2i2s8",
-     "source": "jakarta-pos.example",
-     "country": "ID",
-     "lang": "id",
-     "time": "2026-10-20T22:59:00Z",
-     "tone": 2.9,
-     "image": ""
-    }
-   ]
-  },
-  {
-   "n": 53,
-   "o": 7,
-   "c": 3,
-   "l": 5,
-   "t": -1.2,
-   "first": "2026-10-20T16:33:00Z",
-   "last": "2026-10-21T02:48:00Z",
-   "headline": "[sample] Election count enters second day in Brasilia: in pictures",
-   "headlineSource": "gazeta-sample.example",
-   "headlineLang": "pl",
+   "c": 9,
+   "l": 6,
+   "t": -2.4,
+   "first": "2026-10-20T16:40:00Z",
+   "last": "2026-10-21T01:48:00Z",
+   "headline": "[sample] Election count enters second day in Brasilia: live updates",
+   "headlineSource": "seoul-daily.example",
+   "headlineLang": "ko",
    "entities": [
     "election commission",
     "parliament",
@@ -894,67 +704,332 @@
    ],
    "articles": [
     {
-     "title": "[sample] Election count enters second day in Brasilia: latest",
-     "url": "https://nation-ke.example/story/foaso9",
-     "source": "nation-ke.example",
-     "country": "KE",
-     "lang": "en",
-     "time": "2026-10-21T02:48:00Z",
-     "tone": -4.2,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Brasilia: in pictures",
-     "url": "https://gazeta-sample.example/story/js50g",
-     "source": "gazeta-sample.example",
-     "country": "PL",
-     "lang": "pl",
-     "time": "2026-10-21T02:27:00Z",
-     "tone": -4.1,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Brasilia: latest",
-     "url": "https://seoul-daily.example/story/dkgfjw",
-     "source": "seoul-daily.example",
-     "country": "KR",
-     "lang": "ko",
-     "time": "2026-10-21T01:20:00Z",
-     "tone": -0.2,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Brasilia: live updates",
-     "url": "https://al-akhbar.example/story/7dd69n",
-     "source": "al-akhbar.example",
-     "country": "EG",
-     "lang": "ar",
-     "time": "2026-10-21T00:51:00Z",
-     "tone": 3,
-     "image": ""
-    },
-    {
-     "title": "[sample] Election count enters second day in Brasilia: what we know",
-     "url": "https://daily-ledger.example/story/86j755",
-     "source": "daily-ledger.example",
-     "country": "US",
-     "lang": "en",
-     "time": "2026-10-21T00:16:00Z",
-     "tone": 3.1,
-     "image": ""
-    },
-    {
      "title": "[sample] Election count enters second day in Brasilia: explained",
-     "url": "https://o-correio.example/story/71ef0s",
+     "url": "https://o-correio.example/story/ap9z8h",
      "source": "o-correio.example",
      "country": "BR",
      "lang": "pt",
-     "time": "2026-10-20T22:13:00Z",
-     "tone": -4.7,
-     "image": ""
+     "time": "2026-10-21T01:48:00Z",
+     "tone": -3.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Brasilia: explained",
+     "url": "https://tageszeitung.example/story/gbupla",
+     "source": "tageszeitung.example",
+     "country": "DE",
+     "lang": "de",
+     "time": "2026-10-21T01:28:00Z",
+     "tone": -4.4,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Brasilia: live updates",
+     "url": "https://seoul-daily.example/story/1474tc",
+     "source": "seoul-daily.example",
+     "country": "KR",
+     "lang": "ko",
+     "time": "2026-10-21T00:08:00Z",
+     "tone": -4.1,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Brasilia: explained",
+     "url": "https://o-correio.example/story/6hn2fn",
+     "source": "o-correio.example",
+     "country": "BR",
+     "lang": "pt",
+     "time": "2026-10-21T00:00:00Z",
+     "tone": -5.9,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Brasilia: live updates",
+     "url": "https://kyiv-herald.example/story/9crirn",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-20T22:12:00Z",
+     "tone": 3.5,
+     "image": "",
+     "video": "https://youtu.be/jNQXAC9IVRw"
+    },
+    {
+     "title": "[sample] Election count enters second day in Brasilia: live updates",
+     "url": "https://xinhua-sample.example/story/fpvd25",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-20T21:18:00Z",
+     "tone": 0.1,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 121,
+   "o": 16,
+   "c": 9,
+   "l": 6,
+   "t": -0.8,
+   "first": "2026-10-20T22:42:00Z",
+   "last": "2026-10-21T02:32:00Z",
+   "headline": "[sample] Wildfire forces evacuations in hills in Brasilia: explained",
+   "headlineSource": "vesti-news.example",
+   "headlineLang": "ru",
+   "entities": [
+    "wildfire",
+    "evacuation",
+    "fire service",
+    "brasilia"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Brasilia: explained",
+     "url": "https://tageszeitung.example/story/7qrykx",
+     "source": "tageszeitung.example",
+     "country": "DE",
+     "lang": "de",
+     "time": "2026-10-21T02:32:00Z",
+     "tone": -4.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Brasilia: latest",
+     "url": "https://gulf-report.example/story/28ba2w",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T02:02:00Z",
+     "tone": 2.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Brasilia: explained",
+     "url": "https://vesti-news.example/story/56w6u8",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T00:34:00Z",
+     "tone": 2.2,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Brasilia: live updates",
+     "url": "https://o-correio.example/story/2prstm",
+     "source": "o-correio.example",
+     "country": "BR",
+     "lang": "pt",
+     "time": "2026-10-21T01:05:00Z",
+     "tone": 0.3,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Brasilia: analysis",
+     "url": "https://lagos-sun.example/story/8c9l4c",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-20T23:40:00Z",
+     "tone": -2.3,
+     "image": "",
+     "video": "https://www.youtube.com/shorts/aqz-KE-bpKQ"
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Brasilia: analysis",
+     "url": "https://al-akhbar.example/story/cc3qru",
+     "source": "al-akhbar.example",
+     "country": "EG",
+     "lang": "ar",
+     "time": "2026-10-20T22:42:00Z",
+     "tone": -2.3,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 101,
+   "o": 14,
+   "c": 7,
+   "l": 5,
+   "t": -0.4,
+   "first": "2026-10-20T17:06:00Z",
+   "last": "2026-10-21T03:52:00Z",
+   "headline": "[sample] Central bank leaves rates unchanged in Brasilia: what we know",
+   "headlineSource": "vesti-news.example",
+   "headlineLang": "ru",
+   "entities": [
+    "central bank",
+    "inflation",
+    "interest rates",
+    "brasilia"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Brasilia: latest",
+     "url": "https://o-correio.example/story/beka8",
+     "source": "o-correio.example",
+     "country": "BR",
+     "lang": "pt",
+     "time": "2026-10-21T03:52:00Z",
+     "tone": 1.1,
+     "image": "",
+     "video": "https://youtu.be/jNQXAC9IVRw"
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Brasilia: explained",
+     "url": "https://wire-service.example/story/2frazi",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T03:28:00Z",
+     "tone": -4.1,
+     "image": "",
+     "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Brasilia: explained",
+     "url": "https://cape-mail.example/story/9drui0",
+     "source": "cape-mail.example",
+     "country": "ZA",
+     "lang": "en",
+     "time": "2026-10-21T02:00:00Z",
+     "tone": 0.2,
+     "image": "",
+     "video": "https://www.youtube.com/watch?v=9bZkp7q19f0&t=42s"
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Brasilia: latest",
+     "url": "https://gulf-report.example/story/e4afws",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T01:34:00Z",
+     "tone": 2,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Brasilia: what we know",
+     "url": "https://vesti-news.example/story/1vsxyx",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T02:16:00Z",
+     "tone": 2.4,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Brasilia: latest",
+     "url": "https://seoul-daily.example/story/7efz5z",
+     "source": "seoul-daily.example",
+     "country": "KR",
+     "lang": "ko",
+     "time": "2026-10-20T23:12:00Z",
+     "tone": -4,
+     "image": "",
+     "video": ""
+    }
+   ]
+  },
+  {
+   "n": 69,
+   "o": 9,
+   "c": 5,
+   "l": 6,
+   "t": -0.9,
+   "first": "2026-10-20T21:10:00Z",
+   "last": "2026-10-21T04:31:00Z",
+   "headline": "[sample] Ministers meet over energy prices in Brasilia: in pictures",
+   "headlineSource": "xinhua-sample.example",
+   "headlineLang": "zh",
+   "entities": [
+    "energy",
+    "european union",
+    "oil prices",
+    "brasilia"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Ministers meet over energy prices in Brasilia: in pictures",
+     "url": "https://jakarta-pos.example/story/6t90oz",
+     "source": "jakarta-pos.example",
+     "country": "ID",
+     "lang": "id",
+     "time": "2026-10-21T04:31:00Z",
+     "tone": -0.6,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Brasilia: in pictures",
+     "url": "https://o-correio.example/story/eruxdo",
+     "source": "o-correio.example",
+     "country": "BR",
+     "lang": "pt",
+     "time": "2026-10-21T04:07:00Z",
+     "tone": 0.5,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Brasilia: analysis",
+     "url": "https://lagos-sun.example/story/qwft5",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-21T03:29:00Z",
+     "tone": 3.7,
+     "image": "",
+     "video": "https://www.youtube.com/embed/M7lc1UVf-VE"
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Brasilia: analysis",
+     "url": "https://al-akhbar.example/story/cskag",
+     "source": "al-akhbar.example",
+     "country": "EG",
+     "lang": "ar",
+     "time": "2026-10-21T02:16:00Z",
+     "tone": -4.8,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Brasilia: in pictures",
+     "url": "https://xinhua-sample.example/story/6mj9ds",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-21T01:43:00Z",
+     "tone": -0.4,
+     "image": "",
+     "video": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Brasilia: explained",
+     "url": "https://hurriyet-sample.example/story/4suqmh",
+     "source": "hurriyet-sample.example",
+     "country": "TR",
+     "lang": "tr",
+     "time": "2026-10-21T00:36:00Z",
+     "tone": -4.1,
+     "image": "",
+     "video": ""
     }
    ]
   }
  ],
- "unclustered": 104
+ "unclustered": 103,
+ "videos": 16
 }

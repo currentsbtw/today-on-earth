@@ -5,7 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#050608" />
-    <meta name="description" content="A map of where the world's news is happening, with every outlet covering each place." />
+    <meta name="description" content="A map of where the world's news is pointing right now, rebuilt every 15 minutes from GDELT, with no editor and no feed." />
+    <link rel="canonical" href="https://currentsbtw.github.io/today-on-earth/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Today On Earth" />
+    <meta property="og:title" content="Today On Earth" />
+    <meta property="og:description" content="A map of where the world's news is pointing right now, rebuilt every 15 minutes from GDELT, with no editor and no feed." />
+    <meta property="og:url" content="https://currentsbtw.github.io/today-on-earth/" />
+    <meta property="og:image" content="https://currentsbtw.github.io/today-on-earth/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A dark world map with amber glows where news coverage is concentrated." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Today On Earth" />
+    <meta name="twitter:description" content="A map of where the world's news is pointing right now, rebuilt every 15 minutes from GDELT, with no editor and no feed." />
+    <meta name="twitter:image" content="https://currentsbtw.github.io/today-on-earth/og.jpg" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 fill=%27%23050608%27/%3E%3Ccircle cx=%278%27 cy=%278%27 r=%274%27 fill=%27%23f2a64a%27/%3E%3C/svg%3E" />
     <title>Today On Earth</title>
   </head>
@@ -13,6 +27,7 @@
     <header class="bar">
       <h1 class="wordmark">Today On Earth</h1>
       <p class="totals" id="totals" aria-live="polite"></p>
+      <a class="about-link" href="./about.html" aria-label="How it works"><span class="about-text">How it works</span><span class="about-glyph" aria-hidden="true">?</span></a>
       <p class="snapshot" id="snapshot"></p>
     </header>
     <main class="stage">
@@ -26,6 +41,7 @@
         </div>
         <p id="panel-why" class="panel-why"></p>
         <p id="panel-note" class="panel-note" hidden></p>
+        <section id="panel-videos" class="videos" hidden></section>
         <div id="panel-stories" class="stories" hidden></div>
         <p id="panel-state" class="panel-state" hidden></p>
         <ol id="panel-list" class="articles"></ol>
