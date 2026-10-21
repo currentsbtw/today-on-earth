@@ -103,16 +103,19 @@ jobs:
       - id: deployment
         uses: actions/deploy-pages@v5
 
-  # Fallback for a dead cron. GitHub's schedule trigger is best-effort and can stay
-  # silent for hours on a new repo. While no scheduled run has appeared recently, this
-  # job sleeps until the next 15-minute slot and dispatches the next snapshot itself,
-  # so snapshots keep flowing; once the cron fires reliably it sees the recent
-  # scheduled run and does nothing.
+  # Keeps snapshots (and the daily clip) flowing when GitHub's best-effort cron is silent,
+  # which can last hours on a new repo.
+  # - Every run sleeps a fixed 780 s, then dispatches the next snapshot unless any
+  #   snapshot run (any event, any status) was created after this run was. A cron run
+  #   that fired meanwhile, or a dispatch by someone else, therefore takes over the chain
+  #   and this run stands down.
+  # - It also dispatches clip.yml once a day: after 00:20 UTC, if no clip run was
+  #   created yet that UTC day.
   # - Chained runs are workflow_dispatch events, one of the few events the GITHUB_TOKEN
   #   is allowed to create (it needs `actions: write`, granted above).
   # - The workflow-level concurrency group serialises everything: the dispatched run
-  #   waits until this run ends. This job holds the group while it sleeps, so a late
-  #   cron run queues behind it; that is intended.
+  #   waits until this run ends. This job holds the group while it sleeps, so a cron run
+  #   that fires meanwhile queues behind it; that is intended.
   # - The repo is public, so Actions minutes are unlimited and the sleeping job is free.
   # - To turn it off, set the repository variable KEEPALIVE to "false". The chain
   #   continues after a failed run on purpose (a transient failure must not stop
@@ -126,31 +129,18 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
     steps:
-      - name: Is the schedule alive?
-        id: schedule
-        run: |
-          last=$(gh run list --workflow snapshot.yml --event schedule --limit 1 \
-            --json createdAt --jq '.[0].createdAt // empty')
-          if [ -n "$last" ]; then
-            age=$(( $(date -u +%s) - $(date -u -d "$last" +%s) ))
-            if [ "$age" -le $(( 45 * 60 )) ]; then
-              echo "Last scheduled run was created at $last (${age}s ago); the cron is alive, keepalive stands down."
-              echo "alive=true" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-            echo "Last scheduled run was created at $last (${age}s ago); the cron looks dead."
-          else
-            echo "No scheduled run found; the cron has not fired yet."
-          fi
-          echo "alive=false" >> "$GITHUB_OUTPUT"
-
-      - name: Wait for the next slot
-        if: steps.schedule.outputs.alive != 'true'
+      - name: Wait 13 minutes
         run: sleep 780
 
       - name: Dispatch the next snapshot
-        if: steps.schedule.outputs.alive != 'true'
         run: |
+          created=$(gh run view ${{ github.run_id }} --json createdAt --jq .createdAt)
+          newer=$(gh run list --workflow snapshot.yml --created ">$created" --limit 20 \
+            --json databaseId --jq "[.[] | select(.databaseId != ${{ github.run_id }})] | length")
+          if [ "$newer" -gt 0 ]; then
+            echo "A snapshot run was created after this one ($created); it continues the chain."
+            exit 0
+          fi
           for status in in_progress queued pending requested waiting; do
             others=$(gh run list --workflow snapshot.yml --status "$status" --limit 20 \
               --json databaseId --jq "[.[] | select(.databaseId != ${{ github.run_id }})] | length")
@@ -161,3 +151,19 @@ jobs:
           done
           gh workflow run snapshot.yml --ref main
           echo "Dispatched the next snapshot run on main."
+
+      - name: Dispatch the daily clip if it has not run today
+        run: |
+          today=$(date -u +%F)
+          if [ "$(date -u +%H%M)" -lt 0020 ]; then
+            echo "Before 00:20 UTC; today's clip is not due yet."
+            exit 0
+          fi
+          runs=$(gh run list --workflow clip.yml --created ">=${today}T00:00:00Z" --limit 1 \
+            --json databaseId --jq length)
+          if [ "$runs" -gt 0 ]; then
+            echo "A clip run already exists for $today."
+            exit 0
+          fi
+          gh workflow run clip.yml --ref main
+          echo "Dispatched the daily clip for $today."

@@ -63,11 +63,66 @@ export function parseArgs(argv, platform = process.platform) {
 /** "2026-10-21T04:47:14Z" -> "20261021T044714Z" (the contract's frame stamp / permalink `t`). */
 export const stampOf = (at) => at.replace(/[-:.]/g, "");
 
-/** URL of one frame for the page being driven. */
-export function frameUrl(opts, at) {
+/**
+ * URL of one frame for the page being driven. `max` (the live heat.json's largest cell n,
+ * fetched once per clip) pins the heat scale so it cannot jump when a deploy lands mid-clip.
+ */
+export function frameUrl(opts, at, max = 0) {
   const t = encodeURIComponent(stampOf(at));
   if (opts.page === "index") return `${opts.site}/index.html#t=${t}`;
-  return `${opts.site}/clip.html?t=${t}&w=${opts.w}&h=${opts.h}`;
+  return `${opts.site}/clip.html?t=${t}&w=${opts.w}&h=${opts.h}${max > 0 ? `&max=${max}` : ""}`;
+}
+
+/** Largest cell `n` in a heat.json body, 0 when there are no cells. */
+export function maxCellN(heat) {
+  const cells = Array.isArray(heat?.cells) ? heat.cells : [];
+  return cells.reduce((m, c) => (Number.isInteger(c?.n) && c.n > m ? c.n : m), 0);
+}
+
+/** A clip fails when more than 10% of its frames could not be rendered. */
+export const MAX_BAD_SHARE = 0.1;
+
+/**
+ * Capture every frame. A frame is tried twice; if both fail, the previous good frame is
+ * repeated in its place (or it is skipped when nothing good came before), so one bad frame
+ * cannot abort the clip. Output files are numbered contiguously from 1 for ffmpeg.
+ * @param {string[]} ats
+ * @param {{ load: (at: string) => Promise<void>, shoot: (index: number) => Promise<void>,
+ *           repeat: (fromIndex: number, toIndex: number) => Promise<void>, log: (msg: string) => void }} io
+ * @returns {Promise<{ written: number, bad: number, lastGood: string }>}
+ */
+export async function captureFrames(ats, io) {
+  let written = 0;
+  let bad = 0;
+  let lastGood = "";
+  for (let i = 0; i < ats.length; i++) {
+    const at = ats[i];
+    const t0 = Date.now();
+    let ok = false;
+    for (let attempt = 1; attempt <= 2 && !ok; attempt++) {
+      try {
+        await io.load(at);
+        ok = true;
+      } catch (err) {
+        io.log(`  frame ${i + 1}/${ats.length} ${at}: attempt ${attempt} failed: ${err.message}`);
+      }
+    }
+    if (ok) {
+      await io.shoot(++written);
+      lastGood = at;
+      io.log(`  frame ${i + 1}/${ats.length} ${at}: ${((Date.now() - t0) / 1000).toFixed(1)}s`);
+    } else {
+      bad++;
+      if (written > 0) {
+        await io.repeat(written, written + 1);
+        written++;
+        io.log(`  frame ${i + 1}/${ats.length} ${at}: BAD, repeated the previous frame`);
+      } else {
+        io.log(`  frame ${i + 1}/${ats.length} ${at}: BAD, skipped (no earlier frame to repeat)`);
+      }
+    }
+  }
+  return { written, bad, lastGood };
 }
 
 /**

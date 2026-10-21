@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { clipDate, ffmpegArgs, frameName, frameUrl, parseArgs, stampOf } from "../src/lib.mjs";
+import { captureFrames, clipDate, ffmpegArgs, frameName, frameUrl, MAX_BAD_SHARE, maxCellN, parseArgs, stampOf } from "../src/lib.mjs";
 
 test("parseArgs: defaults, platform browser channel, validation", () => {
   const o = parseArgs(["--site", "https://currentsbtw.github.io/today-on-earth/", "--out", "out"], "linux");
@@ -40,4 +40,45 @@ test("ffmpeg arguments: H.264, yuv420p, fps, hold by cloning the last frame, fas
   assert.equal(args.at(-1), "clip-2026-10-20.mp4");
   assert.ok(!ffmpegArgs({ framesPattern: "f/%04d.png", fps: 8, hold: 0, output: "x.mp4" }).includes("-vf"));
   assert.equal(frameName(7), "0007.png");
+});
+
+test("frame URL carries the live heat max; maxCellN reads heat.json", () => {
+  const o = parseArgs(["--site", "https://example.test/toe", "--out", "o"], "linux");
+  assert.equal(frameUrl(o, "2026-10-21T04:47:14Z", 1401), "https://example.test/toe/clip.html?t=20261021T044714Z&w=1080&h=1920&max=1401");
+  assert.equal(frameUrl(o, "2026-10-21T04:47:14Z", 0), "https://example.test/toe/clip.html?t=20261021T044714Z&w=1080&h=1920");
+  assert.equal(maxCellN({ cells: [{ n: 3 }, { n: 1401 }, { n: 12 }] }), 1401);
+  assert.equal(maxCellN({ cells: [] }), 0);
+  assert.equal(maxCellN(null), 0);
+});
+
+/** Run captureFrames with a scripted loader: `fails` maps frame `at` -> number of failing attempts. */
+async function simulate(ats, fails) {
+  const files = new Map();
+  const tries = new Map();
+  const result = await captureFrames(ats, {
+    load: async (at) => {
+      const n = (tries.get(at) ?? 0) + 1;
+      tries.set(at, n);
+      if (n <= (fails[at] ?? 0)) throw new Error("timeout");
+      files.current = at;
+    },
+    shoot: async (i) => files.set(i, files.current),
+    repeat: async (from, to) => files.set(to, files.get(from)),
+    log: () => {},
+  });
+  return { result, files: [...files.entries()].sort((a, b) => a[0] - b[0]).map(([, at]) => at), tries };
+}
+
+test("captureFrames: retry once, repeat the previous frame for a bad one, skip a bad first frame", async () => {
+  const ats = ["a", "b", "c", "d"];
+  // b fails once (retry succeeds); c fails twice (repeated from b).
+  const one = await simulate(ats, { b: 1, c: 2 });
+  assert.deepEqual(one.result, { written: 4, bad: 1, lastGood: "d" });
+  assert.deepEqual(one.files, ["a", "b", "b", "d"]);
+  assert.equal(one.tries.get("c"), 2);
+  // A bad first frame is skipped, numbering stays contiguous.
+  const two = await simulate(ats, { a: 2, d: 2 });
+  assert.deepEqual(two.result, { written: 3, bad: 2, lastGood: "c" });
+  assert.deepEqual(two.files, ["b", "c", "c"]);
+  assert.equal(MAX_BAD_SHARE, 0.1);
 });

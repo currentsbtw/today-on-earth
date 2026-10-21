@@ -5,7 +5,7 @@ import { getResolution, isValidCell, latLngToCell } from "h3-js";
 import { buildSnapshot } from "../src/aggregate.ts";
 import { loadCountryLookup, makeCountryLookup } from "../src/domains.ts";
 import { fipsToIso } from "../src/fips-to-iso.ts";
-import { createRecordAssembler, decodeEntities, extractTitle, gkgDateToIso, isYouTubeVideoUrl, parseGkgLine, parsePrimaryLocation, parseVideo } from "../src/gkg.ts";
+import { createRecordAssembler, decodeEntities, extractTitle, gkgDateToIso, isYouTubeVideoUrl, parseGkgLine, parsePrimaryLocation, parseVideo, youTubeVideoId } from "../src/gkg.ts";
 import { langFromTranslationInfo } from "../src/lang.ts";
 
 // Three real GKG 2.1 lines (two from the English stream 20261021041500, one from the
@@ -188,4 +188,32 @@ test("video: first YouTube URL that names a video; channel links and other hosts
   const none = parseGkgLine(lines[1], countryOf);
   assert.ok(none.ok);
   assert.equal(none.record.video, "");
+});
+
+test("video: the id must be a whole segment or whole v value, followed only by end, ?, # or &", () => {
+  const id = "dQw4w9WgXcQ";
+  for (const bad of [
+    `https://youtu.be/${id}%22%3E`,
+    `https://youtu.be/${id} junk`,
+    `https://youtube.com/embed/${id}/x`,
+    `https://www.youtube.com/watch?v=${id}.x`,
+    "https://youtube.com/embed/videoseries?list=PL590L5WQmH8fJ54F369BLDSqIwcs-TCfs",
+    `https://youtube.com/embed/${id}\\`,
+    `https://youtube.com/embed/${id}x`,
+    `https://youtubeXcom/embed/${id}`,
+    `https://youtu-be/${id}`,
+    `https://youtube.com/watchXv=${id}`,
+  ]) {
+    assert.equal(parseVideo(bad), "", bad);
+  }
+  for (const good of [
+    `https://youtu.be/${id}`,
+    `https://youtu.be/${id}?t=5`,
+    `https://youtube.com/embed/${id}#start`,
+    `https://www.youtube.com/watch?feature=share&v=${id}&t=1`,
+    `https://m.youtube.com/watch?v=${id}`,
+  ]) {
+    assert.equal(parseVideo(good), good, good);
+    assert.equal(youTubeVideoId(good), id);
+  }
 });

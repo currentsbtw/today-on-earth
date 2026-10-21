@@ -131,4 +131,7 @@ test("state v3 stores entity lists and video; v2 and v1 state still load", () =>
   const mid = decodeState(v2).records[0];
   assert.deepEqual([mid.persons, mid.orgs, mid.themes, mid.video], [["jane doe"], ["acme motors"], [], ""]);
   assert.throws(() => decodeState(gzipSync(JSON.stringify({ v: 4, feeds: {}, records: [] }))));
+  // A video stored under the older, looser rule is cleared on load.
+  const loose = { ...rec, video: "https://youtube.com/embed/videoseries?list=PL1" };
+  assert.equal(decodeState(encodeState({ feeds: {}, records: [loose] }, t(6))).records[0].video, "");
 });

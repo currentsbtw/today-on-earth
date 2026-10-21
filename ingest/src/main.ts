@@ -21,7 +21,7 @@ import { buildSnapshot } from "./aggregate.ts";
 import { loadCountryLookup } from "./domains.ts";
 import { FEEDS, fileUrl, mapLimit, streamZipLines, type Feed } from "./fetch.ts";
 import { createRecordAssembler, parseGkgLine, type SkipReason } from "./gkg.ts";
-import { baselineView, countNewRecords, encodeBaseline, loadBaseline, trimDays, utcDay, type Baseline } from "./baseline.ts";
+import { advanceBaseline, baselineView, encodeBaseline, loadBaseline, utcDay, type Baseline } from "./baseline.ts";
 import { CarryLoadError, resolveCarrySource } from "./carry.ts";
 import { appendFrame, buildHistoryEntry, buildIndex, encodeHistory, frameFileName, loadHistory, toFrame, type HistoryEntry } from "./history.ts";
 import { encodeState, loadState, type IngestState } from "./state.ts";
@@ -140,9 +140,10 @@ async function main(): Promise<number> {
   const today = utcDay(now.toISOString());
   const prevUrls = new Set((prev?.records ?? []).map((r) => r.url));
   const firstMerged = records.filter((r) => !prevUrls.has(r.url));
-  const baselineSince = prevBaseline?.since || today;
-  const baselineDays = trimDays(countNewRecords(prevBaseline?.days ?? {}, firstMerged), today);
-  const baseline = baselineView(baselineDays, today, baselineSince);
+  const mergedStamps: Record<string, string[]> = {};
+  for (const r of ok) (mergedStamps[r.feed.name] ??= []).push(r.stamp);
+  const nextBaseline = advanceBaseline({ prev: prevBaseline, stateLoaded: prev !== null, firstMerged, mergedStamps, today, log });
+  const baseline = baselineView(nextBaseline, today, FEEDS.map((f) => f.name));
 
   const snapshot = buildSnapshot(records, {
     now,
@@ -176,7 +177,7 @@ async function main(): Promise<number> {
   await writeFile(join(historyDir, "index.json"), JSON.stringify(buildIndex(history)));
   const historyBytes = encodeHistory(history);
   await writeFile(join(carryDir, "history.json.gz"), historyBytes);
-  const baselineBytes = encodeBaseline({ since: baselineSince, days: baselineDays });
+  const baselineBytes = encodeBaseline(nextBaseline);
   await writeFile(join(carryDir, "baseline.json.gz"), baselineBytes);
 
   const t = snapshot.heat.totals;
@@ -188,7 +189,7 @@ async function main(): Promise<number> {
       `window articles=${t.articles} (unplaced=${t.unplaced}) outlets=${t.outlets} countries=${t.countries} cells=${t.cells}; ` +
       `heat.json=${Buffer.byteLength(heatJson)}B state.json.gz=${stateBytes.length}B; ` +
       `history frames=${history.length} largest frame=${largestFrame}B history.json.gz=${historyBytes.length}B; ` +
-      `baseline days=${Object.keys(baselineDays).length} complete=${baseline.baselineDays} new=${firstMerged.length} baseline.json.gz=${baselineBytes.length}B; ` +
+      `baseline days=${Object.keys(nextBaseline.days).length} complete=${baseline.baselineDays} new=${firstMerged.length} baseline.json.gz=${baselineBytes.length}B; ` +
       `${((Date.now() - started) / 1000).toFixed(1)}s`,
   );
   return 0;

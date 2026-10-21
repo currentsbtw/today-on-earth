@@ -128,16 +128,23 @@ export function createRecordAssembler(onRecord: (record: string) => void) {
   };
 }
 
-const VIDEO_HOSTS = new Set(["youtube.com", "www.youtube.com", "m.youtube.com", "youtu.be"]);
-const VIDEO_ID = "[A-Za-z0-9_-]{11}(?![A-Za-z0-9_-])";
-const VIDEO_PATH = new RegExp(`^/(?:(?:embed|shorts|live|v)/${VIDEO_ID}|watch$)`);
+/**
+ * Video ids exactly as the frontend accepts them: 11 characters of [A-Za-z0-9_-] forming a
+ * whole path segment (`youtu.be/<id>`, `/embed|shorts|live|v/<id>`) or a whole `v` value
+ * (`watch?...v=<id>`), followed only by the end, `?`, `#` or `&`. The literal "videoseries"
+ * (a playlist embed, not a video) is rejected. Matching runs on the raw string, so nothing
+ * that URL normalisation would rewrite (a trailing `\`, `%22%3E`, a space) slips through.
+ */
+const ID = "([A-Za-z0-9_-]{11})";
+const YOUTU_BE = new RegExp(String.raw`^https?://youtu\.be/${ID}(?:[?#&]|$)`, "i");
+const YOUTUBE_PATH = new RegExp(String.raw`^https?://(?:www\.|m\.)?youtube\.com/(?:embed|shorts|live|v)/${ID}(?:[?#&]|$)`, "i");
+const YOUTUBE_WATCH = new RegExp(String.raw`^https?://(?:www\.|m\.)?youtube\.com/watch\?(?:[^#]*&)?v=${ID}(?:[&#]|$)`, "i");
 
 /**
  * First YouTube *video* URL from GKG SocialVideoEmbeds (`;`-separated), verbatim, or "".
  * Only youtube.com / www. / m. / youtu.be hosts count. In real data most YouTube entries
  * are channel links from site footers (`/@outlet`, `/channel/...`, `/user/...`), which the
- * frontend cannot embed, so a URL must also name a video: `watch?v=<id>`, `/embed/<id>`,
- * `/shorts/<id>`, `/live/<id>`, `/v/<id>`, or `youtu.be/<id>`.
+ * frontend cannot embed, so a URL must name a video in one of the forms above.
  */
 export function parseVideo(field: string): string {
   if (!field) return "";
@@ -148,19 +155,20 @@ export function parseVideo(field: string): string {
   return "";
 }
 
-export function isYouTubeVideoUrl(s: string): boolean {
-  let u: URL;
+/** The video id when `s` passes the rule above, else "". */
+export function youTubeVideoId(s: string): string {
+  const m = YOUTU_BE.exec(s) ?? YOUTUBE_PATH.exec(s) ?? YOUTUBE_WATCH.exec(s);
+  if (!m || m[1] === "videoseries") return "";
   try {
-    u = new URL(s);
+    new URL(s);
   } catch {
-    return false;
+    return "";
   }
-  if (u.protocol !== "https:" && u.protocol !== "http:") return false;
-  const host = u.hostname.toLowerCase();
-  if (!VIDEO_HOSTS.has(host)) return false;
-  if (host === "youtu.be") return new RegExp(`^/${VIDEO_ID}`).test(u.pathname);
-  if (!VIDEO_PATH.test(u.pathname)) return false;
-  return u.pathname !== "/watch" || new RegExp(`^${VIDEO_ID}`).test(u.searchParams.get("v") ?? "");
+  return m[1];
+}
+
+export function isYouTubeVideoUrl(s: string): boolean {
+  return youTubeVideoId(s) !== "";
 }
 
 /**

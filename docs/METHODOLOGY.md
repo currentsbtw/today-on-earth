@@ -27,7 +27,9 @@ country's centre is not where anything happened. The header tells you how many
 articles were left unplaced for this reason.
 
 Places are grouped into hexagonal cells about 100 km across, so "Paris" and its
-suburbs glow together.
+suburbs glow together. When an article's most specific place is a state or region
+("Texas"), it glows at that region's centre; that is less wrong than a country's
+centre, but it is still a centre, and the label tells you so.
 
 ## What the numbers mean
 
@@ -85,7 +87,8 @@ is a snapshot of the same rolling window at that time.
 ## Freshness
 
 A new snapshot is built every 15 minutes. The header shows the time of the one you
-are looking at, in UTC.
+are looking at, in UTC. Right after a restart the window is shorter than 24 hours and
+the header says so.
 
 ## Earthquakes
 

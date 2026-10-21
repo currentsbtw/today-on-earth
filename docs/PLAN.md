@@ -196,6 +196,14 @@ time-lapse clip pipeline (render/ + clip.yml) and a fresh review of the web chan
 Remaining from the overnight list: review fixes, a design polish pass, recapture
 og.jpg once a full 24h window exists, and the morning report.
 
+**Status ~06:30 UTC:** keepalive chain confirmed working (run 39555000270 was
+dispatched by the previous run's keepalive job, not by a person). Clip pipeline
+pushed (2f1d5eb) and run green in CI at 540x960: `clip-2026-10-21.mp4` + poster on
+the GitHub release tagged `clips`. Web review fixes pushed (6b6c7de). Ingest review
+found 8 items (keepalive stand-down logic, clip fallback trigger, video rule drift,
+baseline edge cases, rollback docs); fixes in progress. Design critique (two
+isolated assessments) in progress.
+
 ### Phase 3: Rich media and time
 - Embedded video where the platform allows embeds (YouTube etc.).
 - Time scrubber: replay the last 24 hours / 7 days.
