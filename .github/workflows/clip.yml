@@ -1,0 +1,75 @@
+name: Clip
+
+# Daily time-lapse of the last 24 hours: drives the live site's clip.html for every replay
+# frame in /data/history/index.json, encodes an H.264 mp4, and publishes it as an artifact
+# and on the rolling "clips" release. Runs after the 00:15 UTC snapshot.
+on:
+  schedule:
+    - cron: "20 0 * * *"
+  workflow_dispatch:
+    inputs:
+      w:
+        description: Frame width in pixels (even)
+        required: false
+        default: "1080"
+      h:
+        description: Frame height in pixels (even)
+        required: false
+        default: "1920"
+
+permissions:
+  contents: write # create/update the "clips" release
+
+concurrency:
+  group: clip
+  cancel-in-progress: false
+
+jobs:
+  clip:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SITE_URL: https://currentsbtw.github.io/today-on-earth
+      # Inputs go through env (not inline ${{ }} in the script); the renderer validates them.
+      CLIP_W: ${{ inputs.w || '1080' }}
+      CLIP_H: ${{ inputs.h || '1920' }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: render/package-lock.json
+
+      # ffmpeg is not on the ubuntu-24.04 runner image; Chrome is.
+      - name: Install ffmpeg
+        run: |
+          command -v ffmpeg || { sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends ffmpeg; }
+          ffmpeg -version | head -n 1
+
+      - name: Render clip
+        working-directory: render
+        run: |
+          npm ci
+          npm run clip -- --site "$SITE_URL" --out ../clip-out --w "$CLIP_W" --h "$CLIP_H" --fps 8 --hold 2
+          ls -l ../clip-out
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: clip
+          path: |
+            clip-out/clip-*.mp4
+            clip-out/poster.jpg
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Attach to the clips release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh release view clips >/dev/null 2>&1 ||
+            gh release create clips --title "Daily clips" --target "$GITHUB_SHA" \
+              --notes "Daily time-lapse clips of the Today On Earth map, one mp4 per day, plus poster.jpg of the latest. Updated by the Clip workflow."
+          gh release upload clips clip-out/clip-*.mp4 clip-out/poster.jpg --clobber

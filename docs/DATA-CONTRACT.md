@@ -46,8 +46,10 @@ So that a quiet place lighting up can show, each cell carries its own normal:
 - The ingest keeps a carried `baseline.json.gz` next to state: per UTC day, per cell,
   the number of placed articles first seen on that day; days older than 14 are
   dropped. Counting happens as records are first merged, so dedupe by URL holds.
-- The frontend may show relative heat (`n / max(b, floor)`) only when
-  `baselineDays` >= 3; until then it shows absolute heat and says so.
+- The frontend may show relative heat only when `baselineDays` >= 3; until then it
+  shows absolute heat. Relative weight = clamp(log2((n + 1) / (max(b, 3) + 1)) / 3,
+  0, 1). Cells without a live `b` (replay-only cells) use the absolute weight and
+  show no ratio.
 - The carried file records `since`, the UTC day of its first run; that day and any
   back-filled earlier days are partial and never count as complete. Baseline,
   state and history live in the same cache entry, so they are restored or lost

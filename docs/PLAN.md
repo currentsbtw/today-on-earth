@@ -186,6 +186,16 @@ Baseline (item 5) and video fields specified in the contract and in progress on 
 ingest side. The scheduled cron has still not fired on its own (only manual runs);
 new-repo schedules are known to lag by hours.
 
+**Status ~06:15 UTC:** pushed since the last note: stories panel + label dedupe
+(4cfd59f), about page + OG/Twitter metadata + YouTube embeds (54ee892), ingest
+baseline + video (ba5901f), relative heat + USGS quake layer + phone sheet +
+clip.html (9330c16), and a keepalive job (9d8a3e1) that dispatches the next
+snapshot itself while the cron stays silent (kill switch: repo var KEEPALIVE=false).
+Live site has all of it except what the next deploy carries. In progress: the daily
+time-lapse clip pipeline (render/ + clip.yml) and a fresh review of the web changes.
+Remaining from the overnight list: review fixes, a design polish pass, recapture
+og.jpg once a full 24h window exists, and the morning report.
+
 ### Phase 3: Rich media and time
 - Embedded video where the platform allows embeds (YouTube etc.).
 - Time scrubber: replay the last 24 hours / 7 days.
