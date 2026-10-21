@@ -509,8 +509,8 @@ one-bit globe mark, 8px dot grid, hairlines, stepped motion, one-frame inversion
 snapshot change, a pixel observer mascot. Fonts are self-hosted (140 KB, SIL OFL).
 Surfaces: map page (places column, tick-framed map, 96-bar replay field, log-style
 panel, Signals entries), about page, clip frames and cards. Follow-ups: map labels
-render small in the 1080x1920 clip (fixed pixel size); og.jpg to recapture in the new
-look; the amber heat is retired (not binding).
+render small in the 1080x1920 clip (fixed pixel size); the amber heat is retired (not
+binding). og.jpg recaptured from the live site in the new look on 2026-10-21 22:05 UTC.
 
 ## Phase 1 build decisions (2026-10-20)
 

@@ -64,6 +64,41 @@ typography:
     fontWeight: 400
     lineHeight: 1
     letterSpacing: "0.02em"
+  displayMid:
+    fontFamily: "Source Sans 3, system-ui, sans-serif"
+    fontSize: "clamp(28px, 5vw, 44px)"
+    fontWeight: 600
+    lineHeight: 1.1
+  titleArticle:
+    fontFamily: "Source Sans 3, system-ui, sans-serif"
+    fontSize: "14px"
+    fontWeight: 400
+    lineHeight: 1.35
+  titleCompact:
+    fontFamily: "Source Sans 3, system-ui, sans-serif"
+    fontSize: "13px"
+    fontWeight: 400
+    lineHeight: 1.25
+  placePhone:
+    fontFamily: "Source Sans 3, system-ui, sans-serif"
+    fontSize: "15px"
+    fontWeight: 400
+    lineHeight: 1.3
+  figureFoot:
+    fontFamily: "Azeret Mono, ui-monospace, monospace"
+    fontSize: "15px"
+    fontWeight: 500
+    lineHeight: 1
+  figureCount:
+    fontFamily: "Azeret Mono, ui-monospace, monospace"
+    fontSize: "12px"
+    fontWeight: 500
+    lineHeight: 1
+  index:
+    fontFamily: "Azeret Mono, ui-monospace, monospace"
+    fontSize: "9px"
+    fontWeight: 400
+    lineHeight: 1
 rounded:
   none: "0"
 spacing:
