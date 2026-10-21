@@ -19,6 +19,12 @@ export interface ArticleRecord {
   cellId: string;
   /** FullName of the primary location; "" when unplaced. */
   locationName: string;
+  /** Up to 6 most-mentioned GKG V2Persons, lowercase. */
+  persons: string[];
+  /** Up to 6 most-mentioned GKG V2Organizations, lowercase. */
+  orgs: string[];
+  /** Up to 6 most-mentioned GKG V2Themes outside the deny-list, lowercase. */
+  themes: string[];
 }
 
 /** `/data/heat.json` (docs/DATA-CONTRACT.md). */
@@ -65,5 +71,24 @@ export interface CellFile {
   topOutlets: [string, number][];
   topCountries: [string, number][];
   languages: [string, number][];
+  articles: CellArticle[];
+  stories: Story[];
+  /** Articles in the cell that belong to no story; sum(stories[].n) + unclustered == n. */
+  unclustered: number;
+}
+
+/** A group of a cell's articles about the same thing (docs/DATA-CONTRACT.md "Stories"). */
+export interface Story {
+  n: number;
+  o: number;
+  c: number;
+  l: number;
+  t: number;
+  first: string;
+  last: string;
+  headline: string;
+  headlineSource: string;
+  headlineLang: string;
+  entities: string[];
   articles: CellArticle[];
 }

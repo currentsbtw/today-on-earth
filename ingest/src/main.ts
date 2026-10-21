@@ -162,6 +162,8 @@ async function main(): Promise<number> {
   await writeFile(join(carryDir, "history.json.gz"), historyBytes);
 
   const t = snapshot.heat.totals;
+  const storyCount = snapshot.cells.reduce((sum, c) => sum + c.stories.length, 0);
+  log(`stories: ${storyCount} stories across ${snapshot.cells.length} cells, grouped in ${(snapshot.storiesMs / 1000).toFixed(2)}s`);
   log(
     `ingest: files fetched=${ok.length} missing=${missing.length} failed=${failed.length}; ` +
       `new records=${ok.reduce((s, r) => s + r.records.length, 0)}; ` +

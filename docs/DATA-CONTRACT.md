@@ -33,6 +33,22 @@ deployed site. In local dev the frontend serves `web/public/data/` at `/data/`.
 Short keys keep the file small. Target size: under 1.5 MB uncompressed for a 24h window.
 Cells are sorted by `n` descending. Cells with `n` < 2 may be dropped.
 
+### Baseline (added 2026-10-21)
+
+So that a quiet place lighting up can show, each cell carries its own normal:
+
+- top level: `"baselineDays": 5` — how many complete UTC days of per-cell counts
+  exist (0 until the first full day has passed; capped at 14).
+- per cell: `"b": 37.5` — the median of that cell's daily article counts over the
+  last up to 7 complete UTC days (1 decimal; 0 when `baselineDays` < 3 or the cell
+  had no history). A cell that never appeared before but has history days available
+  gets `b` = 0 (brand new).
+- The ingest keeps a carried `baseline.json.gz` next to state: per UTC day, per cell,
+  the number of placed articles first seen on that day; days older than 14 are
+  dropped. Counting happens as records are first merged, so dedupe by URL holds.
+- The frontend may show relative heat (`n / max(b, floor)`) only when
+  `baselineDays` >= 3; until then it shows absolute heat and says so.
+
 ## `/data/cells/<id>.json`  (one file per cell, fetched on click)
 
 ```jsonc
@@ -52,11 +68,17 @@ Cells are sorted by `n` descending. Cells with `n` < 2 may be dropped.
       "lang": "fr",                     // "en" when GDELT gives no translation info
       "time": "2026-10-20T18:45:00Z",   // GKG DATE
       "tone": -3.4,
-      "image": "https://…"              // GKG SharingImage, optional
+      "image": "https://…",             // GKG SharingImage, "" when none
+      "video": "https://www.youtube.com/watch?v=…"  // first YouTube URL from GKG SocialVideoEmbeds, "" when none (added 2026-10-21)
     }
-  ]
+  ],
+  "videos": 7                           // number of the cell's articles (whole window) that carry a video (added 2026-10-21)
 }
 ```
+
+`video` is only ever a youtube.com or youtu.be URL as GDELT recorded it; other hosts
+are dropped. The frontend derives the video id itself and embeds via
+youtube-nocookie.com, click-to-load, never autoplay.
 
 `articles` is the newest 50 in the cell, newest first, de-duplicated by URL. Pick a
 spread of outlets: no outlet contributes more than 5 of the 50 unless the cell has
@@ -92,6 +114,14 @@ Rules:
 - The flat `articles` list stays as it is (newest 50 across the whole cell).
 - The grouping must be stable run to run for the same inputs (deterministic order of
   processing: by time, then URL).
+- Implementation notes (ingest, 2026-10-21): generic GDELT themes (the very broad
+  families plus ~30 themes that tag >= 2% of all articles), wire services as
+  organisations, and "united states" as an organisation are ignored for grouping. In
+  cells with >= 50 articles, any entity present on more than 15% of the cell's
+  articles is ignored for grouping too (otherwise Washington is one blob). Such
+  entities can still appear in a story's displayed `entities`. Measured: 24h, 3,618
+  cells, 5,704 stories in under 5 s; 60-70% of articles in busy cells stay
+  unclustered, partly because of the 12-story cap.
 
 ## `/data/history/index.json`  (small; fetched on page load so the scrubber can show)
 

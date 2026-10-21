@@ -170,6 +170,13 @@ than a list of headlines. Both can be done static-first, still $0.
 
 Order: 1 -> 3 -> 2 -> 4 -> 5. 1 and 3 are a few days; 2 is the hard one.
 
+**Status 2026-10-21 ~05:40 UTC:** items 1 and 3 are built, reviewed (8 findings, all
+fixed) and pushed (commits e45d14b, 2ea3053). State and history now travel through
+the Actions cache instead of Pages (a 24h state is ~37 MB; fetching it 96×/day from
+Pages would have blown the 100 GB/month soft limit). First cache-seeded run passed at
+05:38 UTC. Repo variable `ALLOW_COLD_START` gates cold starts: true for seeding,
+to be set false once the warm carry is proven. Items 2 and 4 are in progress.
+
 ### Phase 3: Rich media and time
 - Embedded video where the platform allows embeds (YouTube etc.).
 - Time scrubber: replay the last 24 hours / 7 days.

@@ -103,13 +103,81 @@ const files = existsSync(cellsDir) ? readdirSync(cellsDir).filter((f) => f.endsW
 for (const id of seenIds) if (!files.includes(`${id}.json`)) err("cells", `missing cells/${id}.json`);
 for (const f of files) if (!seenIds.has(f.slice(0, -5))) err("cells", `cells/${f} is not listed in heat.json`);
 
+/** One article object as in a cell file's `articles` (also used inside stories). */
+function checkArticle(aw: string, a: Record<string, unknown>) {
+  exactKeys(aw, a, ["title", "url", "source", "country", "lang", "time"], ["tone", "image"]);
+  for (const k of ["title", "url", "source", "country", "lang", "time"]) str(`${aw}.${k}`, a[k]);
+  if ("image" in a) str(`${aw}.image`, a.image);
+  if ("tone" in a) num(`${aw}.tone`, a.tone, 1);
+  if (typeof a.title === "string" && Array.from(a.title).length > 160) err(`${aw}.title`, "longer than 160 chars");
+  if (typeof a.url !== "string" || !/^https?:\/\//.test(a.url)) err(`${aw}.url`, "not an http(s) URL");
+  if (typeof a.country === "string" && a.country !== "" && !/^[A-Z]{2}$/.test(a.country)) err(`${aw}.country`, `not ISO alpha-2: ${a.country}`);
+  if (typeof a.time !== "string" || !ISO_UTC.test(a.time)) err(`${aw}.time`, "not ISO 8601 UTC with Z");
+  if (typeof a.image === "string" && a.image !== "" && !/^https?:\/\//.test(a.image)) err(`${aw}.image`, "not an http(s) URL");
+}
+
+/** `stories` and `unclustered` (contract section "Stories"). */
+let storiesChecked = 0;
+function checkStories(w: string, cell: Record<string, unknown>) {
+  int(`${w}.unclustered`, cell.unclustered);
+  const stories = Array.isArray(cell.stories) ? (cell.stories as unknown[]) : (err(`${w}.stories`, "not an array"), []);
+  if (stories.length > 12) err(`${w}.stories`, `${stories.length} stories > 12`);
+  let sum = 0;
+  const shownUrls = new Set<string>();
+  stories.forEach((s, i) => {
+    const sw = `${w}.stories[${i}]`;
+    if (!isObj(s)) return err(sw, "not an object");
+    storiesChecked++;
+    exactKeys(sw, s, ["n", "o", "c", "l", "t", "first", "last", "headline", "headlineSource", "headlineLang", "entities", "articles"]);
+    int(`${sw}.n`, s.n, 3);
+    int(`${sw}.o`, s.o);
+    int(`${sw}.c`, s.c);
+    int(`${sw}.l`, s.l);
+    num(`${sw}.t`, s.t, 1);
+    if (typeof s.n === "number") sum += s.n;
+    if (typeof s.o === "number" && typeof s.n === "number" && s.o > s.n) err(sw, "o > n");
+    for (const k of ["first", "last"]) if (typeof s[k] !== "string" || !ISO_UTC.test(s[k] as string)) err(`${sw}.${k}`, "not ISO 8601 UTC with Z");
+    if (typeof s.first === "string" && typeof s.last === "string" && s.first > s.last) err(sw, "first > last");
+    for (const k of ["headline", "headlineSource", "headlineLang"]) str(`${sw}.${k}`, s[k]);
+    if (typeof s.headline === "string" && Array.from(s.headline).length > 160) err(`${sw}.headline`, "longer than 160 chars");
+    const ents = Array.isArray(s.entities) ? (s.entities as unknown[]) : (err(`${sw}.entities`, "not an array"), []);
+    if (ents.length > 5) err(`${sw}.entities`, `${ents.length} > 5`);
+    for (const e of ents) if (typeof e !== "string" || e === "" || e !== e.toLowerCase()) err(`${sw}.entities`, `not a lowercase string: ${JSON.stringify(e)}`);
+    const arts = Array.isArray(s.articles) ? (s.articles as unknown[]) : (err(`${sw}.articles`, "not an array"), []);
+    if (arts.length > 6) err(`${sw}.articles`, `${arts.length} > 6`);
+    if (arts.length === 0) err(`${sw}.articles`, "empty");
+    if (typeof s.n === "number" && arts.length > s.n) err(`${sw}.articles`, "more articles than n");
+    const perOutlet = new Map<string, number>();
+    arts.forEach((a, j) => {
+      const aw = `${sw}.articles[${j}]`;
+      if (!isObj(a)) return err(aw, "not an object");
+      checkArticle(aw, a);
+      if (shownUrls.has(a.url as string)) err(`${aw}.url`, "URL shown more than once across the stories");
+      shownUrls.add(a.url as string);
+      perOutlet.set(a.source as string, (perOutlet.get(a.source as string) ?? 0) + 1);
+      const prev = arts[j - 1] as Record<string, string> | undefined;
+      if (prev && typeof a.time === "string" && prev.time < a.time) err(aw, "articles not newest first");
+      if (typeof a.time === "string" && typeof s.first === "string" && typeof s.last === "string" && (a.time < s.first || a.time > s.last)) {
+        err(aw, "time outside the story's first..last");
+      }
+    });
+    for (const [src, k] of perOutlet) if (k > 2) err(`${sw}.articles`, `outlet ${src} contributes ${k} > 2`);
+    const prev = stories[i - 1] as Record<string, number> | undefined;
+    if (prev && typeof s.n === "number" && prev.n < s.n) err(sw, "stories not sorted by n desc");
+  });
+  if (typeof cell.n === "number" && typeof cell.unclustered === "number" && sum + cell.unclustered !== cell.n) {
+    err(`${w}.unclustered`, `sum(stories.n)=${sum} + unclustered=${cell.unclustered} != n=${cell.n}`);
+  }
+}
+
 const heatById = new Map(cells.filter(isObj).map((c) => [c.id as string, c]));
 let articlesChecked = 0;
 for (const f of files) {
   const id = f.slice(0, -5);
   const w = `cells/${f}`;
   const cell = JSON.parse(readFileSync(join(cellsDir, f), "utf8")) as Record<string, unknown>;
-  exactKeys(w, cell, ["id", "name", "n", "o", "c", "l", "t", "topOutlets", "topCountries", "languages", "articles"]);
+  exactKeys(w, cell, ["id", "name", "n", "o", "c", "l", "t", "topOutlets", "topCountries", "languages", "articles", "stories", "unclustered"]);
+  checkStories(w, cell);
   if (cell.id !== id) err(`${w}.id`, `does not match file name`);
   str(`${w}.name`, cell.name);
   int(`${w}.n`, cell.n, 1);
@@ -130,15 +198,7 @@ for (const f of files) {
   arts.forEach((a, i) => {
     const aw = `${w}.articles[${i}]`;
     if (!isObj(a)) return err(aw, "not an object");
-    exactKeys(aw, a, ["title", "url", "source", "country", "lang", "time"], ["tone", "image"]);
-    for (const k of ["title", "url", "source", "country", "lang", "time"]) str(`${aw}.${k}`, a[k]);
-    if ("image" in a) str(`${aw}.image`, a.image);
-    if ("tone" in a) num(`${aw}.tone`, a.tone, 1);
-    if (typeof a.title === "string" && Array.from(a.title).length > 160) err(`${aw}.title`, "longer than 160 chars");
-    if (typeof a.url !== "string" || !/^https?:\/\//.test(a.url)) err(`${aw}.url`, "not an http(s) URL");
-    if (typeof a.country === "string" && a.country !== "" && !/^[A-Z]{2}$/.test(a.country)) err(`${aw}.country`, `not ISO alpha-2: ${a.country}`);
-    if (typeof a.time !== "string" || !ISO_UTC.test(a.time)) err(`${aw}.time`, "not ISO 8601 UTC with Z");
-    if (typeof a.image === "string" && a.image !== "" && !/^https?:\/\//.test(a.image)) err(`${aw}.image`, "not an http(s) URL");
+    checkArticle(aw, a);
     if (urls.has(a.url as string)) err(`${aw}.url`, "duplicate URL in cell");
     urls.add(a.url as string);
     perOutlet.set(a.source as string, (perOutlet.get(a.source as string) ?? 0) + 1);
@@ -241,7 +301,7 @@ if (!existsSync(indexPath)) {
 
 console.log(`checked ${dir}`);
 console.log(`  heat.json: ${bytes} bytes, ${cells.length} cells`);
-console.log(`  cell files: ${files.length}, articles checked: ${articlesChecked}`);
+console.log(`  cell files: ${files.length}, articles checked: ${articlesChecked}, stories checked: ${storiesChecked}`);
 console.log(`  history: ${frameCount} frames, largest frame ${largestFrame} bytes`);
 for (const w of warnings) console.log(`  WARN ${w}`);
 if (errors.length) {

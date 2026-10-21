@@ -25,6 +25,9 @@ function rec(p: Partial<ArticleRecord> = {}): ArticleRecord {
     lon: 2.3522,
     cellId: PARIS,
     locationName: "Paris, France",
+    persons: [],
+    orgs: [],
+    themes: [],
     ...p,
   };
 }

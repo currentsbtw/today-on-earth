@@ -1,5 +1,6 @@
 import { latLngToCell } from "h3-js";
 import type { CountryLookup } from "./domains.ts";
+import { parseNames, parseOrgs, parseThemes } from "./entities.ts";
 import { langFromTranslationInfo } from "./lang.ts";
 import type { ArticleRecord } from "./types.ts";
 
@@ -12,7 +13,10 @@ const COL = {
   SOURCE_COLLECTION: 2,
   SOURCE_COMMON_NAME: 3,
   DOCUMENT_IDENTIFIER: 4,
+  V2_THEMES: 8,
   V2_LOCATIONS: 10,
+  V2_PERSONS: 12,
+  V2_ORGANIZATIONS: 14,
   V2_TONE: 15,
   SHARING_IMAGE: 18,
   TRANSLATION_INFO: 25,
@@ -162,6 +166,9 @@ export function parseGkgLine(line: string, countryOf: CountryLookup): ParseResul
       lon: placed?.lon ?? 0,
       cellId: placed ? latLngToCell(placed.lat, placed.lon, H3_RES) : "",
       locationName: detach(placed?.name ?? ""),
+      persons: parseNames(f[COL.V2_PERSONS]).map(detach),
+      orgs: parseOrgs(f[COL.V2_ORGANIZATIONS]).map(detach),
+      themes: parseThemes(f[COL.V2_THEMES]).map(detach),
     },
   };
 }
