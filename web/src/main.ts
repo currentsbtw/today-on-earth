@@ -133,7 +133,7 @@ function renderCol() {
       button.tabIndex = -1;
       button.title = r.name;
       button.setAttribute('aria-label', `${r.name}, ${r.counts}`);
-      const cells = [shortName(r.name) || r.name, count(r.n), r.o === undefined ? dash : count(r.o), r.c === undefined ? dash : count(r.c)];
+      const cells = [shortName(r.name) || r.name, String(r.n), r.o === undefined ? dash : String(r.o), r.c === undefined ? dash : String(r.c)];
       cells.forEach((text, i) => {
         const span = document.createElement('span');
         span.className = i ? 'rank-n' : 'rank-name';

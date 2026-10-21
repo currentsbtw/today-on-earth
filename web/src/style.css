@@ -294,7 +294,7 @@ button {
 .rank-head,
 .rank-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 30px 28px 22px;
+  grid-template-columns: minmax(0, 1fr) 36px 36px 26px;
   column-gap: 4px;
 }
 
