@@ -1,6 +1,6 @@
 # Today On Earth — Plan
 
-Last updated: 2026-10-20
+Last updated: 2026-10-21
 
 ## The idea
 
@@ -37,6 +37,21 @@ This is a stronger product claim than "unbiased" and it survives scrutiny.
 | Budget | $0 now; architecture must stay free until there is revenue |
 | Backend | A continuously running ingest job is acceptable |
 | Media | Headlines, snippets, source links, embeddable video only. No rehosting of broadcaster clips or paywalled text (licensing). |
+
+## Decisions from the 2026-10-21 review
+
+- **No free-text comments, ever.** They would become the loudest editorial voice on
+  the map, draw brigading and state-run accounts, and need accounts plus paid
+  moderation.
+- **Outlets' own YouTube clips per cell stay** (shipped), ordered by recency and
+  outlet variety, never by views.
+- **"Submit a missing source" is approved in principle but deferred** until there is
+  an audience. Shape: reader-submitted links behind a Cloudflare Worker + Turnstile;
+  article-level auto-accept labelled "reader-submitted" that never changes heat;
+  outlet-level human review against published criteria, with a public decision log.
+  It would be the project's first server-side piece and ongoing moderation work.
+- **Native apps removed from the roadmap.** The web works on phones.
+- **Data/API sales are last, not first** (see Monetization).
 
 ## Data sources (all free)
 
@@ -188,7 +203,10 @@ recapture (needs a full window), a second full critique round (one bounded
 confirmation was done on the live site instead), Phase 4 accounts (out of bounds).
 Deferred follow-ups: story bleed and the 12-story cap, "City Of X" prefixes inside a
 name part, pause-others when two videos play (done), tooltip not announced to screen
-readers, land outline before first paint, native admin names ("Moskva").
+readers, land outline before first paint, native admin names ("Moskva"); phone: on an
+emulated 375x812 viewport none of three loads of the live site painted heat within
+10 s (two still said "loading", header totals shown, no console errors); unverified
+on a real phone, check on the iPhone before the first clip goes out.
 
 ## Phase 2: Time and stories (re-scoped 2026-10-21 for "impress the first visitor")
 
@@ -251,6 +269,53 @@ found 8 items (keepalive stand-down logic, clip fallback trigger, video rule dri
 baseline edge cases, rollback docs); fixes in progress. Design critique (two
 isolated assessments) in progress.
 
+## Phase 2b: Data credibility (from the 2026-10-21 review)
+
+Each item is something a skeptical journalist would screenshot. Current fact first,
+then the fix.
+
+- [ ] **Archive every processed snapshot from now on.** Today `history.ts` keeps 24 h
+      of replay frames and `baseline.ts` keeps 14 days of per-cell daily counts;
+      nothing older survives. Fix: push each run's heat frame (and ideally the cell
+      detail files) to durable storage (a GitHub release per month, or R2 when
+      needed) so a future history, Pro or data product has data from launch day.
+- [ ] **Collapse reprints.** Today `aggregate.ts` dedupes only by identical URL, so one
+      wire story on 300 sites counts 300 times; the per-outlet cap of 5 applies only
+      to the clicked-cell list, not to heat. The review saw a California story at
+      "61 outlets, 1 country" with the same headline repeated. Fix: collapse articles
+      with the same normalised headline within a cell (count distinct outlets per
+      reprint group), show both numbers (articles and distinct outlets), and keep the
+      methodology page's "brightness = article count" claim honest by stating exactly
+      what is collapsed. Switching heat wholesale to distinct outlets is a bigger
+      promise change and needs the methodology page rewritten with it; do reprint
+      collapse first.
+- [ ] **International attention per cell:** the number of countries other than the
+      place's own whose outlets covered it. Add to cells and the heat file. Nobody
+      else publishes this on a map, and it is the basis of the "Heard across the
+      planet" broadcast slot.
+- [ ] **Refresh the outlet-to-country list.** Today `domains.ts` vendors GDELT's May
+      2018 list; outlets launched since show no country, and some are wrong (storm.mg,
+      a Taiwanese outlet, is labelled Madagascar from its domain). Fix: fetch a newer
+      GDELT outlet list if one exists, else supplement with a maintained open source,
+      and label unknowns.
+- [ ] **Aggregator networks.** asiabulletin.com (labelled CN), japanherald.com (JP) and
+      israelherald.com (IL) appear to be one network and inflate country counts. Fix:
+      detect and collapse known networks (a small maintained list).
+- [ ] **State-level placement.** Articles naming only "California" or "Texas" glow at
+      the state's centre. Consider leaving region-only articles unplaced like
+      country-only ones, or marking them distinctly.
+- [ ] **Story grouping: tighten.** Already a follow-up (story bleed, the 12-story cap).
+      The review saw 888 of 1,420 Washington articles unclustered and an unrelated
+      pardon article inside the Trump whistleblower story.
+- [ ] **Translate link** for non-English headlines.
+
+Already shipped from the review's list: methodology page ("How it works", 54ee892);
+keepalive against GitHub's scheduler (9d8a3e1); panel title place-name cleanup
+(0d3458c); raw entity tags demoted to people/organisations first, themes only as
+fallback (77c88a7); phone layout fills portrait height (map.ts); first-visit hint
+explaining the glow (9dc4749); earthquake layer (built, off by default; the review's
+"defer" is moot).
+
 ### Phase 3: Rich media and time
 - Embedded video where the platform allows embeds (YouTube etc.).
 - Time scrubber: replay the last 24 hours / 7 days.
@@ -258,50 +323,125 @@ isolated assessments) in progress.
 
 ### Phase 4: Product layer
 - Accounts, saved regions, alerts.
-- Mobile-friendly layout, then possibly native apps.
+- Mobile-friendly layout (shipped as the phone sheet; native apps removed 2026-10-21).
 - Shareable permalinks to an event or a region at a moment in time.
 
 ## Monetization (discussed 2026-10-21, nothing built)
 
+Reordered 2026-10-21 after the methodology & business review (Claude Doc, reviewed
+commit 8bfaa70).
+
 Ground rule: the free map stays complete, and nothing paid ever changes what glows.
 Revenue has to come from convenience, depth, and distribution, not from attention
-steering. Every option below also needs an audience first; the TikTok channel is the
-distribution engine that makes the rest possible.
+steering.
 
-Ranked by fit and by how little traffic each needs:
+Why audience first, data last: the raw input is free to everyone, GDELT Cloud and
+World Monitor already sell processed GDELT, and the hex snapshot alone is rebuildable
+in a weekend. Defensibility comes only from an archive, cleaner data, and a measure of
+our own (Phase 2b), and all three take months.
 
-1. **Data / API for organisations** (newsrooms, researchers, risk and intel teams,
-   NGOs). GDELT is free, but the cleaned, binned, de-duplicated, outlet-labelled
-   hourly snapshots are the product. Highest revenue per customer, smallest audience
-   needed. Validate early: pitch 5 people before building anything. Confirm GDELT's
-   attribution/commercial terms before selling derived data.
-2. **Pro subscription** for individuals: region alerts, 7 to 30 days of history with
-   the time scrubber, saved views, permalinks. Needs Phase 2 (DB) and Phase 4
-   (accounts). Realistic price band: a few dollars a month.
-3. **Embeddable widget** licensed to publishers and newsletters, preset to their
-   region, with attribution back to the site.
-4. **One sponsor slot**, clearly labelled, in the header or panel footer, never on
+Ranked, audience first:
+
+1. **Daily broadcast + clips** on TikTok, YouTube Shorts and Instagram Reels
+   (marketing, not a revenue line), and a **daily email newsletter** (owned audience).
+   See Daily broadcast and Clips and distribution below.
+2. **Supporters / membership.** A paid newsletter tier or supporter membership gets
+   most of the revenue without logins.
+3. **One sponsor slot**, clearly labelled, in the header or panel footer, never on
    the map. Flat weekly or monthly fee once traffic justifies it.
-5. **Supporters / donations** as a bridge while revenue is zero. "Built in public"
-   content on TikTok feeds this.
-6. **TikTok creator payouts** on the time-lapse clips: small, but nonzero, and the
-   clips are the funnel for everything above.
+4. **Embeddable widget** licensed to publishers and newsletters, preset to their
+   region, with attribution back to the site.
+5. **Pro** for individuals: history with the time scrubber, region alerts, saved
+   views. Only once the archive (Phase 2b) and accounts (Phase 4) exist. Realistic
+   price band: a few dollars a month.
+6. **Data / API for organisations** (newsrooms, researchers, risk and intel teams,
+   NGOs), only after 6-12 months of archive and a measure that is ours (international
+   attention, coverage gaps over time). Keep the "pitch 5 people before building
+   anything" test, but as an early validation step, not as the first product.
+
+Competitors (from the review):
+
+| Competitor | What it is | Price |
+|---|---|---|
+| GDELT GEO API and live map | GDELT's own map of locations in the news | Free |
+| GDELT Cloud | Processed GDELT products: events, stories, entities, alerts | Paid plans; resale needs a license |
+| World Monitor | Open-source global intelligence dashboard (GDELT conflict data, shipping, flights, markets) | Free; Pro from $39.99/mo; API from $99.99/mo |
+| Liveuamap (per World Monitor's comparison) | Conflict and security news on a map | Free tier; API $150/mo; enterprise from $1,000/mo |
+| Dataminr, Recorded Future | Enterprise real-time alerting and risk intelligence | Enterprise, undisclosed |
+| Ground News | Consumer app comparing outlets' coverage and bias per story | Subscription |
+
+World Monitor's prices were checked on 5 September 2026 and may have changed. Confirm
+GDELT's commercial and attribution terms before selling anything (not legal advice).
 
 Not doing, ever: sponsored hotspots, paid outlet placement, selling user data,
 display ad networks (they pay little for news traffic and wreck the instrument feel),
 narration that editorialises.
 
-Order of operations: grow the audience with daily clips -> pitch the data product
-to a handful of organisations -> build Pro once Phase 2 history exists.
+Order of operations: grow the audience (broadcast, clips, newsletter) -> supporters
+and one sponsor -> pitch 5 organisations to test the data assumption -> Pro once
+archive + accounts exist -> data/API last.
 
-## TikTok channel (idea logged 2026-10-20, not yet planned)
+Open question: the monthly income that counts as "a living", which sets the 3- and
+6-month checkpoint targets (followers, subscribers, returning visitors).
 
-The user has a TikTok account and wants to post news coverage there. Possible shape:
-a daily or hourly time-lapse of the map ("Today On Earth, 20 October") as a short
-clip, with hotspots called out. This doubles as the platform's marketing funnel. Needs:
-a headless render of the map to video, and a decision on whether clips have narration
-(which would be a voice, see the promise above) or stay purely visual with on-screen
-counts. To be planned after Phase 1.
+## Daily broadcast (decided 2026-10-21, not built)
+
+A headlines block framed as a distant spectator's broadcast, built from six fixed
+slots filled by published rules. Each slot shows a real outlet's own headline plus the
+coverage numbers. Nothing is written or summarised by us or an AI; the voice lives
+only in the frame and the numbers.
+
+| Slot | Rule | Guardrail |
+|---|---|---|
+| Loudest signal | The story with the most articles in the last 24 hours | Count distinct outlets, so reprints don't win |
+| Heard across the planet | The story covered by the most different countries | Countries other than the story's own |
+| Rising | The cell most above its own normal level | Needs 7+ days of baseline; minimum article count |
+| Brightest | The most positive-toned story with real coverage | Minimum outlets and countries, so press releases and puff pieces don't win |
+| Ordinary life | The most-covered story outside conflict, politics and disaster themes | Theme lists published; sports, science, festivals, weather and food qualify |
+| Faint signal | A story from a usually quiet region that broke through | Region in the lowest coverage band by baseline; minimum outlets |
+
+Example line: "Signal detected over Nairobi: 214 reports from 61 transmitters in 19
+languages", with the outlet's headline beneath and a link into the cell.
+
+Slot choice and the theme lists are a framing decision, made once and published on
+the methodology page. The ordinary and bright slots exist because news skews toward
+conflict. Keep it non-sentimental; no "good news" label.
+
+The broadcast is also the newsletter body and the clip script.
+
+Depends on: story grouping (Phase 2 item 2, tightened in Phase 2b) and the 7-day
+baseline (Phase 2 item 5).
+
+- [ ] Build the six slots from the stories data
+- [ ] Publish the slot rules and theme lists on the methodology page
+- [ ] Add the broadcast to the daily clip and the newsletter
+
+## Clips and distribution (idea 2026-10-20, re-planned 2026-10-21)
+
+The clip pipeline exists: `render/` + `clip.yml` render a 1080x1920 daily mp4 to the
+GitHub release `clips`. What remains:
+
+- [ ] **Clip v2.** The portrait layout reserves ~25% top and ~20% bottom for text, so
+      the 2:1 world sits as a short band. Fill the frame with fly-to zooms and
+      per-signal callouts driven by the broadcast slots.
+- [ ] **Captions first.** Burned-in captions, no synthetic narration for now:
+      platform rules on labelling AI voices are still moving, and captions carry the
+      numbers on their own. Revisit narration (Piper, numbers and outlet headlines
+      only) later.
+- [ ] **Uploads.** YouTube Shorts via the Data API (100/day quota); Instagram Reels
+      via the Graph API from a public video URL; TikTok manual until the Content
+      Posting API audit passes. A preview-and-approve step for the first months.
+- [ ] **Rights rules for clips.** No outlet footage or stills. No stock footage for
+      specific stories. Only our own map render, headline text with outlet credit,
+      and public-domain or openly licensed imagery (NASA, FEMA/NOAA, Sentinel with
+      attribution, Wikimedia Commons per-image), with a quick rights check before any
+      third-party image is used.
+- [ ] **Daily email newsletter** carrying the broadcast. Pick a provider with a free
+      tier.
+- [ ] **Name/domain.** Trademark check and domain purchase before the audience grows.
+- [ ] **Stale-map alert** so a GDELT or scheduler failure is known within an hour.
+- [ ] **Analytics and checkpoints.** Free, privacy-friendly analytics; checkpoints at
+      3 and 6 months.
 
 ## Phase 1 build decisions (2026-10-20)
 
@@ -354,9 +494,20 @@ Follow-ups noticed during the build (not blockers):
 - Whether to add the Events feed as a second heat weight (actor/event based) once
   phase 1 shows how GKG-only heat behaves.
 - Cell size for the heatmap: H3 resolution 3-4 at world zoom, finer when zoomed.
-- How to weight "hot": raw article count favors big-media regions. Consider count
-  relative to a 30-day baseline for that cell so a quiet region lighting up shows.
+- Heat weighting: the vs. normal mode (per-cell 7-day median) ships by itself once 3
+  full days exist (earliest 2026-10-24); reprint collapse and international attention
+  are in Phase 2b. Whether heat should ever move from article count to distinct
+  outlets stays open.
+- The monthly income that counts as a living (sets checkpoint targets).
 
 ## Ideas parking lot
 
 (Add any floated ideas here during sessions so nothing is lost.)
+
+- Day/night terminator sweeping across the map in the clip, with news lighting up
+  behind the sun.
+- A monthly coverage-gap report ("which places did the world ignore in October?") as
+  press material and a data-buyer pitch.
+- Satellite imagery (NASA/Sentinel) orbit-to-ground zooms in clips for disasters.
+- "Expected vs. actual coverage" per cell using the baseline, to distinguish quiet
+  from uncovered.
