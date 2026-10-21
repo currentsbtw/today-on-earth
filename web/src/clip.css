@@ -72,3 +72,127 @@ body {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
+
+/* Cards (?signal= and ?end=1): text kept between --safe-top and --safe-bottom, the strips a
+   9:16 short's platform UI covers. The wordmark and date keep the frames' look. */
+[hidden] {
+  display: none !important;
+}
+
+.clip--card .clip-top {
+  top: var(--safe-top);
+  height: auto;
+  justify-content: flex-start;
+  z-index: 2;
+}
+
+.clip-scrim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.clip-scrim-top {
+  top: 0;
+  height: calc(var(--top-band) + var(--u) * 6);
+  background: linear-gradient(to bottom, rgb(5 6 8 / 0.92) 0%, rgb(5 6 8 / 0.85) 70%, rgb(5 6 8 / 0) 100%);
+}
+
+.clip-scrim-bottom {
+  bottom: 0;
+  background: linear-gradient(to bottom, rgb(5 6 8 / 0) 0%, rgb(5 6 8 / 0.86) calc(var(--u) * 12), rgb(5 6 8 / 0.94) 100%);
+}
+
+/* Signal card: label, the fixed sentence (the lead), then the outlet's own headline. Left
+   and right insets differ in portrait to stay clear of the platform's side buttons. */
+.clip-card {
+  --fit: 1;
+  position: absolute;
+  bottom: var(--safe-bottom);
+  left: calc(var(--u) * 7);
+  right: calc(var(--u) * 7);
+  max-width: calc(var(--u) * 130);
+  z-index: 2;
+}
+
+.clip--portrait .clip-card {
+  right: calc(var(--u) * 15);
+}
+
+.clip-slot {
+  margin: 0 0 calc(var(--u) * 2);
+  color: var(--heat);
+  font-size: calc(var(--u) * 2.5);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.clip-line {
+  margin: 0;
+  font-size: calc(var(--u) * 5.6 * var(--fit));
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.005em;
+  font-variant-numeric: tabular-nums;
+  text-wrap: pretty;
+  overflow-wrap: anywhere;
+}
+
+.clip-quote {
+  margin: calc(var(--u) * 4.4 * var(--fit)) 0 0;
+  padding-left: calc(var(--u) * 3);
+  border-left: calc(var(--u) * 0.5) solid var(--heat);
+}
+
+.clip-quote blockquote {
+  margin: 0;
+}
+
+.clip-headline {
+  margin: 0;
+  font-size: calc(var(--u) * 3.6 * var(--fit));
+  line-height: 1.28;
+  color: var(--text);
+  text-wrap: pretty;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  overflow: hidden;
+}
+
+.clip-outlet {
+  margin-top: calc(var(--u) * 1.6);
+  color: var(--muted);
+  font-size: calc(var(--u) * 2.5);
+}
+
+/* End card: the counts and the site address under the world, above the bottom strip. */
+.clip-end {
+  position: absolute;
+  left: calc(var(--u) * 5);
+  right: calc(var(--u) * 5);
+  bottom: var(--safe-bottom);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--u) * 2.4);
+  text-align: center;
+  pointer-events: none;
+}
+
+.clip-end .clip-counts {
+  position: static;
+  height: auto;
+}
+
+.clip-cta {
+  margin: 0;
+  color: var(--heat);
+  font-size: calc(var(--u) * 3.8);
+  font-weight: 600;
+  white-space: nowrap;
+}

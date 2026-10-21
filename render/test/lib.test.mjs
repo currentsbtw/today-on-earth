@@ -1,16 +1,35 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { captureFrames, clipDate, ffmpegArgs, frameName, frameUrl, MAX_BAD_SHARE, maxCellN, parseArgs, stampOf } from "../src/lib.mjs";
+import {
+  availableSlots,
+  captureCards,
+  cardMoves,
+  captureFrames,
+  clipDate,
+  endUrl,
+  ffmpegArgs,
+  frameName,
+  frameUrl,
+  MAX_BAD_SHARE,
+  maxCellN,
+  parseArgs,
+  planCards,
+  signalUrl,
+  stampOf,
+} from "../src/lib.mjs";
 
 test("parseArgs: defaults, platform browser channel, validation", () => {
   const o = parseArgs(["--site", "https://currentsbtw.github.io/today-on-earth/", "--out", "out"], "linux");
-  assert.deepEqual(o, { site: "https://currentsbtw.github.io/today-on-earth", out: "out", w: 1080, h: 1920, fps: 8, hold: 2, channel: "chrome", page: "clip" });
+  assert.deepEqual(o, { site: "https://currentsbtw.github.io/today-on-earth", out: "out", w: 1080, h: 1920, fps: 8, hold: 2, card: 3, end: 3, channel: "chrome", page: "clip" });
   assert.equal(parseArgs(["--site=http://localhost:5173", "--out=o", "--w", "1920", "--h", "1080"], "win32").channel, "msedge");
   assert.throws(() => parseArgs(["--out", "o"]), /--site/);
   assert.throws(() => parseArgs(["--site", "ftp://x", "--out", "o"]), /http/);
   assert.throws(() => parseArgs(["--site", "http://x", "--out", "o", "--w", "1081"]), /even/);
   assert.throws(() => parseArgs(["--site", "http://x", "--out", "o", "--fps", "0"]), /fps/);
   assert.throws(() => parseArgs(["--site", "http://x", "--out", "o", "--bogus", "1"]), /unknown/);
+  const cards = parseArgs(["--site", "http://x", "--out", "o", "--card", "1.5", "--end", "0", "--hold", "0"], "linux");
+  assert.deepEqual([cards.card, cards.end, cards.hold], [1.5, 0, 0]);
+  assert.throws(() => parseArgs(["--site", "http://x", "--out", "o", "--card", "-1"]), /card/);
 });
 
 test("frame URLs: clip.html with t, w, h; index.html stand-in uses the permalink hash", () => {
@@ -81,4 +100,69 @@ test("captureFrames: retry once, repeat the previous frame for a bad one, skip a
   assert.deepEqual(two.result, { written: 3, bad: 2, lastGood: "c" });
   assert.deepEqual(two.files, ["b", "c", "c"]);
   assert.equal(MAX_BAD_SHARE, 0.1);
+});
+
+test("card URLs and filled slots from broadcast.json", () => {
+  const o = parseArgs(["--site", "https://example.test/toe", "--out", "o"], "linux");
+  assert.equal(signalUrl(o, "loudest", 1401), "https://example.test/toe/clip.html?signal=loudest&w=1080&h=1920&max=1401");
+  assert.equal(endUrl(o, 1401), "https://example.test/toe/clip.html?end=1&w=1080&h=1920&max=1401");
+  assert.equal(endUrl(o), "https://example.test/toe/clip.html?end=1&w=1080&h=1920");
+  const broadcast = { slots: [{ id: "loudest", available: true }, { id: "planet", available: false }, { id: "rising", available: true }, { id: "../x", available: true }, null] };
+  assert.deepEqual(availableSlots(broadcast), ["loudest", "rising"]);
+  assert.deepEqual(availableSlots({}), []);
+  assert.deepEqual(availableSlots(null), []);
+});
+
+test("planCards: card and end frames at fps x seconds, zero cards, hold on top", () => {
+  // 4 cards x 3 s and a 3 s end card at 8 fps after 96 time-lapse frames.
+  const four = planCards({ timelapse: 96, slots: ["loudest", "planet", "brightest", "ordinary"], fps: 8, card: 3, end: 3, hold: 0 });
+  assert.deepEqual(four.steps.map((s) => [s.kind, s.id, s.frames]), [
+    ["signal", "loudest", 24],
+    ["signal", "planet", 24],
+    ["signal", "brightest", 24],
+    ["signal", "ordinary", 24],
+    ["end", "end", 24],
+  ]);
+  assert.equal(four.frames, 96 + 5 * 24);
+  assert.equal(four.seconds, 27);
+  // No filled slots (or no broadcast.json): only the end card.
+  const none = planCards({ timelapse: 96, slots: [], fps: 8, card: 3, end: 3, hold: 0 });
+  assert.deepEqual(none.steps, [{ kind: "end", id: "end", frames: 24 }]);
+  // --card 0 --end 0 and a hold: the old clip, held after the last time-lapse frame.
+  const old = planCards({ timelapse: 96, slots: ["loudest"], fps: 8, card: 0, end: 0, hold: 2 });
+  assert.deepEqual(old, { steps: [], frames: 96, seconds: 14 });
+  // A short card still gets at least one frame; the hold adds to the duration only.
+  const short = planCards({ timelapse: 10, slots: ["faint"], fps: 8, card: 0.05, end: 1, hold: 1.5 });
+  assert.deepEqual(short.steps.map((s) => s.frames), [1, 8]);
+  assert.equal(short.seconds, 19 / 8 + 1.5);
+});
+
+test("captureCards: a card is shot once and copied, a failing card is skipped, numbering stays contiguous", async () => {
+  const files = new Map();
+  let current = "";
+  const logs = [];
+  const steps = [
+    { kind: "signal", id: "loudest", frames: 3 },
+    { kind: "signal", id: "planet", frames: 3 },
+    { kind: "end", id: "end", frames: 2 },
+  ];
+  const result = await captureCards(steps, 5, {
+    load: async (step) => {
+      if (step.id === "planet") throw new Error("slot planet unavailable");
+      current = step.id;
+    },
+    shoot: async (i) => files.set(i, current),
+    repeat: async (from, to) => files.set(to, files.get(from)),
+    log: (m) => logs.push(m),
+  });
+  assert.deepEqual(result, { written: 10, cards: 2, skipped: 1 });
+  assert.deepEqual([...files.entries()].sort((a, b) => a[0] - b[0]), [[6, "loudest"], [7, "loudest"], [8, "loudest"], [9, "end"], [10, "end"]]);
+  assert.ok(logs.some((m) => m.includes("card planet: skipped")));
+});
+
+test("cardMoves: cards shot first land right after the frames actually written", () => {
+  assert.deepEqual(cardMoves(3, 96), [[1, 97], [2, 98], [3, 99]]);
+  // A bad first frame was skipped: 95 frames, the cards follow on with no gap.
+  assert.deepEqual(cardMoves(2, 95), [[1, 96], [2, 97]]);
+  assert.deepEqual(cardMoves(0, 96), []);
 });

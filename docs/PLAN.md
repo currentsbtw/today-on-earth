@@ -442,9 +442,26 @@ The broadcast is also the newsletter body and the clip script.
 Depends on: story grouping (Phase 2 item 2, tightened in Phase 2b) and the 7-day
 baseline (Phase 2 item 5).
 
-- [ ] Build the six slots from the stories data
-- [ ] Publish the slot rules and theme lists on the methodology page
-- [ ] Add the broadcast to the daily clip and the newsletter
+- [x] Build the six slots from the stories data (`/data/broadcast.json`, 2026-10-21)
+- [x] Publish the slot rules and theme lists on the methodology page
+- [x] Add the broadcast to the daily clip (end cards); the newsletter is not started
+
+**Status 2026-10-21 evening:** built and verified locally; rules as published in
+DATA-CONTRACT.md "Broadcast" and on the methodology page. Decisions made while building:
+- Every slot needs at least 3 distinct headlines. "Loudest" ranks by independent reports,
+  min(distinct headlines, outlets): distinct outlets alone let 53 Newsquest sites with one
+  wire copy win, distinct headlines alone let one outlet (iheart.com, 26 station-suffixed
+  copies) win.
+- Rising and faint gate on 3 complete baseline days, the same gate as "vs. normal" (the
+  review said 7); earliest 2026-10-25 for the current carry.
+- "Ordinary life" uses per-article kinds (conflict, politics, crime, disaster) computed
+  from the raw GDELT themes before the deny list; CRISISLEX themes are excluded because
+  CRISISLEX_CRISISLEXREC alone tags 35% of articles. Measured shares: conflict 33%,
+  politics 49%, crime 24%, disaster 9%, any 67%. On 2-hour windows the slot was mostly
+  empty (few stories reach 10 outlets); unverified on a full 24 h window.
+- Signals panel: header button, `#signals` permalink, six cards, "Open <place>" into the
+  cell. Clip: one card per filled slot (3 s) plus an end card with the site address.
+Open: the newsletter; the clip's cards are static (fly-to zooms are the clip v2 item).
 
 ## Clips and distribution (idea 2026-10-20, re-planned 2026-10-21)
 

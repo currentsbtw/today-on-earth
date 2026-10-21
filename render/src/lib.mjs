@@ -1,11 +1,13 @@
 // Pure helpers for the clip renderer (kept separate so they can be unit-tested).
 
-/** @typedef {{ site: string, out: string, w: number, h: number, fps: number, hold: number, channel: string, page: string }} Options */
+/** @typedef {{ site: string, out: string, w: number, h: number, fps: number, hold: number, card: number, end: number, channel: string, page: string }} Options */
 
-const DEFAULTS = { w: 1080, h: 1920, fps: 8, hold: 2, page: "clip" };
+const DEFAULTS = { w: 1080, h: 1920, fps: 8, hold: 2, card: 3, end: 3, page: "clip" };
 
 /**
- * Parse `--site <url> --out <dir> --w 1080 --h 1920 --fps 8 --hold 2 [--channel chrome|msedge] [--page clip|index]`.
+ * Parse `--site <url> --out <dir> --w 1080 --h 1920 --fps 8 --card 3 --end 3 --hold 2 [--channel chrome|msedge] [--page clip|index]`.
+ * `--card` and `--end` are seconds per broadcast signal card and for the end card (0 leaves
+ * them out); `--hold` holds the last frame (the end card, if any) on top.
  * `--page index` is a development stand-in: it drives `index.html#t=<stamp>` instead of clip.html.
  * @param {string[]} argv
  * @param {string} platform
@@ -22,7 +24,7 @@ export function parseArgs(argv, platform = process.platform) {
     if (value === undefined) throw new Error(`--${key} needs a value`);
     raw[key] = value;
   }
-  const known = new Set(["site", "out", "w", "h", "fps", "hold", "channel", "page"]);
+  const known = new Set(["site", "out", "w", "h", "fps", "hold", "card", "end", "channel", "page"]);
   for (const k of Object.keys(raw)) if (!known.has(k)) throw new Error(`unknown option --${k}`);
   if (!raw.site) throw new Error("--site <base url> is required");
   if (!raw.out) throw new Error("--out <dir> is required");
@@ -55,6 +57,8 @@ export function parseArgs(argv, platform = process.platform) {
     h,
     fps: int("fps", 1, 60),
     hold: num("hold", 0, 30),
+    card: num("card", 0, 30),
+    end: num("end", 0, 30),
     channel: raw.channel ?? (platform === "win32" ? "msedge" : "chrome"),
     page,
   };
@@ -71,6 +75,98 @@ export function frameUrl(opts, at, max = 0) {
   const t = encodeURIComponent(stampOf(at));
   if (opts.page === "index") return `${opts.site}/index.html#t=${t}`;
   return `${opts.site}/clip.html?t=${t}&w=${opts.w}&h=${opts.h}${max > 0 ? `&max=${max}` : ""}`;
+}
+
+/** clip.html URL of one broadcast slot's card, at the time-lapse's heat scale. */
+export function signalUrl(opts, slotId, max = 0) {
+  return `${opts.site}/clip.html?signal=${encodeURIComponent(slotId)}&w=${opts.w}&h=${opts.h}${max > 0 ? `&max=${max}` : ""}`;
+}
+
+/** clip.html URL of the end card. */
+export function endUrl(opts, max = 0) {
+  return `${opts.site}/clip.html?end=1&w=${opts.w}&h=${opts.h}${max > 0 ? `&max=${max}` : ""}`;
+}
+
+/**
+ * Ids of the broadcast.json slots that are filled, in the file's order. Anything malformed
+ * (an old deploy, a partial file) yields no cards rather than a bad URL.
+ * @returns {string[]}
+ */
+export function availableSlots(broadcast) {
+  const slots = Array.isArray(broadcast?.slots) ? broadcast.slots : [];
+  return slots.filter((s) => s?.available === true && typeof s.id === "string" && /^[a-z]+$/.test(s.id)).map((s) => s.id);
+}
+
+/**
+ * What follows the time-lapse: one card per filled slot held `card` seconds, then the end
+ * card held `end` seconds (each at least one frame when its seconds are above 0, none at 0),
+ * and `hold` seconds of the last frame added by ffmpeg.
+ * @param {{ timelapse: number, slots: string[], fps: number, card: number, end: number, hold: number }} p
+ * @returns {{ steps: { kind: "signal" | "end", id: string, frames: number }[], frames: number, seconds: number }}
+ */
+export function planCards({ timelapse, slots, fps, card, end, hold }) {
+  const framesFor = (seconds) => (seconds > 0 ? Math.max(1, Math.round(seconds * fps)) : 0);
+  const steps = [];
+  if (framesFor(card) > 0) for (const id of slots) steps.push({ kind: "signal", id, frames: framesFor(card) });
+  if (framesFor(end) > 0) steps.push({ kind: "end", id: "end", frames: framesFor(end) });
+  const frames = timelapse + steps.reduce((sum, s) => sum + s.frames, 0);
+  return { steps, frames, seconds: frames / fps + hold };
+}
+
+/**
+ * Capture the cards, numbered on from `written` (the renderer passes 0 and shoots them before
+ * the time-lapse, then moves them after it with cardMoves). A card (load and screenshot) is
+ * tried twice; if both fail it is left out (logged), never failing the clip. A good card is
+ * shot once and copied for the rest of its frames; numbering stays contiguous.
+ * @param {{ kind: string, id: string, frames: number }[]} steps
+ * @param {number} written frames already on disk
+ * @param {{ load: (step: { kind: string, id: string }) => Promise<void>, shoot: (index: number) => Promise<void>,
+ *           repeat: (fromIndex: number, toIndex: number) => Promise<void>, log: (msg: string) => void }} io
+ * @returns {Promise<{ written: number, cards: number, skipped: number }>}
+ */
+export async function captureCards(steps, written, io) {
+  let cards = 0;
+  let skipped = 0;
+  for (const step of steps) {
+    const name = step.kind === "end" ? "end card" : `card ${step.id}`;
+    const first = written + 1;
+    let ok = false;
+    for (let attempt = 1; attempt <= 2 && !ok; attempt++) {
+      try {
+        await io.load(step);
+        await io.shoot(first);
+        ok = true;
+      } catch (err) {
+        io.log(`  ${name}: attempt ${attempt} failed: ${err.message}`);
+      }
+    }
+    if (!ok) {
+      skipped++;
+      io.log(`  ${name}: skipped`);
+      continue;
+    }
+    written = first;
+    try {
+      for (let i = 1; i < step.frames; i++) {
+        await io.repeat(first, written + 1);
+        written++;
+      }
+    } catch (err) {
+      io.log(`  ${name}: copying the card failed after ${written - first + 1} frames: ${err.message}`);
+    }
+    cards++;
+    io.log(`  ${name}: ${written - first + 1} frames`);
+  }
+  return { written, cards, skipped };
+}
+
+/**
+ * Where the cards, shot first and numbered 1..`cardFrames`, go in the output sequence: right
+ * after the `timelapse` frames actually written. Pairs of [card file number, frame number].
+ * @returns {[number, number][]}
+ */
+export function cardMoves(cardFrames, timelapse) {
+  return Array.from({ length: cardFrames }, (_, i) => [i + 1, timelapse + i + 1]);
 }
 
 /** Largest cell `n` in a heat.json body, 0 when there are no cells. */

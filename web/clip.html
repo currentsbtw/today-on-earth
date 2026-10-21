@@ -8,15 +8,32 @@
     <title>Today On Earth · clip frame</title>
   </head>
   <body>
-    <!-- Render target for a headless time-lapse renderer: ?t=<frame stamp>&w=1080&h=1920&dark=1[&max=<n>].
-         When the frame is drawn, window.__clipReady is true and body has data-ready="1". -->
+    <!-- Render target for a headless time-lapse renderer. Modes:
+         ?t=<frame stamp>&w=1080&h=1920&dark=1[&max=<n>]  one replay frame
+         ?signal=<slot id>&w&h[&max=<n>]                  one broadcast slot's card
+         ?end=1&w&h[&max=<n>]                              the end card
+         When the page is drawn, window.__clipReady is true and body has data-ready="1"
+         (plus data-error="<reason>" on failure). -->
     <div id="clip" class="clip">
       <div id="clip-map" class="clip-map"></div>
+      <div id="clip-scrim-top" class="clip-scrim clip-scrim-top" hidden></div>
+      <div id="clip-scrim" class="clip-scrim clip-scrim-bottom" hidden></div>
       <div class="clip-top">
         <h1 class="clip-wordmark">Today On Earth</h1>
         <p id="clip-time" class="clip-time"></p>
       </div>
       <p id="clip-counts" class="clip-counts"></p>
+      <section id="clip-card" class="clip-card" hidden>
+        <p id="clip-slot" class="clip-slot"></p>
+        <p id="clip-line" class="clip-line"></p>
+        <figure id="clip-quote" class="clip-quote">
+          <blockquote><p id="clip-headline" class="clip-headline"></p></blockquote>
+          <figcaption id="clip-outlet" class="clip-outlet"></figcaption>
+        </figure>
+      </section>
+      <div id="clip-end" class="clip-end" hidden>
+        <p class="clip-cta">currentsbtw.github.io/today-on-earth</p>
+      </div>
     </div>
     <script type="module" src="./src/clip.ts"></script>
   </body>

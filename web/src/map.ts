@@ -394,8 +394,16 @@ export interface WorldMap {
   hideTooltip(): void;
 }
 
-/** A non-interactive map for the clip page: same style, world fitted inside `padding`. */
-export function createClipMap(container: HTMLElement, padding: Padding): Promise<{ map: MapLibreMap; setCells: (cells: MapCell[], maxN: number) => void }> {
+/**
+ * A non-interactive map for the clip page: same style, world fitted inside `padding`.
+ * `view` moves the camera there instead (a signal card zoomed to one cell); the world box
+ * still bounds it.
+ */
+export function createClipMap(
+  container: HTMLElement,
+  padding: Padding,
+  view?: { center: [lon: number, lat: number]; zoom: number },
+): Promise<{ map: MapLibreMap; setCells: (cells: MapCell[], maxN: number) => void }> {
   let ref: MapLibreMap | null = null;
   const map = new MapLibreMap({
     container,
@@ -412,7 +420,7 @@ export function createClipMap(container: HTMLElement, padding: Padding): Promise
   });
   ref = map;
   map.setPadding(padding);
-  map.jumpTo({ center: [10, 20], zoom: -2 });
+  map.jumpTo(view ?? { center: [10, 20], zoom: -2 });
   const setCells = (cells: MapCell[], maxN: number) =>
     map.getSource<GeoJSONSource>('heat')?.setData({ type: 'FeatureCollection', features: heatFeatures(cells, maxN, 'articles') });
   return new Promise((resolve) => map.once('load', () => resolve({ map, setCells })));
