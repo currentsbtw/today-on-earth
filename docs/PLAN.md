@@ -180,6 +180,14 @@ Things only you can decide or do:
 4. **"vs. normal"** appears by itself once three complete UTC days of baseline exist
    (earliest Friday 2026-10-24).
 
+Final overnight status (07:07 UTC): 19 commits on main, last 77c88a7; the live site
+runs 0d3458c with 77c88a7 deploying on the next chained run. Not done: og.jpg
+recapture (needs a full window), a second full critique round (one bounded
+confirmation was done on the live site instead), Phase 4 accounts (out of bounds).
+Deferred follow-ups: story bleed and the 12-story cap, "City Of X" prefixes inside a
+name part, pause-others when two videos play (done), tooltip not announced to screen
+readers, land outline before first paint, native admin names ("Moskva").
+
 ## Phase 2: Time and stories (re-scoped 2026-10-21 for "impress the first visitor")
 
 The two things a first-time visitor will remember: watching a day sweep across the
