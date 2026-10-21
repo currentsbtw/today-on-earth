@@ -19,6 +19,7 @@ const COL = {
   V2_ORGANIZATIONS: 14,
   V2_TONE: 15,
   SHARING_IMAGE: 18,
+  SOCIAL_VIDEO_EMBEDS: 21,
   TRANSLATION_INFO: 25,
   EXTRAS: 26,
 } as const;
@@ -127,6 +128,41 @@ export function createRecordAssembler(onRecord: (record: string) => void) {
   };
 }
 
+const VIDEO_HOSTS = new Set(["youtube.com", "www.youtube.com", "m.youtube.com", "youtu.be"]);
+const VIDEO_ID = "[A-Za-z0-9_-]{11}(?![A-Za-z0-9_-])";
+const VIDEO_PATH = new RegExp(`^/(?:(?:embed|shorts|live|v)/${VIDEO_ID}|watch$)`);
+
+/**
+ * First YouTube *video* URL from GKG SocialVideoEmbeds (`;`-separated), verbatim, or "".
+ * Only youtube.com / www. / m. / youtu.be hosts count. In real data most YouTube entries
+ * are channel links from site footers (`/@outlet`, `/channel/...`, `/user/...`), which the
+ * frontend cannot embed, so a URL must also name a video: `watch?v=<id>`, `/embed/<id>`,
+ * `/shorts/<id>`, `/live/<id>`, `/v/<id>`, or `youtu.be/<id>`.
+ */
+export function parseVideo(field: string): string {
+  if (!field) return "";
+  for (const raw of field.split(";")) {
+    const s = raw.trim();
+    if (isYouTubeVideoUrl(s)) return s;
+  }
+  return "";
+}
+
+export function isYouTubeVideoUrl(s: string): boolean {
+  let u: URL;
+  try {
+    u = new URL(s);
+  } catch {
+    return false;
+  }
+  if (u.protocol !== "https:" && u.protocol !== "http:") return false;
+  const host = u.hostname.toLowerCase();
+  if (!VIDEO_HOSTS.has(host)) return false;
+  if (host === "youtu.be") return new RegExp(`^/${VIDEO_ID}`).test(u.pathname);
+  if (!VIDEO_PATH.test(u.pathname)) return false;
+  return u.pathname !== "/watch" || new RegExp(`^${VIDEO_ID}`).test(u.searchParams.get("v") ?? "");
+}
+
 /**
  * Copy a string so it no longer points into the GKG line it was cut from. V8 keeps substrings
  * as slices of their parent, and a GKG line is ~10 KB (mostly GCAM), so without this every
@@ -169,6 +205,7 @@ export function parseGkgLine(line: string, countryOf: CountryLookup): ParseResul
       persons: parseNames(f[COL.V2_PERSONS]).map(detach),
       orgs: parseOrgs(f[COL.V2_ORGANIZATIONS]).map(detach),
       themes: parseThemes(f[COL.V2_THEMES]).map(detach),
+      video: detach(parseVideo(f[COL.SOCIAL_VIDEO_EMBEDS])),
     },
   };
 }

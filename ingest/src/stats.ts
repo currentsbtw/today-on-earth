@@ -31,6 +31,7 @@ export function toCellArticle(r: ArticleRecord): CellArticle {
     time: r.time,
     tone: round(r.tone, 1),
     image: r.image,
+    video: r.video,
   };
 }
 

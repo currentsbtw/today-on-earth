@@ -30,7 +30,7 @@ test("frame built from this run's cells: [id, lat, lon, n], n >= 2, sorted by n 
   const lagos = latLngToCell(6.45, 3.39, 3);
   const base: ArticleRecord = {
     url: "", title: "", source: "a.com", country: "FR", lang: "fr", time: "2026-10-21T04:00:00Z", tone: 0, image: "",
-    lat: 0, lon: 0, cellId: paris, locationName: "Paris, France", persons: [], orgs: [], themes: [],
+    lat: 0, lon: 0, cellId: paris, locationName: "Paris, France", persons: [], orgs: [], themes: [], video: "",
   };
   const records = [
     ...[1, 2, 3].map((i) => ({ ...base, url: `https://p/${i}` })),

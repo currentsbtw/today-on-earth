@@ -28,6 +28,7 @@ function rec(p: Partial<ArticleRecord> = {}): ArticleRecord {
     persons: [],
     orgs: [],
     themes: [],
+    video: "",
     ...p,
   };
 }

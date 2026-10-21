@@ -4,12 +4,12 @@
  *
  * Env:
  *   OUT_DIR           output directory for the site's data (default ingest/out)
- *   CARRY_DIR         where state.json.gz and history.json.gz are read from and written to
+ *   CARRY_DIR         where state.json.gz, history.json.gz and baseline.json.gz are read and written
  *                     (default OUT_DIR). In CI this folder travels between runs via the
  *                     Actions cache and is never part of the deployed site.
  *   STATE_URL         optional http(s) URL to read the previous state from instead of
  *                     CARRY_DIR (404 = cold start, any other failure fails the run)
- *   HISTORY_URL       same, for history.json.gz
+ *   HISTORY_URL       same, for history.json.gz (baseline.json.gz is only read from CARRY_DIR)
  *   WINDOW_HOURS      rolling window (default 24)
  *   COLD_START_HOURS  hours of files to fetch when there is no state (default 6)
  *   RETRY_HOURS       how long to keep retrying files that were not published yet (default 3)
@@ -21,6 +21,7 @@ import { buildSnapshot } from "./aggregate.ts";
 import { loadCountryLookup } from "./domains.ts";
 import { FEEDS, fileUrl, mapLimit, streamZipLines, type Feed } from "./fetch.ts";
 import { createRecordAssembler, parseGkgLine, type SkipReason } from "./gkg.ts";
+import { baselineView, countNewRecords, encodeBaseline, loadBaseline, trimDays, utcDay, type Baseline } from "./baseline.ts";
 import { CarryLoadError, resolveCarrySource } from "./carry.ts";
 import { appendFrame, buildHistoryEntry, buildIndex, encodeHistory, frameFileName, loadHistory, toFrame, type HistoryEntry } from "./history.ts";
 import { encodeState, loadState, type IngestState } from "./state.ts";
@@ -66,9 +67,12 @@ async function main(): Promise<number> {
   const historySource = resolveCarrySource(process.env.HISTORY_URL, carryDir, "history.json.gz", "HISTORY_URL", log);
   let prev: IngestState | null;
   let prevHistory: HistoryEntry[] | null;
+  let prevBaseline: Baseline | null;
   try {
     prev = await loadState(stateSource, log);
     prevHistory = await loadHistory(historySource, log);
+    // The baseline is only ever carried in CARRY_DIR (no URL variant).
+    prevBaseline = await loadBaseline({ kind: "file", path: join(carryDir, "baseline.json.gz") }, log);
   } catch (err) {
     if (!(err instanceof CarryLoadError)) throw err;
     log(`ingest: ${err.message}`);
@@ -132,7 +136,19 @@ async function main(): Promise<number> {
     return 1;
   }
 
-  const snapshot = buildSnapshot(records, { now, windowHours: coveredHours(now.getTime(), Object.values(feedFrom), windowHours) });
+  // Baseline: count each placed article once, when it first enters the state, by its UTC day.
+  const today = utcDay(now.toISOString());
+  const prevUrls = new Set((prev?.records ?? []).map((r) => r.url));
+  const firstMerged = records.filter((r) => !prevUrls.has(r.url));
+  const baselineSince = prevBaseline?.since || today;
+  const baselineDays = trimDays(countNewRecords(prevBaseline?.days ?? {}, firstMerged), today);
+  const baseline = baselineView(baselineDays, today, baselineSince);
+
+  const snapshot = buildSnapshot(records, {
+    now,
+    windowHours: coveredHours(now.getTime(), Object.values(feedFrom), windowHours),
+    baseline,
+  });
 
   await mkdir(outDir, { recursive: true });
   const cellsDir = join(outDir, "cells");
@@ -160,6 +176,8 @@ async function main(): Promise<number> {
   await writeFile(join(historyDir, "index.json"), JSON.stringify(buildIndex(history)));
   const historyBytes = encodeHistory(history);
   await writeFile(join(carryDir, "history.json.gz"), historyBytes);
+  const baselineBytes = encodeBaseline({ since: baselineSince, days: baselineDays });
+  await writeFile(join(carryDir, "baseline.json.gz"), baselineBytes);
 
   const t = snapshot.heat.totals;
   const storyCount = snapshot.cells.reduce((sum, c) => sum + c.stories.length, 0);
@@ -170,6 +188,7 @@ async function main(): Promise<number> {
       `window articles=${t.articles} (unplaced=${t.unplaced}) outlets=${t.outlets} countries=${t.countries} cells=${t.cells}; ` +
       `heat.json=${Buffer.byteLength(heatJson)}B state.json.gz=${stateBytes.length}B; ` +
       `history frames=${history.length} largest frame=${largestFrame}B history.json.gz=${historyBytes.length}B; ` +
+      `baseline days=${Object.keys(baselineDays).length} complete=${baseline.baselineDays} new=${firstMerged.length} baseline.json.gz=${baselineBytes.length}B; ` +
       `${((Date.now() - started) / 1000).toFixed(1)}s`,
   );
   return 0;

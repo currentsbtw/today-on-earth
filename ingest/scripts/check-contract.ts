@@ -8,6 +8,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { getResolution, isValidCell } from "h3-js";
+import { isYouTubeVideoUrl } from "../src/gkg.ts";
 
 const dir = resolve(process.argv[2] ?? process.env.OUT_DIR ?? join(fileURLToPath(new URL("..", import.meta.url)), "out"));
 const errors: string[] = [];
@@ -57,10 +58,12 @@ const heatBytes = readFileSync(heatPath);
 const heat = JSON.parse(heatBytes.toString("utf8")) as Record<string, unknown>;
 
 // ---- heat.json ----
-exactKeys("heat", heat, ["generatedAt", "windowHours", "newestArticleAt", "totals", "cells"]);
+exactKeys("heat", heat, ["generatedAt", "windowHours", "newestArticleAt", "baselineDays", "totals", "cells"]);
 if (typeof heat.generatedAt !== "string" || !ISO_UTC.test(heat.generatedAt)) err("heat.generatedAt", "not ISO 8601 UTC with Z");
 if (typeof heat.newestArticleAt !== "string" || !ISO_UTC.test(heat.newestArticleAt)) err("heat.newestArticleAt", "not ISO 8601 UTC with Z");
 int("heat.windowHours", heat.windowHours, 1);
+int("heat.baselineDays", heat.baselineDays);
+if (typeof heat.baselineDays === "number" && heat.baselineDays > 14) err("heat.baselineDays", "more than 14");
 const totals = isObj(heat.totals) ? heat.totals : (err("heat.totals", "not an object"), {});
 exactKeys("heat.totals", totals, ["articles", "outlets", "countries", "cells", "unplaced"]);
 for (const k of ["articles", "outlets", "countries", "cells", "unplaced"]) int(`heat.totals.${k}`, totals[k]);
@@ -70,7 +73,7 @@ const seenIds = new Set<string>();
 cells.forEach((c, i) => {
   const w = `heat.cells[${i}]`;
   if (!isObj(c)) return err(w, "not an object");
-  exactKeys(w, c, ["id", "lat", "lon", "n", "o", "c", "l", "t", "name"]);
+  exactKeys(w, c, ["id", "lat", "lon", "n", "o", "c", "l", "t", "name", "b"]);
   cellId(`${w}.id`, c.id);
   if (seenIds.has(c.id as string)) err(`${w}.id`, "duplicate");
   seenIds.add(c.id as string);
@@ -83,6 +86,9 @@ cells.forEach((c, i) => {
   int(`${w}.c`, c.c);
   int(`${w}.l`, c.l);
   num(`${w}.t`, c.t, 1);
+  num(`${w}.b`, c.b, 1);
+  if (typeof c.b === "number" && c.b < 0) err(`${w}.b`, "negative");
+  if (typeof heat.baselineDays === "number" && heat.baselineDays < 3 && c.b !== 0) err(`${w}.b`, "must be 0 while baselineDays < 3");
   str(`${w}.name`, c.name);
   if (typeof c.o === "number" && typeof c.n === "number" && c.o > c.n) err(w, "o > n");
   const prev = cells[i - 1] as Record<string, number> | undefined;
@@ -105,8 +111,9 @@ for (const f of files) if (!seenIds.has(f.slice(0, -5))) err("cells", `cells/${f
 
 /** One article object as in a cell file's `articles` (also used inside stories). */
 function checkArticle(aw: string, a: Record<string, unknown>) {
-  exactKeys(aw, a, ["title", "url", "source", "country", "lang", "time"], ["tone", "image"]);
-  for (const k of ["title", "url", "source", "country", "lang", "time"]) str(`${aw}.${k}`, a[k]);
+  exactKeys(aw, a, ["title", "url", "source", "country", "lang", "time", "video"], ["tone", "image"]);
+  for (const k of ["title", "url", "source", "country", "lang", "time", "video"]) str(`${aw}.${k}`, a[k]);
+  if (typeof a.video === "string" && a.video !== "" && !isYouTubeVideoUrl(a.video)) err(`${aw}.video`, `not a YouTube video URL: ${a.video}`);
   if ("image" in a) str(`${aw}.image`, a.image);
   if ("tone" in a) num(`${aw}.tone`, a.tone, 1);
   if (typeof a.title === "string" && Array.from(a.title).length > 160) err(`${aw}.title`, "longer than 160 chars");
@@ -176,7 +183,13 @@ for (const f of files) {
   const id = f.slice(0, -5);
   const w = `cells/${f}`;
   const cell = JSON.parse(readFileSync(join(cellsDir, f), "utf8")) as Record<string, unknown>;
-  exactKeys(w, cell, ["id", "name", "n", "o", "c", "l", "t", "topOutlets", "topCountries", "languages", "articles", "stories", "unclustered"]);
+  exactKeys(w, cell, ["id", "name", "n", "o", "c", "l", "t", "topOutlets", "topCountries", "languages", "articles", "videos", "stories", "unclustered"]);
+  int(`${w}.videos`, cell.videos);
+  if (typeof cell.videos === "number" && typeof cell.n === "number" && cell.videos > cell.n) err(`${w}.videos`, "more than n");
+  if (Array.isArray(cell.articles) && typeof cell.videos === "number") {
+    const shown = (cell.articles as Record<string, unknown>[]).filter((a) => isObj(a) && a.video).length;
+    if (shown > cell.videos) err(`${w}.videos`, `${cell.videos} < ${shown} articles shown with a video`);
+  }
   checkStories(w, cell);
   if (cell.id !== id) err(`${w}.id`, `does not match file name`);
   str(`${w}.name`, cell.name);

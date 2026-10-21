@@ -1,8 +1,9 @@
 name: Snapshot
 
 # Every 15 minutes: pull the newest GDELT GKG files, rebuild the static data files,
-# build the site, and deploy it to GitHub Pages. The rolling-window state and the
-# replay history (state.json.gz, history.json.gz) travel between runs through the
+# build the site, and deploy it to GitHub Pages. The rolling-window state, the
+# replay history and the per-cell daily baseline (state.json.gz, history.json.gz,
+# baseline.json.gz) travel between runs through the
 # Actions cache in the repo-root carry/ folder; they are never part of the site.
 on:
   schedule:

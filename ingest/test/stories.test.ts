@@ -10,7 +10,7 @@ const CELL = "832aa8fffffffff";
 function art(p: Partial<ArticleRecord> & { url: string; time: string }): ArticleRecord {
   return {
     title: "", source: "x.com", country: "US", lang: "en", tone: 0, image: "", lat: 38.9, lon: -77,
-    cellId: CELL, locationName: "Washington", persons: [], orgs: [], themes: [], ...p,
+    cellId: CELL, locationName: "Washington", persons: [], orgs: [], themes: [], video: "", ...p,
   };
 }
 const t = (h: number, m = 0) => `2026-10-21T${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:00Z`;
@@ -118,12 +118,17 @@ test("title tokens: lowercase, punctuation stripped, short and stop words droppe
   assert.deepEqual(titleTokens(""), []);
 });
 
-test("state v2 stores entity lists; v1 state still loads with empty lists", () => {
-  const rec = fixture[0];
+test("state v3 stores entity lists and video; v2 and v1 state still load", () => {
+  const rec = { ...fixture[0], video: "https://youtu.be/dQw4w9WgXcQ" };
   const round = decodeState(encodeState({ feeds: {}, records: [rec] }, t(6)));
   assert.deepEqual(round.records[0], rec);
-  const v1 = gzipSync(JSON.stringify({ v: 1, savedAt: t(6), feeds: {}, records: [[rec.url, rec.title, rec.source, rec.country, rec.lang, rec.time, rec.tone, rec.image, rec.lat, rec.lon, rec.cellId, rec.locationName]] }));
+  const v1Fields = [rec.url, rec.title, rec.source, rec.country, rec.lang, rec.time, rec.tone, rec.image, rec.lat, rec.lon, rec.cellId, rec.locationName];
+  const v1 = gzipSync(JSON.stringify({ v: 1, savedAt: t(6), feeds: {}, records: [v1Fields] }));
   const old = decodeState(v1).records[0];
-  assert.deepEqual([old.persons, old.orgs, old.themes], [[], [], []]);
+  assert.deepEqual([old.persons, old.orgs, old.themes, old.video], [[], [], [], ""]);
   assert.equal(old.url, rec.url);
+  const v2 = gzipSync(JSON.stringify({ v: 2, savedAt: t(6), feeds: {}, records: [[...v1Fields, "jane doe", "acme motors", ""]] }));
+  const mid = decodeState(v2).records[0];
+  assert.deepEqual([mid.persons, mid.orgs, mid.themes, mid.video], [["jane doe"], ["acme motors"], [], ""]);
+  assert.throws(() => decodeState(gzipSync(JSON.stringify({ v: 4, feeds: {}, records: [] }))));
 });

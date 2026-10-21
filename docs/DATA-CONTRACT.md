@@ -48,6 +48,10 @@ So that a quiet place lighting up can show, each cell carries its own normal:
   dropped. Counting happens as records are first merged, so dedupe by URL holds.
 - The frontend may show relative heat (`n / max(b, floor)`) only when
   `baselineDays` >= 3; until then it shows absolute heat and says so.
+- The carried file records `since`, the UTC day of its first run; that day and any
+  back-filled earlier days are partial and never count as complete. Baseline,
+  state and history live in the same cache entry, so they are restored or lost
+  together (a baseline surviving a lost state would double count).
 
 ## `/data/cells/<id>.json`  (one file per cell, fetched on click)
 
@@ -76,9 +80,12 @@ So that a quiet place lighting up can show, each cell carries its own normal:
 }
 ```
 
-`video` is only ever a youtube.com or youtu.be URL as GDELT recorded it; other hosts
-are dropped. The frontend derives the video id itself and embeds via
-youtube-nocookie.com, click-to-load, never autoplay.
+`video` is only ever a youtube.com / youtu.be URL as GDELT recorded it **that names an
+11-character video id** (watch?v=, /embed/, /shorts/, /live/, /v/, youtu.be/). Channel
+and user links (about two thirds of GDELT's YouTube embeds) and other hosts are
+dropped. Measured 2026-10-21: ~9% of placed articles carry a video. The frontend
+derives the id itself and embeds via youtube-nocookie.com, click-to-load, never
+autoplay.
 
 `articles` is the newest 50 in the cell, newest first, de-duplicated by URL. Pick a
 spread of outlets: no outlet contributes more than 5 of the 50 unless the cell has

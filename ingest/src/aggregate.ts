@@ -1,5 +1,6 @@
 import { cellToLatLng } from "h3-js";
 import { cellStats, compareNewestFirst, round, toCellArticle } from "./stats.ts";
+import type { BaselineView } from "./baseline.ts";
 import { buildStories } from "./stories.ts";
 import type { ArticleRecord, CellFile, HeatCell, HeatFile } from "./types.ts";
 
@@ -53,7 +54,11 @@ export interface Snapshot {
 /**
  * Build heat.json and the per-cell files from the (already windowed, URL-unique) records.
  */
-export function buildSnapshot(records: readonly ArticleRecord[], opts: { now: Date; windowHours: number }): Snapshot {
+export function buildSnapshot(
+  records: readonly ArticleRecord[],
+  opts: { now: Date; windowHours: number; baseline?: BaselineView },
+): Snapshot {
+  const baseline = opts.baseline ?? { baselineDays: 0, b: () => 0 };
   const byCell = new Map<string, ArticleRecord[]>();
   let unplaced = 0;
   for (const r of records) {
@@ -79,7 +84,7 @@ export function buildSnapshot(records: readonly ArticleRecord[], opts: { now: Da
     if (list.length < MIN_CELL_ARTICLES) continue;
     const s = cellStats(list);
     const [lat, lon] = cellToLatLng(id);
-    heatCells.push({ id, lat: round(lat, 2), lon: round(lon, 2), n: s.n, o: s.o, c: s.c, l: s.l, t: s.t, name: s.name });
+    heatCells.push({ id, lat: round(lat, 2), lon: round(lon, 2), n: s.n, o: s.o, c: s.c, l: s.l, t: s.t, name: s.name, b: baseline.b(id) });
     cellFiles.set(id, {
       id,
       name: s.name,
@@ -92,6 +97,7 @@ export function buildSnapshot(records: readonly ArticleRecord[], opts: { now: Da
       topCountries: s.countries.slice(0, TOP_LIST_SIZE),
       languages: s.languages.slice(0, TOP_LIST_SIZE),
       articles: selectArticles(list).map(toCellArticle),
+      videos: list.reduce((k, r) => k + (r.video ? 1 : 0), 0),
       ...timed(() => buildStories(list)),
     });
   }
@@ -110,6 +116,7 @@ export function buildSnapshot(records: readonly ArticleRecord[], opts: { now: Da
     generatedAt: opts.now.toISOString().replace(/\.\d{3}Z$/, "Z"),
     windowHours: opts.windowHours,
     newestArticleAt: newest,
+    baselineDays: baseline.baselineDays,
     totals: { articles: records.length, outlets: outlets.size, countries: countries.size, cells: heatCells.length, unplaced },
     cells: heatCells,
   };

@@ -5,7 +5,7 @@ import { getResolution, isValidCell, latLngToCell } from "h3-js";
 import { buildSnapshot } from "../src/aggregate.ts";
 import { loadCountryLookup, makeCountryLookup } from "../src/domains.ts";
 import { fipsToIso } from "../src/fips-to-iso.ts";
-import { createRecordAssembler, decodeEntities, extractTitle, gkgDateToIso, parseGkgLine, parsePrimaryLocation } from "../src/gkg.ts";
+import { createRecordAssembler, decodeEntities, extractTitle, gkgDateToIso, isYouTubeVideoUrl, parseGkgLine, parsePrimaryLocation, parseVideo } from "../src/gkg.ts";
 import { langFromTranslationInfo } from "../src/lang.ts";
 
 // Three real GKG 2.1 lines (two from the English stream 20261021041500, one from the
@@ -164,4 +164,28 @@ test("helpers", () => {
   const lookup = makeCountryLookup(new Map([["example.co.uk", "GB"]]));
   assert.equal(lookup("news.example.co.uk"), "GB");
   assert.equal(lookup("other.co.uk"), "");
+});
+
+test("video: first YouTube URL that names a video; channel links and other hosts are skipped", () => {
+  // Shape from real GKG SocialVideoEmbeds: mostly channel links from site footers.
+  assert.equal(parseVideo("https://youtube.com/user/mix931fm;https://youtube.com/channel/UCdjDGgzQtU3nIVOhSZup15A;"), "");
+  assert.equal(parseVideo("https://youtube.com/@LBCOfficial;https://youtube.com/embed/XkbLfu92nDY?si=msewyz4L6wwZ-bap"), "https://youtube.com/embed/XkbLfu92nDY?si=msewyz4L6wwZ-bap");
+  assert.equal(parseVideo("https://player.vimeo.com/video/1;https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1");
+  assert.equal(parseVideo("https://youtu.be/dQw4w9WgXcQ"), "https://youtu.be/dQw4w9WgXcQ");
+  assert.equal(parseVideo("https://m.youtube.com/shorts/dQw4w9WgXcQ"), "https://m.youtube.com/shorts/dQw4w9WgXcQ");
+  assert.equal(parseVideo("https://dailymotion.com/video/x8;https://evil.com/watch?v=dQw4w9WgXcQ;https://youtube.com.evil.com/embed/dQw4w9WgXcQ"), "");
+  assert.equal(parseVideo("https://youtube.com/embed/Hu0G8UYUQYUk"), ""); // 12 characters: not a video id
+  assert.equal(parseVideo("https://youtube.com/playlist?list=PL123;&quot;"), "");
+  assert.equal(parseVideo(""), "");
+  assert.ok(isYouTubeVideoUrl("http://youtube.com/live/dQw4w9WgXcQ"));
+  assert.ok(!isYouTubeVideoUrl("javascript:alert(1)//youtu.be/dQw4w9WgXcQ"));
+
+  const f = lines[1].split("\t");
+  f[21] = "https://youtube.com/@eju;https://youtube.com/embed/R3826ZVTKmE";
+  const r = parseGkgLine(f.join("\t"), countryOf);
+  assert.ok(r.ok);
+  assert.equal(r.record.video, "https://youtube.com/embed/R3826ZVTKmE");
+  const none = parseGkgLine(lines[1], countryOf);
+  assert.ok(none.ok);
+  assert.equal(none.record.video, "");
 });

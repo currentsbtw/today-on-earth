@@ -25,6 +25,8 @@ export interface ArticleRecord {
   orgs: string[];
   /** Up to 6 most-mentioned GKG V2Themes outside the deny-list, lowercase. */
   themes: string[];
+  /** First YouTube video URL from GKG SocialVideoEmbeds, "" when none. */
+  video: string;
 }
 
 /** `/data/heat.json` (docs/DATA-CONTRACT.md). */
@@ -32,6 +34,8 @@ export interface HeatFile {
   generatedAt: string;
   windowHours: number;
   newestArticleAt: string;
+  /** Complete UTC days of per-cell counts in the baseline, capped at 14. */
+  baselineDays: number;
   totals: { articles: number; outlets: number; countries: number; cells: number; unplaced: number };
   cells: HeatCell[];
 }
@@ -46,6 +50,8 @@ export interface HeatCell {
   l: number;
   t: number;
   name: string;
+  /** Median daily article count over the last up to 7 complete UTC days; 0 without a baseline. */
+  b: number;
 }
 
 export interface CellArticle {
@@ -57,6 +63,8 @@ export interface CellArticle {
   time: string;
   tone: number;
   image: string;
+  /** YouTube video URL from GKG SocialVideoEmbeds, "" when none. */
+  video: string;
 }
 
 /** `/data/cells/<id>.json` (docs/DATA-CONTRACT.md). */
@@ -72,6 +80,8 @@ export interface CellFile {
   topCountries: [string, number][];
   languages: [string, number][];
   articles: CellArticle[];
+  /** Articles in the cell (whole window) that carry a video. */
+  videos: number;
   stories: Story[];
   /** Articles in the cell that belong to no story; sum(stories[].n) + unclustered == n. */
   unclustered: number;
