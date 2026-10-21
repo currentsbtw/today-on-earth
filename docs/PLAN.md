@@ -461,6 +461,11 @@ DATA-CONTRACT.md "Broadcast" and on the methodology page. Decisions made while b
   empty (few stories reach 10 outlets); unverified on a full 24 h window.
 - Signals panel: header button, `#signals` permalink, six cards, "Open <place>" into the
   cell. Clip: one card per filled slot (3 s) plus an end card with the site address.
+Live 2026-10-21 19:56 UTC: 4 of 6 slots filled on a 20 h window; the manual clip run wrote
+clip-2026-10-21.mp4 (24 s: 64 frames + 4 cards + end card) to the clips release. Watch
+items: "ordinary life" picked a Ukraine-talks story (come-on.de), so the politics theme
+family misses some tags; tune the kind lists on a full day of data. A place name came
+through as "Ad Daw?Ah" (GDELT encoding artefact): extend cleanPlaceName.
 Open: the newsletter; the clip's cards are static (fly-to zooms are the clip v2 item).
 
 ## Clips and distribution (idea 2026-10-20, re-planned 2026-10-21)
