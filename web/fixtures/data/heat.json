@@ -1,7 +1,7 @@
 {
- "generatedAt": "2026-10-21T05:15:00Z",
+ "generatedAt": "2026-10-21T05:45:00Z",
  "windowHours": 24,
- "newestArticleAt": "2026-10-21T05:05:00Z",
+ "newestArticleAt": "2026-10-21T05:35:00Z",
  "totals": {
   "articles": 23543,
   "outlets": 1381,
@@ -29,7 +29,7 @@
    "o": 110,
    "c": 28,
    "l": 15,
-   "t": -1.1,
+   "t": -0.7,
    "name": "Kyiv, Kyyiv, Misto, Ukraine"
   },
   {
@@ -39,8 +39,8 @@
    "n": 2210,
    "o": 103,
    "c": 26,
-   "l": 15,
-   "t": -1.3,
+   "l": 16,
+   "t": -0.9,
    "name": "Gaza, Israel (general), Israel"
   },
   {
@@ -50,8 +50,8 @@
    "n": 1890,
    "o": 96,
    "c": 24,
-   "l": 14,
-   "t": -0.9,
+   "l": 15,
+   "t": -0.4,
    "name": "London, London, City of, United Kingdom"
   },
   {
@@ -60,9 +60,9 @@
    "lon": 116.71,
    "n": 1440,
    "o": 83,
-   "c": 21,
-   "l": 15,
-   "t": -0.6,
+   "c": 23,
+   "l": 17,
+   "t": -0.4,
    "name": "Beijing, Beijing, China"
   },
   {
@@ -71,9 +71,9 @@
    "lon": 2,
    "n": 1210,
    "o": 77,
-   "c": 22,
-   "l": 14,
-   "t": -0.8,
+   "c": 23,
+   "l": 16,
+   "t": -0.4,
    "name": "Paris, Ile-de-France, France"
   },
   {
@@ -82,8 +82,8 @@
    "lon": 37.15,
    "n": 1105,
    "o": 73,
-   "c": 22,
-   "l": 17,
+   "c": 23,
+   "l": 15,
    "t": -0.1,
    "name": "Moscow, Moskva, Russia"
   },
@@ -93,9 +93,9 @@
    "lon": 77.2,
    "n": 980,
    "o": 69,
-   "c": 24,
-   "l": 16,
-   "t": -0.5,
+   "c": 23,
+   "l": 17,
+   "t": -0.6,
    "name": "New Delhi, Delhi, India"
   },
   {
@@ -104,9 +104,9 @@
    "lon": 140.14,
    "n": 760,
    "o": 61,
-   "c": 20,
-   "l": 14,
-   "t": -1.1,
+   "c": 24,
+   "l": 16,
+   "t": -0.9,
    "name": "Tokyo, Tokyo, Japan"
   },
   {
@@ -115,9 +115,9 @@
    "lon": 13.88,
    "n": 640,
    "o": 56,
-   "c": 22,
-   "l": 14,
-   "t": -1.4,
+   "c": 23,
+   "l": 16,
+   "t": -0.9,
    "name": "Berlin, Berlin, Germany"
   },
   {
@@ -126,9 +126,9 @@
    "lon": -47.44,
    "n": 520,
    "o": 50,
-   "c": 24,
-   "l": 18,
-   "t": -0.7,
+   "c": 18,
+   "l": 12,
+   "t": -0.2,
    "name": "Brasilia, Distrito Federal, Brazil"
   },
   {
@@ -137,9 +137,9 @@
    "lon": 51.42,
    "n": 505,
    "o": 49,
-   "c": 21,
+   "c": 22,
    "l": 14,
-   "t": -0.3,
+   "t": -1.3,
    "name": "Tehran, Tehran, Iran"
   },
   {
@@ -148,9 +148,9 @@
    "lon": -118.45,
    "n": 470,
    "o": 48,
-   "c": 22,
-   "l": 13,
-   "t": -1.1,
+   "c": 21,
+   "l": 16,
+   "t": -0.4,
    "name": "Los Angeles, California, United States"
   },
   {
@@ -160,8 +160,8 @@
    "n": 390,
    "o": 43,
    "c": 22,
-   "l": 14,
-   "t": -0.8,
+   "l": 16,
+   "t": -1.1,
    "name": "Mexico City, Distrito Federal, Mexico"
   },
   {
@@ -170,9 +170,9 @@
    "lon": 31.24,
    "n": 344,
    "o": 41,
-   "c": 19,
-   "l": 13,
-   "t": -0.7,
+   "c": 22,
+   "l": 16,
+   "t": -0.4,
    "name": "Cairo, Al Qahirah, Egypt"
   },
   {
@@ -183,7 +183,7 @@
    "o": 39,
    "c": 23,
    "l": 16,
-   "t": -1.1,
+   "t": -1.2,
    "name": "Seoul, Seoul-tukpyolsi, South Korea"
   },
   {
@@ -193,8 +193,8 @@
    "n": 288,
    "o": 37,
    "c": 20,
-   "l": 15,
-   "t": -1.1,
+   "l": 14,
+   "t": -0.5,
    "name": "Sydney, New South Wales, Australia"
   },
   {
@@ -203,9 +203,9 @@
    "lon": 3.66,
    "n": 240,
    "o": 34,
-   "c": 23,
-   "l": 16,
-   "t": 0.6,
+   "c": 21,
+   "l": 15,
+   "t": -1.4,
    "name": "Lagos, Lagos, Nigeria"
   },
   {
@@ -214,9 +214,9 @@
    "lon": -58.43,
    "n": 205,
    "o": 31,
-   "c": 25,
-   "l": 16,
-   "t": -1.1,
+   "c": 23,
+   "l": 15,
+   "t": -1.2,
    "name": "Buenos Aires, Distrito Federal, Argentina"
   },
   {
@@ -226,8 +226,8 @@
    "n": 196,
    "o": 31,
    "c": 23,
-   "l": 15,
-   "t": -0.5,
+   "l": 14,
+   "t": -0.1,
    "name": "Istanbul, Istanbul, Turkey"
   },
   {
@@ -236,9 +236,9 @@
    "lon": 36.53,
    "n": 150,
    "o": 27,
-   "c": 21,
-   "l": 16,
-   "t": -0.9,
+   "c": 22,
+   "l": 14,
+   "t": -0.5,
    "name": "Nairobi, Nairobi Area, Kenya"
   },
   {
@@ -246,10 +246,10 @@
    "lat": -6.64,
    "lon": 106.88,
    "n": 132,
-   "o": 25,
-   "c": 21,
-   "l": 15,
-   "t": -1.2,
+   "o": 26,
+   "c": 25,
+   "l": 17,
+   "t": -1.4,
    "name": "Jakarta, Jakarta Raya, Indonesia"
   },
   {
@@ -258,9 +258,9 @@
    "lon": 27.63,
    "n": 118,
    "o": 24,
-   "c": 23,
-   "l": 17,
-   "t": -0.8,
+   "c": 22,
+   "l": 16,
+   "t": -1.1,
    "name": "Johannesburg, Gauteng, South Africa"
   },
   {
@@ -268,10 +268,10 @@
    "lat": 10.9,
    "lon": -67.19,
    "n": 96,
-   "o": 24,
-   "c": 23,
-   "l": 15,
-   "t": -0.3,
+   "o": 23,
+   "c": 22,
+   "l": 14,
+   "t": -0.9,
    "name": "Caracas, Distrito Federal, Venezuela"
   },
   {
@@ -279,10 +279,10 @@
    "lat": 15.56,
    "lon": 32.08,
    "n": 61,
-   "o": 25,
-   "c": 25,
-   "l": 16,
-   "t": -1.5,
+   "o": 22,
+   "c": 21,
+   "l": 14,
+   "t": -1.1,
    "name": "Khartoum, Khartoum, Sudan"
   },
   {
@@ -290,10 +290,10 @@
    "lat": -4.28,
    "lon": 15.65,
    "n": 44,
-   "o": 25,
-   "c": 24,
-   "l": 16,
-   "t": -1.5,
+   "o": 24,
+   "c": 23,
+   "l": 15,
+   "t": -0.1,
    "name": "Kinshasa, Kinshasa, Democratic Republic of the Congo"
   },
   {
@@ -301,10 +301,10 @@
    "lat": -17.9,
    "lon": 178.9,
    "n": 23,
-   "o": 14,
-   "c": 14,
-   "l": 11,
-   "t": -1.4,
+   "o": 19,
+   "c": 18,
+   "l": 14,
+   "t": -0.7,
    "name": "Suva, Central, Fiji"
   },
   {
@@ -312,10 +312,10 @@
    "lat": 61.42,
    "lon": -150.06,
    "n": 17,
-   "o": 14,
-   "c": 14,
-   "l": 10,
-   "t": 0,
+   "o": 13,
+   "c": 12,
+   "l": 8,
+   "t": -1.6,
    "name": "Anchorage, Alaska, United States"
   },
   {
@@ -326,7 +326,7 @@
    "o": 5,
    "c": 4,
    "l": 4,
-   "t": -2.1,
+   "t": 0.2,
    "name": "Ndjamena, Chari-Baguirmi, Chad"
   },
   {

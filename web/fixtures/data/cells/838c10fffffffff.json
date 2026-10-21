@@ -2,46 +2,46 @@
  "id": "838c10fffffffff",
  "name": "Jakarta, Jakarta Raya, Indonesia",
  "n": 132,
- "o": 25,
- "c": 21,
- "l": 15,
- "t": -1.2,
+ "o": 26,
+ "c": 25,
+ "l": 17,
+ "t": -1.4,
  "topOutlets": [
-  [
-   "kyiv-herald.example",
-   5
-  ],
   [
    "jakarta-pos.example",
    5
   ],
   [
-   "el-diario.example",
+   "al-akhbar.example",
    4
   ],
   [
-   "gulf-report.example",
-   3
-  ],
-  [
-   "cape-mail.example",
-   3
+   "daily-ledger.example",
+   4
   ],
   [
    "tehran-times.example",
-   3
+   4
   ],
   [
-   "morning-wire.example",
-   3
-  ],
-  [
-   "asahi-sample.example",
+   "le-quotidien.example",
    3
   ],
   [
    "o-correio.example",
-   3
+   2
+  ],
+  [
+   "la-voz.example",
+   2
+  ],
+  [
+   "morning-wire.example",
+   2
+  ],
+  [
+   "vesti-news.example",
+   2
   ],
   [
    "tageszeitung.example",
@@ -50,40 +50,40 @@
  ],
  "topCountries": [
   [
-   "UA",
-   5
-  ],
-  [
    "ID",
    5
   ],
   [
-   "MX",
+   "EG",
    4
   ],
   [
-   "AE",
-   3
-  ],
-  [
-   "ZA",
-   3
+   "US",
+   4
   ],
   [
    "IR",
-   3
+   4
   ],
   [
-   "GB",
-   3
-  ],
-  [
-   "JP",
+   "FR",
    3
   ],
   [
    "BR",
-   3
+   2
+  ],
+  [
+   "AR",
+   2
+  ],
+  [
+   "GB",
+   2
+  ],
+  [
+   "RU",
+   2
   ],
   [
    "DE",
@@ -93,545 +93,708 @@
  "languages": [
   [
    "en",
-   13
+   14
   ],
   [
-   "uk",
-   5
+   "ar",
+   6
   ],
   [
    "id",
    5
   ],
   [
-   "ar",
-   4
-  ],
-  [
-   "es",
-   4
-  ],
-  [
    "fa",
+   4
+  ],
+  [
+   "fr",
    3
   ],
   [
-   "ja",
+   "es",
    3
   ],
   [
    "pt",
-   3
+   2
+  ],
+  [
+   "ru",
+   2
   ],
   [
    "de",
    2
   ],
   [
-   "he",
+   "uk",
    2
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Aid convoy reaches border crossing near Jakarta",
-   "url": "https://hindustan-post.example/news/5wqt9d",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-21T04:55:00Z",
-   "tone": -4.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Jakarta",
-   "url": "https://kyiv-herald.example/news/4ez5pf",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-21T04:21:00Z",
-   "tone": -4.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Jakarta",
-   "url": "https://gulf-report.example/news/1farej",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-21T03:55:00Z",
-   "tone": 3.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Jakarta",
-   "url": "https://cape-mail.example/news/7klhre",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-21T03:40:00Z",
-   "tone": 3.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Jakarta",
-   "url": "https://al-akhbar.example/news/e9ad70",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T03:13:00Z",
-   "tone": 0.6,
-   "image": ""
-  },
-  {
    "title": "[sample] Storm disrupts transport links near Jakarta",
-   "url": "https://kyiv-herald.example/news/elgmnv",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-21T02:31:00Z",
-   "tone": -5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Jakarta",
-   "url": "https://tageszeitung.example/news/bdbev2",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-21T02:10:00Z",
-   "tone": -0.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Jakarta",
-   "url": "https://el-diario.example/news/dgfkig",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-21T01:34:00Z",
-   "tone": 0.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Jakarta",
-   "url": "https://cape-mail.example/news/alowp",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-21T01:23:00Z",
-   "tone": -1.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Jakarta",
-   "url": "https://kyiv-herald.example/news/axklit",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-21T00:46:00Z",
-   "tone": 0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Jakarta",
-   "url": "https://el-diario.example/news/23xgjf",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-21T00:16:00Z",
-   "tone": 3.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Jakarta",
-   "url": "https://tehran-times.example/news/fxi4as",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T23:49:00Z",
-   "tone": -1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Jakarta",
-   "url": "https://jakarta-pos.example/news/13ma3p",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T23:23:00Z",
-   "tone": -3.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Jakarta",
-   "url": "https://haaretz-sample.example/news/2zd0jd",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T22:48:00Z",
-   "tone": 0.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Jakarta",
-   "url": "https://kyiv-herald.example/news/7b1hx3",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T22:25:00Z",
-   "tone": -4.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Jakarta",
-   "url": "https://kyiv-herald.example/news/apoe3a",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T22:00:00Z",
-   "tone": -5.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Jakarta",
-   "url": "https://tageszeitung.example/news/8etkje",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T21:42:00Z",
-   "tone": -6.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Jakarta",
-   "url": "https://morning-wire.example/news/4zdxlu",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T21:12:00Z",
-   "tone": 3.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Jakarta",
-   "url": "https://gazeta-sample.example/news/522o3o",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T20:37:00Z",
-   "tone": -2.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Jakarta",
-   "url": "https://el-diario.example/news/igvx6",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T20:13:00Z",
-   "tone": -2.3,
+   "url": "https://le-quotidien.example/news/1md44f",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-21T05:23:00Z",
+   "tone": 4.5,
    "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Jakarta",
-   "url": "https://tehran-times.example/news/djrbx4",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T19:50:00Z",
-   "tone": -3.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Jakarta",
-   "url": "https://asahi-sample.example/news/ctlq43",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T19:16:00Z",
-   "tone": -5.9,
+   "url": "https://harbour-press.example/news/8c3yes",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-21T04:50:00Z",
+   "tone": -3.5,
    "image": ""
   },
   {
    "title": "[sample] Wildfire forces evacuations near Jakarta",
-   "url": "https://nation-ke.example/news/6qxpay",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T18:46:00Z",
-   "tone": -4.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Jakarta",
-   "url": "https://jakarta-pos.example/news/bsjv4d",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T18:28:00Z",
-   "tone": -2.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Jakarta",
-   "url": "https://gulf-report.example/news/g66bz6",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T17:53:00Z",
-   "tone": 5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Jakarta",
-   "url": "https://jakarta-pos.example/news/2poq93",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T17:18:00Z",
-   "tone": 1.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Jakarta",
-   "url": "https://lagos-sun.example/news/aidexl",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T17:02:00Z",
-   "tone": -2.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Jakarta",
-   "url": "https://o-correio.example/news/xpiie",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T16:27:00Z",
-   "tone": 3.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Jakarta",
-   "url": "https://el-diario.example/news/de4ron",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T16:07:00Z",
-   "tone": -3.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Jakarta",
-   "url": "https://seoul-daily.example/news/16wqnb",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T15:37:00Z",
-   "tone": 3.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Jakarta",
-   "url": "https://corriere-sample.example/news/16suje",
+   "url": "https://corriere-sample.example/news/2ckexc",
    "source": "corriere-sample.example",
    "country": "IT",
    "lang": "it",
-   "time": "2026-10-20T15:16:00Z",
-   "tone": 0.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Jakarta",
-   "url": "https://jakarta-pos.example/news/dng583",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T14:42:00Z",
-   "tone": 0.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Jakarta",
-   "url": "https://asahi-sample.example/news/2bvdhp",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T14:10:00Z",
-   "tone": -5.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Jakarta",
-   "url": "https://daily-ledger.example/news/bfp82h",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T13:40:00Z",
-   "tone": 1,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://cape-mail.example/news/dl3ue9",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T13:18:00Z",
-   "tone": 2.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Jakarta",
-   "url": "https://o-correio.example/news/bnj5n",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T12:55:00Z",
-   "tone": -5.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Jakarta",
-   "url": "https://nation-ke.example/news/3elitk",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T12:29:00Z",
-   "tone": 2.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Jakarta",
-   "url": "https://jakarta-pos.example/news/93sy2j",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T12:03:00Z",
-   "tone": 0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Jakarta",
-   "url": "https://morning-wire.example/news/b9u31u",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T11:35:00Z",
-   "tone": -0.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Jakarta",
-   "url": "https://vesti-news.example/news/dtuszz",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T10:54:00Z",
+   "time": "2026-10-21T04:33:00Z",
    "tone": 1.6,
    "image": ""
   },
   {
-   "title": "[sample] Central bank holds interest rate near Jakarta",
-   "url": "https://wire-service.example/news/a3k8r0",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T10:26:00Z",
-   "tone": -4.4,
+   "title": "[sample] Trade talks resume after pause near Jakarta",
+   "url": "https://al-akhbar.example/news/2nh3ma",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-21T04:07:00Z",
+   "tone": 1.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Jakarta",
+   "url": "https://jakarta-pos.example/news/ahrfo9",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-21T03:29:00Z",
+   "tone": -1.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Jakarta",
+   "url": "https://jakarta-pos.example/news/c62kjn",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-21T03:01:00Z",
+   "tone": 4.9,
    "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Jakarta",
-   "url": "https://vesti-news.example/news/1v4wk8",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T10:05:00Z",
-   "tone": -4.3,
+   "url": "https://o-correio.example/news/661gib",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-21T02:37:00Z",
+   "tone": 3.3,
    "image": ""
   },
   {
    "title": "[sample] Aid convoy reaches border crossing near Jakarta",
-   "url": "https://tehran-times.example/news/332duy",
+   "url": "https://al-akhbar.example/news/5kgdm1",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-21T02:20:00Z",
+   "tone": 1.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Jakarta",
+   "url": "https://daily-ledger.example/news/95llca",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-21T01:54:00Z",
+   "tone": -5.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Jakarta",
+   "url": "https://gazeta-sample.example/news/fz3fmz",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-21T01:08:00Z",
+   "tone": -0.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Jakarta",
+   "url": "https://daily-ledger.example/news/a5lo7l",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-21T00:56:00Z",
+   "tone": 2.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Jakarta",
+   "url": "https://jakarta-pos.example/news/b1jxf",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-21T00:27:00Z",
+   "tone": -3.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Jakarta",
+   "url": "https://la-voz.example/news/cg78y0",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T23:51:00Z",
+   "tone": 3.8,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://morning-wire.example/news/174b16",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T23:29:00Z",
+   "tone": -1.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Jakarta",
+   "url": "https://al-akhbar.example/news/a0679j",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T22:51:00Z",
+   "tone": -1.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Jakarta",
+   "url": "https://o-correio.example/news/2xs68x",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T22:31:00Z",
+   "tone": -3.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Jakarta",
+   "url": "https://hurriyet-sample.example/news/6tjxx4",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T21:56:00Z",
+   "tone": 3.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Jakarta",
+   "url": "https://vesti-news.example/news/7419yw",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T21:30:00Z",
+   "tone": 1.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Jakarta",
+   "url": "https://nord-avis.example/news/axw7dw",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T21:05:00Z",
+   "tone": -6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Jakarta",
+   "url": "https://tageszeitung.example/news/7xy0kz",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T20:42:00Z",
+   "tone": -2.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Jakarta",
+   "url": "https://wire-service.example/news/6pe40x",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T20:22:00Z",
+   "tone": -7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Jakarta",
+   "url": "https://tehran-times.example/news/2ked0z",
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T09:34:00Z",
+   "time": "2026-10-20T19:38:00Z",
+   "tone": 2.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Jakarta",
+   "url": "https://jakarta-pos.example/news/5mmpof",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T19:23:00Z",
+   "tone": -4.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Jakarta",
+   "url": "https://lagos-sun.example/news/az9ptv",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T18:54:00Z",
+   "tone": -4.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Jakarta",
+   "url": "https://vesti-news.example/news/2ydq6h",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T18:28:00Z",
+   "tone": -5.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Jakarta",
+   "url": "https://la-voz.example/news/e5gm6",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T17:47:00Z",
+   "tone": -6.3,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://gulf-report.example/news/2zukms",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T17:19:00Z",
+   "tone": -4.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Jakarta",
+   "url": "https://morning-wire.example/news/dhg0v2",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T16:58:00Z",
+   "tone": 0.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Jakarta",
+   "url": "https://gulf-report.example/news/1uyq3j",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T16:42:00Z",
+   "tone": -3.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Jakarta",
+   "url": "https://tehran-times.example/news/98g8dl",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T15:59:00Z",
    "tone": -5.5,
    "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Jakarta",
-   "url": "https://asahi-sample.example/news/8aqx2x",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T09:10:00Z",
-   "tone": -6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Jakarta",
-   "url": "https://o-correio.example/news/6aqnhz",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T08:34:00Z",
-   "tone": -1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Jakarta",
-   "url": "https://lagos-sun.example/news/7vl64a",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T08:09:00Z",
-   "tone": -4.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Jakarta",
-   "url": "https://le-quotidien.example/news/3px0ml",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T07:46:00Z",
-   "tone": 2.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Jakarta",
-   "url": "https://morning-wire.example/news/21jgdu",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T07:23:00Z",
-   "tone": 2.7,
+   "url": "https://al-akhbar.example/news/2ysp6",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T15:46:00Z",
+   "tone": -5.6,
    "image": ""
   },
   {
    "title": "[sample] Wildfire forces evacuations near Jakarta",
-   "url": "https://gulf-report.example/news/cnfoe6",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T06:43:00Z",
-   "tone": 3.1,
+   "url": "https://daily-ledger.example/news/avfx7k",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T15:10:00Z",
+   "tone": -6.5,
    "image": ""
   },
   {
-   "title": "[sample] Court hears appeal in landmark case near Jakarta",
-   "url": "https://haaretz-sample.example/news/c22irf",
+   "title": "[sample] Trade talks resume after pause near Jakarta",
+   "url": "https://kyiv-herald.example/news/en9hve",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T14:49:00Z",
+   "tone": 1.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Jakarta",
+   "url": "https://jakarta-pos.example/news/16sfs2",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T14:14:00Z",
+   "tone": 2.6,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://global-desk.example/news/6ebyvs",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T13:50:00Z",
+   "tone": -4.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Jakarta",
+   "url": "https://global-desk.example/news/1cqxeb",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T13:17:00Z",
+   "tone": -6.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Jakarta",
+   "url": "https://tehran-times.example/news/fas6q3",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T12:46:00Z",
+   "tone": 2.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Jakarta",
+   "url": "https://tageszeitung.example/news/9sqqa2",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T12:16:00Z",
+   "tone": 0.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Jakarta",
+   "url": "https://nation-ke.example/news/7rg6zi",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T12:07:00Z",
+   "tone": 1.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Jakarta",
+   "url": "https://el-diario.example/news/3y4mnr",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T11:36:00Z",
+   "tone": -6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Jakarta",
+   "url": "https://kyiv-herald.example/news/28roiv",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T10:59:00Z",
+   "tone": 4.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Jakarta",
+   "url": "https://cape-mail.example/news/asdmj3",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T10:35:00Z",
+   "tone": -2.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Jakarta",
+   "url": "https://daily-ledger.example/news/1hz2uf",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T09:58:00Z",
+   "tone": 3.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Jakarta",
+   "url": "https://seoul-daily.example/news/88w6ox",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T09:39:00Z",
+   "tone": 0.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Jakarta",
+   "url": "https://asahi-sample.example/news/89bwlu",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T09:09:00Z",
+   "tone": -2.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Jakarta",
+   "url": "https://haaretz-sample.example/news/2dkrvs",
    "source": "haaretz-sample.example",
    "country": "IL",
    "lang": "he",
-   "time": "2026-10-20T06:14:00Z",
-   "tone": -5.9,
+   "time": "2026-10-20T08:40:00Z",
+   "tone": -1.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Jakarta",
+   "url": "https://tehran-times.example/news/8ah6c3",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T08:12:00Z",
+   "tone": -1.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Jakarta",
+   "url": "https://le-quotidien.example/news/zwyb0",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T07:50:00Z",
+   "tone": -6.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Jakarta",
+   "url": "https://le-quotidien.example/news/7faoyf",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T07:17:00Z",
+   "tone": -2.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Jakarta",
+   "url": "https://wire-service.example/news/5i5zo9",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T06:54:00Z",
+   "tone": -0.6,
    "image": ""
   }
- ]
+ ],
+ "stories": [
+  {
+   "n": 35,
+   "o": 10,
+   "c": 10,
+   "l": 7,
+   "t": -2,
+   "first": "2026-10-20T17:57:00Z",
+   "last": "2026-10-21T01:48:00Z",
+   "headline": "[sample] Ministers meet over energy prices in Jakarta: what we know",
+   "headlineSource": "nation-ke.example",
+   "headlineLang": "en",
+   "entities": [
+    "energy",
+    "european union",
+    "oil prices",
+    "jakarta"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Ministers meet over energy prices in Jakarta: analysis",
+     "url": "https://cape-mail.example/story/frepkz",
+     "source": "cape-mail.example",
+     "country": "ZA",
+     "lang": "en",
+     "time": "2026-10-21T01:48:00Z",
+     "tone": -2.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Jakarta: explained",
+     "url": "https://global-desk.example/story/ge05d0",
+     "source": "global-desk.example",
+     "country": "CA",
+     "lang": "en",
+     "time": "2026-10-21T00:54:00Z",
+     "tone": 1.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Jakarta: analysis",
+     "url": "https://asahi-sample.example/story/5plexq",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T00:14:00Z",
+     "tone": -1.3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Jakarta: timeline",
+     "url": "https://wire-service.example/story/fqsd8m",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T00:45:00Z",
+     "tone": -0.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Jakarta: what we know",
+     "url": "https://nation-ke.example/story/fclvoj",
+     "source": "nation-ke.example",
+     "country": "KE",
+     "lang": "en",
+     "time": "2026-10-20T23:08:00Z",
+     "tone": -4.3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Jakarta: what we know",
+     "url": "https://al-akhbar.example/story/4fnem",
+     "source": "al-akhbar.example",
+     "country": "EG",
+     "lang": "ar",
+     "time": "2026-10-20T21:53:00Z",
+     "tone": -4.9,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 19,
+   "o": 5,
+   "c": 5,
+   "l": 5,
+   "t": -1.6,
+   "first": "2026-10-20T15:53:00Z",
+   "last": "2026-10-21T01:37:00Z",
+   "headline": "[sample] Election count enters second day in Jakarta: latest",
+   "headlineSource": "gazeta-sample.example",
+   "headlineLang": "pl",
+   "entities": [
+    "election commission",
+    "parliament",
+    "voters",
+    "jakarta"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Election count enters second day in Jakarta: explained",
+     "url": "https://corriere-sample.example/story/edgujq",
+     "source": "corriere-sample.example",
+     "country": "IT",
+     "lang": "it",
+     "time": "2026-10-21T01:37:00Z",
+     "tone": -4.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Jakarta: timeline",
+     "url": "https://seoul-daily.example/story/42orhj",
+     "source": "seoul-daily.example",
+     "country": "KR",
+     "lang": "ko",
+     "time": "2026-10-21T00:48:00Z",
+     "tone": -5.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Jakarta: analysis",
+     "url": "https://asahi-sample.example/story/7xyl0b",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T00:25:00Z",
+     "tone": -1.9,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Jakarta: latest",
+     "url": "https://gazeta-sample.example/story/7oftzz",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-20T23:52:00Z",
+     "tone": 1.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Jakarta: reactions",
+     "url": "https://tehran-times.example/story/5tbnzg",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-20T22:33:00Z",
+     "tone": 2.7,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Jakarta: analysis",
+     "url": "https://gazeta-sample.example/story/ecu3k8",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-20T22:52:00Z",
+     "tone": -1.7,
+     "image": ""
+    }
+   ]
+  }
+ ],
+ "unclustered": 78
 }

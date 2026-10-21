@@ -4,23 +4,19 @@
  "n": 1890,
  "o": 96,
  "c": 24,
- "l": 14,
- "t": -0.9,
+ "l": 15,
+ "t": -0.4,
  "topOutlets": [
-  [
-   "harbour-press.example",
-   5
-  ],
   [
    "morning-wire.example",
    5
   ],
   [
-   "hurriyet-sample.example",
+   "lagos-sun.example",
    5
   ],
   [
-   "tehran-times.example",
+   "wire-service.example",
    5
   ],
   [
@@ -28,41 +24,41 @@
    4
   ],
   [
-   "vesti-news.example",
-   3
+   "la-voz.example",
+   4
   ],
   [
-   "xinhua-sample.example",
+   "o-correio.example",
    3
   ],
   [
    "corriere-sample.example",
+   3
+  ],
+  [
+   "tehran-times.example",
    2
   ],
   [
-   "seoul-daily.example",
+   "kyiv-herald.example",
    2
   ],
   [
-   "hindustan-post.example",
+   "nation-ke.example",
    2
   ]
  ],
  "topCountries": [
   [
-   "AU",
-   5
-  ],
-  [
    "GB",
    5
   ],
   [
-   "TR",
+   "NG",
    5
   ],
   [
-   "IR",
+   "",
    5
   ],
   [
@@ -70,556 +66,80 @@
    4
   ],
   [
-   "RU",
-   3
+   "AR",
+   4
   ],
   [
-   "CN",
+   "BR",
    3
   ],
   [
    "IT",
+   3
+  ],
+  [
+   "IR",
    2
   ],
   [
-   "KR",
+   "UA",
    2
   ],
   [
-   "IN",
+   "KE",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   17
-  ],
-  [
-   "tr",
-   5
-  ],
-  [
-   "fa",
-   5
+   21
   ],
   [
    "es",
-   4
+   8
   ],
   [
-   "ar",
-   4
-  ],
-  [
-   "ru",
-   3
-  ],
-  [
-   "zh",
+   "pt",
    3
   ],
   [
    "it",
+   3
+  ],
+  [
+   "fa",
    2
   ],
   [
-   "ko",
+   "uk",
    2
   ],
   [
-   "no",
+   "pl",
+   2
+  ],
+  [
+   "tr",
+   2
+  ],
+  [
+   "id",
+   1
+  ],
+  [
+   "fr",
    1
   ]
  ],
  "articles": [
-  {
-   "title": "[sample] Court hears appeal in landmark case near London",
-   "url": "https://vesti-news.example/news/9ftec4",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-21T04:58:00Z",
-   "tone": 3.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near London",
-   "url": "https://xinhua-sample.example/news/23k2sh",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-21T04:30:00Z",
-   "tone": 1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near London",
-   "url": "https://el-diario.example/news/actaq8",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-21T03:58:00Z",
-   "tone": -3.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near London",
-   "url": "https://harbour-press.example/news/6w5gbq",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-21T03:41:00Z",
-   "tone": 4.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near London",
-   "url": "https://morning-wire.example/news/e8jtsa",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-21T03:01:00Z",
-   "tone": 0.2,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://corriere-sample.example/news/9vohec",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-21T02:30:00Z",
-   "tone": -2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near London",
-   "url": "https://nord-avis.example/news/e2bron",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-21T02:19:00Z",
-   "tone": -4.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near London",
-   "url": "https://el-diario.example/news/4fyeq",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-21T01:38:00Z",
-   "tone": -2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near London",
-   "url": "https://kyiv-herald.example/news/4dcjy9",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-21T01:18:00Z",
-   "tone": 4.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near London",
-   "url": "https://xinhua-sample.example/news/7tgojg",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-21T00:40:00Z",
-   "tone": -5.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near London",
-   "url": "https://hurriyet-sample.example/news/794elz",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-21T00:27:00Z",
-   "tone": -1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near London",
-   "url": "https://tageszeitung.example/news/531ek3",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T23:56:00Z",
-   "tone": 3.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near London",
-   "url": "https://harbour-press.example/news/cv22m1",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T23:22:00Z",
-   "tone": -2.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near London",
-   "url": "https://seoul-daily.example/news/3rnwym",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T22:49:00Z",
-   "tone": -0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near London",
-   "url": "https://hindustan-post.example/news/dwysq8",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T22:24:00Z",
-   "tone": -6.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near London",
-   "url": "https://harbour-press.example/news/csr458",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T22:08:00Z",
-   "tone": 3.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near London",
-   "url": "https://vesti-news.example/news/27fw1r",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T21:33:00Z",
-   "tone": -0.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near London",
-   "url": "https://global-desk.example/news/6313ez",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T21:02:00Z",
-   "tone": -3.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near London",
-   "url": "https://hindustan-post.example/news/60ytr9",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T20:45:00Z",
-   "tone": 0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near London",
-   "url": "https://morning-wire.example/news/877wmr",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T20:07:00Z",
-   "tone": -3.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near London",
-   "url": "https://gulf-report.example/news/d6u7l2",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T19:49:00Z",
-   "tone": 4.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near London",
-   "url": "https://tehran-times.example/news/cbiqyb",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T19:22:00Z",
-   "tone": -4.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near London",
-   "url": "https://morning-wire.example/news/8ve34l",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T18:45:00Z",
-   "tone": -0.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near London",
-   "url": "https://harbour-press.example/news/b9xobr",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T18:20:00Z",
-   "tone": -1.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near London",
-   "url": "https://el-diario.example/news/eb1lqi",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T17:59:00Z",
-   "tone": 0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near London",
-   "url": "https://corriere-sample.example/news/dbzj40",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T17:24:00Z",
-   "tone": 4.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near London",
-   "url": "https://morning-wire.example/news/giidym",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T16:59:00Z",
-   "tone": -2.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near London",
-   "url": "https://hurriyet-sample.example/news/123j5p",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T16:39:00Z",
-   "tone": -0.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near London",
-   "url": "https://hurriyet-sample.example/news/e4trhf",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T16:13:00Z",
-   "tone": -4.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near London",
-   "url": "https://tehran-times.example/news/atlf4h",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T15:35:00Z",
-   "tone": -1.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near London",
-   "url": "https://jakarta-pos.example/news/bnr17y",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T15:03:00Z",
-   "tone": -3.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near London",
-   "url": "https://global-desk.example/news/1wjuwm",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T14:42:00Z",
-   "tone": -3.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near London",
-   "url": "https://tehran-times.example/news/dhriph",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T14:18:00Z",
-   "tone": -2.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near London",
-   "url": "https://tehran-times.example/news/f88o9i",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T13:43:00Z",
-   "tone": 3.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near London",
-   "url": "https://gulf-report.example/news/789jc7",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T13:12:00Z",
-   "tone": -4.2,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://harbour-press.example/news/e8tilr",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T12:41:00Z",
-   "tone": -6.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near London",
-   "url": "https://seoul-daily.example/news/cv0l0f",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T12:14:00Z",
-   "tone": 2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near London",
-   "url": "https://hurriyet-sample.example/news/7gl2dn",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T11:56:00Z",
-   "tone": 1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near London",
-   "url": "https://morning-wire.example/news/aeoxpe",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T11:18:00Z",
-   "tone": -6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near London",
-   "url": "https://cape-mail.example/news/dc3rkm",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T11:02:00Z",
-   "tone": 3.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near London",
-   "url": "https://vesti-news.example/news/5m7lyy",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T10:41:00Z",
-   "tone": -2.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near London",
-   "url": "https://asahi-sample.example/news/da2n2n",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T10:12:00Z",
-   "tone": 4.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near London",
-   "url": "https://daily-ledger.example/news/8ecjms",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T09:45:00Z",
-   "tone": 3.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near London",
-   "url": "https://al-akhbar.example/news/5j5vut",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T09:01:00Z",
-   "tone": -6.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near London",
-   "url": "https://cape-mail.example/news/8dzvez",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T08:47:00Z",
-   "tone": 1.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near London",
-   "url": "https://al-akhbar.example/news/bdhojq",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T08:12:00Z",
-   "tone": -2.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near London",
-   "url": "https://xinhua-sample.example/news/eug3ok",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T07:45:00Z",
-   "tone": -5.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near London",
-   "url": "https://hurriyet-sample.example/news/g07v59",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T07:17:00Z",
-   "tone": -1.8,
-   "image": ""
-  },
   {
    "title": "[sample] Football club confirms new coach near London",
    "url": "https://el-diario.example/news/a2ccjb",
    "source": "el-diario.example",
    "country": "MX",
    "lang": "es",
-   "time": "2026-10-20T06:56:00Z",
+   "time": "2026-10-21T05:31:00Z",
    "tone": -2.9,
    "image": ""
   },
@@ -629,9 +149,812 @@
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T06:30:00Z",
+   "time": "2026-10-21T05:04:00Z",
    "tone": 0,
    "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near London",
+   "url": "https://el-diario.example/news/h7s51",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-21T04:28:00Z",
+   "tone": -0.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near London",
+   "url": "https://jakarta-pos.example/news/fxwxvj",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-21T04:08:00Z",
+   "tone": -0.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near London",
+   "url": "https://o-correio.example/news/cmubux",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-21T03:36:00Z",
+   "tone": 4.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near London",
+   "url": "https://la-voz.example/news/a21y53",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-21T03:14:00Z",
+   "tone": 1.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near London",
+   "url": "https://morning-wire.example/news/em9lbx",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-21T02:36:00Z",
+   "tone": -1.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near London",
+   "url": "https://la-voz.example/news/wgi5t",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-21T02:14:00Z",
+   "tone": -2.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near London",
+   "url": "https://morning-wire.example/news/c14m9n",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-21T01:42:00Z",
+   "tone": -4.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near London",
+   "url": "https://lagos-sun.example/news/5o30f3",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-21T01:10:00Z",
+   "tone": 1.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near London",
+   "url": "https://le-quotidien.example/news/ae2xr8",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-21T00:57:00Z",
+   "tone": 1.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near London",
+   "url": "https://kyiv-herald.example/news/d238kl",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-21T00:30:00Z",
+   "tone": -4.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near London",
+   "url": "https://haaretz-sample.example/news/1wknx5",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T23:47:00Z",
+   "tone": 4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near London",
+   "url": "https://lagos-sun.example/news/a1icht",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T23:23:00Z",
+   "tone": -1.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near London",
+   "url": "https://lagos-sun.example/news/3865mu",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T23:06:00Z",
+   "tone": 3.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near London",
+   "url": "https://nation-ke.example/news/69g1tq",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T22:24:00Z",
+   "tone": -2.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near London",
+   "url": "https://morning-wire.example/news/9kpdts",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T22:01:00Z",
+   "tone": 4.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near London",
+   "url": "https://morning-wire.example/news/66dkuq",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T21:30:00Z",
+   "tone": -5.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near London",
+   "url": "https://corriere-sample.example/news/fuqj56",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T21:15:00Z",
+   "tone": -0.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near London",
+   "url": "https://el-diario.example/news/fizad6",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T20:42:00Z",
+   "tone": -2.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near London",
+   "url": "https://corriere-sample.example/news/bi1ntj",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T20:04:00Z",
+   "tone": -5.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near London",
+   "url": "https://seoul-daily.example/news/7fzdw6",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T19:38:00Z",
+   "tone": 4.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near London",
+   "url": "https://gazeta-sample.example/news/8r2vdg",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T19:27:00Z",
+   "tone": -0.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near London",
+   "url": "https://asahi-sample.example/news/96n86i",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T18:54:00Z",
+   "tone": 2.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near London",
+   "url": "https://lagos-sun.example/news/2re1iv",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T18:23:00Z",
+   "tone": -3.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near London",
+   "url": "https://wire-service.example/news/bjtsno",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T17:54:00Z",
+   "tone": 2.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near London",
+   "url": "https://cape-mail.example/news/e8jp2s",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T17:33:00Z",
+   "tone": -1.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near London",
+   "url": "https://wire-service.example/news/2jxbpv",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T16:56:00Z",
+   "tone": 1.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near London",
+   "url": "https://gulf-report.example/news/5jmi3x",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T16:36:00Z",
+   "tone": 0.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near London",
+   "url": "https://tehran-times.example/news/1124fu",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T16:01:00Z",
+   "tone": -2.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near London",
+   "url": "https://hindustan-post.example/news/b3juyk",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T15:40:00Z",
+   "tone": 4.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near London",
+   "url": "https://o-correio.example/news/34hzhd",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T15:19:00Z",
+   "tone": -1.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near London",
+   "url": "https://wire-service.example/news/4qtwe",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T14:43:00Z",
+   "tone": 4.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near London",
+   "url": "https://morning-wire.example/news/6rs08c",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T14:12:00Z",
+   "tone": 0,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near London",
+   "url": "https://lagos-sun.example/news/2v4rrn",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T13:49:00Z",
+   "tone": -2.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near London",
+   "url": "https://kyiv-herald.example/news/29dyix",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T13:23:00Z",
+   "tone": -6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near London",
+   "url": "https://wire-service.example/news/9va6yw",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T12:47:00Z",
+   "tone": 1.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near London",
+   "url": "https://hindustan-post.example/news/32yyum",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T12:21:00Z",
+   "tone": 2.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near London",
+   "url": "https://nation-ke.example/news/20braf",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T12:01:00Z",
+   "tone": -3.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near London",
+   "url": "https://xinhua-sample.example/news/deldts",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T11:29:00Z",
+   "tone": 0.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near London",
+   "url": "https://el-diario.example/news/9eohye",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T11:06:00Z",
+   "tone": 0.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near London",
+   "url": "https://o-correio.example/news/emobcd",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T10:35:00Z",
+   "tone": 2.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near London",
+   "url": "https://corriere-sample.example/news/2s7wyq",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T10:04:00Z",
+   "tone": -4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near London",
+   "url": "https://gazeta-sample.example/news/68wpit",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T09:39:00Z",
+   "tone": -3.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near London",
+   "url": "https://wire-service.example/news/1h4lbw",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T09:08:00Z",
+   "tone": -3.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near London",
+   "url": "https://hurriyet-sample.example/news/bz5dnd",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T08:53:00Z",
+   "tone": 2.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near London",
+   "url": "https://cape-mail.example/news/c70o8b",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T08:12:00Z",
+   "tone": -2.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near London",
+   "url": "https://hurriyet-sample.example/news/4hutaf",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T07:43:00Z",
+   "tone": -6.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near London",
+   "url": "https://la-voz.example/news/75w68c",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T07:27:00Z",
+   "tone": 3.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near London",
+   "url": "https://la-voz.example/news/fpi2p3",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T06:54:00Z",
+   "tone": 4.2,
+   "image": ""
   }
- ]
+ ],
+ "stories": [
+  {
+   "n": 647,
+   "o": 46,
+   "c": 13,
+   "l": 8,
+   "t": -2.3,
+   "first": "2026-10-20T22:19:00Z",
+   "last": "2026-10-21T02:54:00Z",
+   "headline": "[sample] Ministers meet over energy prices in London: live updates",
+   "headlineSource": "el-diario.example",
+   "headlineLang": "es",
+   "entities": [
+    "energy",
+    "european union",
+    "oil prices",
+    "london"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Ministers meet over energy prices in London: live updates",
+     "url": "https://el-diario.example/story/61wute",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T02:54:00Z",
+     "tone": -4.3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in London: analysis",
+     "url": "https://le-quotidien.example/story/182dfj",
+     "source": "le-quotidien.example",
+     "country": "FR",
+     "lang": "fr",
+     "time": "2026-10-21T02:31:00Z",
+     "tone": 1.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in London: timeline",
+     "url": "https://asahi-sample.example/story/b6wc3y",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T02:04:00Z",
+     "tone": 1.3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in London: explained",
+     "url": "https://el-diario.example/story/1jj4uk",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T01:33:00Z",
+     "tone": -5.3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in London: live updates",
+     "url": "https://morning-wire.example/story/37o3np",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-20T23:46:00Z",
+     "tone": -1.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in London: explained",
+     "url": "https://morning-wire.example/story/5dlupt",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-20T23:19:00Z",
+     "tone": -5,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 576,
+   "o": 41,
+   "c": 12,
+   "l": 7,
+   "t": -3.4,
+   "first": "2026-10-20T22:07:00Z",
+   "last": "2026-10-21T02:27:00Z",
+   "headline": "[sample] Election count enters second day in London: analysis",
+   "headlineSource": "la-voz.example",
+   "headlineLang": "es",
+   "entities": [
+    "election commission",
+    "parliament",
+    "voters",
+    "london"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Election count enters second day in London: live updates",
+     "url": "https://morning-wire.example/story/ccxkmo",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-21T02:27:00Z",
+     "tone": -1.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in London: timeline",
+     "url": "https://wire-service.example/story/7z63lj",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T01:32:00Z",
+     "tone": -5.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in London: explained",
+     "url": "https://hindustan-post.example/story/3l7fa8",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T01:29:00Z",
+     "tone": -5.9,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in London: reactions",
+     "url": "https://gazeta-sample.example/story/8nyklj",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T00:45:00Z",
+     "tone": -2.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in London: analysis",
+     "url": "https://la-voz.example/story/ajfoai",
+     "source": "la-voz.example",
+     "country": "AR",
+     "lang": "es",
+     "time": "2026-10-20T23:23:00Z",
+     "tone": 0.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in London: in pictures",
+     "url": "https://al-akhbar.example/story/alc1v4",
+     "source": "al-akhbar.example",
+     "country": "EG",
+     "lang": "ar",
+     "time": "2026-10-20T22:07:00Z",
+     "tone": -5.5,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 147,
+   "o": 10,
+   "c": 3,
+   "l": 3,
+   "t": -0.2,
+   "first": "2026-10-20T15:02:00Z",
+   "last": "2026-10-21T02:48:00Z",
+   "headline": "[sample] Wildfire forces evacuations in hills in London: what we know",
+   "headlineSource": "morning-wire.example",
+   "headlineLang": "en",
+   "entities": [
+    "wildfire",
+    "evacuation",
+    "fire service",
+    "london"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in London: what we know",
+     "url": "https://wire-service.example/story/e21278",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T02:48:00Z",
+     "tone": -4.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in London: what we know",
+     "url": "https://lagos-sun.example/story/4it5ul",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-21T02:05:00Z",
+     "tone": -0.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in London: explained",
+     "url": "https://global-desk.example/story/dnxpt9",
+     "source": "global-desk.example",
+     "country": "CA",
+     "lang": "en",
+     "time": "2026-10-21T01:50:00Z",
+     "tone": -3.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in London: what we know",
+     "url": "https://morning-wire.example/story/ctb6vd",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-20T23:51:00Z",
+     "tone": 1.7,
+     "image": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in London: explained",
+     "url": "https://gazeta-sample.example/story/a186mp",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T01:00:00Z",
+     "tone": 3.7,
+     "image": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in London: live updates",
+     "url": "https://vesti-news.example/story/f24lri",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T00:13:00Z",
+     "tone": 1.7,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 142,
+   "o": 10,
+   "c": 3,
+   "l": 4,
+   "t": -0.2,
+   "first": "2026-10-20T22:37:00Z",
+   "last": "2026-10-21T02:35:00Z",
+   "headline": "[sample] Aid convoy reaches border crossing in London: analysis",
+   "headlineSource": "morning-wire.example",
+   "headlineLang": "en",
+   "entities": [
+    "united nations",
+    "refugees",
+    "humanitarian aid",
+    "london"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Aid convoy reaches border crossing in London: analysis",
+     "url": "https://morning-wire.example/story/9j11x1",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-21T02:35:00Z",
+     "tone": -3.9,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in London: latest",
+     "url": "https://gazeta-sample.example/story/14s4vb",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T01:46:00Z",
+     "tone": 0.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in London: analysis",
+     "url": "https://nation-ke.example/story/b4mqu8",
+     "source": "nation-ke.example",
+     "country": "KE",
+     "lang": "en",
+     "time": "2026-10-21T00:53:00Z",
+     "tone": -5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in London: explained",
+     "url": "https://tehran-times.example/story/q1zkx",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-21T00:38:00Z",
+     "tone": -0.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in London: live updates",
+     "url": "https://asahi-sample.example/story/f4ks46",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T01:07:00Z",
+     "tone": 3.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in London: latest",
+     "url": "https://global-desk.example/story/g4xefv",
+     "source": "global-desk.example",
+     "country": "CA",
+     "lang": "en",
+     "time": "2026-10-20T22:55:00Z",
+     "tone": 3.5,
+     "image": ""
+    }
+   ]
+  }
+ ],
+ "unclustered": 378
 }

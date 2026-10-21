@@ -51,6 +51,27 @@ export interface CellDetail {
   topCountries: [string, number][];
   languages: [string, number][];
   articles: Article[];
+  /** Groups of the cell's articles about the same thing, by n descending. May be absent. */
+  stories?: Story[];
+  /** Articles in no story; sum(stories.n) + unclustered == n. */
+  unclustered?: number;
+}
+
+export interface Story {
+  n: number;
+  o: number;
+  c: number;
+  l: number;
+  t: number;
+  first: string;
+  last: string;
+  /** A verbatim outlet title (the story's medoid article); may be empty. */
+  headline: string;
+  headlineSource: string;
+  headlineLang: string;
+  entities: string[];
+  /** Newest 6, at most 2 per outlet. */
+  articles: Article[];
 }
 
 /** Resolves a path against the page so the site works under any base path. */

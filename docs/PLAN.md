@@ -177,6 +177,15 @@ Pages would have blown the 100 GB/month soft limit). First cache-seeded run pass
 05:38 UTC. Repo variable `ALLOW_COLD_START` gates cold starts: true for seeding,
 to be set false once the warm carry is proven. Items 2 and 4 are in progress.
 
+**Status ~05:50 UTC:** warm carry proven (run at 05:39 restored the cache, 2 frames),
+`ALLOW_COLD_START` set to false. Item 4 (detailed base map) pushed as 67c1e3a. Item 2
+ingest side pushed as 912f4a0: 5,704 stories across 3,618 cells in under 5 s on a
+24h window; quality is good for top stories, with some bleed and 60-70% of busy
+cells' articles unclustered (12-story cap). Frontend stories panel in progress.
+Baseline (item 5) and video fields specified in the contract and in progress on the
+ingest side. The scheduled cron has still not fired on its own (only manual runs);
+new-repo schedules are known to lag by hours.
+
 ### Phase 3: Rich media and time
 - Embedded video where the platform allows embeds (YouTube etc.).
 - Time scrubber: replay the last 24 hours / 7 days.

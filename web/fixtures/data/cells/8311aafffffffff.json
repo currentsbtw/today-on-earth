@@ -3,28 +3,32 @@
  "name": "Moscow, Moskva, Russia",
  "n": 1105,
  "o": 73,
- "c": 22,
- "l": 17,
+ "c": 23,
+ "l": 15,
  "t": -0.1,
  "topOutlets": [
   [
-   "tageszeitung.example",
-   5
-  ],
-  [
-   "jakarta-pos.example",
-   5
-  ],
-  [
    "vesti-news.example",
    5
+  ],
+  [
+   "lagos-sun.example",
+   5
+  ],
+  [
+   "xinhua-sample.example",
+   4
+  ],
+  [
+   "gazeta-sample.example",
+   3
   ],
   [
    "al-akhbar.example",
    3
   ],
   [
-   "gazeta-sample.example",
+   "morning-wire.example",
    3
   ],
   [
@@ -32,41 +36,41 @@
    3
   ],
   [
-   "lagos-sun.example",
+   "tehran-times.example",
+   3
+  ],
+  [
+   "nation-ke.example",
    2
   ],
   [
-   "la-voz.example",
-   2
-  ],
-  [
-   "haaretz-sample.example",
-   2
-  ],
-  [
-   "seoul-daily.example",
+   "asahi-sample.example",
    2
   ]
  ],
  "topCountries": [
   [
-   "DE",
-   5
-  ],
-  [
-   "ID",
-   5
-  ],
-  [
    "RU",
    5
+  ],
+  [
+   "NG",
+   5
+  ],
+  [
+   "CN",
+   4
+  ],
+  [
+   "PL",
+   3
   ],
   [
    "EG",
    3
   ],
   [
-   "PL",
+   "GB",
    3
   ],
   [
@@ -74,45 +78,33 @@
    3
   ],
   [
-   "NG",
+   "IR",
+   3
+  ],
+  [
+   "KE",
    2
   ],
   [
-   "AR",
-   2
-  ],
-  [
-   "IL",
-   2
-  ],
-  [
-   "KR",
+   "JP",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   7
-  ],
-  [
-   "ar",
-   5
-  ],
-  [
-   "de",
-   5
-  ],
-  [
-   "id",
-   5
+   17
   ],
   [
    "ru",
    5
   ],
   [
-   "es",
+   "ar",
+   4
+  ],
+  [
+   "zh",
    4
   ],
   [
@@ -124,7 +116,15 @@
    3
   ],
   [
-   "he",
+   "fa",
+   3
+  ],
+  [
+   "ja",
+   2
+  ],
+  [
+   "tr",
    2
   ],
   [
@@ -134,504 +134,827 @@
  ],
  "articles": [
   {
-   "title": "[sample] Wildfire forces evacuations near Moscow",
-   "url": "https://al-akhbar.example/news/f95fb",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T04:48:00Z",
-   "tone": -3.1,
+   "title": "[sample] Election commission publishes turnout figures near Moscow",
+   "url": "https://nation-ke.example/news/ayo26y",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-21T05:27:00Z",
+   "tone": -2.7,
    "image": ""
   },
   {
    "title": "[sample] Aid convoy reaches border crossing near Moscow",
-   "url": "https://gazeta-sample.example/news/1r2e0t",
+   "url": "https://harbour-press.example/news/8jsmxo",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-21T05:03:00Z",
+   "tone": -2.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Moscow",
+   "url": "https://gazeta-sample.example/news/2bptij",
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-21T04:21:00Z",
-   "tone": 3.4,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://lagos-sun.example/news/8aqres",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-21T04:07:00Z",
-   "tone": 3.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Moscow",
-   "url": "https://al-akhbar.example/news/6bvf7i",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T03:34:00Z",
-   "tone": 1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Moscow",
-   "url": "https://tageszeitung.example/news/dkzwi",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-21T03:14:00Z",
-   "tone": 2.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Moscow",
-   "url": "https://corriere-sample.example/news/drv6tk",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-21T02:38:00Z",
-   "tone": -6.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Moscow",
-   "url": "https://al-akhbar.example/news/215mgz",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-21T02:13:00Z",
-   "tone": 1.4,
+   "time": "2026-10-21T04:29:00Z",
+   "tone": 1.7,
    "image": ""
   },
   {
    "title": "[sample] Trade talks resume after pause near Moscow",
-   "url": "https://nord-avis.example/news/apbh66",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-21T01:35:00Z",
-   "tone": -4.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Moscow",
-   "url": "https://jakarta-pos.example/news/c5frft",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-21T01:09:00Z",
-   "tone": 1.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Moscow",
-   "url": "https://la-voz.example/news/1xa7mx",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-21T00:56:00Z",
-   "tone": 4.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Moscow",
-   "url": "https://nation-ke.example/news/eqc47w",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-21T00:28:00Z",
-   "tone": -0.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Moscow",
-   "url": "https://wire-service.example/news/7i3ffj",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T23:46:00Z",
-   "tone": -1.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Moscow",
-   "url": "https://la-voz.example/news/bursld",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T23:26:00Z",
-   "tone": 1.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Moscow",
-   "url": "https://vesti-news.example/news/21c60h",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T23:04:00Z",
-   "tone": 2.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Moscow",
-   "url": "https://jakarta-pos.example/news/eon4ck",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T22:39:00Z",
-   "tone": -0.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Moscow",
-   "url": "https://jakarta-pos.example/news/20uugs",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T22:09:00Z",
-   "tone": 1.2,
+   "url": "https://tageszeitung.example/news/d20ggm",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-21T03:57:00Z",
+   "tone": -3.7,
    "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Moscow",
-   "url": "https://haaretz-sample.example/news/1j9wpz",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T21:26:00Z",
+   "url": "https://la-voz.example/news/3f994o",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-21T03:37:00Z",
+   "tone": 1.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Moscow",
+   "url": "https://al-akhbar.example/news/40vs51",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-21T03:12:00Z",
+   "tone": -4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Moscow",
+   "url": "https://nation-ke.example/news/2bwly",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-21T02:33:00Z",
+   "tone": -2.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Moscow",
+   "url": "https://cape-mail.example/news/2r5bil",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-21T02:03:00Z",
+   "tone": 3.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Moscow",
+   "url": "https://morning-wire.example/news/cmukm5",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-21T01:38:00Z",
+   "tone": 3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Moscow",
+   "url": "https://gazeta-sample.example/news/8xpm8h",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-21T01:17:00Z",
+   "tone": -0.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Moscow",
+   "url": "https://asahi-sample.example/news/4ah0tj",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-21T00:50:00Z",
+   "tone": 1.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Moscow",
+   "url": "https://corriere-sample.example/news/eo9yov",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-21T00:20:00Z",
+   "tone": 2.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Moscow",
+   "url": "https://vesti-news.example/news/ble2yb",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T23:47:00Z",
+   "tone": 4.3,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://lagos-sun.example/news/9gfvpl",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T23:20:00Z",
+   "tone": 3.9,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://al-akhbar.example/news/22r3re",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T22:59:00Z",
+   "tone": 0.4,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://xinhua-sample.example/news/a8gbej",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T22:34:00Z",
+   "tone": -5.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Moscow",
+   "url": "https://hurriyet-sample.example/news/51cn27",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T22:04:00Z",
+   "tone": 4.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Moscow",
+   "url": "https://global-desk.example/news/42ygf",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T21:44:00Z",
+   "tone": 4.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Moscow",
+   "url": "https://o-correio.example/news/antw8q",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T21:18:00Z",
+   "tone": -5.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Moscow",
+   "url": "https://seoul-daily.example/news/9364r6",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T20:40:00Z",
+   "tone": 3.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Moscow",
+   "url": "https://vesti-news.example/news/5t0om8",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T20:22:00Z",
+   "tone": 2.3,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://lagos-sun.example/news/9lc08k",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T19:56:00Z",
+   "tone": 3.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Moscow",
+   "url": "https://xinhua-sample.example/news/37daah",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T19:09:00Z",
+   "tone": 1.9,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://seoul-daily.example/news/b76twt",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T18:42:00Z",
+   "tone": -5.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Moscow",
+   "url": "https://vesti-news.example/news/4ed6kw",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T18:31:00Z",
+   "tone": -0.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Moscow",
+   "url": "https://vesti-news.example/news/djnx53",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T18:00:00Z",
+   "tone": -2.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Moscow",
+   "url": "https://lagos-sun.example/news/7pxlsj",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T17:29:00Z",
+   "tone": -3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Moscow",
+   "url": "https://asahi-sample.example/news/6garru",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T17:10:00Z",
    "tone": 1.7,
    "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Moscow",
-   "url": "https://vesti-news.example/news/6geikv",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T21:10:00Z",
-   "tone": -0.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Moscow",
-   "url": "https://corriere-sample.example/news/5166ry",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T20:40:00Z",
-   "tone": 3.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Moscow",
-   "url": "https://seoul-daily.example/news/cmycni",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T20:07:00Z",
-   "tone": -3.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Moscow",
-   "url": "https://le-quotidien.example/news/ewu5vk",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T19:39:00Z",
-   "tone": 0.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Moscow",
-   "url": "https://tehran-times.example/news/2k3pis",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T19:20:00Z",
-   "tone": -1.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Moscow",
-   "url": "https://vesti-news.example/news/flkeaj",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T18:53:00Z",
-   "tone": -4.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Moscow",
-   "url": "https://xinhua-sample.example/news/eamjqo",
+   "url": "https://xinhua-sample.example/news/8a9dyt",
    "source": "xinhua-sample.example",
    "country": "CN",
    "lang": "zh",
-   "time": "2026-10-20T18:27:00Z",
-   "tone": -1.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Moscow",
-   "url": "https://vesti-news.example/news/280y0c",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T17:59:00Z",
+   "time": "2026-10-20T16:25:00Z",
    "tone": 0.5,
    "image": ""
   },
   {
-   "title": "[sample] Storm disrupts transport links near Moscow",
-   "url": "https://gazeta-sample.example/news/3ltmmx",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T17:30:00Z",
-   "tone": 0.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Moscow",
-   "url": "https://vesti-news.example/news/4sgpd2",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T16:48:00Z",
-   "tone": 1.6,
-   "image": ""
-  },
-  {
    "title": "",
-   "url": "https://lagos-sun.example/news/2u2dpe",
-   "source": "lagos-sun.example",
-   "country": "NG",
+   "url": "https://wire-service.example/news/dl9i3t",
+   "source": "wire-service.example",
+   "country": "",
    "lang": "en",
-   "time": "2026-10-20T16:25:00Z",
-   "tone": 4.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Moscow",
-   "url": "https://kyiv-herald.example/news/53ds8n",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T15:54:00Z",
-   "tone": -3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Moscow",
-   "url": "https://gulf-report.example/news/faavqw",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T15:31:00Z",
-   "tone": 3.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Moscow",
-   "url": "https://haaretz-sample.example/news/obgud",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T15:12:00Z",
-   "tone": -5.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Moscow",
-   "url": "https://el-diario.example/news/9seyv1",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T14:33:00Z",
-   "tone": -4.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Moscow",
-   "url": "https://harbour-press.example/news/ai5u2m",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T14:13:00Z",
-   "tone": 2.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Moscow",
-   "url": "https://corriere-sample.example/news/dp5mdy",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T13:39:00Z",
-   "tone": 3.8,
+   "time": "2026-10-20T16:12:00Z",
+   "tone": -3.9,
    "image": ""
   },
   {
    "title": "[sample] Aid convoy reaches border crossing near Moscow",
-   "url": "https://tehran-times.example/news/2511gv",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T13:15:00Z",
-   "tone": 2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Moscow",
-   "url": "https://jakarta-pos.example/news/9unjwo",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T12:56:00Z",
-   "tone": -2.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Moscow",
-   "url": "https://tageszeitung.example/news/ay3nsm",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T12:30:00Z",
-   "tone": -5.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Moscow",
-   "url": "https://gazeta-sample.example/news/2zrlr9",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T11:45:00Z",
-   "tone": 0.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Moscow",
-   "url": "https://o-correio.example/news/22hjfp",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T11:31:00Z",
-   "tone": 3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Moscow",
-   "url": "https://tageszeitung.example/news/g9aggz",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T11:01:00Z",
-   "tone": 0.4,
+   "url": "https://nord-avis.example/news/a0n38z",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T15:33:00Z",
+   "tone": -6.5,
    "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Moscow",
-   "url": "https://el-diario.example/news/e9lj65",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T10:26:00Z",
-   "tone": 2.4,
+   "url": "https://corriere-sample.example/news/8kxk7g",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T15:04:00Z",
+   "tone": -0.3,
    "image": ""
   },
   {
-   "title": "[sample] Football club confirms new coach near Moscow",
-   "url": "https://cape-mail.example/news/fdbk88",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T10:13:00Z",
-   "tone": 4.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Moscow",
-   "url": "https://hurriyet-sample.example/news/6jns53",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T09:33:00Z",
+   "title": "[sample] Researchers report vaccine trial results near Moscow",
+   "url": "https://jakarta-pos.example/news/4st5xo",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T14:47:00Z",
    "tone": -2.3,
    "image": ""
   },
   {
+   "title": "[sample] Researchers report vaccine trial results near Moscow",
+   "url": "https://gazeta-sample.example/news/84ol8z",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T14:16:00Z",
+   "tone": 0.9,
+   "image": ""
+  },
+  {
    "title": "[sample] Protest gathers in city centre near Moscow",
-   "url": "https://hurriyet-sample.example/news/aghmnp",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T09:05:00Z",
-   "tone": -5.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Moscow",
-   "url": "https://jakarta-pos.example/news/6tcxq2",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T08:36:00Z",
-   "tone": 2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Moscow",
-   "url": "https://tageszeitung.example/news/anjxrk",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T08:14:00Z",
-   "tone": 2.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Moscow",
-   "url": "https://harbour-press.example/news/8aa5ir",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T07:37:00Z",
-   "tone": -6.2,
+   "url": "https://vesti-news.example/news/7lljng",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T13:40:00Z",
+   "tone": 1.9,
    "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Moscow",
-   "url": "https://tageszeitung.example/news/6xw64f",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T07:18:00Z",
-   "tone": -0.9,
+   "url": "https://morning-wire.example/news/3j7wbm",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T13:20:00Z",
+   "tone": -1.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Moscow",
+   "url": "https://hindustan-post.example/news/ej6kuh",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T12:51:00Z",
+   "tone": -5.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Moscow",
+   "url": "https://lagos-sun.example/news/10lhes",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T12:26:00Z",
+   "tone": -5.6,
    "image": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Moscow",
-   "url": "https://gulf-report.example/news/2a492x",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T06:49:00Z",
-   "tone": -6.8,
+   "url": "https://morning-wire.example/news/7tw516",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T11:51:00Z",
+   "tone": -0.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Moscow",
+   "url": "https://wire-service.example/news/2dcs1k",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T11:26:00Z",
+   "tone": -1.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Moscow",
+   "url": "https://tehran-times.example/news/aiv3x3",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T11:07:00Z",
+   "tone": -1,
    "image": ""
   },
   {
    "title": "[sample] Wildfire forces evacuations near Moscow",
-   "url": "https://seoul-daily.example/news/bqbemj",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T06:14:00Z",
-   "tone": 4.5,
+   "url": "https://al-akhbar.example/news/1tz5zq",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T10:42:00Z",
+   "tone": 3.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Moscow",
+   "url": "https://lagos-sun.example/news/9xtbyn",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T10:16:00Z",
+   "tone": -0.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Moscow",
+   "url": "https://daily-ledger.example/news/fgqumq",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T09:48:00Z",
+   "tone": 0.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Moscow",
+   "url": "https://corriere-sample.example/news/gf1vm6",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T09:19:00Z",
+   "tone": 4.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Moscow",
+   "url": "https://gulf-report.example/news/3a2omk",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T08:46:00Z",
+   "tone": 1.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Moscow",
+   "url": "https://xinhua-sample.example/news/dti31o",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T08:07:00Z",
+   "tone": 2.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Moscow",
+   "url": "https://tehran-times.example/news/5dv67b",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T07:58:00Z",
+   "tone": -3.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Moscow",
+   "url": "https://hurriyet-sample.example/news/1sv81h",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T07:30:00Z",
+   "tone": 3.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Moscow",
+   "url": "https://tehran-times.example/news/exrkt7",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T06:56:00Z",
+   "tone": 0.1,
    "image": ""
   }
- ]
+ ],
+ "stories": [
+  {
+   "n": 269,
+   "o": 25,
+   "c": 9,
+   "l": 5,
+   "t": 0.5,
+   "first": "2026-10-20T17:27:00Z",
+   "last": "2026-10-21T02:19:00Z",
+   "headline": "[sample] Wildfire forces evacuations in hills in Moscow: reactions",
+   "headlineSource": "le-quotidien.example",
+   "headlineLang": "fr",
+   "entities": [
+    "wildfire",
+    "evacuation",
+    "fire service",
+    "moscow"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Moscow: what we know",
+     "url": "https://la-voz.example/story/3z2r42",
+     "source": "la-voz.example",
+     "country": "AR",
+     "lang": "es",
+     "time": "2026-10-21T02:19:00Z",
+     "tone": 0.1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Moscow: live updates",
+     "url": "https://wire-service.example/story/9osq3u",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T01:40:00Z",
+     "tone": 2.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Moscow: reactions",
+     "url": "https://le-quotidien.example/story/2dphct",
+     "source": "le-quotidien.example",
+     "country": "FR",
+     "lang": "fr",
+     "time": "2026-10-21T01:39:00Z",
+     "tone": -2.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Moscow: reactions",
+     "url": "https://xinhua-sample.example/story/6ye5eh",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-20T23:40:00Z",
+     "tone": 3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Moscow: latest",
+     "url": "https://hindustan-post.example/story/3vxwbi",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-20T22:59:00Z",
+     "tone": 3.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Moscow: what we know",
+     "url": "https://asahi-sample.example/story/ckkkxu",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-20T23:19:00Z",
+     "tone": -3.3,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 233,
+   "o": 22,
+   "c": 8,
+   "l": 5,
+   "t": -0.7,
+   "first": "2026-10-20T22:42:00Z",
+   "last": "2026-10-21T04:01:00Z",
+   "headline": "[sample] Strike halts rail services in Moscow: live updates",
+   "headlineSource": "gulf-report.example",
+   "headlineLang": "ar",
+   "entities": [
+    "trade union",
+    "rail",
+    "labour",
+    "moscow"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Strike halts rail services in Moscow: reactions",
+     "url": "https://lagos-sun.example/story/4op4rw",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-21T04:01:00Z",
+     "tone": 0.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Moscow: latest",
+     "url": "https://gazeta-sample.example/story/fstmcv",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T03:06:00Z",
+     "tone": 2.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Moscow: explained",
+     "url": "https://tageszeitung.example/story/2b7r5i",
+     "source": "tageszeitung.example",
+     "country": "DE",
+     "lang": "de",
+     "time": "2026-10-21T02:23:00Z",
+     "tone": -5.7,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Moscow: timeline",
+     "url": "https://hindustan-post.example/story/7xyv3h",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T02:43:00Z",
+     "tone": 1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Moscow: live updates",
+     "url": "https://gulf-report.example/story/8zxmsw",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T01:05:00Z",
+     "tone": 1.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Moscow: latest",
+     "url": "https://tageszeitung.example/story/48x0tb",
+     "source": "tageszeitung.example",
+     "country": "DE",
+     "lang": "de",
+     "time": "2026-10-21T00:01:00Z",
+     "tone": -4.7,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 205,
+   "o": 19,
+   "c": 7,
+   "l": 4,
+   "t": 0,
+   "first": "2026-10-20T20:27:00Z",
+   "last": "2026-10-21T05:07:00Z",
+   "headline": "[sample] Aid convoy reaches border crossing in Moscow: analysis",
+   "headlineSource": "daily-ledger.example",
+   "headlineLang": "en",
+   "entities": [
+    "united nations",
+    "refugees",
+    "humanitarian aid",
+    "moscow"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Moscow: in pictures",
+     "url": "https://gazeta-sample.example/story/1dbxz7",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T05:07:00Z",
+     "tone": -0.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Moscow: analysis",
+     "url": "https://daily-ledger.example/story/7widy",
+     "source": "daily-ledger.example",
+     "country": "US",
+     "lang": "en",
+     "time": "2026-10-21T04:33:00Z",
+     "tone": 3.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Moscow: live updates",
+     "url": "https://vesti-news.example/story/5op1af",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T04:17:00Z",
+     "tone": -1.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Moscow: timeline",
+     "url": "https://hindustan-post.example/story/9yn8ez",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T02:49:00Z",
+     "tone": -2.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Moscow: timeline",
+     "url": "https://morning-wire.example/story/bvrz0l",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-21T02:59:00Z",
+     "tone": 0.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Moscow: live updates",
+     "url": "https://daily-ledger.example/story/7dyebh",
+     "source": "daily-ledger.example",
+     "country": "US",
+     "lang": "en",
+     "time": "2026-10-21T01:07:00Z",
+     "tone": -0.3,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 177,
+   "o": 16,
+   "c": 6,
+   "l": 4,
+   "t": 0,
+   "first": "2026-10-20T15:40:00Z",
+   "last": "2026-10-21T02:09:00Z",
+   "headline": "[sample] Court hears appeal in corruption case in Moscow: latest",
+   "headlineSource": "wire-service.example",
+   "headlineLang": "en",
+   "entities": [
+    "supreme court",
+    "corruption",
+    "prosecutor",
+    "moscow"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Court hears appeal in corruption case in Moscow: what we know",
+     "url": "https://tehran-times.example/story/be2ldl",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-21T02:09:00Z",
+     "tone": -4.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Moscow: latest",
+     "url": "https://wire-service.example/story/i7zh9",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T01:44:00Z",
+     "tone": 3.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Moscow: explained",
+     "url": "https://o-correio.example/story/3xdf6j",
+     "source": "o-correio.example",
+     "country": "BR",
+     "lang": "pt",
+     "time": "2026-10-21T01:21:00Z",
+     "tone": 2.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Moscow: what we know",
+     "url": "https://global-desk.example/story/4gsfg9",
+     "source": "global-desk.example",
+     "country": "CA",
+     "lang": "en",
+     "time": "2026-10-21T00:57:00Z",
+     "tone": -0.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Moscow: what we know",
+     "url": "https://gazeta-sample.example/story/6le0ki",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-20T23:33:00Z",
+     "tone": -1.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Moscow: live updates",
+     "url": "https://daily-ledger.example/story/76z852",
+     "source": "daily-ledger.example",
+     "country": "US",
+     "lang": "en",
+     "time": "2026-10-20T22:09:00Z",
+     "tone": 0.1,
+     "image": ""
+    }
+   ]
+  }
+ ],
+ "unclustered": 221
 }

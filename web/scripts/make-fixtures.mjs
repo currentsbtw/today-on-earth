@@ -75,6 +75,74 @@ const iso = (d) => d.toISOString().replace(/\.\d{3}Z$/, 'Z');
 const now = new Date();
 now.setUTCMinutes(Math.floor(now.getUTCMinutes() / 15) * 15, 0, 0);
 
+// [headline stem, entities as GDELT would spell them (lowercase)]
+const STORY_TOPICS = [
+  ['Ministers meet over energy prices', ['energy', 'european union', 'oil prices']],
+  ['Election count enters second day', ['election commission', 'parliament', 'voters']],
+  ['Storm damage closes main roads', ['natural disaster', 'transport', 'emergency services']],
+  ['Central bank leaves rates unchanged', ['central bank', 'inflation', 'interest rates']],
+  ['Court hears appeal in corruption case', ['supreme court', 'corruption', 'prosecutor']],
+  ['Aid convoy reaches border crossing', ['united nations', 'refugees', 'humanitarian aid']],
+  ['Strike halts rail services', ['trade union', 'rail', 'labour']],
+  ['Wildfire forces evacuations in hills', ['wildfire', 'evacuation', 'fire service']],
+];
+const ANGLES = ['what we know', 'latest', 'reactions', 'timeline', 'in pictures', 'explained', 'live updates', 'analysis'];
+
+/** 2-4 stories whose n sum to at most the cell's n; the rest is `unclustered`. */
+function makeStories(place, n, stats, pool) {
+  const count = 2 + Math.floor(rand() * 3);
+  const raw = Array.from({ length: count }, () => 0.08 + rand() * 0.3);
+  // Stories cover at most ~80% of the cell, so some articles stay unclustered.
+  const scale = Math.min(1, 0.8 / raw.reduce((a, b) => a + b, 0));
+  const shares = raw.map((x) => x * scale).sort((a, b) => b - a);
+  const short = place.split(',')[0];
+  const topics = [...STORY_TOPICS].sort(() => rand() - 0.5).slice(0, count);
+  const stories = [];
+  for (let s = 0; s < count; s++) {
+    const sn = Math.max(3, Math.round(n * shares[s]));
+    const [stem, entities] = topics[s];
+    const perOutlet = new Map();
+    const arts = [];
+    const newest = 15 + Math.floor(rand() * 240);
+    for (let i = 0; arts.length < Math.min(6, sn) && i < 200; i++) {
+      const outlet = pick(pool);
+      if ((perOutlet.get(outlet[0]) ?? 0) >= 2) continue;
+      perOutlet.set(outlet[0], (perOutlet.get(outlet[0]) ?? 0) + 1);
+      arts.push({
+        title: `[sample] ${stem} in ${short}: ${pick(ANGLES)}`,
+        url: `https://${outlet[0]}/story/${Math.floor(rand() * 1e9).toString(36)}`,
+        source: outlet[0],
+        country: outlet[1],
+        lang: outlet[2],
+        time: iso(new Date(now.getTime() - (newest + arts.length * (20 + Math.floor(rand() * 40))) * 60000)),
+        tone: round1(rand() * 10 - 6),
+        image: '',
+      });
+    }
+    const medoid = arts[Math.floor(rand() * arts.length)];
+    const o = Math.min(sn, Math.max(perOutlet.size, Math.round(stats.o * shares[s] * 1.4)));
+    stories.push({
+      n: sn,
+      o,
+      c: Math.min(o, Math.max(1, Math.round(stats.c * shares[s] * 1.6))),
+      l: Math.min(o, Math.max(new Set(arts.map((a) => a.lang)).size, Math.round(stats.l * shares[s] * 1.5))),
+      t: round1(arts.reduce((sum, a) => sum + a.tone, 0) / arts.length),
+      // The story's first article is at or before the oldest of its newest six.
+      first: iso(new Date(Math.min(Date.parse(arts.at(-1).time), now.getTime() - (newest + 120 + Math.floor(rand() * 600)) * 60000))),
+      last: arts[0].time,
+      headline: medoid.title,
+      headlineSource: medoid.source,
+      headlineLang: medoid.lang,
+      entities: [...entities, short.toLowerCase()],
+      articles: arts,
+    });
+  }
+  stories.sort((a, b) => b.n - a.n);
+  const grouped = stories.reduce((sum, s) => sum + s.n, 0);
+  if (grouped > n) throw new Error(`stories exceed n in ${place}`);
+  return { stories, unclustered: n - grouped };
+}
+
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(new URL('cells/', OUT), { recursive: true });
 
@@ -133,6 +201,9 @@ for (const [name, lat, lon, n, home] of PLACES) {
     topOutlets: tally('source'), topCountries: tally('country'), languages: tally('lang'),
     articles,
   };
+  // Stories for cells with n >= 20; smaller cells keep the old shape (no `stories` key)
+  // so the panel's no-stories layout stays covered.
+  if (n >= 20) Object.assign(detail, makeStories(name, n, stats, pool));
   writeFileSync(new URL(`cells/${id}.json`, OUT), JSON.stringify(detail, null, 1) + '\n');
 }
 

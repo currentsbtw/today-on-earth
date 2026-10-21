@@ -53,3 +53,19 @@ export function safeHref(url: string): string | null {
 export function shortName(name: string): string {
   return name.split(',')[0].trim();
 }
+
+/**
+ * Key for matching a city to a news place name: lowercase, no diacritics, the part before
+ * the first comma, without a trailing "d.c." / "city" / "metropolitan".
+ * "Washington, D.C." -> "washington", "Zürich" -> "zurich", "Mexico City" -> "mexico".
+ */
+export function placeKey(name: string): string {
+  return name
+    .split(',')[0]
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLowerCase()
+    .trim()
+    .replace(/\s+(d\.c\.|city|metropolitan)$/, '')
+    .trim();
+}

@@ -3,635 +3,878 @@
  "name": "Los Angeles, California, United States",
  "n": 470,
  "o": 48,
- "c": 22,
- "l": 13,
- "t": -1.1,
+ "c": 21,
+ "l": 16,
+ "t": -0.4,
  "topOutlets": [
   [
-   "corriere-sample.example",
-   4
-  ],
-  [
-   "la-voz.example",
-   4
-  ],
-  [
    "daily-ledger.example",
+   5
+  ],
+  [
+   "asahi-sample.example",
    4
   ],
   [
-   "nord-avis.example",
+   "o-correio.example",
    4
   ],
   [
-   "lagos-sun.example",
+   "el-diario.example",
    4
+  ],
+  [
+   "al-akhbar.example",
+   3
+  ],
+  [
+   "jakarta-pos.example",
+   3
+  ],
+  [
+   "haaretz-sample.example",
+   2
   ],
   [
    "hindustan-post.example",
    2
   ],
   [
-   "gazeta-sample.example",
+   "cape-mail.example",
    2
   ],
   [
-   "global-desk.example",
-   2
-  ],
-  [
-   "o-correio.example",
-   2
-  ],
-  [
-   "seoul-daily.example",
+   "corriere-sample.example",
    2
   ]
  ],
  "topCountries": [
   [
-   "IT",
-   4
-  ],
-  [
-   "AR",
-   4
-  ],
-  [
    "US",
+   5
+  ],
+  [
+   "JP",
    4
   ],
   [
-   "NO",
+   "BR",
    4
   ],
   [
-   "NG",
+   "MX",
    4
+  ],
+  [
+   "EG",
+   3
+  ],
+  [
+   "ID",
+   3
+  ],
+  [
+   "IL",
+   2
   ],
   [
    "IN",
    2
   ],
   [
-   "PL",
+   "ZA",
    2
   ],
   [
-   "CA",
-   2
-  ],
-  [
-   "BR",
-   2
-  ],
-  [
-   "KR",
+   "IT",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   21
+   14
   ],
   [
    "es",
    5
   ],
   [
-   "it",
+   "ja",
    4
-  ],
-  [
-   "no",
-   4
-  ],
-  [
-   "pl",
-   2
   ],
   [
    "pt",
+   4
+  ],
+  [
+   "ar",
+   3
+  ],
+  [
+   "id",
+   3
+  ],
+  [
+   "he",
    2
   ],
   [
-   "ko",
-   2
-  ],
-  [
-   "ru",
-   2
-  ],
-  [
-   "fr",
+   "it",
    2
   ],
   [
    "tr",
    2
+  ],
+  [
+   "ru",
+   2
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Court hears appeal in landmark case near Los Angeles",
-   "url": "https://hindustan-post.example/news/2roaoo",
-   "source": "hindustan-post.example",
-   "country": "IN",
+   "title": "[sample] Officials meet over regional dispute near Los Angeles",
+   "url": "https://daily-ledger.example/news/ghyfjd",
+   "source": "daily-ledger.example",
+   "country": "US",
    "lang": "en",
-   "time": "2026-10-21T04:59:00Z",
-   "tone": 0.8,
+   "time": "2026-10-21T05:25:00Z",
+   "tone": -0.4,
    "image": ""
   },
   {
-   "title": "[sample] Court hears appeal in landmark case near Los Angeles",
-   "url": "https://corriere-sample.example/news/1ut7pt",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-21T04:22:00Z",
-   "tone": -2.5,
+   "title": "[sample] Protest gathers in city centre near Los Angeles",
+   "url": "https://asahi-sample.example/news/2y60pf",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-21T05:07:00Z",
+   "tone": -0.1,
    "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Los Angeles",
-   "url": "https://la-voz.example/news/9gj69b",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-21T04:08:00Z",
-   "tone": 0.7,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://daily-ledger.example/news/3k1olc",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-21T03:24:00Z",
-   "tone": 0.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Los Angeles",
-   "url": "https://gazeta-sample.example/news/106aq0",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-21T03:11:00Z",
+   "url": "https://al-akhbar.example/news/5ksrl5",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-21T04:27:00Z",
    "tone": 2.5,
    "image": ""
   },
   {
-   "title": "[sample] Ministers discuss energy prices near Los Angeles",
-   "url": "https://nord-avis.example/news/dzrjmy",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-21T02:44:00Z",
-   "tone": -5.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Los Angeles",
-   "url": "https://global-desk.example/news/6cqbij",
-   "source": "global-desk.example",
-   "country": "CA",
+   "title": "[sample] Protest gathers in city centre near Los Angeles",
+   "url": "https://daily-ledger.example/news/7lovbx",
+   "source": "daily-ledger.example",
+   "country": "US",
    "lang": "en",
-   "time": "2026-10-21T02:13:00Z",
-   "tone": -5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Los Angeles",
-   "url": "https://o-correio.example/news/dh1nvg",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-21T01:52:00Z",
-   "tone": -2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Los Angeles",
-   "url": "https://lagos-sun.example/news/123mu6",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-21T01:06:00Z",
-   "tone": -1.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Los Angeles",
-   "url": "https://seoul-daily.example/news/7r00ab",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-21T00:53:00Z",
-   "tone": 1.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Los Angeles",
-   "url": "https://morning-wire.example/news/g5tg7c",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-21T00:29:00Z",
-   "tone": -0.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Los Angeles",
-   "url": "https://wire-service.example/news/mi7vz",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T23:55:00Z",
+   "time": "2026-10-21T03:54:00Z",
    "tone": 4,
    "image": ""
   },
   {
-   "title": "[sample] Officials meet over regional dispute near Los Angeles",
-   "url": "https://nord-avis.example/news/ecftpu",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T23:29:00Z",
-   "tone": 3.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Los Angeles",
-   "url": "https://harbour-press.example/news/9ztd6t",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T22:54:00Z",
-   "tone": 1.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Los Angeles",
-   "url": "https://lagos-sun.example/news/b0zxaj",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T22:36:00Z",
-   "tone": -4.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Los Angeles",
-   "url": "https://lagos-sun.example/news/darrsi",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T21:57:00Z",
-   "tone": 0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Los Angeles",
-   "url": "https://la-voz.example/news/ailz8a",
+   "title": "[sample] Central bank holds interest rate near Los Angeles",
+   "url": "https://la-voz.example/news/clog46",
    "source": "la-voz.example",
    "country": "AR",
    "lang": "es",
-   "time": "2026-10-20T21:30:00Z",
-   "tone": -1.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Los Angeles",
-   "url": "https://o-correio.example/news/41g63k",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T20:57:00Z",
-   "tone": -0.2,
+   "time": "2026-10-21T03:33:00Z",
+   "tone": -2.2,
    "image": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Los Angeles",
-   "url": "https://wire-service.example/news/73zaik",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T20:47:00Z",
-   "tone": -0.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Los Angeles",
-   "url": "https://el-diario.example/news/eeeflx",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T20:02:00Z",
-   "tone": -3.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Los Angeles",
-   "url": "https://cape-mail.example/news/7gmjje",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T19:40:00Z",
-   "tone": -2.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Los Angeles",
-   "url": "https://hindustan-post.example/news/cqmwaq",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T19:16:00Z",
-   "tone": 2.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Los Angeles",
-   "url": "https://la-voz.example/news/1ls1bi",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T18:55:00Z",
-   "tone": -6.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Los Angeles",
-   "url": "https://daily-ledger.example/news/2coeaw",
+   "url": "https://daily-ledger.example/news/3c6t80",
    "source": "daily-ledger.example",
    "country": "US",
    "lang": "en",
-   "time": "2026-10-20T18:24:00Z",
-   "tone": -6.9,
+   "time": "2026-10-21T03:11:00Z",
+   "tone": 2.3,
    "image": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Los Angeles",
-   "url": "https://nation-ke.example/news/cm7lse",
-   "source": "nation-ke.example",
-   "country": "KE",
+   "url": "https://daily-ledger.example/news/vka53",
+   "source": "daily-ledger.example",
+   "country": "US",
    "lang": "en",
-   "time": "2026-10-20T18:00:00Z",
-   "tone": -4.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Los Angeles",
-   "url": "https://global-desk.example/news/6za7qs",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T17:33:00Z",
-   "tone": -6.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Los Angeles",
-   "url": "https://harbour-press.example/news/bq9b7w",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T17:00:00Z",
-   "tone": -3.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Los Angeles",
-   "url": "https://nord-avis.example/news/d4v9co",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T16:36:00Z",
-   "tone": 4.1,
+   "time": "2026-10-21T02:34:00Z",
+   "tone": 4.6,
    "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Los Angeles",
-   "url": "https://vesti-news.example/news/2iq385",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T16:04:00Z",
-   "tone": -6.8,
+   "url": "https://haaretz-sample.example/news/28v40x",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-21T02:19:00Z",
+   "tone": -2.1,
    "image": ""
   },
   {
-   "title": "[sample] Football club confirms new coach near Los Angeles",
-   "url": "https://le-quotidien.example/news/9j03jp",
+   "title": "[sample] Trade talks resume after pause near Los Angeles",
+   "url": "https://le-quotidien.example/news/6feqb",
    "source": "le-quotidien.example",
    "country": "FR",
    "lang": "fr",
-   "time": "2026-10-20T15:32:00Z",
-   "tone": -0.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Los Angeles",
-   "url": "https://corriere-sample.example/news/344c4x",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T14:58:00Z",
+   "time": "2026-10-21T01:49:00Z",
    "tone": -1.1,
    "image": ""
   },
   {
-   "title": "[sample] Wildfire forces evacuations near Los Angeles",
-   "url": "https://le-quotidien.example/news/3g89u1",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T14:38:00Z",
+   "title": "[sample] Election commission publishes turnout figures near Los Angeles",
+   "url": "https://o-correio.example/news/63h2q4",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-21T01:26:00Z",
+   "tone": -2.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Los Angeles",
+   "url": "https://daily-ledger.example/news/d8ssib",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-21T00:52:00Z",
    "tone": -3.1,
    "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Los Angeles",
-   "url": "https://nord-avis.example/news/6rdqhd",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T14:21:00Z",
-   "tone": -3.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Los Angeles",
-   "url": "https://hurriyet-sample.example/news/duw078",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T13:41:00Z",
-   "tone": 1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Los Angeles",
-   "url": "https://tageszeitung.example/news/5a1xli",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T13:09:00Z",
-   "tone": -3.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Los Angeles",
-   "url": "https://seoul-daily.example/news/bxqtj6",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T12:44:00Z",
-   "tone": -2.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Los Angeles",
-   "url": "https://la-voz.example/news/f6ev2x",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T12:13:00Z",
-   "tone": -6.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Los Angeles",
-   "url": "https://hurriyet-sample.example/news/fnakgf",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T11:47:00Z",
+   "url": "https://hindustan-post.example/news/4q0q77",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-21T00:19:00Z",
    "tone": -1.8,
    "image": ""
   },
   {
-   "title": "[sample] Central bank holds interest rate near Los Angeles",
-   "url": "https://corriere-sample.example/news/qpfc8",
+   "title": "[sample] Researchers report vaccine trial results near Los Angeles",
+   "url": "https://cape-mail.example/news/ccmwsb",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-21T00:01:00Z",
+   "tone": -4.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Los Angeles",
+   "url": "https://corriere-sample.example/news/d61jk5",
    "source": "corriere-sample.example",
    "country": "IT",
    "lang": "it",
-   "time": "2026-10-20T11:20:00Z",
+   "time": "2026-10-20T23:25:00Z",
    "tone": 1,
    "image": ""
   },
   {
-   "title": "[sample] Officials meet over regional dispute near Los Angeles",
-   "url": "https://gulf-report.example/news/3246ad",
-   "source": "gulf-report.example",
-   "country": "AE",
+   "title": "[sample] Researchers report vaccine trial results near Los Angeles",
+   "url": "https://el-diario.example/news/bvtpar",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T23:06:00Z",
+   "tone": 1.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Los Angeles",
+   "url": "https://el-diario.example/news/1t8ldl",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T22:32:00Z",
+   "tone": -4.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Los Angeles",
+   "url": "https://hurriyet-sample.example/news/81yep9",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T22:13:00Z",
+   "tone": 3.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Los Angeles",
+   "url": "https://al-akhbar.example/news/c5ui4j",
+   "source": "al-akhbar.example",
+   "country": "EG",
    "lang": "ar",
-   "time": "2026-10-20T10:50:00Z",
-   "tone": -2.8,
+   "time": "2026-10-20T21:39:00Z",
+   "tone": -1.1,
    "image": ""
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Los Angeles",
-   "url": "https://vesti-news.example/news/5zwe26",
+   "url": "https://lagos-sun.example/news/age8kj",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T21:17:00Z",
+   "tone": 2.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Los Angeles",
+   "url": "https://jakarta-pos.example/news/d82eft",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T20:48:00Z",
+   "tone": 2.7,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://asahi-sample.example/news/aymmar",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T20:15:00Z",
+   "tone": -2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Los Angeles",
+   "url": "https://vesti-news.example/news/ccljww",
    "source": "vesti-news.example",
    "country": "RU",
    "lang": "ru",
-   "time": "2026-10-20T10:40:00Z",
+   "time": "2026-10-20T19:52:00Z",
+   "tone": 2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Los Angeles",
+   "url": "https://jakarta-pos.example/news/lqg9c",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T19:25:00Z",
+   "tone": -1.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Los Angeles",
+   "url": "https://corriere-sample.example/news/1gjg7w",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T18:55:00Z",
+   "tone": -1.8,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://vesti-news.example/news/60fpb9",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T18:18:00Z",
+   "tone": -0.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Los Angeles",
+   "url": "https://lagos-sun.example/news/ee59ub",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T17:53:00Z",
+   "tone": 3.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Los Angeles",
+   "url": "https://al-akhbar.example/news/9germ3",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T17:24:00Z",
+   "tone": -2.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Los Angeles",
+   "url": "https://haaretz-sample.example/news/oolxg",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T16:56:00Z",
+   "tone": 1.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Los Angeles",
+   "url": "https://asahi-sample.example/news/dhkj8w",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T16:25:00Z",
+   "tone": 4.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Los Angeles",
+   "url": "https://o-correio.example/news/4i7tfi",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T16:00:00Z",
+   "tone": 4.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Los Angeles",
+   "url": "https://tageszeitung.example/news/2m9hxr",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T15:34:00Z",
+   "tone": -0.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Los Angeles",
+   "url": "https://seoul-daily.example/news/3336i5",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T15:03:00Z",
+   "tone": 4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Los Angeles",
+   "url": "https://cape-mail.example/news/f0rmvr",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T14:44:00Z",
+   "tone": -2.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Los Angeles",
+   "url": "https://wire-service.example/news/1hrofk",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T14:13:00Z",
+   "tone": -4.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Los Angeles",
+   "url": "https://xinhua-sample.example/news/a56xck",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T13:42:00Z",
+   "tone": -0.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Los Angeles",
+   "url": "https://hindustan-post.example/news/c1abqp",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T13:15:00Z",
+   "tone": -1.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Los Angeles",
+   "url": "https://jakarta-pos.example/news/3eyncx",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T13:00:00Z",
+   "tone": -5.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Los Angeles",
+   "url": "https://o-correio.example/news/c9z857",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T12:18:00Z",
+   "tone": -3.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Los Angeles",
+   "url": "https://gazeta-sample.example/news/cey2wk",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T11:50:00Z",
+   "tone": -5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Los Angeles",
+   "url": "https://el-diario.example/news/etqibj",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T11:26:00Z",
+   "tone": -0.9,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://xinhua-sample.example/news/4y1bga",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T11:04:00Z",
+   "tone": -2.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Los Angeles",
+   "url": "https://gazeta-sample.example/news/ffzhy6",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T10:29:00Z",
+   "tone": -1.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Los Angeles",
+   "url": "https://tehran-times.example/news/acjwzj",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T10:15:00Z",
+   "tone": 1.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Los Angeles",
+   "url": "https://o-correio.example/news/21zvlh",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T09:32:00Z",
+   "tone": -4.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Los Angeles",
+   "url": "https://asahi-sample.example/news/fanbvy",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T09:06:00Z",
+   "tone": 0.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Los Angeles",
+   "url": "https://tageszeitung.example/news/e4afws",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T08:40:00Z",
+   "tone": 1.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Los Angeles",
+   "url": "https://hurriyet-sample.example/news/1vsxyx",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T08:15:00Z",
+   "tone": -5.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Los Angeles",
+   "url": "https://wire-service.example/news/7efz5z",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T07:40:00Z",
+   "tone": 3.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Los Angeles",
+   "url": "https://el-diario.example/news/43ph2l",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T07:17:00Z",
    "tone": 1.4,
    "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Los Angeles",
-   "url": "https://daily-ledger.example/news/837kdz",
-   "source": "daily-ledger.example",
-   "country": "US",
+   "url": "https://harbour-press.example/news/9tfpfr",
+   "source": "harbour-press.example",
+   "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T10:10:00Z",
-   "tone": 2.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Los Angeles",
-   "url": "https://lagos-sun.example/news/17tosc",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T09:28:00Z",
-   "tone": 0.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Los Angeles",
-   "url": "https://daily-ledger.example/news/5kuybk",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T08:59:00Z",
-   "tone": 0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Los Angeles",
-   "url": "https://al-akhbar.example/news/c7er0b",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T08:50:00Z",
-   "tone": 0.4,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://corriere-sample.example/news/632437",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T08:23:00Z",
-   "tone": -1.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Los Angeles",
-   "url": "https://cape-mail.example/news/dtqkzl",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T07:36:00Z",
-   "tone": 2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Los Angeles",
-   "url": "https://asahi-sample.example/news/8l5g3s",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T07:24:00Z",
-   "tone": 4.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Los Angeles",
-   "url": "https://gazeta-sample.example/news/aaaf3y",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
    "time": "2026-10-20T06:55:00Z",
-   "tone": 1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Los Angeles",
-   "url": "https://morning-wire.example/news/bulubl",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T06:31:00Z",
-   "tone": -1.3,
+   "tone": -3.5,
    "image": ""
   }
- ]
+ ],
+ "stories": [
+  {
+   "n": 164,
+   "o": 23,
+   "c": 12,
+   "l": 8,
+   "t": -1.3,
+   "first": "2026-10-20T20:16:00Z",
+   "last": "2026-10-21T03:19:00Z",
+   "headline": "[sample] Aid convoy reaches border crossing in Los Angeles: in pictures",
+   "headlineSource": "haaretz-sample.example",
+   "headlineLang": "he",
+   "entities": [
+    "united nations",
+    "refugees",
+    "humanitarian aid",
+    "los angeles"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Los Angeles: in pictures",
+     "url": "https://gulf-report.example/story/997a1b",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T03:19:00Z",
+     "tone": 1.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Los Angeles: reactions",
+     "url": "https://cape-mail.example/story/b8f299",
+     "source": "cape-mail.example",
+     "country": "ZA",
+     "lang": "en",
+     "time": "2026-10-21T02:52:00Z",
+     "tone": -1.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Los Angeles: in pictures",
+     "url": "https://haaretz-sample.example/story/azu9vs",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-21T01:47:00Z",
+     "tone": -1.9,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Los Angeles: reactions",
+     "url": "https://wire-service.example/story/aznucj",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T01:55:00Z",
+     "tone": -2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Los Angeles: what we know",
+     "url": "https://al-akhbar.example/story/4oas4g",
+     "source": "al-akhbar.example",
+     "country": "EG",
+     "lang": "ar",
+     "time": "2026-10-21T00:15:00Z",
+     "tone": 0.1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Los Angeles: in pictures",
+     "url": "https://asahi-sample.example/story/4wazo0",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T01:34:00Z",
+     "tone": -3.8,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 129,
+   "o": 18,
+   "c": 9,
+   "l": 7,
+   "t": -0.6,
+   "first": "2026-10-20T22:48:00Z",
+   "last": "2026-10-21T03:59:00Z",
+   "headline": "[sample] Ministers meet over energy prices in Los Angeles: live updates",
+   "headlineSource": "el-diario.example",
+   "headlineLang": "es",
+   "entities": [
+    "energy",
+    "european union",
+    "oil prices",
+    "los angeles"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Ministers meet over energy prices in Los Angeles: live updates",
+     "url": "https://lagos-sun.example/story/8c5ap1",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-21T03:59:00Z",
+     "tone": -4.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Los Angeles: latest",
+     "url": "https://kyiv-herald.example/story/g9dbmj",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-21T03:34:00Z",
+     "tone": -3.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Los Angeles: what we know",
+     "url": "https://daily-ledger.example/story/ff171s",
+     "source": "daily-ledger.example",
+     "country": "US",
+     "lang": "en",
+     "time": "2026-10-21T02:43:00Z",
+     "tone": -5.3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Los Angeles: latest",
+     "url": "https://hurriyet-sample.example/story/7ym4gk",
+     "source": "hurriyet-sample.example",
+     "country": "TR",
+     "lang": "tr",
+     "time": "2026-10-21T01:56:00Z",
+     "tone": 2.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Los Angeles: what we know",
+     "url": "https://gazeta-sample.example/story/1qk3xd",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T02:07:00Z",
+     "tone": 3.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Los Angeles: live updates",
+     "url": "https://el-diario.example/story/adsjlc",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T00:39:00Z",
+     "tone": 3.7,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 52,
+   "o": 7,
+   "c": 4,
+   "l": 3,
+   "t": -0.4,
+   "first": "2026-10-20T17:54:00Z",
+   "last": "2026-10-21T03:26:00Z",
+   "headline": "[sample] Election count enters second day in Los Angeles: analysis",
+   "headlineSource": "hindustan-post.example",
+   "headlineLang": "en",
+   "entities": [
+    "election commission",
+    "parliament",
+    "voters",
+    "los angeles"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Election count enters second day in Los Angeles: latest",
+     "url": "https://kyiv-herald.example/story/bwjqpn",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-21T03:26:00Z",
+     "tone": 0.7,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Los Angeles: in pictures",
+     "url": "https://haaretz-sample.example/story/f83zzp",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-21T02:31:00Z",
+     "tone": 0.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Los Angeles: reactions",
+     "url": "https://daily-ledger.example/story/g6y6sp",
+     "source": "daily-ledger.example",
+     "country": "US",
+     "lang": "en",
+     "time": "2026-10-21T02:22:00Z",
+     "tone": 3.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Los Angeles: timeline",
+     "url": "https://daily-ledger.example/story/dq7beb",
+     "source": "daily-ledger.example",
+     "country": "US",
+     "lang": "en",
+     "time": "2026-10-21T01:53:00Z",
+     "tone": -5.3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Los Angeles: analysis",
+     "url": "https://hindustan-post.example/story/7tdt36",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-20T23:42:00Z",
+     "tone": 1.3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Los Angeles: timeline",
+     "url": "https://kyiv-herald.example/story/bps3d0",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-21T01:26:00Z",
+     "tone": -3.3,
+     "image": ""
+    }
+   ]
+  }
+ ],
+ "unclustered": 125
 }

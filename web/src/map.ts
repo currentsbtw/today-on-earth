@@ -4,6 +4,7 @@ import {
   LngLat,
   Map as MapLibreMap,
   setWorkerUrl,
+  type ExpressionSpecification,
   type FilterSpecification,
   type GeoJSONSource,
   type LayerSpecification,
@@ -14,7 +15,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 // MapLibre 6 loads its worker from a sibling file; point it at the copy Vite emits.
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import { siteUrl, type HeatCell } from './data';
-import { count, shortName } from './format';
+import { count, placeKey, shortName } from './format';
 
 setWorkerUrl(workerUrl);
 
@@ -56,6 +57,16 @@ function worldConstrain(container: HTMLElement) {
     return { center: new LngLat(lngOf(x), latOf(y)), zoom: z };
   };
 }
+
+/** Rank filters of the city label tiers; setCells adds "not a news label" on top. */
+const PLACE_TIERS: Record<string, ExpressionSpecification> = {
+  'place-label-minor': ['all', ['>=', ['get', 'rank'], 5], ['<=', ['get', 'rank'], 7]],
+  'place-label-mid': ['all', ['>=', ['get', 'rank'], 3], ['<=', ['get', 'rank'], 4]],
+  'place-label-major': ['<=', ['get', 'rank'], 2],
+};
+
+/** Cells get a news label from this weight up (see the cell-label layer). */
+const CELL_LABEL_MIN_W = 0.4;
 
 /** One tier of city labels: muted grey, capitals a little brighter, capitals first. */
 function placeLabels(id: string, minzoom: number, filter: FilterSpecification): LayerSpecification {
@@ -138,9 +149,9 @@ function style(): StyleSpecification {
             6.5, 0.8],
         },
       },
-      placeLabels('place-label-minor', 6.5, ['all', ['>=', ['get', 'rank'], 5], ['<=', ['get', 'rank'], 7]]),
-      placeLabels('place-label-mid', 5.5, ['all', ['>=', ['get', 'rank'], 3], ['<=', ['get', 'rank'], 4]]),
-      placeLabels('place-label-major', 4.5, ['<=', ['get', 'rank'], 2]),
+      placeLabels('place-label-minor', 6.5, PLACE_TIERS['place-label-minor']),
+      placeLabels('place-label-mid', 5.5, PLACE_TIERS['place-label-mid']),
+      placeLabels('place-label-major', 4.5, PLACE_TIERS['place-label-major']),
       {
         id: 'country-label',
         type: 'symbol',
@@ -232,7 +243,7 @@ function style(): StyleSpecification {
         type: 'symbol',
         source: 'heat',
         minzoom: 4,
-        filter: ['>=', ['get', 'w'], 0.4],
+        filter: ['>=', ['get', 'w'], CELL_LABEL_MIN_W],
         layout: {
           'text-field': ['get', 'label'],
           'text-font': LABEL_FONTS,
@@ -344,8 +355,10 @@ export function createMap(
     setCells(cells, maxN) {
       byId.clear();
       const max = Math.log1p(Math.max(1, maxN));
+      const labelled = new Set<string>();
       const features: GeoJSON.Feature<GeoJSON.Point>[] = cells.map((c) => {
         byId.set(c.id, c);
+        if (c.name && Math.log1p(c.n) / max >= CELL_LABEL_MIN_W) labelled.add(placeKey(c.name));
         return {
           type: 'Feature',
           geometry: { type: 'Point', coordinates: [c.lon, c.lat] },
@@ -358,6 +371,10 @@ export function createMap(
         };
       });
       map.getSource<GeoJSONSource>('heat')?.setData({ type: 'FeatureCollection', features });
+      // A city with the same name as a news label would just repeat it: hide the city.
+      const notNews: ExpressionSpecification = ['!', ['in', ['get', 'key'], ['literal', [...labelled]]]];
+      for (const [layer, tier] of Object.entries(PLACE_TIERS)) map.setFilter(layer, ['all', tier, notNews]);
+      map.setFilter('place-dot', notNews);
     },
 
     async outline(id) {
@@ -397,7 +414,11 @@ export function createMap(
     for (const [source, path] of files) {
       fetch(siteUrl(path))
         .then((res) => (res.ok ? res.json() : Promise.reject(new Error(`${res.status} ${path}`))))
-        .then((data: GeoJSON.FeatureCollection) => map.getSource<GeoJSONSource>(source)?.setData(data))
+        .then((data: GeoJSON.FeatureCollection) => {
+          // Cities carry a match key so setCells can hide those named like a news label.
+          if (source === 'places') for (const f of data.features) f.properties!.key = placeKey(String(f.properties?.name ?? ''));
+          map.getSource<GeoJSONSource>(source)?.setData(data);
+        })
         .catch(() => {});
     }
   };

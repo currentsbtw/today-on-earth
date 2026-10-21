@@ -4,31 +4,23 @@
  "n": 288,
  "o": 37,
  "c": 20,
- "l": 15,
- "t": -1.1,
+ "l": 14,
+ "t": -0.5,
  "topOutlets": [
   [
+   "o-correio.example",
+   5
+  ],
+  [
    "harbour-press.example",
-   5
+   4
   ],
   [
-   "wire-service.example",
-   5
+   "nation-ke.example",
+   4
   ],
   [
-   "kyiv-herald.example",
-   5
-  ],
-  [
-   "gazeta-sample.example",
-   5
-  ],
-  [
-   "tehran-times.example",
-   5
-  ],
-  [
-   "seoul-daily.example",
+   "le-quotidien.example",
    3
   ],
   [
@@ -36,41 +28,41 @@
    3
   ],
   [
-   "lagos-sun.example",
-   2
+   "asahi-sample.example",
+   3
   ],
   [
-   "xinhua-sample.example",
-   2
+   "morning-wire.example",
+   3
   ],
   [
-   "le-quotidien.example",
+   "corriere-sample.example",
+   3
+  ],
+  [
+   "kyiv-herald.example",
+   3
+  ],
+  [
+   "cape-mail.example",
    2
   ]
  ],
  "topCountries": [
   [
+   "BR",
+   5
+  ],
+  [
    "AU",
-   5
+   4
   ],
   [
-   "",
-   5
+   "KE",
+   4
   ],
   [
-   "UA",
-   5
-  ],
-  [
-   "PL",
-   5
-  ],
-  [
-   "IR",
-   5
-  ],
-  [
-   "KR",
+   "FR",
    3
   ],
   [
@@ -78,37 +70,37 @@
    3
   ],
   [
-   "NG",
-   2
+   "JP",
+   3
   ],
   [
-   "CN",
-   2
+   "GB",
+   3
   ],
   [
-   "FR",
+   "IT",
+   3
+  ],
+  [
+   "UA",
+   3
+  ],
+  [
+   "ZA",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   18
+   20
   ],
   [
-   "uk",
+   "pt",
    5
   ],
   [
-   "pl",
-   5
-  ],
-  [
-   "fa",
-   5
-  ],
-  [
-   "ko",
+   "fr",
    3
   ],
   [
@@ -116,522 +108,853 @@
    3
   ],
   [
-   "zh",
-   2
+   "ja",
+   3
   ],
   [
-   "fr",
-   2
+   "it",
+   3
+  ],
+  [
+   "uk",
+   3
   ],
   [
    "ar",
-   1
+   2
   ],
   [
-   "no",
-   1
+   "fa",
+   2
+  ],
+  [
+   "es",
+   2
   ]
  ],
  "articles": [
   {
-   "title": "",
-   "url": "https://harbour-press.example/news/a51zwq",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-21T05:03:00Z",
-   "tone": 2.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Sydney",
-   "url": "https://daily-ledger.example/news/f2ah71",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-21T04:31:00Z",
-   "tone": -2.4,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://wire-service.example/news/3f61yb",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-21T03:53:00Z",
-   "tone": -4.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Sydney",
-   "url": "https://wire-service.example/news/dhlgid",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-21T03:41:00Z",
-   "tone": 1.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Sydney",
-   "url": "https://kyiv-herald.example/news/30qiz7",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-21T03:05:00Z",
-   "tone": 1.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Sydney",
-   "url": "https://lagos-sun.example/news/32qhn4",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-21T02:31:00Z",
-   "tone": -2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Sydney",
-   "url": "https://gulf-report.example/news/9faarz",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-21T02:15:00Z",
-   "tone": 1.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Sydney",
-   "url": "https://morning-wire.example/news/3n9x2k",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-21T01:41:00Z",
-   "tone": -1.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Sydney",
-   "url": "https://gazeta-sample.example/news/2k57ek",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-21T01:24:00Z",
-   "tone": 1.3,
+   "title": "[sample] Court hears appeal in landmark case near Sydney",
+   "url": "https://o-correio.example/news/ft8vr4",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-21T05:18:00Z",
+   "tone": -6.3,
    "image": ""
   },
   {
    "title": "[sample] Trade talks resume after pause near Sydney",
-   "url": "https://seoul-daily.example/news/a9ede9",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-21T00:42:00Z",
-   "tone": 3.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Sydney",
-   "url": "https://xinhua-sample.example/news/8nzesn",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-21T00:18:00Z",
-   "tone": -1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Sydney",
-   "url": "https://wire-service.example/news/1yemte",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T23:51:00Z",
-   "tone": -5.9,
+   "url": "https://le-quotidien.example/news/eeyk1p",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-21T04:54:00Z",
+   "tone": -6.2,
    "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Sydney",
-   "url": "https://tehran-times.example/news/ddabvb",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T23:16:00Z",
+   "url": "https://jakarta-pos.example/news/fozw6f",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-21T04:39:00Z",
+   "tone": 4.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Sydney",
+   "url": "https://cape-mail.example/news/1w2j1v",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-21T04:11:00Z",
+   "tone": -0.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Sydney",
+   "url": "https://asahi-sample.example/news/30x9ym",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-21T03:27:00Z",
+   "tone": 3.7,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://harbour-press.example/news/afj38y",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-21T03:10:00Z",
+   "tone": 3.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Sydney",
+   "url": "https://o-correio.example/news/65dwko",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-21T02:32:00Z",
+   "tone": 1.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Sydney",
+   "url": "https://morning-wire.example/news/b7j4yn",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-21T02:10:00Z",
+   "tone": 3.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Sydney",
+   "url": "https://nation-ke.example/news/ba8638",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-21T01:55:00Z",
    "tone": -2.7,
    "image": ""
   },
   {
-   "title": "[sample] Trade talks resume after pause near Sydney",
-   "url": "https://le-quotidien.example/news/en7fc5",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T23:00:00Z",
-   "tone": 4.4,
-   "image": ""
-  },
-  {
    "title": "[sample] Protest gathers in city centre near Sydney",
-   "url": "https://harbour-press.example/news/4ocfmg",
-   "source": "harbour-press.example",
-   "country": "AU",
+   "url": "https://morning-wire.example/news/fc6vsm",
+   "source": "morning-wire.example",
+   "country": "GB",
    "lang": "en",
-   "time": "2026-10-20T22:36:00Z",
-   "tone": -6.8,
+   "time": "2026-10-21T01:16:00Z",
+   "tone": 3.4,
    "image": ""
   },
   {
-   "title": "[sample] Central bank holds interest rate near Sydney",
-   "url": "https://kyiv-herald.example/news/em0m0c",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T22:08:00Z",
-   "tone": 4.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Sydney",
-   "url": "https://nation-ke.example/news/dchae9",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T21:25:00Z",
-   "tone": -6.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Sydney",
-   "url": "https://lagos-sun.example/news/4e4bvx",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T21:16:00Z",
-   "tone": -6.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Sydney",
-   "url": "https://hindustan-post.example/news/5no1rd",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T20:43:00Z",
-   "tone": 1.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Sydney",
-   "url": "https://wire-service.example/news/35edl8",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T20:04:00Z",
-   "tone": 4.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Sydney",
-   "url": "https://nord-avis.example/news/f6lu1",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T19:47:00Z",
-   "tone": 1.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Sydney",
-   "url": "https://el-diario.example/news/aupnut",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T19:16:00Z",
-   "tone": 1.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Sydney",
-   "url": "https://jakarta-pos.example/news/8y4tx2",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T18:58:00Z",
-   "tone": -6.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Sydney",
-   "url": "https://wire-service.example/news/3ji2yd",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T18:18:00Z",
-   "tone": -2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Sydney",
-   "url": "https://jakarta-pos.example/news/cog4ce",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T18:00:00Z",
-   "tone": -6.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Sydney",
-   "url": "https://hindustan-post.example/news/b3vi2g",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T17:34:00Z",
-   "tone": -6.5,
+   "title": "",
+   "url": "https://corriere-sample.example/news/fgibrr",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-21T00:56:00Z",
+   "tone": 0.7,
    "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Sydney",
-   "url": "https://xinhua-sample.example/news/fglob0",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T16:51:00Z",
-   "tone": 0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Sydney",
-   "url": "https://tehran-times.example/news/2dri7j",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T16:25:00Z",
-   "tone": -4.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Sydney",
-   "url": "https://hurriyet-sample.example/news/d2qmfv",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T16:02:00Z",
-   "tone": -3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Sydney",
-   "url": "https://seoul-daily.example/news/12bowi",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T15:28:00Z",
+   "url": "https://o-correio.example/news/4460im",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-21T00:24:00Z",
    "tone": -4.5,
    "image": ""
   },
   {
-   "title": "[sample] Researchers report vaccine trial results near Sydney",
-   "url": "https://harbour-press.example/news/7y0i3o",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T15:08:00Z",
-   "tone": -1.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Sydney",
-   "url": "https://kyiv-herald.example/news/6479z",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T14:44:00Z",
-   "tone": -5.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Sydney",
-   "url": "https://seoul-daily.example/news/2ldb8r",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T14:22:00Z",
-   "tone": -6.8,
-   "image": ""
-  },
-  {
    "title": "[sample] Central bank holds interest rate near Sydney",
-   "url": "https://kyiv-herald.example/news/7ko6mr",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T13:45:00Z",
-   "tone": 3.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Sydney",
-   "url": "https://corriere-sample.example/news/8u1jp6",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T13:27:00Z",
-   "tone": 4.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Sydney",
-   "url": "https://harbour-press.example/news/dljpt2",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T12:57:00Z",
-   "tone": -1.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Sydney",
-   "url": "https://nation-ke.example/news/eio68u",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T12:12:00Z",
-   "tone": 1.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Sydney",
-   "url": "https://harbour-press.example/news/6haio6",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T11:59:00Z",
-   "tone": 3.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Sydney",
-   "url": "https://tehran-times.example/news/7lye0b",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T11:27:00Z",
-   "tone": -5.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Sydney",
-   "url": "https://le-quotidien.example/news/afg6o6",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T10:52:00Z",
-   "tone": -4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Sydney",
-   "url": "https://gazeta-sample.example/news/amb7xe",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T10:33:00Z",
-   "tone": 5,
+   "url": "https://asahi-sample.example/news/bp1511",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T23:49:00Z",
+   "tone": 3.7,
    "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Sydney",
-   "url": "https://gazeta-sample.example/news/28t5d1",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T10:12:00Z",
-   "tone": 4.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Sydney",
-   "url": "https://tehran-times.example/news/6m5wbx",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T09:34:00Z",
-   "tone": 3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Sydney",
-   "url": "https://gazeta-sample.example/news/dp4vtu",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T09:17:00Z",
-   "tone": 0.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Sydney",
-   "url": "https://jakarta-pos.example/news/izock",
+   "url": "https://jakarta-pos.example/news/b54lzl",
    "source": "jakarta-pos.example",
    "country": "ID",
    "lang": "id",
-   "time": "2026-10-20T08:47:00Z",
-   "tone": 0.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Sydney",
-   "url": "https://haaretz-sample.example/news/dftfug",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T08:07:00Z",
-   "tone": -6.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Sydney",
-   "url": "https://gazeta-sample.example/news/9x5kn4",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T07:45:00Z",
-   "tone": -2.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Sydney",
-   "url": "https://tageszeitung.example/news/68zeln",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T07:17:00Z",
-   "tone": 1.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Sydney",
-   "url": "https://kyiv-herald.example/news/e9o60d",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T06:45:00Z",
-   "tone": -2.5,
+   "time": "2026-10-20T23:17:00Z",
+   "tone": -4.6,
    "image": ""
   },
   {
    "title": "[sample] Aid convoy reaches border crossing near Sydney",
-   "url": "https://tehran-times.example/news/gebsm2",
+   "url": "https://xinhua-sample.example/news/4ef966",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T23:01:00Z",
+   "tone": -1.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Sydney",
+   "url": "https://jakarta-pos.example/news/emt5gg",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T22:41:00Z",
+   "tone": -2.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Sydney",
+   "url": "https://global-desk.example/news/64s6tm",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T21:55:00Z",
+   "tone": -3.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Sydney",
+   "url": "https://hindustan-post.example/news/7qtvtq",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T21:29:00Z",
+   "tone": -5.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Sydney",
+   "url": "https://harbour-press.example/news/dklmrf",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T21:17:00Z",
+   "tone": -1.5,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://le-quotidien.example/news/fkge6n",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T20:49:00Z",
+   "tone": -0.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Sydney",
+   "url": "https://hindustan-post.example/news/eug27j",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T20:12:00Z",
+   "tone": 3.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Sydney",
+   "url": "https://kyiv-herald.example/news/bncv41",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T19:39:00Z",
+   "tone": 3.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Sydney",
+   "url": "https://global-desk.example/news/eubfip",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T19:23:00Z",
+   "tone": -3.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Sydney",
+   "url": "https://al-akhbar.example/news/ayhs5z",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T18:53:00Z",
+   "tone": 2.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Sydney",
+   "url": "https://wire-service.example/news/klwic",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T18:13:00Z",
+   "tone": -1.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Sydney",
+   "url": "https://morning-wire.example/news/2e60nd",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T17:49:00Z",
+   "tone": -4.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Sydney",
+   "url": "https://nation-ke.example/news/ela4cs",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T17:36:00Z",
+   "tone": 1.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Sydney",
+   "url": "https://kyiv-herald.example/news/bznbau",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T16:52:00Z",
+   "tone": -0.1,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://al-akhbar.example/news/aakh61",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T16:34:00Z",
+   "tone": 1.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Sydney",
+   "url": "https://nation-ke.example/news/este0l",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T16:10:00Z",
+   "tone": -1.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Sydney",
+   "url": "https://kyiv-herald.example/news/6swmbx",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T15:39:00Z",
+   "tone": 0.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Sydney",
+   "url": "https://corriere-sample.example/news/f9aezv",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T15:10:00Z",
+   "tone": 4.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Sydney",
+   "url": "https://le-quotidien.example/news/d4rupi",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T14:42:00Z",
+   "tone": -2.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Sydney",
+   "url": "https://wire-service.example/news/a7vcbx",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T14:11:00Z",
+   "tone": -3.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Sydney",
+   "url": "https://cape-mail.example/news/ezs2nj",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T13:45:00Z",
+   "tone": 0.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Sydney",
+   "url": "https://tehran-times.example/news/78bfsn",
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T06:15:00Z",
-   "tone": -3.5,
+   "time": "2026-10-20T13:12:00Z",
+   "tone": 3.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Sydney",
+   "url": "https://el-diario.example/news/9727r1",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T12:55:00Z",
+   "tone": 2.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Sydney",
+   "url": "https://harbour-press.example/news/c9rw1z",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T12:29:00Z",
+   "tone": 0.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Sydney",
+   "url": "https://nord-avis.example/news/8iefr2",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T12:05:00Z",
+   "tone": 3.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Sydney",
+   "url": "https://corriere-sample.example/news/74loka",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T11:20:00Z",
+   "tone": -2.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Sydney",
+   "url": "https://tehran-times.example/news/1fm5c",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T11:06:00Z",
+   "tone": 1.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Sydney",
+   "url": "https://asahi-sample.example/news/fk9vcx",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T10:39:00Z",
+   "tone": -6.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Sydney",
+   "url": "https://vesti-news.example/news/cwhlnf",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T10:09:00Z",
+   "tone": -5.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Sydney",
+   "url": "https://harbour-press.example/news/aymvob",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T09:33:00Z",
+   "tone": 0.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Sydney",
+   "url": "https://el-diario.example/news/8ocerf",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T09:05:00Z",
+   "tone": -7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Sydney",
+   "url": "https://lagos-sun.example/news/14rabx",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T08:43:00Z",
+   "tone": 3.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Sydney",
+   "url": "https://o-correio.example/news/6qql90",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T08:08:00Z",
+   "tone": 3.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Sydney",
+   "url": "https://o-correio.example/news/1m92h8",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T07:52:00Z",
+   "tone": 2.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Sydney",
+   "url": "https://tageszeitung.example/news/uuysy",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T07:19:00Z",
+   "tone": -6.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Sydney",
+   "url": "https://nation-ke.example/news/9xpx0i",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T06:53:00Z",
+   "tone": -3.6,
    "image": ""
   }
- ]
+ ],
+ "stories": [
+  {
+   "n": 87,
+   "o": 16,
+   "c": 10,
+   "l": 6,
+   "t": -1.4,
+   "first": "2026-10-20T16:09:00Z",
+   "last": "2026-10-21T02:04:00Z",
+   "headline": "[sample] Ministers meet over energy prices in Sydney: live updates",
+   "headlineSource": "wire-service.example",
+   "headlineLang": "en",
+   "entities": [
+    "energy",
+    "european union",
+    "oil prices",
+    "sydney"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Ministers meet over energy prices in Sydney: latest",
+     "url": "https://lagos-sun.example/story/ars8h4",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-21T02:04:00Z",
+     "tone": -4.3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Sydney: in pictures",
+     "url": "https://asahi-sample.example/story/ubt6l",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T01:31:00Z",
+     "tone": 3.3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Sydney: analysis",
+     "url": "https://el-diario.example/story/eiyt91",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T00:08:00Z",
+     "tone": 1.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Sydney: timeline",
+     "url": "https://morning-wire.example/story/8jxqik",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-21T00:16:00Z",
+     "tone": -4.3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Sydney: live updates",
+     "url": "https://wire-service.example/story/cuzx0f",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-20T22:08:00Z",
+     "tone": -1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Sydney: timeline",
+     "url": "https://xinhua-sample.example/story/3tpm98",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-20T23:34:00Z",
+     "tone": -3.9,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 47,
+   "o": 9,
+   "c": 5,
+   "l": 4,
+   "t": -1.7,
+   "first": "2026-10-20T16:02:00Z",
+   "last": "2026-10-21T03:59:00Z",
+   "headline": "[sample] Election count enters second day in Sydney: explained",
+   "headlineSource": "nation-ke.example",
+   "headlineLang": "en",
+   "entities": [
+    "election commission",
+    "parliament",
+    "voters",
+    "sydney"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Election count enters second day in Sydney: explained",
+     "url": "https://nation-ke.example/story/c6jkc6",
+     "source": "nation-ke.example",
+     "country": "KE",
+     "lang": "en",
+     "time": "2026-10-21T03:59:00Z",
+     "tone": 0,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Sydney: reactions",
+     "url": "https://nation-ke.example/story/18u9w3",
+     "source": "nation-ke.example",
+     "country": "KE",
+     "lang": "en",
+     "time": "2026-10-21T03:02:00Z",
+     "tone": 2.1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Sydney: explained",
+     "url": "https://gazeta-sample.example/story/2t5xup",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T02:31:00Z",
+     "tone": -4.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Sydney: timeline",
+     "url": "https://haaretz-sample.example/story/8w941z",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-21T02:56:00Z",
+     "tone": -1.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Sydney: latest",
+     "url": "https://haaretz-sample.example/story/2x6u1j",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-21T02:23:00Z",
+     "tone": -1.9,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Sydney: live updates",
+     "url": "https://asahi-sample.example/story/bsmrro",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T02:04:00Z",
+     "tone": -5,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 27,
+   "o": 6,
+   "c": 3,
+   "l": 4,
+   "t": -1.4,
+   "first": "2026-10-20T18:51:00Z",
+   "last": "2026-10-21T03:27:00Z",
+   "headline": "[sample] Central bank leaves rates unchanged in Sydney: live updates",
+   "headlineSource": "cape-mail.example",
+   "headlineLang": "en",
+   "entities": [
+    "central bank",
+    "inflation",
+    "interest rates",
+    "sydney"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Sydney: live updates",
+     "url": "https://vesti-news.example/story/17sbs1",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T03:27:00Z",
+     "tone": -0.9,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Sydney: latest",
+     "url": "https://harbour-press.example/story/7d664e",
+     "source": "harbour-press.example",
+     "country": "AU",
+     "lang": "en",
+     "time": "2026-10-21T02:45:00Z",
+     "tone": 2.9,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Sydney: what we know",
+     "url": "https://gulf-report.example/story/cr9qn4",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T01:45:00Z",
+     "tone": -2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Sydney: live updates",
+     "url": "https://cape-mail.example/story/axbsvi",
+     "source": "cape-mail.example",
+     "country": "ZA",
+     "lang": "en",
+     "time": "2026-10-21T01:18:00Z",
+     "tone": 0.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Sydney: timeline",
+     "url": "https://wire-service.example/story/acwaah",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T01:15:00Z",
+     "tone": -2.9,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Sydney: live updates",
+     "url": "https://jakarta-pos.example/story/gcyqy5",
+     "source": "jakarta-pos.example",
+     "country": "ID",
+     "lang": "id",
+     "time": "2026-10-21T00:37:00Z",
+     "tone": -5.9,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 25,
+   "o": 5,
+   "c": 3,
+   "l": 5,
+   "t": -1.2,
+   "first": "2026-10-20T19:24:00Z",
+   "last": "2026-10-21T04:16:00Z",
+   "headline": "[sample] Aid convoy reaches border crossing in Sydney: explained",
+   "headlineSource": "harbour-press.example",
+   "headlineLang": "en",
+   "entities": [
+    "united nations",
+    "refugees",
+    "humanitarian aid",
+    "sydney"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Sydney: explained",
+     "url": "https://harbour-press.example/story/dj5bzk",
+     "source": "harbour-press.example",
+     "country": "AU",
+     "lang": "en",
+     "time": "2026-10-21T04:16:00Z",
+     "tone": 3.9,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Sydney: what we know",
+     "url": "https://kyiv-herald.example/story/3vt5un",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-21T03:55:00Z",
+     "tone": 1.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Sydney: reactions",
+     "url": "https://gazeta-sample.example/story/9qsqbs",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T02:56:00Z",
+     "tone": -3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Sydney: latest",
+     "url": "https://asahi-sample.example/story/1rh2kr",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T03:10:00Z",
+     "tone": -3.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Sydney: what we know",
+     "url": "https://harbour-press.example/story/elox92",
+     "source": "harbour-press.example",
+     "country": "AU",
+     "lang": "en",
+     "time": "2026-10-21T02:12:00Z",
+     "tone": -2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Sydney: explained",
+     "url": "https://haaretz-sample.example/story/7lerz8",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-21T02:21:00Z",
+     "tone": -4.3,
+     "image": ""
+    }
+   ]
+  }
+ ],
+ "unclustered": 102
 }

@@ -5,30 +5,22 @@
  "o": 39,
  "c": 23,
  "l": 16,
- "t": -1.1,
+ "t": -1.2,
  "topOutlets": [
   [
-   "le-quotidien.example",
+   "seoul-daily.example",
    5
   ],
   [
-   "global-desk.example",
-   5
-  ],
-  [
-   "cape-mail.example",
+   "tageszeitung.example",
    4
   ],
   [
-   "haaretz-sample.example",
-   3
+   "o-correio.example",
+   4
   ],
   [
-   "corriere-sample.example",
-   3
-  ],
-  [
-   "seoul-daily.example",
+   "le-quotidien.example",
    3
   ],
   [
@@ -36,41 +28,41 @@
    3
   ],
   [
-   "wire-service.example",
-   2
-  ],
-  [
-   "tageszeitung.example",
-   2
-  ],
-  [
    "harbour-press.example",
+   3
+  ],
+  [
+   "cape-mail.example",
+   3
+  ],
+  [
+   "jakarta-pos.example",
+   2
+  ],
+  [
+   "el-diario.example",
+   2
+  ],
+  [
+   "hindustan-post.example",
    2
   ]
  ],
  "topCountries": [
   [
-   "FR",
+   "KR",
    5
   ],
   [
-   "CA",
-   5
-  ],
-  [
-   "ZA",
+   "DE",
    4
   ],
   [
-   "IL",
-   3
+   "BR",
+   4
   ],
   [
-   "IT",
-   3
-  ],
-  [
-   "KR",
+   "FR",
    3
   ],
   [
@@ -78,560 +70,891 @@
    3
   ],
   [
-   "",
-   2
-  ],
-  [
-   "DE",
-   2
-  ],
-  [
    "AU",
+   3
+  ],
+  [
+   "ZA",
+   3
+  ],
+  [
+   "ID",
+   2
+  ],
+  [
+   "MX",
+   2
+  ],
+  [
+   "IN",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   18
-  ],
-  [
-   "fr",
-   5
-  ],
-  [
-   "ar",
-   4
-  ],
-  [
-   "he",
-   3
-  ],
-  [
-   "it",
-   3
+   16
   ],
   [
    "ko",
-   3
+   5
   ],
   [
    "de",
+   4
+  ],
+  [
+   "pt",
+   4
+  ],
+  [
+   "fr",
+   3
+  ],
+  [
+   "ar",
+   3
+  ],
+  [
+   "id",
    2
   ],
   [
-   "zh",
-   2
-  ],
-  [
-   "pl",
+   "es",
    2
   ],
   [
    "fa",
    2
+  ],
+  [
+   "he",
+   2
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Central bank holds interest rate near Seoul",
-   "url": "https://hurriyet-sample.example/news/dy21ct",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-21T04:46:00Z",
-   "tone": -2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Seoul",
-   "url": "https://le-quotidien.example/news/6m7m93",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-21T04:24:00Z",
-   "tone": -2.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Seoul",
-   "url": "https://cape-mail.example/news/9odaee",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-21T03:54:00Z",
-   "tone": 1.6,
-   "image": ""
-  },
-  {
    "title": "[sample] Officials meet over regional dispute near Seoul",
-   "url": "https://la-voz.example/news/9801sw",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-21T03:32:00Z",
-   "tone": -2.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Seoul",
-   "url": "https://wire-service.example/news/ep6a73",
-   "source": "wire-service.example",
-   "country": "",
+   "url": "https://nation-ke.example/news/9ozck1",
+   "source": "nation-ke.example",
+   "country": "KE",
    "lang": "en",
-   "time": "2026-10-21T02:56:00Z",
-   "tone": 1.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Seoul",
-   "url": "https://haaretz-sample.example/news/a4xj1a",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-21T02:31:00Z",
-   "tone": 2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Seoul",
-   "url": "https://cape-mail.example/news/ci646y",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-21T02:20:00Z",
-   "tone": -0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Seoul",
-   "url": "https://tageszeitung.example/news/e4dcrl",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-21T01:38:00Z",
-   "tone": 3.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Seoul",
-   "url": "https://wire-service.example/news/4t631x",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-21T01:11:00Z",
-   "tone": 2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Seoul",
-   "url": "https://cape-mail.example/news/3v57yx",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-21T00:56:00Z",
-   "tone": 2.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Seoul",
-   "url": "https://morning-wire.example/news/rtmai",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-21T00:17:00Z",
-   "tone": -6.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Seoul",
-   "url": "https://le-quotidien.example/news/7a4o09",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T23:51:00Z",
-   "tone": -0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Seoul",
-   "url": "https://harbour-press.example/news/cohlle",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T23:25:00Z",
+   "time": "2026-10-21T05:16:00Z",
    "tone": 3.7,
    "image": ""
   },
   {
-   "title": "[sample] Wildfire forces evacuations near Seoul",
-   "url": "https://asahi-sample.example/news/f2i2s8",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T23:07:00Z",
-   "tone": -0.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Seoul",
-   "url": "https://global-desk.example/news/bcgimn",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T22:28:00Z",
-   "tone": -4.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Seoul",
-   "url": "https://corriere-sample.example/news/9sp3lv",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T21:53:00Z",
-   "tone": -6.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Seoul",
-   "url": "https://seoul-daily.example/news/dkgfjw",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T21:40:00Z",
-   "tone": 0.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Seoul",
-   "url": "https://xinhua-sample.example/news/81qc2n",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T21:09:00Z",
-   "tone": 3.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Seoul",
-   "url": "https://daily-ledger.example/news/f2ovef",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T20:47:00Z",
-   "tone": -3.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Seoul",
-   "url": "https://nation-ke.example/news/4s12ni",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T20:13:00Z",
-   "tone": 2.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Seoul",
-   "url": "https://vesti-news.example/news/fqk8sf",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T19:43:00Z",
-   "tone": -5.1,
-   "image": ""
-  },
-  {
    "title": "[sample] Researchers report vaccine trial results near Seoul",
-   "url": "https://harbour-press.example/news/augoqj",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T19:23:00Z",
-   "tone": 0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Seoul",
-   "url": "https://seoul-daily.example/news/7lcv0z",
+   "url": "https://seoul-daily.example/news/fppetu",
    "source": "seoul-daily.example",
    "country": "KR",
    "lang": "ko",
-   "time": "2026-10-20T18:47:00Z",
-   "tone": -2.9,
+   "time": "2026-10-21T05:07:00Z",
+   "tone": 1.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Seoul",
+   "url": "https://tageszeitung.example/news/bu1ijs",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-21T04:37:00Z",
+   "tone": 3.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Seoul",
+   "url": "https://jakarta-pos.example/news/999hda",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-21T04:04:00Z",
+   "tone": 1,
    "image": ""
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Seoul",
-   "url": "https://jakarta-pos.example/news/eyxai5",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T18:24:00Z",
-   "tone": -6.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Seoul",
-   "url": "https://le-quotidien.example/news/fbz75x",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T17:55:00Z",
-   "tone": -5.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Seoul",
-   "url": "https://al-akhbar.example/news/37c53y",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T17:35:00Z",
-   "tone": 3.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Seoul",
-   "url": "https://corriere-sample.example/news/1x8bs7",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T16:54:00Z",
-   "tone": -0.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Seoul",
-   "url": "https://corriere-sample.example/news/7r3viq",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T16:21:00Z",
-   "tone": -6.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Seoul",
-   "url": "https://global-desk.example/news/1weej6",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T16:09:00Z",
-   "tone": 1.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Seoul",
-   "url": "https://le-quotidien.example/news/c9hv4v",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T15:41:00Z",
-   "tone": -6.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Seoul",
-   "url": "https://global-desk.example/news/5kkft3",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T15:00:00Z",
-   "tone": -5.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Seoul",
-   "url": "https://gazeta-sample.example/news/7wpgts",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T14:42:00Z",
-   "tone": 1.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Seoul",
-   "url": "https://global-desk.example/news/ek8cus",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T14:11:00Z",
-   "tone": 4.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Seoul",
-   "url": "https://cape-mail.example/news/2l4849",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T13:48:00Z",
-   "tone": -3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Seoul",
-   "url": "https://nation-ke.example/news/f78fcr",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T13:19:00Z",
+   "url": "https://tageszeitung.example/news/1i0dnv",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-21T03:32:00Z",
    "tone": 3.8,
    "image": ""
   },
   {
-   "title": "[sample] Aid convoy reaches border crossing near Seoul",
-   "url": "https://gulf-report.example/news/4orjns",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T12:52:00Z",
-   "tone": 0.5,
+   "title": "",
+   "url": "https://el-diario.example/news/1vzfn5",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-21T03:07:00Z",
+   "tone": -4.7,
    "image": ""
   },
   {
-   "title": "[sample] Football club confirms new coach near Seoul",
-   "url": "https://haaretz-sample.example/news/rhcd8",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T12:29:00Z",
-   "tone": 1.8,
+   "title": "[sample] Wildfire forces evacuations near Seoul",
+   "url": "https://le-quotidien.example/news/gj9g0k",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-21T02:35:00Z",
+   "tone": 0.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Seoul",
+   "url": "https://kyiv-herald.example/news/3mpmxt",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-21T02:15:00Z",
+   "tone": -2.3,
    "image": ""
   },
   {
    "title": "",
-   "url": "https://le-quotidien.example/news/8umc3c",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T12:02:00Z",
-   "tone": -1.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Seoul",
-   "url": "https://global-desk.example/news/dnjr2y",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T11:18:00Z",
-   "tone": 2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Seoul",
-   "url": "https://al-akhbar.example/news/8a2xwr",
+   "url": "https://al-akhbar.example/news/6gmg3h",
    "source": "al-akhbar.example",
    "country": "EG",
    "lang": "ar",
-   "time": "2026-10-20T11:05:00Z",
-   "tone": -6.6,
+   "time": "2026-10-21T01:51:00Z",
+   "tone": -1.5,
    "image": ""
   },
   {
-   "title": "[sample] Officials meet over regional dispute near Seoul",
-   "url": "https://tehran-times.example/news/60akb1",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T10:36:00Z",
-   "tone": -2.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Seoul",
-   "url": "https://al-akhbar.example/news/fubglu",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T10:05:00Z",
-   "tone": -5.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Seoul",
-   "url": "https://lagos-sun.example/news/7031x2",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T09:39:00Z",
-   "tone": 0,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Seoul",
-   "url": "https://haaretz-sample.example/news/du3saz",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T09:18:00Z",
-   "tone": -5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Seoul",
-   "url": "https://tageszeitung.example/news/di3e37",
+   "title": "[sample] Researchers report vaccine trial results near Seoul",
+   "url": "https://tageszeitung.example/news/4ff7gn",
    "source": "tageszeitung.example",
    "country": "DE",
    "lang": "de",
-   "time": "2026-10-20T08:32:00Z",
-   "tone": -2.9,
+   "time": "2026-10-21T01:14:00Z",
+   "tone": -0.7,
    "image": ""
   },
   {
-   "title": "[sample] Central bank holds interest rate near Seoul",
-   "url": "https://tehran-times.example/news/48vbzi",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T08:08:00Z",
-   "tone": -0.9,
+   "title": "[sample] Researchers report vaccine trial results near Seoul",
+   "url": "https://hindustan-post.example/news/1iycfm",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-21T00:52:00Z",
+   "tone": 1.3,
    "image": ""
   },
   {
-   "title": "[sample] Central bank holds interest rate near Seoul",
-   "url": "https://seoul-daily.example/news/daowkh",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T07:49:00Z",
-   "tone": 4.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Seoul",
-   "url": "https://xinhua-sample.example/news/6ny30j",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T07:11:00Z",
-   "tone": -1,
+   "title": "[sample] Protest gathers in city centre near Seoul",
+   "url": "https://harbour-press.example/news/3gsubr",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-21T00:30:00Z",
+   "tone": 1.7,
    "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Seoul",
-   "url": "https://o-correio.example/news/bu8pgk",
+   "url": "https://le-quotidien.example/news/5s6f3d",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T23:45:00Z",
+   "tone": -1.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Seoul",
+   "url": "https://asahi-sample.example/news/ghueit",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T23:35:00Z",
+   "tone": 1.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Seoul",
+   "url": "https://global-desk.example/news/bnpsen",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T22:50:00Z",
+   "tone": 0.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Seoul",
+   "url": "https://o-correio.example/news/68zpj5",
    "source": "o-correio.example",
    "country": "BR",
    "lang": "pt",
-   "time": "2026-10-20T06:50:00Z",
-   "tone": -2.2,
+   "time": "2026-10-20T22:34:00Z",
+   "tone": -3.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Seoul",
+   "url": "https://lagos-sun.example/news/dymf30",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T21:59:00Z",
+   "tone": -4.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Seoul",
+   "url": "https://o-correio.example/news/4m6hy7",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T21:34:00Z",
+   "tone": -0.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Seoul",
+   "url": "https://al-akhbar.example/news/ekvzxy",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T21:07:00Z",
+   "tone": 4.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Seoul",
+   "url": "https://seoul-daily.example/news/aixbr4",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T20:35:00Z",
+   "tone": 1.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Seoul",
+   "url": "https://al-akhbar.example/news/a5chkz",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T20:15:00Z",
+   "tone": -0.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Seoul",
+   "url": "https://harbour-press.example/news/1y4ui9",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T19:48:00Z",
+   "tone": -6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Seoul",
+   "url": "https://cape-mail.example/news/azs956",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T19:26:00Z",
+   "tone": 2.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Seoul",
+   "url": "https://tehran-times.example/news/4vr18x",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T19:00:00Z",
+   "tone": -4.1,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://morning-wire.example/news/28tgcy",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T18:15:00Z",
+   "tone": 1.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Seoul",
+   "url": "https://le-quotidien.example/news/cmspi6",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T18:03:00Z",
+   "tone": -6.3,
    "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Seoul",
-   "url": "https://gazeta-sample.example/news/d0ivh0",
+   "url": "https://seoul-daily.example/news/awrdg9",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T17:25:00Z",
+   "tone": -5.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Seoul",
+   "url": "https://daily-ledger.example/news/9c4p3i",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T16:53:00Z",
+   "tone": -3.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Seoul",
+   "url": "https://cape-mail.example/news/bwi3tq",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T16:27:00Z",
+   "tone": 3.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Seoul",
+   "url": "https://hurriyet-sample.example/news/3ltw8h",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T16:12:00Z",
+   "tone": -3.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Seoul",
+   "url": "https://tehran-times.example/news/3scj9h",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T15:35:00Z",
+   "tone": -1.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Seoul",
+   "url": "https://harbour-press.example/news/24j04h",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T15:02:00Z",
+   "tone": -6.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Seoul",
+   "url": "https://hindustan-post.example/news/8aqx2x",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T14:44:00Z",
+   "tone": -6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Seoul",
+   "url": "https://o-correio.example/news/6aqnhz",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T14:07:00Z",
+   "tone": -1.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Seoul",
+   "url": "https://jakarta-pos.example/news/ce4po7",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T13:45:00Z",
+   "tone": -1.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Seoul",
+   "url": "https://tageszeitung.example/news/9xehcg",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T13:26:00Z",
+   "tone": -4.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Seoul",
+   "url": "https://haaretz-sample.example/news/822hba",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T13:00:00Z",
+   "tone": -5.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Seoul",
+   "url": "https://haaretz-sample.example/news/ef8hb6",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T12:26:00Z",
+   "tone": 2.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Seoul",
+   "url": "https://wire-service.example/news/7nl5hu",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T11:51:00Z",
+   "tone": 1.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Seoul",
+   "url": "https://daily-ledger.example/news/7ioxes",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T11:24:00Z",
+   "tone": -5.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Seoul",
+   "url": "https://lagos-sun.example/news/fxj2w6",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T10:52:00Z",
+   "tone": -5.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Seoul",
+   "url": "https://nord-avis.example/news/4heud3",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T10:44:00Z",
+   "tone": 2.5,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://el-diario.example/news/9uw8fy",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T10:14:00Z",
+   "tone": 0.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Seoul",
+   "url": "https://gazeta-sample.example/news/1lkbcs",
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-20T06:25:00Z",
-   "tone": -6.9,
+   "time": "2026-10-20T09:41:00Z",
+   "tone": -2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Seoul",
+   "url": "https://seoul-daily.example/news/3e319l",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T09:04:00Z",
+   "tone": -6.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Seoul",
+   "url": "https://o-correio.example/news/8i7alk",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T08:47:00Z",
+   "tone": -5.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Seoul",
+   "url": "https://seoul-daily.example/news/z9a6u",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T08:17:00Z",
+   "tone": 3.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Seoul",
+   "url": "https://cape-mail.example/news/djz7k0",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T07:46:00Z",
+   "tone": -5.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Seoul",
+   "url": "https://gazeta-sample.example/news/7kuvwe",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T07:29:00Z",
+   "tone": -2.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Seoul",
+   "url": "https://xinhua-sample.example/news/14gou7",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T06:53:00Z",
+   "tone": 3.7,
    "image": ""
   }
- ]
+ ],
+ "stories": [
+  {
+   "n": 74,
+   "o": 13,
+   "c": 9,
+   "l": 6,
+   "t": 0.2,
+   "first": "2026-10-20T18:55:00Z",
+   "last": "2026-10-21T03:31:00Z",
+   "headline": "[sample] Strike halts rail services in Seoul: what we know",
+   "headlineSource": "la-voz.example",
+   "headlineLang": "es",
+   "entities": [
+    "trade union",
+    "rail",
+    "labour",
+    "seoul"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Strike halts rail services in Seoul: timeline",
+     "url": "https://al-akhbar.example/story/5zjipy",
+     "source": "al-akhbar.example",
+     "country": "EG",
+     "lang": "ar",
+     "time": "2026-10-21T03:31:00Z",
+     "tone": -3.3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Seoul: what we know",
+     "url": "https://el-diario.example/story/1jvcpr",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T03:08:00Z",
+     "tone": 3.9,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Seoul: timeline",
+     "url": "https://tehran-times.example/story/8f4amk",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-21T01:37:00Z",
+     "tone": -4.7,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Seoul: what we know",
+     "url": "https://la-voz.example/story/61rjwp",
+     "source": "la-voz.example",
+     "country": "AR",
+     "lang": "es",
+     "time": "2026-10-21T01:28:00Z",
+     "tone": 3.1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Seoul: in pictures",
+     "url": "https://xinhua-sample.example/story/65a157",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-20T23:51:00Z",
+     "tone": 0.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Seoul: live updates",
+     "url": "https://hindustan-post.example/story/1j2fjd",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T01:46:00Z",
+     "tone": 1.7,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 72,
+   "o": 13,
+   "c": 9,
+   "l": 6,
+   "t": -1.1,
+   "first": "2026-10-20T20:32:00Z",
+   "last": "2026-10-21T01:36:00Z",
+   "headline": "[sample] Election count enters second day in Seoul: analysis",
+   "headlineSource": "xinhua-sample.example",
+   "headlineLang": "zh",
+   "entities": [
+    "election commission",
+    "parliament",
+    "voters",
+    "seoul"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Election count enters second day in Seoul: analysis",
+     "url": "https://xinhua-sample.example/story/6zxj1y",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-21T01:36:00Z",
+     "tone": -0.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Seoul: analysis",
+     "url": "https://haaretz-sample.example/story/f7sdc9",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-21T00:46:00Z",
+     "tone": 1.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Seoul: live updates",
+     "url": "https://hindustan-post.example/story/5hi8i9",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-20T23:58:00Z",
+     "tone": -0.3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Seoul: latest",
+     "url": "https://hindustan-post.example/story/cors9k",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-20T22:51:00Z",
+     "tone": -2.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Seoul: in pictures",
+     "url": "https://global-desk.example/story/51ds4n",
+     "source": "global-desk.example",
+     "country": "CA",
+     "lang": "en",
+     "time": "2026-10-20T22:48:00Z",
+     "tone": -0.1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Seoul: latest",
+     "url": "https://daily-ledger.example/story/1n6i7",
+     "source": "daily-ledger.example",
+     "country": "US",
+     "lang": "en",
+     "time": "2026-10-20T23:16:00Z",
+     "tone": -4.6,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 64,
+   "o": 11,
+   "c": 8,
+   "l": 5,
+   "t": -2.5,
+   "first": "2026-10-20T21:42:00Z",
+   "last": "2026-10-21T02:34:00Z",
+   "headline": "[sample] Central bank leaves rates unchanged in Seoul: explained",
+   "headlineSource": "tageszeitung.example",
+   "headlineLang": "de",
+   "entities": [
+    "central bank",
+    "inflation",
+    "interest rates",
+    "seoul"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Seoul: reactions",
+     "url": "https://haaretz-sample.example/story/a94xae",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-21T02:34:00Z",
+     "tone": -0.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Seoul: what we know",
+     "url": "https://haaretz-sample.example/story/54ro7n",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-21T01:48:00Z",
+     "tone": -2.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Seoul: explained",
+     "url": "https://tageszeitung.example/story/abhhe2",
+     "source": "tageszeitung.example",
+     "country": "DE",
+     "lang": "de",
+     "time": "2026-10-21T00:36:00Z",
+     "tone": 0.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Seoul: analysis",
+     "url": "https://hurriyet-sample.example/story/e3h2up",
+     "source": "hurriyet-sample.example",
+     "country": "TR",
+     "lang": "tr",
+     "time": "2026-10-21T00:52:00Z",
+     "tone": -4.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Seoul: explained",
+     "url": "https://lagos-sun.example/story/fi5jrn",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-20T23:02:00Z",
+     "tone": -5.1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Seoul: explained",
+     "url": "https://vesti-news.example/story/dab3qo",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T00:19:00Z",
+     "tone": -3.6,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 38,
+   "o": 7,
+   "c": 4,
+   "l": 5,
+   "t": -1,
+   "first": "2026-10-20T20:19:00Z",
+   "last": "2026-10-21T05:21:00Z",
+   "headline": "[sample] Court hears appeal in corruption case in Seoul: latest",
+   "headlineSource": "daily-ledger.example",
+   "headlineLang": "en",
+   "entities": [
+    "supreme court",
+    "corruption",
+    "prosecutor",
+    "seoul"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Court hears appeal in corruption case in Seoul: explained",
+     "url": "https://jakarta-pos.example/story/8ili2q",
+     "source": "jakarta-pos.example",
+     "country": "ID",
+     "lang": "id",
+     "time": "2026-10-21T05:21:00Z",
+     "tone": 0.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Seoul: what we know",
+     "url": "https://gazeta-sample.example/story/2pix0s",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T04:48:00Z",
+     "tone": 1.7,
+     "image": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Seoul: live updates",
+     "url": "https://al-akhbar.example/story/anr0nq",
+     "source": "al-akhbar.example",
+     "country": "EG",
+     "lang": "ar",
+     "time": "2026-10-21T03:51:00Z",
+     "tone": -4.7,
+     "image": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Seoul: explained",
+     "url": "https://xinhua-sample.example/story/2y3t4h",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-21T02:33:00Z",
+     "tone": -4.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Seoul: latest",
+     "url": "https://daily-ledger.example/story/djo6e2",
+     "source": "daily-ledger.example",
+     "country": "US",
+     "lang": "en",
+     "time": "2026-10-21T03:05:00Z",
+     "tone": -1.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Court hears appeal in corruption case in Seoul: reactions",
+     "url": "https://gazeta-sample.example/story/d1k9xb",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T01:41:00Z",
+     "tone": 2.4,
+     "image": ""
+    }
+   ]
+  }
+ ],
+ "unclustered": 62
 }

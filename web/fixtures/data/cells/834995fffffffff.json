@@ -4,634 +4,877 @@
  "n": 390,
  "o": 43,
  "c": 22,
- "l": 14,
- "t": -0.8,
+ "l": 16,
+ "t": -1.1,
  "topOutlets": [
   [
-   "el-diario.example",
-   5
-  ],
-  [
-   "tehran-times.example",
-   5
-  ],
-  [
    "daily-ledger.example",
-   4
+   5
   ],
   [
-   "nord-avis.example",
+   "corriere-sample.example",
    4
-  ],
-  [
-   "o-correio.example",
-   3
   ],
   [
    "tageszeitung.example",
+   4
+  ],
+  [
+   "gazeta-sample.example",
    3
   ],
   [
-   "al-akhbar.example",
+   "asahi-sample.example",
    3
   ],
   [
-   "hindustan-post.example",
+   "lagos-sun.example",
+   3
+  ],
+  [
+   "el-diario.example",
+   3
+  ],
+  [
+   "tehran-times.example",
+   3
+  ],
+  [
+   "global-desk.example",
    2
   ],
   [
-   "xinhua-sample.example",
-   2
-  ],
-  [
-   "le-quotidien.example",
+   "vesti-news.example",
    2
   ]
  ],
  "topCountries": [
   [
-   "MX",
-   5
-  ],
-  [
-   "IR",
-   5
-  ],
-  [
    "US",
-   4
+   5
   ],
   [
-   "NO",
+   "IT",
    4
-  ],
-  [
-   "BR",
-   3
   ],
   [
    "DE",
+   4
+  ],
+  [
+   "PL",
    3
   ],
   [
-   "EG",
+   "JP",
    3
   ],
   [
-   "IN",
+   "NG",
+   3
+  ],
+  [
+   "MX",
+   3
+  ],
+  [
+   "IR",
+   3
+  ],
+  [
+   "CA",
    2
   ],
   [
-   "CN",
-   2
-  ],
-  [
-   "FR",
+   "RU",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   15
+   14
   ],
   [
    "es",
    5
   ],
   [
-   "fa",
-   5
-  ],
-  [
-   "no",
+   "it",
    4
-  ],
-  [
-   "ar",
-   4
-  ],
-  [
-   "pt",
-   3
   ],
   [
    "de",
+   4
+  ],
+  [
+   "pl",
    3
   ],
   [
-   "zh",
+   "ja",
+   3
+  ],
+  [
+   "fa",
+   3
+  ],
+  [
+   "ar",
    2
   ],
   [
-   "fr",
+   "ru",
    2
   ],
   [
-   "uk",
+   "no",
    2
   ]
  ],
  "articles": [
   {
-   "title": "[sample] Protest gathers in city centre near Mexico City",
-   "url": "https://hindustan-post.example/news/e6zq14",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-21T04:52:00Z",
-   "tone": -0.6,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://xinhua-sample.example/news/60o5vi",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-21T04:27:00Z",
-   "tone": -0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Mexico City",
-   "url": "https://el-diario.example/news/etwih6",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-21T04:00:00Z",
-   "tone": 2.6,
-   "image": ""
-  },
-  {
    "title": "[sample] Election commission publishes turnout figures near Mexico City",
-   "url": "https://daily-ledger.example/news/ag3sl1",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-21T03:27:00Z",
-   "tone": 1.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Mexico City",
-   "url": "https://le-quotidien.example/news/dwlsw3",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-21T03:03:00Z",
-   "tone": 3,
+   "url": "https://gazeta-sample.example/news/wk412",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-21T05:30:00Z",
+   "tone": -0.5,
    "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Mexico City",
-   "url": "https://el-diario.example/news/72p8lp",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-21T02:37:00Z",
-   "tone": -6.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Mexico City",
-   "url": "https://el-diario.example/news/f47a08",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-21T02:12:00Z",
-   "tone": -2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Mexico City",
-   "url": "https://morning-wire.example/news/1ecpwq",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-21T01:34:00Z",
-   "tone": -4.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Mexico City",
-   "url": "https://nord-avis.example/news/2jxngu",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-21T01:12:00Z",
-   "tone": -6.3,
+   "url": "https://gulf-report.example/news/fpkcb6",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-21T05:02:00Z",
+   "tone": 4.9,
    "image": ""
   },
   {
    "title": "[sample] Trade talks resume after pause near Mexico City",
-   "url": "https://tehran-times.example/news/acpdex",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-21T00:52:00Z",
-   "tone": -1.6,
+   "url": "https://gazeta-sample.example/news/1pi5b0",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-21T04:23:00Z",
+   "tone": -5.9,
    "image": ""
   },
   {
-   "title": "[sample] Trade talks resume after pause near Mexico City",
-   "url": "https://wire-service.example/news/cvadxn",
-   "source": "wire-service.example",
-   "country": "",
+   "title": "[sample] Storm disrupts transport links near Mexico City",
+   "url": "https://global-desk.example/news/bf04xz",
+   "source": "global-desk.example",
+   "country": "CA",
    "lang": "en",
-   "time": "2026-10-21T00:16:00Z",
+   "time": "2026-10-21T03:56:00Z",
+   "tone": -1.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Mexico City",
+   "url": "https://corriere-sample.example/news/6a4duv",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-21T03:28:00Z",
+   "tone": -5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Mexico City",
+   "url": "https://gazeta-sample.example/news/3qxwgr",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-21T03:02:00Z",
+   "tone": -3.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Mexico City",
+   "url": "https://daily-ledger.example/news/24qvun",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-21T02:33:00Z",
    "tone": -6,
    "image": ""
   },
   {
-   "title": "[sample] Researchers report vaccine trial results near Mexico City",
-   "url": "https://kyiv-herald.example/news/crb94v",
+   "title": "[sample] Central bank holds interest rate near Mexico City",
+   "url": "https://vesti-news.example/news/4ds6jh",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-21T02:03:00Z",
+   "tone": 0.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Mexico City",
+   "url": "https://vesti-news.example/news/g7c2j8",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-21T01:41:00Z",
+   "tone": -2.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Mexico City",
+   "url": "https://daily-ledger.example/news/ay8flj",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-21T01:10:00Z",
+   "tone": 1.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Mexico City",
+   "url": "https://asahi-sample.example/news/9f1ndg",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-21T00:48:00Z",
+   "tone": 4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Mexico City",
+   "url": "https://wire-service.example/news/1umtnx",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-21T00:19:00Z",
+   "tone": -5.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Mexico City",
+   "url": "https://daily-ledger.example/news/26pj4h",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T23:53:00Z",
+   "tone": -1.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Mexico City",
+   "url": "https://corriere-sample.example/news/50g60",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T23:28:00Z",
+   "tone": 4.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Mexico City",
+   "url": "https://kyiv-herald.example/news/4rzzbm",
    "source": "kyiv-herald.example",
    "country": "UA",
    "lang": "uk",
-   "time": "2026-10-20T23:43:00Z",
-   "tone": -2.9,
+   "time": "2026-10-20T23:08:00Z",
+   "tone": 4.8,
    "image": ""
   },
   {
-   "title": "[sample] Wildfire forces evacuations near Mexico City",
-   "url": "https://cape-mail.example/news/gacc36",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T23:31:00Z",
-   "tone": -4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Mexico City",
-   "url": "https://o-correio.example/news/3qezhb",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T22:58:00Z",
+   "title": "[sample] Researchers report vaccine trial results near Mexico City",
+   "url": "https://tageszeitung.example/news/dzcyxx",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T22:39:00Z",
    "tone": -4.2,
    "image": ""
   },
   {
    "title": "[sample] Wildfire forces evacuations near Mexico City",
-   "url": "https://morning-wire.example/news/39cdhw",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T22:34:00Z",
-   "tone": -0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Mexico City",
-   "url": "https://asahi-sample.example/news/eaqtzl",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T21:55:00Z",
-   "tone": -4.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Mexico City",
-   "url": "https://nord-avis.example/news/7rd8rn",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T21:35:00Z",
-   "tone": -0.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Mexico City",
-   "url": "https://tageszeitung.example/news/b5rrug",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T21:07:00Z",
-   "tone": -6.8,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://al-akhbar.example/news/11sytd",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T20:32:00Z",
-   "tone": -6.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Mexico City",
-   "url": "https://lagos-sun.example/news/f072of",
+   "url": "https://lagos-sun.example/news/8mawfg",
    "source": "lagos-sun.example",
    "country": "NG",
    "lang": "en",
-   "time": "2026-10-20T20:15:00Z",
-   "tone": -0.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Mexico City",
-   "url": "https://o-correio.example/news/g3cq6t",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T19:48:00Z",
-   "tone": -3.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Mexico City",
-   "url": "https://el-diario.example/news/4c4osm",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T19:18:00Z",
-   "tone": -2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Mexico City",
-   "url": "https://al-akhbar.example/news/cgqmye",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T18:51:00Z",
-   "tone": 0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Mexico City",
-   "url": "https://le-quotidien.example/news/bu57zs",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T18:22:00Z",
-   "tone": 1.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Mexico City",
-   "url": "https://al-akhbar.example/news/3mk9tq",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T17:52:00Z",
-   "tone": 2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Mexico City",
-   "url": "https://harbour-press.example/news/5tyty1",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T17:33:00Z",
-   "tone": 1.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Mexico City",
-   "url": "https://nord-avis.example/news/d9ycol",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T16:51:00Z",
-   "tone": 3.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Mexico City",
-   "url": "https://haaretz-sample.example/news/89j5v2",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T16:32:00Z",
-   "tone": 4.8,
+   "time": "2026-10-20T21:59:00Z",
+   "tone": -3.8,
    "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Mexico City",
-   "url": "https://vesti-news.example/news/805vlj",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T16:09:00Z",
+   "url": "https://hurriyet-sample.example/news/cl9xog",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T21:34:00Z",
    "tone": -2.3,
    "image": ""
   },
   {
-   "title": "[sample] Officials meet over regional dispute near Mexico City",
-   "url": "https://tageszeitung.example/news/1t1wxn",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T15:26:00Z",
-   "tone": -0.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Mexico City",
-   "url": "https://el-diario.example/news/bmjhd2",
+   "title": "[sample] Wildfire forces evacuations near Mexico City",
+   "url": "https://el-diario.example/news/12e16k",
    "source": "el-diario.example",
    "country": "MX",
    "lang": "es",
-   "time": "2026-10-20T15:11:00Z",
-   "tone": -5.9,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://daily-ledger.example/news/aktnyg",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T14:45:00Z",
-   "tone": 4.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Mexico City",
-   "url": "https://haaretz-sample.example/news/9gre57",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T14:08:00Z",
-   "tone": 4.2,
+   "time": "2026-10-20T21:09:00Z",
+   "tone": -6.8,
    "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Mexico City",
-   "url": "https://tehran-times.example/news/30godr",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T13:46:00Z",
-   "tone": 2.4,
+   "url": "https://seoul-daily.example/news/1grkl2",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T20:32:00Z",
+   "tone": -5.4,
    "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Mexico City",
-   "url": "https://cape-mail.example/news/6z0c3r",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T13:26:00Z",
-   "tone": 2.8,
+   "url": "https://asahi-sample.example/news/3dl6ua",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T20:08:00Z",
+   "tone": -5.1,
    "image": ""
   },
   {
-   "title": "[sample] Trade talks resume after pause near Mexico City",
-   "url": "https://jakarta-pos.example/news/cbdie0",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T12:49:00Z",
-   "tone": -2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Mexico City",
-   "url": "https://kyiv-herald.example/news/3h8rgd",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T12:15:00Z",
-   "tone": -5.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Mexico City",
-   "url": "https://hindustan-post.example/news/dp8d48",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T12:02:00Z",
-   "tone": 3.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Mexico City",
-   "url": "https://tehran-times.example/news/a7zge0",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T11:26:00Z",
-   "tone": 0.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Mexico City",
-   "url": "https://nord-avis.example/news/9ygfhr",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T10:56:00Z",
-   "tone": -3.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Mexico City",
-   "url": "https://tageszeitung.example/news/1wblcv",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T10:25:00Z",
-   "tone": -1.7,
+   "title": "[sample] Ministers discuss energy prices near Mexico City",
+   "url": "https://corriere-sample.example/news/atpbl",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T19:56:00Z",
+   "tone": 0.6,
    "image": ""
   },
   {
    "title": "[sample] Wildfire forces evacuations near Mexico City",
-   "url": "https://gulf-report.example/news/aztbhi",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T10:07:00Z",
-   "tone": -1.3,
+   "url": "https://la-voz.example/news/3h07p5",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T19:21:00Z",
+   "tone": -4.6,
    "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Mexico City",
-   "url": "https://daily-ledger.example/news/g8wr1j",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T09:41:00Z",
-   "tone": -4.8,
+   "url": "https://el-diario.example/news/c6msey",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T18:43:00Z",
+   "tone": -4.9,
    "image": ""
   },
   {
-   "title": "[sample] Court hears appeal in landmark case near Mexico City",
-   "url": "https://global-desk.example/news/1pna34",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T09:10:00Z",
-   "tone": 1.5,
+   "title": "[sample] Trade talks resume after pause near Mexico City",
+   "url": "https://corriere-sample.example/news/6h1m8g",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T18:33:00Z",
+   "tone": 0.2,
    "image": ""
   },
   {
-   "title": "[sample] Officials meet over regional dispute near Mexico City",
-   "url": "https://nation-ke.example/news/3kub9f",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T08:43:00Z",
-   "tone": 4.7,
+   "title": "[sample] Trade talks resume after pause near Mexico City",
+   "url": "https://nord-avis.example/news/apjkue",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T17:51:00Z",
+   "tone": -1.8,
    "image": ""
   },
   {
-   "title": "[sample] Protest gathers in city centre near Mexico City",
-   "url": "https://xinhua-sample.example/news/dp1m8g",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T08:09:00Z",
-   "tone": 4.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Mexico City",
-   "url": "https://o-correio.example/news/6vm1wd",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T07:40:00Z",
-   "tone": -3.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Mexico City",
-   "url": "https://daily-ledger.example/news/6xsaq8",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T07:24:00Z",
+   "title": "[sample] Storm disrupts transport links near Mexico City",
+   "url": "https://nord-avis.example/news/6l027",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T17:28:00Z",
    "tone": 2.7,
    "image": ""
   },
   {
-   "title": "[sample] Researchers report vaccine trial results near Mexico City",
-   "url": "https://tehran-times.example/news/ds8xs",
+   "title": "[sample] Trade talks resume after pause near Mexico City",
+   "url": "https://tageszeitung.example/news/8tn6lz",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T16:53:00Z",
+   "tone": -1.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Mexico City",
+   "url": "https://tageszeitung.example/news/m91q5",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T16:42:00Z",
+   "tone": 1.2,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://daily-ledger.example/news/gd92x0",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T16:04:00Z",
+   "tone": 2.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Mexico City",
+   "url": "https://daily-ledger.example/news/cpkozx",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T15:40:00Z",
+   "tone": 4.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Mexico City",
+   "url": "https://tehran-times.example/news/e3x1h8",
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T06:58:00Z",
-   "tone": 4,
+   "time": "2026-10-20T15:02:00Z",
+   "tone": 4.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Mexico City",
+   "url": "https://asahi-sample.example/news/80k1wo",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T14:35:00Z",
+   "tone": -4.1,
    "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Mexico City",
-   "url": "https://tehran-times.example/news/g4ial1",
+   "url": "https://al-akhbar.example/news/crsqac",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T14:20:00Z",
+   "tone": -0.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Mexico City",
+   "url": "https://jakarta-pos.example/news/1riaiy",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T13:40:00Z",
+   "tone": 3.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Mexico City",
+   "url": "https://global-desk.example/news/cxre7q",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T13:16:00Z",
+   "tone": -1.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Mexico City",
+   "url": "https://lagos-sun.example/news/4569k8",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T12:47:00Z",
+   "tone": -1.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Mexico City",
+   "url": "https://tehran-times.example/news/etmpyk",
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T06:15:00Z",
+   "time": "2026-10-20T12:34:00Z",
+   "tone": -2.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Mexico City",
+   "url": "https://jakarta-pos.example/news/aexyxq",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T11:51:00Z",
+   "tone": 1.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Mexico City",
+   "url": "https://la-voz.example/news/g5ubed",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T11:35:00Z",
+   "tone": 3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Mexico City",
+   "url": "https://cape-mail.example/news/4yw6pl",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T10:56:00Z",
+   "tone": 0.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Mexico City",
+   "url": "https://lagos-sun.example/news/5kveq0",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T10:43:00Z",
+   "tone": -6.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Mexico City",
+   "url": "https://tageszeitung.example/news/zdcq",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T10:06:00Z",
+   "tone": -5.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Mexico City",
+   "url": "https://le-quotidien.example/news/5zc8ej",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T09:45:00Z",
+   "tone": -3.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Mexico City",
+   "url": "https://le-quotidien.example/news/8gmi4c",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T09:11:00Z",
+   "tone": 2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Mexico City",
+   "url": "https://wire-service.example/news/bmlu29",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T08:49:00Z",
+   "tone": 2.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Mexico City",
+   "url": "https://tehran-times.example/news/3745xh",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T08:22:00Z",
    "tone": -2.3,
    "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Mexico City",
+   "url": "https://el-diario.example/news/dzg980",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T07:50:00Z",
+   "tone": -2.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Mexico City",
+   "url": "https://o-correio.example/news/2h1v3b",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T07:18:00Z",
+   "tone": 3.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Mexico City",
+   "url": "https://hindustan-post.example/news/1d3ie2",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T06:43:00Z",
+   "tone": -3.8,
+   "image": ""
   }
- ]
+ ],
+ "stories": [
+  {
+   "n": 116,
+   "o": 18,
+   "c": 10,
+   "l": 7,
+   "t": -2.4,
+   "first": "2026-10-21T00:46:00Z",
+   "last": "2026-10-21T05:25:00Z",
+   "headline": "[sample] Storm damage closes main roads in Mexico City: in pictures",
+   "headlineSource": "nord-avis.example",
+   "headlineLang": "no",
+   "entities": [
+    "natural disaster",
+    "transport",
+    "emergency services",
+    "mexico city"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Storm damage closes main roads in Mexico City: explained",
+     "url": "https://tehran-times.example/story/629o6s",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-21T05:25:00Z",
+     "tone": 0.9,
+     "image": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Mexico City: in pictures",
+     "url": "https://nord-avis.example/story/135u59",
+     "source": "nord-avis.example",
+     "country": "NO",
+     "lang": "no",
+     "time": "2026-10-21T04:53:00Z",
+     "tone": -3.3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Mexico City: analysis",
+     "url": "https://nord-avis.example/story/8slivg",
+     "source": "nord-avis.example",
+     "country": "NO",
+     "lang": "no",
+     "time": "2026-10-21T03:37:00Z",
+     "tone": -3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Mexico City: timeline",
+     "url": "https://el-diario.example/story/59obpr",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T03:22:00Z",
+     "tone": -5.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Mexico City: what we know",
+     "url": "https://vesti-news.example/story/12aamu",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T02:05:00Z",
+     "tone": 0.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Mexico City: timeline",
+     "url": "https://nation-ke.example/story/3t72q3",
+     "source": "nation-ke.example",
+     "country": "KE",
+     "lang": "en",
+     "time": "2026-10-21T03:00:00Z",
+     "tone": -4.6,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 110,
+   "o": 17,
+   "c": 10,
+   "l": 7,
+   "t": -2.3,
+   "first": "2026-10-20T23:05:00Z",
+   "last": "2026-10-21T05:22:00Z",
+   "headline": "[sample] Ministers meet over energy prices in Mexico City: live updates",
+   "headlineSource": "el-diario.example",
+   "headlineLang": "es",
+   "entities": [
+    "energy",
+    "european union",
+    "oil prices",
+    "mexico city"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Ministers meet over energy prices in Mexico City: latest",
+     "url": "https://kyiv-herald.example/story/85qqkk",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-21T05:22:00Z",
+     "tone": -5.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Mexico City: in pictures",
+     "url": "https://haaretz-sample.example/story/k19yw",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-21T04:36:00Z",
+     "tone": 0.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Mexico City: in pictures",
+     "url": "https://global-desk.example/story/e78w7l",
+     "source": "global-desk.example",
+     "country": "CA",
+     "lang": "en",
+     "time": "2026-10-21T03:38:00Z",
+     "tone": -2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Mexico City: reactions",
+     "url": "https://el-diario.example/story/657p4i",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T03:07:00Z",
+     "tone": -1.1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Mexico City: what we know",
+     "url": "https://hindustan-post.example/story/81chue",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T03:46:00Z",
+     "tone": -3.7,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Mexico City: live updates",
+     "url": "https://el-diario.example/story/9ksnm1",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T03:32:00Z",
+     "tone": -2.8,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 83,
+   "o": 13,
+   "c": 7,
+   "l": 5,
+   "t": -2.5,
+   "first": "2026-10-20T22:35:00Z",
+   "last": "2026-10-21T04:48:00Z",
+   "headline": "[sample] Strike halts rail services in Mexico City: latest",
+   "headlineSource": "o-correio.example",
+   "headlineLang": "pt",
+   "entities": [
+    "trade union",
+    "rail",
+    "labour",
+    "mexico city"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Strike halts rail services in Mexico City: what we know",
+     "url": "https://vesti-news.example/story/14xxtl",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T04:48:00Z",
+     "tone": 3.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Mexico City: latest",
+     "url": "https://o-correio.example/story/42xk4w",
+     "source": "o-correio.example",
+     "country": "BR",
+     "lang": "pt",
+     "time": "2026-10-21T03:55:00Z",
+     "tone": -3.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Mexico City: latest",
+     "url": "https://le-quotidien.example/story/9mpdsn",
+     "source": "le-quotidien.example",
+     "country": "FR",
+     "lang": "fr",
+     "time": "2026-10-21T03:34:00Z",
+     "tone": -5.7,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Mexico City: in pictures",
+     "url": "https://morning-wire.example/story/7x5v1c",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-21T02:03:00Z",
+     "tone": -1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Mexico City: reactions",
+     "url": "https://le-quotidien.example/story/3q7ckq",
+     "source": "le-quotidien.example",
+     "country": "FR",
+     "lang": "fr",
+     "time": "2026-10-21T02:56:00Z",
+     "tone": -3.1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Mexico City: timeline",
+     "url": "https://kyiv-herald.example/story/ew1z8e",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-21T00:33:00Z",
+     "tone": -5.1,
+     "image": ""
+    }
+   ]
+  }
+ ],
+ "unclustered": 81
 }

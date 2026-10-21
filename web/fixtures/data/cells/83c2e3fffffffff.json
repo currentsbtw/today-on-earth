@@ -3,36 +3,40 @@
  "name": "Buenos Aires, Distrito Federal, Argentina",
  "n": 205,
  "o": 31,
- "c": 25,
- "l": 16,
- "t": -1.1,
+ "c": 23,
+ "l": 15,
+ "t": -1.2,
  "topOutlets": [
   [
    "la-voz.example",
    5
   ],
   [
-   "gazeta-sample.example",
+   "jakarta-pos.example",
    5
   ],
   [
-   "morning-wire.example",
-   4
-  ],
-  [
-   "o-correio.example",
+   "hurriyet-sample.example",
    3
   ],
   [
-   "harbour-press.example",
+   "corriere-sample.example",
    3
   ],
   [
-   "wire-service.example",
+   "gazeta-sample.example",
    3
   ],
   [
-   "lagos-sun.example",
+   "asahi-sample.example",
+   3
+  ],
+  [
+   "global-desk.example",
+   2
+  ],
+  [
+   "al-akhbar.example",
    2
   ],
   [
@@ -40,11 +44,7 @@
    2
   ],
   [
-   "hindustan-post.example",
-   2
-  ],
-  [
-   "hurriyet-sample.example",
+   "tageszeitung.example",
    2
   ]
  ],
@@ -54,27 +54,31 @@
    5
   ],
   [
-   "PL",
+   "ID",
    5
   ],
   [
-   "GB",
-   4
-  ],
-  [
-   "BR",
+   "TR",
    3
   ],
   [
-   "AU",
+   "IT",
    3
   ],
   [
-   "",
+   "PL",
    3
   ],
   [
-   "NG",
+   "JP",
+   3
+  ],
+  [
+   "CA",
+   2
+  ],
+  [
+   "EG",
    2
   ],
   [
@@ -82,556 +86,875 @@
    2
   ],
   [
-   "IN",
-   2
-  ],
-  [
-   "TR",
+   "DE",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   18
+   12
   ],
   [
    "es",
    7
   ],
   [
-   "pl",
+   "id",
    5
   ],
   [
-   "pt",
-   3
-  ],
-  [
    "ar",
-   2
+   4
   ],
   [
    "tr",
-   2
-  ],
-  [
-   "uk",
-   2
+   3
   ],
   [
    "it",
+   3
+  ],
+  [
+   "pl",
+   3
+  ],
+  [
+   "ja",
+   3
+  ],
+  [
+   "de",
    2
   ],
   [
-   "no",
+   "ko",
    2
-  ],
-  [
-   "fa",
-   1
   ]
  ],
  "articles": [
   {
    "title": "[sample] Ministers discuss energy prices near Buenos Aires",
-   "url": "https://gulf-report.example/news/ctuqfz",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-21T04:54:00Z",
-   "tone": 1.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Buenos Aires",
-   "url": "https://o-correio.example/news/ddlzgz",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-21T04:24:00Z",
-   "tone": -0.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Buenos Aires",
-   "url": "https://lagos-sun.example/news/5myf8y",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-21T03:57:00Z",
-   "tone": 1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Buenos Aires",
-   "url": "https://el-diario.example/news/4oas4g",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-21T03:35:00Z",
-   "tone": 0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Buenos Aires",
-   "url": "https://harbour-press.example/news/kxu3s",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-21T03:05:00Z",
-   "tone": -4.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Buenos Aires",
-   "url": "https://hindustan-post.example/news/chw5uw",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-21T02:37:00Z",
-   "tone": -1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Buenos Aires",
-   "url": "https://tehran-times.example/news/g9dbmj",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-21T02:17:00Z",
-   "tone": -5.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Buenos Aires",
-   "url": "https://la-voz.example/news/7rtoyx",
+   "url": "https://la-voz.example/news/aj2q9z",
    "source": "la-voz.example",
    "country": "AR",
    "lang": "es",
-   "time": "2026-10-21T01:51:00Z",
-   "tone": -6.1,
+   "time": "2026-10-21T05:33:00Z",
+   "tone": -2.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Buenos Aires",
+   "url": "https://global-desk.example/news/2r0cq",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-21T05:01:00Z",
+   "tone": -2.8,
    "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Buenos Aires",
-   "url": "https://hurriyet-sample.example/news/e7py1i",
+   "url": "https://al-akhbar.example/news/99osqe",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-21T04:23:00Z",
+   "tone": -6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Buenos Aires",
+   "url": "https://el-diario.example/news/299s09",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-21T03:56:00Z",
+   "tone": -2.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Buenos Aires",
+   "url": "https://hurriyet-sample.example/news/41bxf9",
    "source": "hurriyet-sample.example",
    "country": "TR",
    "lang": "tr",
+   "time": "2026-10-21T03:32:00Z",
+   "tone": -4.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Buenos Aires",
+   "url": "https://hurriyet-sample.example/news/103q4q",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-21T03:10:00Z",
+   "tone": -6.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Buenos Aires",
+   "url": "https://tageszeitung.example/news/epwyzo",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-21T02:49:00Z",
+   "tone": -2.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Buenos Aires",
+   "url": "https://jakarta-pos.example/news/bzjgpz",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-21T02:19:00Z",
+   "tone": 0.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Buenos Aires",
+   "url": "https://corriere-sample.example/news/c9d3aw",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-21T01:36:00Z",
+   "tone": -2.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Buenos Aires",
+   "url": "https://harbour-press.example/news/djri9w",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
    "time": "2026-10-21T01:21:00Z",
    "tone": 4.7,
    "image": ""
   },
   {
-   "title": "[sample] Trade talks resume after pause near Buenos Aires",
-   "url": "https://la-voz.example/news/3ub62i",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-21T00:55:00Z",
-   "tone": 3.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Buenos Aires",
-   "url": "https://harbour-press.example/news/59zm96",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-21T00:19:00Z",
-   "tone": -0.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Buenos Aires",
-   "url": "https://kyiv-herald.example/news/b28drs",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T23:59:00Z",
-   "tone": 3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Buenos Aires",
-   "url": "https://seoul-daily.example/news/17w0ir",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T23:16:00Z",
-   "tone": -3.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Buenos Aires",
-   "url": "https://gazeta-sample.example/news/6m534i",
+   "title": "[sample] Protest gathers in city centre near Buenos Aires",
+   "url": "https://gazeta-sample.example/news/94jdiz",
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-20T23:01:00Z",
-   "tone": 3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Buenos Aires",
-   "url": "https://o-correio.example/news/7tdt36",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T22:38:00Z",
-   "tone": 4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Buenos Aires",
-   "url": "https://jakarta-pos.example/news/1xxl56",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T22:04:00Z",
-   "tone": -3.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Buenos Aires",
-   "url": "https://haaretz-sample.example/news/bjk48v",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T21:29:00Z",
+   "time": "2026-10-21T00:46:00Z",
    "tone": -5,
    "image": ""
   },
   {
-   "title": "[sample] Central bank holds interest rate near Buenos Aires",
-   "url": "https://la-voz.example/news/d89t3g",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T21:05:00Z",
-   "tone": -6.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Buenos Aires",
-   "url": "https://corriere-sample.example/news/ffx85e",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T20:29:00Z",
-   "tone": 4.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Buenos Aires",
-   "url": "https://morning-wire.example/news/93mjfu",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T20:19:00Z",
-   "tone": -5.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Buenos Aires",
-   "url": "https://nation-ke.example/news/1xxtng",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T19:45:00Z",
-   "tone": 0.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Buenos Aires",
-   "url": "https://al-akhbar.example/news/d1vs5y",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T19:23:00Z",
-   "tone": -4.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Buenos Aires",
-   "url": "https://el-diario.example/news/286vj4",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T18:53:00Z",
-   "tone": -4.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Buenos Aires",
-   "url": "https://morning-wire.example/news/d2eeik",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T18:29:00Z",
-   "tone": -3.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Buenos Aires",
-   "url": "https://la-voz.example/news/9cave0",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T17:51:00Z",
-   "tone": 3.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Buenos Aires",
-   "url": "https://gazeta-sample.example/news/d1hzr9",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T17:29:00Z",
-   "tone": -2.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Buenos Aires",
-   "url": "https://lagos-sun.example/news/5lkmr6",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T16:54:00Z",
-   "tone": 3.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Buenos Aires",
-   "url": "https://xinhua-sample.example/news/2ik608",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T16:22:00Z",
-   "tone": -6.4,
-   "image": ""
-  },
-  {
    "title": "[sample] Ministers discuss energy prices near Buenos Aires",
-   "url": "https://morning-wire.example/news/f4vvix",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T16:11:00Z",
-   "tone": 1.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Buenos Aires",
-   "url": "https://morning-wire.example/news/5oaqxi",
-   "source": "morning-wire.example",
-   "country": "GB",
-   "lang": "en",
-   "time": "2026-10-20T15:35:00Z",
-   "tone": -0.4,
+   "url": "https://hurriyet-sample.example/news/4g3w72",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-21T00:24:00Z",
+   "tone": 1.7,
    "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Buenos Aires",
-   "url": "https://la-voz.example/news/dwerf3",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T14:59:00Z",
-   "tone": -6.5,
+   "url": "https://al-akhbar.example/news/6iegba",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T23:50:00Z",
+   "tone": -5,
    "image": ""
   },
   {
-   "title": "[sample] Storm disrupts transport links near Buenos Aires",
-   "url": "https://o-correio.example/news/axgaqt",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T14:30:00Z",
-   "tone": 2.2,
+   "title": "",
+   "url": "https://asahi-sample.example/news/zdg8q",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T23:30:00Z",
+   "tone": -0.3,
    "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Buenos Aires",
-   "url": "https://wire-service.example/news/d4cmjr",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T14:18:00Z",
-   "tone": 3.2,
+   "url": "https://jakarta-pos.example/news/1qx8cy",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T22:51:00Z",
+   "tone": -2.8,
    "image": ""
   },
   {
-   "title": "[sample] Aid convoy reaches border crossing near Buenos Aires",
-   "url": "https://asahi-sample.example/news/ggn1j9",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T13:49:00Z",
+   "title": "[sample] Central bank holds interest rate near Buenos Aires",
+   "url": "https://la-voz.example/news/93zqjh",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T22:26:00Z",
+   "tone": -6.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Buenos Aires",
+   "url": "https://gazeta-sample.example/news/evy0i6",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T21:55:00Z",
+   "tone": 3.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Buenos Aires",
+   "url": "https://la-voz.example/news/17rcfx",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T21:32:00Z",
+   "tone": 1.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Buenos Aires",
+   "url": "https://jakarta-pos.example/news/yevao",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T21:05:00Z",
+   "tone": 4.1,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://seoul-daily.example/news/23p412",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T20:43:00Z",
+   "tone": 0.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Buenos Aires",
+   "url": "https://gazeta-sample.example/news/50gvi7",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T20:23:00Z",
+   "tone": -6.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Buenos Aires",
+   "url": "https://la-voz.example/news/af0r95",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T19:55:00Z",
+   "tone": -5.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Buenos Aires",
+   "url": "https://nation-ke.example/news/3yem13",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T19:24:00Z",
    "tone": -3.1,
    "image": ""
   },
   {
    "title": "",
-   "url": "https://cape-mail.example/news/86svr0",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T13:19:00Z",
-   "tone": -1.2,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://wire-service.example/news/8z14gy",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T12:58:00Z",
-   "tone": 4.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Buenos Aires",
-   "url": "https://daily-ledger.example/news/8qzcy6",
+   "url": "https://daily-ledger.example/news/c9n0or",
    "source": "daily-ledger.example",
    "country": "US",
    "lang": "en",
-   "time": "2026-10-20T12:22:00Z",
-   "tone": 2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Buenos Aires",
-   "url": "https://gazeta-sample.example/news/fpquvm",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T11:53:00Z",
-   "tone": -7,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://gazeta-sample.example/news/agdx75",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T11:26:00Z",
-   "tone": -3.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Buenos Aires",
-   "url": "https://kyiv-herald.example/news/39dhlg",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T11:00:00Z",
-   "tone": -6.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Buenos Aires",
-   "url": "https://global-desk.example/news/2v55hg",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T10:26:00Z",
-   "tone": 4.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Buenos Aires",
-   "url": "https://nord-avis.example/news/bwrh7m",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T10:06:00Z",
-   "tone": 1.1,
+   "time": "2026-10-20T18:56:00Z",
+   "tone": -3.3,
    "image": ""
   },
   {
    "title": "[sample] Wildfire forces evacuations near Buenos Aires",
-   "url": "https://nord-avis.example/news/8iu54w",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T09:33:00Z",
-   "tone": -0.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Buenos Aires",
-   "url": "https://le-quotidien.example/news/dxb3ik",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T09:18:00Z",
-   "tone": -3.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Buenos Aires",
-   "url": "https://corriere-sample.example/news/wvnmw",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T08:40:00Z",
+   "url": "https://daily-ledger.example/news/czsefq",
+   "source": "daily-ledger.example",
+   "country": "US",
+   "lang": "en",
+   "time": "2026-10-20T18:15:00Z",
    "tone": -5.8,
    "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Buenos Aires",
-   "url": "https://harbour-press.example/news/9e4j56",
-   "source": "harbour-press.example",
-   "country": "AU",
+   "url": "https://lagos-sun.example/news/dnaazy",
+   "source": "lagos-sun.example",
+   "country": "NG",
    "lang": "en",
-   "time": "2026-10-20T08:23:00Z",
-   "tone": -6.9,
+   "time": "2026-10-20T18:01:00Z",
+   "tone": -5.7,
    "image": ""
   },
   {
-   "title": "[sample] Protest gathers in city centre near Buenos Aires",
-   "url": "https://gazeta-sample.example/news/38jsbp",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T07:40:00Z",
-   "tone": -2.6,
+   "title": "[sample] Trade talks resume after pause near Buenos Aires",
+   "url": "https://vesti-news.example/news/5db8di",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T17:22:00Z",
+   "tone": 2.5,
    "image": ""
   },
   {
-   "title": "[sample] Wildfire forces evacuations near Buenos Aires",
-   "url": "https://hurriyet-sample.example/news/crjpxs",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T07:09:00Z",
-   "tone": 3.4,
+   "title": "[sample] Central bank holds interest rate near Buenos Aires",
+   "url": "https://jakarta-pos.example/news/4vz1y9",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T17:00:00Z",
+   "tone": -6.5,
    "image": ""
   },
   {
-   "title": "[sample] Wildfire forces evacuations near Buenos Aires",
-   "url": "https://wire-service.example/news/79ja2e",
-   "source": "wire-service.example",
-   "country": "",
+   "title": "[sample] Football club confirms new coach near Buenos Aires",
+   "url": "https://asahi-sample.example/news/d7fpnf",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T16:32:00Z",
+   "tone": 2.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Buenos Aires",
+   "url": "https://hindustan-post.example/news/al9bn9",
+   "source": "hindustan-post.example",
+   "country": "IN",
    "lang": "en",
-   "time": "2026-10-20T06:42:00Z",
-   "tone": 0.1,
+   "time": "2026-10-20T16:13:00Z",
+   "tone": 4.2,
    "image": ""
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Buenos Aires",
-   "url": "https://hindustan-post.example/news/50scq5",
+   "url": "https://o-correio.example/news/1b238v",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T15:43:00Z",
+   "tone": -2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Buenos Aires",
+   "url": "https://corriere-sample.example/news/buvg57",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T15:10:00Z",
+   "tone": -1.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Buenos Aires",
+   "url": "https://gulf-report.example/news/aq8o3x",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T14:36:00Z",
+   "tone": 4.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Buenos Aires",
+   "url": "https://hindustan-post.example/news/at63sy",
    "source": "hindustan-post.example",
    "country": "IN",
    "lang": "en",
-   "time": "2026-10-20T06:28:00Z",
-   "tone": -1.2,
+   "time": "2026-10-20T14:21:00Z",
+   "tone": -5.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Buenos Aires",
+   "url": "https://la-voz.example/news/9uwm08",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T13:37:00Z",
+   "tone": 3.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Buenos Aires",
+   "url": "https://nation-ke.example/news/8qpnrx",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T13:21:00Z",
+   "tone": -0.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Buenos Aires",
+   "url": "https://asahi-sample.example/news/1nfa7a",
+   "source": "asahi-sample.example",
+   "country": "JP",
+   "lang": "ja",
+   "time": "2026-10-20T12:56:00Z",
+   "tone": -5.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Buenos Aires",
+   "url": "https://cape-mail.example/news/10t37h",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T12:17:00Z",
+   "tone": 2.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Buenos Aires",
+   "url": "https://seoul-daily.example/news/clgzwd",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T12:05:00Z",
+   "tone": 2.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Buenos Aires",
+   "url": "https://o-correio.example/news/daps8i",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T11:23:00Z",
+   "tone": -3.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Buenos Aires",
+   "url": "https://corriere-sample.example/news/6kp32n",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T11:04:00Z",
+   "tone": -2.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Buenos Aires",
+   "url": "https://xinhua-sample.example/news/97o9t4",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T10:29:00Z",
+   "tone": 1.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Buenos Aires",
+   "url": "https://global-desk.example/news/2eu8pw",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T10:05:00Z",
+   "tone": -1.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Buenos Aires",
+   "url": "https://tehran-times.example/news/5wcsp",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T09:48:00Z",
+   "tone": 2.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Buenos Aires",
+   "url": "https://gulf-report.example/news/1g49l",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T09:06:00Z",
+   "tone": 2.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Buenos Aires",
+   "url": "https://tageszeitung.example/news/6crrv8",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T08:53:00Z",
+   "tone": -5.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Buenos Aires",
+   "url": "https://haaretz-sample.example/news/89mwms",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T08:17:00Z",
+   "tone": 1.5,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://el-diario.example/news/awv0xv",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T07:57:00Z",
+   "tone": 2.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Buenos Aires",
+   "url": "https://jakarta-pos.example/news/ahqlaj",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-20T07:11:00Z",
+   "tone": 4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Buenos Aires",
+   "url": "https://harbour-press.example/news/e5f9r7",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T06:54:00Z",
+   "tone": -1.5,
    "image": ""
   }
- ]
+ ],
+ "stories": [
+  {
+   "n": 67,
+   "o": 14,
+   "c": 12,
+   "l": 7,
+   "t": -1.3,
+   "first": "2026-10-20T16:14:00Z",
+   "last": "2026-10-21T01:38:00Z",
+   "headline": "[sample] Central bank leaves rates unchanged in Buenos Aires: explained",
+   "headlineSource": "daily-ledger.example",
+   "headlineLang": "en",
+   "entities": [
+    "central bank",
+    "inflation",
+    "interest rates",
+    "buenos aires"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Buenos Aires: what we know",
+     "url": "https://global-desk.example/story/c0nc3c",
+     "source": "global-desk.example",
+     "country": "CA",
+     "lang": "en",
+     "time": "2026-10-21T01:38:00Z",
+     "tone": -1.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Buenos Aires: reactions",
+     "url": "https://haaretz-sample.example/story/b79exp",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-21T00:46:00Z",
+     "tone": 1.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Buenos Aires: timeline",
+     "url": "https://morning-wire.example/story/3dx7cx",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-21T00:44:00Z",
+     "tone": 2.1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Buenos Aires: in pictures",
+     "url": "https://haaretz-sample.example/story/6gwr12",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-20T23:23:00Z",
+     "tone": 0.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Buenos Aires: explained",
+     "url": "https://daily-ledger.example/story/bjylq0",
+     "source": "daily-ledger.example",
+     "country": "US",
+     "lang": "en",
+     "time": "2026-10-21T00:02:00Z",
+     "tone": -4.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Buenos Aires: latest",
+     "url": "https://la-voz.example/story/40fc0y",
+     "source": "la-voz.example",
+     "country": "AR",
+     "lang": "es",
+     "time": "2026-10-20T20:53:00Z",
+     "tone": -5.5,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 42,
+   "o": 9,
+   "c": 8,
+   "l": 5,
+   "t": -1.2,
+   "first": "2026-10-20T15:16:00Z",
+   "last": "2026-10-21T03:02:00Z",
+   "headline": "[sample] Ministers meet over energy prices in Buenos Aires: live updates",
+   "headlineSource": "asahi-sample.example",
+   "headlineLang": "ja",
+   "entities": [
+    "energy",
+    "european union",
+    "oil prices",
+    "buenos aires"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Ministers meet over energy prices in Buenos Aires: latest",
+     "url": "https://nation-ke.example/story/8m4az6",
+     "source": "nation-ke.example",
+     "country": "KE",
+     "lang": "en",
+     "time": "2026-10-21T03:02:00Z",
+     "tone": 0.1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Buenos Aires: explained",
+     "url": "https://harbour-press.example/story/3ejeua",
+     "source": "harbour-press.example",
+     "country": "AU",
+     "lang": "en",
+     "time": "2026-10-21T02:08:00Z",
+     "tone": -3.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Buenos Aires: in pictures",
+     "url": "https://hindustan-post.example/story/8zlzbh",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T01:28:00Z",
+     "tone": 1.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Buenos Aires: reactions",
+     "url": "https://la-voz.example/story/8w5mru",
+     "source": "la-voz.example",
+     "country": "AR",
+     "lang": "es",
+     "time": "2026-10-21T00:32:00Z",
+     "tone": -4.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Buenos Aires: live updates",
+     "url": "https://asahi-sample.example/story/fes85t",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-20T23:14:00Z",
+     "tone": 1.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Buenos Aires: reactions",
+     "url": "https://la-voz.example/story/3psyu",
+     "source": "la-voz.example",
+     "country": "AR",
+     "lang": "es",
+     "time": "2026-10-20T23:42:00Z",
+     "tone": -2.7,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 30,
+   "o": 6,
+   "c": 5,
+   "l": 3,
+   "t": 1.8,
+   "first": "2026-10-20T22:42:00Z",
+   "last": "2026-10-21T01:53:00Z",
+   "headline": "[sample] Election count enters second day in Buenos Aires: in pictures",
+   "headlineSource": "hindustan-post.example",
+   "headlineLang": "en",
+   "entities": [
+    "election commission",
+    "parliament",
+    "voters",
+    "buenos aires"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Election count enters second day in Buenos Aires: explained",
+     "url": "https://haaretz-sample.example/story/29529t",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-21T01:53:00Z",
+     "tone": 3.7,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Buenos Aires: in pictures",
+     "url": "https://hindustan-post.example/story/b7f82y",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T00:54:00Z",
+     "tone": -0.1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Buenos Aires: timeline",
+     "url": "https://hindustan-post.example/story/eto2db",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T00:13:00Z",
+     "tone": 1.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Buenos Aires: reactions",
+     "url": "https://o-correio.example/story/cb5xj3",
+     "source": "o-correio.example",
+     "country": "BR",
+     "lang": "pt",
+     "time": "2026-10-20T23:17:00Z",
+     "tone": 3.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Buenos Aires: in pictures",
+     "url": "https://haaretz-sample.example/story/fl3vns",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-20T23:21:00Z",
+     "tone": -1.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Buenos Aires: in pictures",
+     "url": "https://wire-service.example/story/b1wec8",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-20T23:48:00Z",
+     "tone": 4,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 22,
+   "o": 6,
+   "c": 4,
+   "l": 5,
+   "t": 0.8,
+   "first": "2026-10-20T19:15:00Z",
+   "last": "2026-10-21T03:10:00Z",
+   "headline": "[sample] Storm damage closes main roads in Buenos Aires: live updates",
+   "headlineSource": "global-desk.example",
+   "headlineLang": "en",
+   "entities": [
+    "natural disaster",
+    "transport",
+    "emergency services",
+    "buenos aires"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Storm damage closes main roads in Buenos Aires: analysis",
+     "url": "https://kyiv-herald.example/story/4uur2d",
+     "source": "kyiv-herald.example",
+     "country": "UA",
+     "lang": "uk",
+     "time": "2026-10-21T03:10:00Z",
+     "tone": -5.9,
+     "image": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Buenos Aires: latest",
+     "url": "https://xinhua-sample.example/story/f7jeb4",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-21T02:14:00Z",
+     "tone": 3.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Buenos Aires: timeline",
+     "url": "https://wire-service.example/story/5seh7y",
+     "source": "wire-service.example",
+     "country": "",
+     "lang": "en",
+     "time": "2026-10-21T02:08:00Z",
+     "tone": 0.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Buenos Aires: explained",
+     "url": "https://vesti-news.example/story/azxqpo",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T00:16:00Z",
+     "tone": 3.3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Buenos Aires: live updates",
+     "url": "https://global-desk.example/story/6tocgy",
+     "source": "global-desk.example",
+     "country": "CA",
+     "lang": "en",
+     "time": "2026-10-20T23:34:00Z",
+     "tone": 1.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Buenos Aires: latest",
+     "url": "https://tageszeitung.example/story/c6hhs6",
+     "source": "tageszeitung.example",
+     "country": "DE",
+     "lang": "de",
+     "time": "2026-10-20T22:25:00Z",
+     "tone": 2.1,
+     "image": ""
+    }
+   ]
+  }
+ ],
+ "unclustered": 44
 }

@@ -3,24 +3,28 @@
  "name": "Lagos, Lagos, Nigeria",
  "n": 240,
  "o": 34,
- "c": 23,
- "l": 16,
- "t": 0.6,
+ "c": 21,
+ "l": 15,
+ "t": -1.4,
  "topOutlets": [
   [
-   "le-quotidien.example",
+   "lagos-sun.example",
    5
   ],
   [
-   "lagos-sun.example",
+   "harbour-press.example",
    4
   ],
   [
-   "vesti-news.example",
+   "corriere-sample.example",
    4
   ],
   [
-   "kyiv-herald.example",
+   "haaretz-sample.example",
+   3
+  ],
+  [
+   "la-voz.example",
    3
   ],
   [
@@ -28,41 +32,41 @@
    3
   ],
   [
-   "tageszeitung.example",
-   3
-  ],
-  [
-   "asahi-sample.example",
-   3
-  ],
-  [
-   "seoul-daily.example",
-   3
-  ],
-  [
    "cape-mail.example",
+   3
+  ],
+  [
+   "xinhua-sample.example",
+   3
+  ],
+  [
+   "wire-service.example",
    2
   ],
   [
-   "el-diario.example",
+   "hurriyet-sample.example",
    2
   ]
  ],
  "topCountries": [
   [
-   "FR",
+   "NG",
    5
   ],
   [
-   "NG",
+   "AU",
    4
   ],
   [
-   "RU",
+   "IT",
    4
   ],
   [
-   "UA",
+   "IL",
+   3
+  ],
+  [
+   "AR",
    3
   ],
   [
@@ -70,49 +74,37 @@
    3
   ],
   [
-   "DE",
-   3
-  ],
-  [
-   "JP",
-   3
-  ],
-  [
-   "KR",
-   3
-  ],
-  [
    "ZA",
+   3
+  ],
+  [
+   "CN",
+   3
+  ],
+  [
+   "",
    2
   ],
   [
-   "MX",
+   "TR",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   12
+   17
   ],
   [
-   "fr",
+   "es",
    5
   ],
   [
-   "ru",
+   "it",
    4
   ],
   [
-   "uk",
-   3
-  ],
-  [
-   "pt",
-   3
-  ],
-  [
-   "de",
+   "he",
    3
   ],
   [
@@ -120,518 +112,769 @@
    3
   ],
   [
-   "ja",
+   "pt",
    3
   ],
   [
-   "ko",
+   "zh",
    3
   ],
   [
-   "es",
+   "tr",
+   2
+  ],
+  [
+   "uk",
+   2
+  ],
+  [
+   "ru",
    2
   ]
  ],
  "articles": [
   {
    "title": "[sample] Central bank holds interest rate near Lagos",
-   "url": "https://cape-mail.example/news/1temei",
-   "source": "cape-mail.example",
-   "country": "ZA",
+   "url": "https://harbour-press.example/news/4ymois",
+   "source": "harbour-press.example",
+   "country": "AU",
    "lang": "en",
-   "time": "2026-10-21T04:57:00Z",
-   "tone": -2.3,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://el-diario.example/news/czg97m",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-21T04:22:00Z",
-   "tone": 3.9,
+   "time": "2026-10-21T05:29:00Z",
+   "tone": -1.7,
    "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Lagos",
-   "url": "https://kyiv-herald.example/news/2xapi8",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-21T04:09:00Z",
-   "tone": 4.5,
+   "url": "https://lagos-sun.example/news/c78umh",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-21T04:56:00Z",
+   "tone": -1.5,
    "image": ""
   },
   {
-   "title": "[sample] Storm disrupts transport links near Lagos",
-   "url": "https://o-correio.example/news/51sq1v",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-21T03:40:00Z",
-   "tone": 4.9,
+   "title": "[sample] Trade talks resume after pause near Lagos",
+   "url": "https://lagos-sun.example/news/a974wx",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-21T04:38:00Z",
+   "tone": 4.3,
    "image": ""
   },
   {
-   "title": "[sample] Central bank holds interest rate near Lagos",
-   "url": "https://gazeta-sample.example/news/n6nk7",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-21T03:15:00Z",
-   "tone": -0.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Lagos",
-   "url": "https://tageszeitung.example/news/650zrp",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-21T02:40:00Z",
-   "tone": 4.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Lagos",
-   "url": "https://kyiv-herald.example/news/7eq20p",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-21T02:04:00Z",
-   "tone": 1,
+   "title": "[sample] Researchers report vaccine trial results near Lagos",
+   "url": "https://corriere-sample.example/news/15lljw",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-21T04:03:00Z",
+   "tone": 3.4,
    "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Lagos",
-   "url": "https://hindustan-post.example/news/mkmhj",
-   "source": "hindustan-post.example",
-   "country": "IN",
+   "url": "https://wire-service.example/news/61vqx8",
+   "source": "wire-service.example",
+   "country": "",
    "lang": "en",
-   "time": "2026-10-21T01:44:00Z",
-   "tone": 1.8,
+   "time": "2026-10-21T03:38:00Z",
+   "tone": -3.3,
    "image": ""
   },
   {
-   "title": "[sample] Football club confirms new coach near Lagos",
-   "url": "https://le-quotidien.example/news/2z21qo",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-21T01:20:00Z",
+   "title": "[sample] Ministers discuss energy prices near Lagos",
+   "url": "https://hurriyet-sample.example/news/az8q06",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-21T03:00:00Z",
    "tone": 4.2,
    "image": ""
   },
   {
-   "title": "[sample] Researchers report vaccine trial results near Lagos",
-   "url": "https://xinhua-sample.example/news/b2agyq",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-21T00:55:00Z",
-   "tone": -6.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Lagos",
-   "url": "https://le-quotidien.example/news/bvtpar",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-21T00:27:00Z",
-   "tone": 1.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Lagos",
-   "url": "https://el-diario.example/news/1t8ldl",
-   "source": "el-diario.example",
-   "country": "MX",
-   "lang": "es",
-   "time": "2026-10-20T23:52:00Z",
-   "tone": -4.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Lagos",
-   "url": "https://hurriyet-sample.example/news/81yep9",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T23:33:00Z",
-   "tone": 3.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Lagos",
-   "url": "https://al-akhbar.example/news/c5ui4j",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T22:59:00Z",
-   "tone": -1.1,
-   "image": ""
-  },
-  {
    "title": "[sample] Election commission publishes turnout figures near Lagos",
-   "url": "https://lagos-sun.example/news/age8kj",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T22:38:00Z",
-   "tone": 2.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Lagos",
-   "url": "https://jakarta-pos.example/news/d82eft",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T22:09:00Z",
-   "tone": 2.7,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://asahi-sample.example/news/aymmar",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T21:36:00Z",
-   "tone": -2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Lagos",
-   "url": "https://vesti-news.example/news/ccljww",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T21:13:00Z",
-   "tone": 2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Lagos",
-   "url": "https://jakarta-pos.example/news/lqg9c",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T20:45:00Z",
-   "tone": -1.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Lagos",
-   "url": "https://corriere-sample.example/news/1gjg7w",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T20:16:00Z",
-   "tone": -1.8,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://vesti-news.example/news/60fpb9",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T19:38:00Z",
-   "tone": -0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Lagos",
-   "url": "https://lagos-sun.example/news/ee59ub",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T19:14:00Z",
-   "tone": 3.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Lagos",
-   "url": "https://al-akhbar.example/news/9germ3",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T18:45:00Z",
-   "tone": -2.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Lagos",
-   "url": "https://haaretz-sample.example/news/oolxg",
-   "source": "haaretz-sample.example",
-   "country": "IL",
-   "lang": "he",
-   "time": "2026-10-20T18:16:00Z",
-   "tone": 1.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Lagos",
-   "url": "https://asahi-sample.example/news/dhkj8w",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T17:46:00Z",
-   "tone": 4.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Lagos",
-   "url": "https://o-correio.example/news/4i7tfi",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T17:21:00Z",
-   "tone": 4.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Lagos",
-   "url": "https://tageszeitung.example/news/2m9hxr",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T16:54:00Z",
-   "tone": -0.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Lagos",
-   "url": "https://seoul-daily.example/news/3336i5",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T16:23:00Z",
-   "tone": 4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Lagos",
-   "url": "https://lagos-sun.example/news/41qek",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T15:58:00Z",
-   "tone": 3.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Lagos",
-   "url": "https://kyiv-herald.example/news/fp5e5z",
+   "url": "https://kyiv-herald.example/news/6kudkq",
    "source": "kyiv-herald.example",
    "country": "UA",
    "lang": "uk",
-   "time": "2026-10-20T15:28:00Z",
-   "tone": -5.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Lagos",
-   "url": "https://tageszeitung.example/news/ebqp77",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T15:06:00Z",
-   "tone": 0.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Lagos",
-   "url": "https://xinhua-sample.example/news/2vit80",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T14:41:00Z",
-   "tone": 1.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Lagos",
-   "url": "https://hindustan-post.example/news/6rhejq",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-20T14:08:00Z",
-   "tone": -4.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Lagos",
-   "url": "https://le-quotidien.example/news/5b7i5y",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T13:49:00Z",
-   "tone": 1.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Lagos",
-   "url": "https://vesti-news.example/news/4llgl8",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T13:07:00Z",
-   "tone": 2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Lagos",
-   "url": "https://le-quotidien.example/news/ajv7x6",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T12:55:00Z",
-   "tone": 3.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Lagos",
-   "url": "https://asahi-sample.example/news/4y1bga",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T12:20:00Z",
-   "tone": -2.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Lagos",
-   "url": "https://gazeta-sample.example/news/ffzhy6",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T11:49:00Z",
-   "tone": -1.9,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://daily-ledger.example/news/420j72",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T11:28:00Z",
-   "tone": -6.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Lagos",
-   "url": "https://harbour-press.example/news/dye05f",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T10:55:00Z",
-   "tone": 1.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Lagos",
-   "url": "https://le-quotidien.example/news/7voped",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T10:39:00Z",
-   "tone": 2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Lagos",
-   "url": "https://nation-ke.example/news/2xbsrm",
-   "source": "nation-ke.example",
-   "country": "KE",
-   "lang": "en",
-   "time": "2026-10-20T10:03:00Z",
-   "tone": 0.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Lagos",
-   "url": "https://gulf-report.example/news/d5dzn9",
-   "source": "gulf-report.example",
-   "country": "AE",
-   "lang": "ar",
-   "time": "2026-10-20T09:42:00Z",
-   "tone": -0.7,
+   "time": "2026-10-21T02:37:00Z",
+   "tone": -2.8,
    "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Lagos",
-   "url": "https://vesti-news.example/news/dts61s",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T09:17:00Z",
-   "tone": 3.7,
+   "url": "https://corriere-sample.example/news/bawdx3",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-21T02:11:00Z",
+   "tone": -5.9,
    "image": ""
   },
   {
-   "title": "[sample] Wildfire forces evacuations near Lagos",
-   "url": "https://seoul-daily.example/news/3c3pgl",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T08:47:00Z",
-   "tone": 1.2,
+   "title": "[sample] Storm disrupts transport links near Lagos",
+   "url": "https://vesti-news.example/news/20yjt7",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-21T01:35:00Z",
+   "tone": -2.9,
    "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Lagos",
-   "url": "https://cape-mail.example/news/a2i3bd",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T08:06:00Z",
-   "tone": -2.1,
+   "url": "https://kyiv-herald.example/news/4fq0u4",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-21T01:20:00Z",
+   "tone": -1.1,
    "image": ""
   },
   {
-   "title": "[sample] Central bank holds interest rate near Lagos",
-   "url": "https://seoul-daily.example/news/9tl3y6",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T07:45:00Z",
-   "tone": 3.7,
+   "title": "[sample] Football club confirms new coach near Lagos",
+   "url": "https://haaretz-sample.example/news/fqasiz",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-21T00:50:00Z",
+   "tone": -5.4,
    "image": ""
   },
   {
-   "title": "[sample] Aid convoy reaches border crossing near Lagos",
-   "url": "https://morning-wire.example/news/gcc6ng",
-   "source": "morning-wire.example",
-   "country": "GB",
+   "title": "[sample] Protest gathers in city centre near Lagos",
+   "url": "https://vesti-news.example/news/8e6etj",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-21T00:22:00Z",
+   "tone": -0.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Lagos",
+   "url": "https://la-voz.example/news/1ytx9",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T23:51:00Z",
+   "tone": 4.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Lagos",
+   "url": "https://hurriyet-sample.example/news/aa15cd",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T23:33:00Z",
+   "tone": 1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Lagos",
+   "url": "https://lagos-sun.example/news/d493wi",
+   "source": "lagos-sun.example",
+   "country": "NG",
    "lang": "en",
-   "time": "2026-10-20T07:15:00Z",
-   "tone": -6.5,
+   "time": "2026-10-20T22:59:00Z",
+   "tone": 0.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Lagos",
+   "url": "https://la-voz.example/news/3hbpsi",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T22:23:00Z",
+   "tone": -1.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Lagos",
+   "url": "https://al-akhbar.example/news/ektvob",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T22:00:00Z",
+   "tone": -1.9,
    "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Lagos",
-   "url": "https://o-correio.example/news/64m5a8",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-20T06:41:00Z",
-   "tone": 4.7,
+   "url": "https://lagos-sun.example/news/b97m7s",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T21:46:00Z",
+   "tone": 1.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Lagos",
+   "url": "https://seoul-daily.example/news/c102rh",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T21:16:00Z",
+   "tone": -1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Lagos",
+   "url": "https://la-voz.example/news/3ede90",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T20:31:00Z",
+   "tone": 0.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Lagos",
+   "url": "https://le-quotidien.example/news/3pnrmw",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T20:16:00Z",
+   "tone": -1.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Lagos",
+   "url": "https://harbour-press.example/news/dsk1u2",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T19:41:00Z",
+   "tone": 2.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Lagos",
+   "url": "https://haaretz-sample.example/news/avjfb8",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T19:15:00Z",
+   "tone": -6.1,
    "image": ""
   },
   {
    "title": "[sample] Aid convoy reaches border crossing near Lagos",
-   "url": "https://lagos-sun.example/news/9otf5s",
+   "url": "https://corriere-sample.example/news/9yf1gr",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T18:56:00Z",
+   "tone": -2.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Lagos",
+   "url": "https://o-correio.example/news/zzgc6",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T18:16:00Z",
+   "tone": -3.6,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://corriere-sample.example/news/ca7l78",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T17:56:00Z",
+   "tone": 2.1,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://haaretz-sample.example/news/7ae6jp",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-20T17:33:00Z",
+   "tone": -1.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Lagos",
+   "url": "https://el-diario.example/news/6crc99",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T16:58:00Z",
+   "tone": -1.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Lagos",
+   "url": "https://hindustan-post.example/news/2k9dyl",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T16:34:00Z",
+   "tone": -1.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Lagos",
+   "url": "https://cape-mail.example/news/c8mhjz",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T16:09:00Z",
+   "tone": -3.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Lagos",
+   "url": "https://xinhua-sample.example/news/2eemty",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T15:43:00Z",
+   "tone": -3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Lagos",
+   "url": "https://tageszeitung.example/news/97lbbj",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T15:00:00Z",
+   "tone": -6.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Lagos",
+   "url": "https://gulf-report.example/news/eruro",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T14:50:00Z",
+   "tone": -5.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Lagos",
+   "url": "https://harbour-press.example/news/fz2srl",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T14:22:00Z",
+   "tone": -4.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Lagos",
+   "url": "https://gulf-report.example/news/so8va",
+   "source": "gulf-report.example",
+   "country": "AE",
+   "lang": "ar",
+   "time": "2026-10-20T13:46:00Z",
+   "tone": -0.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Lagos",
+   "url": "https://cape-mail.example/news/3hz5re",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T13:15:00Z",
+   "tone": -5.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Lagos",
+   "url": "https://tehran-times.example/news/9fszc4",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T12:43:00Z",
+   "tone": -0.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Lagos",
+   "url": "https://o-correio.example/news/4srkc",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T12:20:00Z",
+   "tone": -4.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Lagos",
+   "url": "https://lagos-sun.example/news/3vcxvg",
    "source": "lagos-sun.example",
    "country": "NG",
    "lang": "en",
-   "time": "2026-10-20T06:20:00Z",
-   "tone": -0.4,
+   "time": "2026-10-20T11:58:00Z",
+   "tone": -3.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Lagos",
+   "url": "https://xinhua-sample.example/news/4eu5lm",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T11:21:00Z",
+   "tone": 0.7,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://o-correio.example/news/37rmkp",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T11:04:00Z",
+   "tone": -1.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Lagos",
+   "url": "https://hindustan-post.example/news/f6vgka",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T10:26:00Z",
+   "tone": 4.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Lagos",
+   "url": "https://nord-avis.example/news/1tijqi",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T10:14:00Z",
+   "tone": -3.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Lagos",
+   "url": "https://xinhua-sample.example/news/da80ta",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T09:34:00Z",
+   "tone": 3.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Lagos",
+   "url": "https://wire-service.example/news/aityxt",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T09:08:00Z",
+   "tone": -5.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Lagos",
+   "url": "https://el-diario.example/news/gpd4z",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T08:47:00Z",
+   "tone": -3.6,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://cape-mail.example/news/1fu5nq",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T08:15:00Z",
+   "tone": -5.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Lagos",
+   "url": "https://harbour-press.example/news/5bgrvn",
+   "source": "harbour-press.example",
+   "country": "AU",
+   "lang": "en",
+   "time": "2026-10-20T07:42:00Z",
+   "tone": 0.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Lagos",
+   "url": "https://tehran-times.example/news/61i1cr",
+   "source": "tehran-times.example",
+   "country": "IR",
+   "lang": "fa",
+   "time": "2026-10-20T07:30:00Z",
+   "tone": -0.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Lagos",
+   "url": "https://nation-ke.example/news/beyyv6",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T06:54:00Z",
+   "tone": 0.8,
    "image": ""
   }
- ]
+ ],
+ "stories": [
+  {
+   "n": 59,
+   "o": 12,
+   "c": 8,
+   "l": 6,
+   "t": -2.1,
+   "first": "2026-10-21T00:22:00Z",
+   "last": "2026-10-21T05:07:00Z",
+   "headline": "[sample] Wildfire forces evacuations in hills in Lagos: explained",
+   "headlineSource": "gazeta-sample.example",
+   "headlineLang": "pl",
+   "entities": [
+    "wildfire",
+    "evacuation",
+    "fire service",
+    "lagos"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Lagos: latest",
+     "url": "https://hurriyet-sample.example/story/1i7ovx",
+     "source": "hurriyet-sample.example",
+     "country": "TR",
+     "lang": "tr",
+     "time": "2026-10-21T05:07:00Z",
+     "tone": -3.1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Lagos: in pictures",
+     "url": "https://vesti-news.example/story/2f4ofq",
+     "source": "vesti-news.example",
+     "country": "RU",
+     "lang": "ru",
+     "time": "2026-10-21T04:09:00Z",
+     "tone": 0.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Lagos: what we know",
+     "url": "https://gazeta-sample.example/story/16kdef",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T03:57:00Z",
+     "tone": 0.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Lagos: explained",
+     "url": "https://gazeta-sample.example/story/51lkhw",
+     "source": "gazeta-sample.example",
+     "country": "PL",
+     "lang": "pl",
+     "time": "2026-10-21T03:22:00Z",
+     "tone": -3.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Lagos: what we know",
+     "url": "https://seoul-daily.example/story/f2355k",
+     "source": "seoul-daily.example",
+     "country": "KR",
+     "lang": "ko",
+     "time": "2026-10-21T01:43:00Z",
+     "tone": -3.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Wildfire forces evacuations in hills in Lagos: what we know",
+     "url": "https://tageszeitung.example/story/em65sq",
+     "source": "tageszeitung.example",
+     "country": "DE",
+     "lang": "de",
+     "time": "2026-10-21T00:22:00Z",
+     "tone": -4.2,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 40,
+   "o": 8,
+   "c": 6,
+   "l": 4,
+   "t": -1.8,
+   "first": "2026-10-20T22:58:00Z",
+   "last": "2026-10-21T01:58:00Z",
+   "headline": "[sample] Aid convoy reaches border crossing in Lagos: timeline",
+   "headlineSource": "gulf-report.example",
+   "headlineLang": "ar",
+   "entities": [
+    "united nations",
+    "refugees",
+    "humanitarian aid",
+    "lagos"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Lagos: analysis",
+     "url": "https://morning-wire.example/story/62iaff",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-21T01:58:00Z",
+     "tone": -3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Lagos: timeline",
+     "url": "https://harbour-press.example/story/g9iwqu",
+     "source": "harbour-press.example",
+     "country": "AU",
+     "lang": "en",
+     "time": "2026-10-21T01:38:00Z",
+     "tone": 3.3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Lagos: timeline",
+     "url": "https://daily-ledger.example/story/414ghr",
+     "source": "daily-ledger.example",
+     "country": "US",
+     "lang": "en",
+     "time": "2026-10-21T01:14:00Z",
+     "tone": -1.7,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Lagos: latest",
+     "url": "https://morning-wire.example/story/5cd64u",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-20T23:58:00Z",
+     "tone": -4.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Lagos: timeline",
+     "url": "https://gulf-report.example/story/e4q28p",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-20T22:42:00Z",
+     "tone": -4.9,
+     "image": ""
+    },
+    {
+     "title": "[sample] Aid convoy reaches border crossing in Lagos: what we know",
+     "url": "https://hurriyet-sample.example/story/225iqn",
+     "source": "hurriyet-sample.example",
+     "country": "TR",
+     "lang": "tr",
+     "time": "2026-10-20T22:58:00Z",
+     "tone": -0.6,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 34,
+   "o": 7,
+   "c": 5,
+   "l": 3,
+   "t": -0.1,
+   "first": "2026-10-20T21:04:00Z",
+   "last": "2026-10-21T02:32:00Z",
+   "headline": "[sample] Central bank leaves rates unchanged in Lagos: in pictures",
+   "headlineSource": "al-akhbar.example",
+   "headlineLang": "ar",
+   "entities": [
+    "central bank",
+    "inflation",
+    "interest rates",
+    "lagos"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Lagos: analysis",
+     "url": "https://morning-wire.example/story/6rjazb",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-21T02:32:00Z",
+     "tone": 0.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Lagos: analysis",
+     "url": "https://harbour-press.example/story/as88qr",
+     "source": "harbour-press.example",
+     "country": "AU",
+     "lang": "en",
+     "time": "2026-10-21T01:58:00Z",
+     "tone": 0.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Lagos: explained",
+     "url": "https://lagos-sun.example/story/efiqbo",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-21T00:48:00Z",
+     "tone": -4.1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Lagos: explained",
+     "url": "https://haaretz-sample.example/story/8itkub",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-21T00:02:00Z",
+     "tone": -4.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Lagos: timeline",
+     "url": "https://nation-ke.example/story/7t288g",
+     "source": "nation-ke.example",
+     "country": "KE",
+     "lang": "en",
+     "time": "2026-10-20T23:28:00Z",
+     "tone": 2.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Central bank leaves rates unchanged in Lagos: in pictures",
+     "url": "https://al-akhbar.example/story/wl8zg",
+     "source": "al-akhbar.example",
+     "country": "EG",
+     "lang": "ar",
+     "time": "2026-10-20T21:57:00Z",
+     "tone": 3.9,
+     "image": ""
+    }
+   ]
+  }
+ ],
+ "unclustered": 107
 }

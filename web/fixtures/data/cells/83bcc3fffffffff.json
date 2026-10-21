@@ -3,120 +3,112 @@
  "name": "Johannesburg, Gauteng, South Africa",
  "n": 118,
  "o": 24,
- "c": 23,
- "l": 17,
- "t": -0.8,
+ "c": 22,
+ "l": 16,
+ "t": -1.1,
  "topOutlets": [
   [
-   "lagos-sun.example",
+   "cape-mail.example",
    5
   ],
   [
-   "cape-mail.example",
-   4
-  ],
-  [
-   "le-quotidien.example",
-   4
-  ],
-  [
-   "xinhua-sample.example",
-   4
+   "global-desk.example",
+   5
   ],
   [
    "gazeta-sample.example",
+   4
+  ],
+  [
+   "wire-service.example",
+   3
+  ],
+  [
+   "xinhua-sample.example",
    3
   ],
   [
    "tageszeitung.example",
-   3
-  ],
-  [
-   "vesti-news.example",
-   2
-  ],
-  [
-   "daily-ledger.example",
-   2
-  ],
-  [
-   "asahi-sample.example",
    2
   ],
   [
    "jakarta-pos.example",
    2
+  ],
+  [
+   "hurriyet-sample.example",
+   2
+  ],
+  [
+   "nord-avis.example",
+   2
+  ],
+  [
+   "nation-ke.example",
+   2
   ]
  ],
  "topCountries": [
   [
-   "NG",
+   "ZA",
    5
   ],
   [
-   "ZA",
-   4
-  ],
-  [
-   "FR",
-   4
-  ],
-  [
-   "CN",
-   4
+   "CA",
+   5
   ],
   [
    "PL",
+   4
+  ],
+  [
+   "",
+   3
+  ],
+  [
+   "CN",
    3
   ],
   [
    "DE",
-   3
-  ],
-  [
-   "RU",
-   2
-  ],
-  [
-   "US",
-   2
-  ],
-  [
-   "JP",
    2
   ],
   [
    "ID",
+   2
+  ],
+  [
+   "TR",
+   2
+  ],
+  [
+   "NO",
+   2
+  ],
+  [
+   "KE",
    2
   ]
  ],
  "languages": [
   [
    "en",
-   18
+   20
   ],
   [
-   "fr",
+   "pl",
+   4
+  ],
+  [
+   "es",
    4
   ],
   [
    "zh",
-   4
-  ],
-  [
-   "pl",
    3
   ],
   [
    "de",
-   3
-  ],
-  [
-   "ru",
-   2
-  ],
-  [
-   "ja",
    2
   ],
   [
@@ -128,6 +120,14 @@
    2
   ],
   [
+   "no",
+   2
+  ],
+  [
+   "uk",
+   2
+  ],
+  [
    "it",
    2
   ]
@@ -135,503 +135,826 @@
  "articles": [
   {
    "title": "[sample] Court hears appeal in landmark case near Johannesburg",
-   "url": "https://cape-mail.example/news/1w0k6s",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-21T04:56:00Z",
-   "tone": 0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Trade talks resume after pause near Johannesburg",
-   "url": "https://gazeta-sample.example/news/1y2lb4",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-21T04:21:00Z",
-   "tone": 4.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Johannesburg",
-   "url": "https://cape-mail.example/news/d4bq9u",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-21T03:55:00Z",
-   "tone": -4.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Johannesburg",
-   "url": "https://le-quotidien.example/news/gj4hwa",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-21T03:43:00Z",
-   "tone": -2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Johannesburg",
-   "url": "https://vesti-news.example/news/941bgx",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-21T03:12:00Z",
-   "tone": 3.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Johannesburg",
-   "url": "https://o-correio.example/news/4f8he4",
-   "source": "o-correio.example",
-   "country": "BR",
-   "lang": "pt",
-   "time": "2026-10-21T02:28:00Z",
-   "tone": -3.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Johannesburg",
-   "url": "https://hindustan-post.example/news/n0ovw",
-   "source": "hindustan-post.example",
-   "country": "IN",
-   "lang": "en",
-   "time": "2026-10-21T02:02:00Z",
-   "tone": -1.4,
-   "image": ""
-  },
-  {
-   "title": "",
-   "url": "https://lagos-sun.example/news/e6n9el",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-21T01:51:00Z",
-   "tone": 2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Johannesburg",
-   "url": "https://xinhua-sample.example/news/272ydu",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-21T01:14:00Z",
-   "tone": 4.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Johannesburg",
-   "url": "https://daily-ledger.example/news/5ndqud",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-21T00:46:00Z",
-   "tone": -0.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Johannesburg",
-   "url": "https://asahi-sample.example/news/es574i",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-21T00:22:00Z",
-   "tone": 1.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Johannesburg",
-   "url": "https://jakarta-pos.example/news/8raez",
-   "source": "jakarta-pos.example",
-   "country": "ID",
-   "lang": "id",
-   "time": "2026-10-20T23:45:00Z",
-   "tone": 0.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Johannesburg",
-   "url": "https://hurriyet-sample.example/news/bjgitl",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T23:28:00Z",
-   "tone": 4.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Johannesburg",
-   "url": "https://le-quotidien.example/news/6uloix",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T22:50:00Z",
-   "tone": 0.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Johannesburg",
-   "url": "https://tageszeitung.example/news/6l9r2i",
+   "url": "https://tageszeitung.example/news/b0k8g8",
    "source": "tageszeitung.example",
    "country": "DE",
    "lang": "de",
-   "time": "2026-10-20T22:29:00Z",
-   "tone": -2.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Johannesburg",
-   "url": "https://tageszeitung.example/news/1jvcpr",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T22:06:00Z",
-   "tone": -6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Johannesburg",
-   "url": "https://gazeta-sample.example/news/fhh27q",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T21:35:00Z",
-   "tone": -5.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Johannesburg",
-   "url": "https://la-voz.example/news/f0odpt",
-   "source": "la-voz.example",
-   "country": "AR",
-   "lang": "es",
-   "time": "2026-10-20T21:16:00Z",
-   "tone": 0.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Johannesburg",
-   "url": "https://seoul-daily.example/news/866rye",
-   "source": "seoul-daily.example",
-   "country": "KR",
-   "lang": "ko",
-   "time": "2026-10-20T20:41:00Z",
-   "tone": 2.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Johannesburg",
-   "url": "https://daily-ledger.example/news/axbofa",
-   "source": "daily-ledger.example",
-   "country": "US",
-   "lang": "en",
-   "time": "2026-10-20T20:20:00Z",
-   "tone": 4.7,
-   "image": ""
-  },
-  {
-   "title": "[sample] Aid convoy reaches border crossing near Johannesburg",
-   "url": "https://xinhua-sample.example/news/8xubjh",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T19:35:00Z",
-   "tone": 2.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Johannesburg",
-   "url": "https://corriere-sample.example/news/7veqno",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T19:07:00Z",
-   "tone": 3.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Court hears appeal in landmark case near Johannesburg",
-   "url": "https://vesti-news.example/news/42a9zr",
-   "source": "vesti-news.example",
-   "country": "RU",
-   "lang": "ru",
-   "time": "2026-10-20T18:43:00Z",
-   "tone": 2.2,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Johannesburg",
-   "url": "https://global-desk.example/news/8cp953",
-   "source": "global-desk.example",
-   "country": "CA",
-   "lang": "en",
-   "time": "2026-10-20T18:23:00Z",
-   "tone": -3.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Johannesburg",
-   "url": "https://xinhua-sample.example/news/1n6i7",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T17:51:00Z",
-   "tone": -4.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Johannesburg",
-   "url": "https://le-quotidien.example/news/dlfhp5",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T17:35:00Z",
-   "tone": -3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Researchers report vaccine trial results near Johannesburg",
-   "url": "https://harbour-press.example/news/odjjz",
-   "source": "harbour-press.example",
-   "country": "AU",
-   "lang": "en",
-   "time": "2026-10-20T17:04:00Z",
-   "tone": -3.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Johannesburg",
-   "url": "https://lagos-sun.example/news/abhhe2",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T16:33:00Z",
-   "tone": 4.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Johannesburg",
-   "url": "https://lagos-sun.example/news/60bf98",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T15:57:00Z",
-   "tone": -4.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Johannesburg",
-   "url": "https://lagos-sun.example/news/1hzhvh",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T15:32:00Z",
-   "tone": -3.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Election commission publishes turnout figures near Johannesburg",
-   "url": "https://lagos-sun.example/news/86cf8d",
-   "source": "lagos-sun.example",
-   "country": "NG",
-   "lang": "en",
-   "time": "2026-10-20T15:01:00Z",
-   "tone": -3.6,
-   "image": ""
-  },
-  {
-   "title": "[sample] Ministers discuss energy prices near Johannesburg",
-   "url": "https://cape-mail.example/news/8j5i1o",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T14:36:00Z",
-   "tone": 0.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Johannesburg",
-   "url": "https://gazeta-sample.example/news/cr9sb6",
-   "source": "gazeta-sample.example",
-   "country": "PL",
-   "lang": "pl",
-   "time": "2026-10-20T14:21:00Z",
-   "tone": -2.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Johannesburg",
-   "url": "https://hurriyet-sample.example/news/9e0l5k",
-   "source": "hurriyet-sample.example",
-   "country": "TR",
-   "lang": "tr",
-   "time": "2026-10-20T13:42:00Z",
-   "tone": 1.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Johannesburg",
-   "url": "https://tageszeitung.example/news/2psd11",
-   "source": "tageszeitung.example",
-   "country": "DE",
-   "lang": "de",
-   "time": "2026-10-20T13:09:00Z",
-   "tone": 2.8,
-   "image": ""
-  },
-  {
-   "title": "[sample] Protest gathers in city centre near Johannesburg",
-   "url": "https://kyiv-herald.example/news/d1k9xb",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T12:50:00Z",
-   "tone": 0.4,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Johannesburg",
-   "url": "https://wire-service.example/news/e6ql8o",
-   "source": "wire-service.example",
-   "country": "",
-   "lang": "en",
-   "time": "2026-10-20T12:17:00Z",
-   "tone": -3.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Storm disrupts transport links near Johannesburg",
-   "url": "https://tehran-times.example/news/bhau7x",
-   "source": "tehran-times.example",
-   "country": "IR",
-   "lang": "fa",
-   "time": "2026-10-20T11:45:00Z",
-   "tone": -6.1,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Johannesburg",
-   "url": "https://corriere-sample.example/news/1cmy73",
-   "source": "corriere-sample.example",
-   "country": "IT",
-   "lang": "it",
-   "time": "2026-10-20T11:19:00Z",
-   "tone": -5.3,
-   "image": ""
-  },
-  {
-   "title": "[sample] Football club confirms new coach near Johannesburg",
-   "url": "https://cape-mail.example/news/1b5uao",
-   "source": "cape-mail.example",
-   "country": "ZA",
-   "lang": "en",
-   "time": "2026-10-20T10:50:00Z",
+   "time": "2026-10-21T05:26:00Z",
    "tone": 1.9,
    "image": ""
   },
   {
-   "title": "[sample] Ministers discuss energy prices near Johannesburg",
-   "url": "https://le-quotidien.example/news/f88nk8",
-   "source": "le-quotidien.example",
-   "country": "FR",
-   "lang": "fr",
-   "time": "2026-10-20T10:39:00Z",
-   "tone": -2.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Officials meet over regional dispute near Johannesburg",
-   "url": "https://xinhua-sample.example/news/6hiwzh",
-   "source": "xinhua-sample.example",
-   "country": "CN",
-   "lang": "zh",
-   "time": "2026-10-20T10:10:00Z",
-   "tone": -6.9,
-   "image": ""
-  },
-  {
-   "title": "[sample] Wildfire forces evacuations near Johannesburg",
-   "url": "https://harbour-press.example/news/1j5xn1",
-   "source": "harbour-press.example",
-   "country": "AU",
+   "title": "[sample] Court hears appeal in landmark case near Johannesburg",
+   "url": "https://cape-mail.example/news/837fq5",
+   "source": "cape-mail.example",
+   "country": "ZA",
    "lang": "en",
-   "time": "2026-10-20T09:29:00Z",
-   "tone": -6.3,
+   "time": "2026-10-21T04:53:00Z",
+   "tone": 2.2,
    "image": ""
   },
   {
    "title": "[sample] Aid convoy reaches border crossing near Johannesburg",
-   "url": "https://al-akhbar.example/news/4q89fq",
-   "source": "al-akhbar.example",
-   "country": "EG",
-   "lang": "ar",
-   "time": "2026-10-20T09:05:00Z",
-   "tone": -0.3,
+   "url": "https://global-desk.example/news/g5g3cv",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-21T04:26:00Z",
+   "tone": -4.1,
    "image": ""
   },
   {
-   "title": "[sample] Officials meet over regional dispute near Johannesburg",
-   "url": "https://nation-ke.example/news/fa1yqw",
-   "source": "nation-ke.example",
-   "country": "KE",
+   "title": "[sample] Trade talks resume after pause near Johannesburg",
+   "url": "https://global-desk.example/news/7msvot",
+   "source": "global-desk.example",
+   "country": "CA",
    "lang": "en",
-   "time": "2026-10-20T08:33:00Z",
-   "tone": -2.1,
+   "time": "2026-10-21T03:56:00Z",
+   "tone": -5.9,
    "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Johannesburg",
-   "url": "https://nation-ke.example/news/bn5k19",
-   "source": "nation-ke.example",
-   "country": "KE",
+   "url": "https://jakarta-pos.example/news/4smqlu",
+   "source": "jakarta-pos.example",
+   "country": "ID",
+   "lang": "id",
+   "time": "2026-10-21T03:26:00Z",
+   "tone": -2.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Johannesburg",
+   "url": "https://gazeta-sample.example/news/9ii7jk",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-21T03:11:00Z",
+   "tone": -3.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Johannesburg",
+   "url": "https://gazeta-sample.example/news/9223om",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-21T02:33:00Z",
+   "tone": -4.8,
+   "image": ""
+  },
+  {
+   "title": "",
+   "url": "https://hurriyet-sample.example/news/azmfke",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-21T02:13:00Z",
+   "tone": 0.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Johannesburg",
+   "url": "https://global-desk.example/news/3hf9fa",
+   "source": "global-desk.example",
+   "country": "CA",
    "lang": "en",
-   "time": "2026-10-20T08:16:00Z",
-   "tone": -2.5,
+   "time": "2026-10-21T01:47:00Z",
+   "tone": 2.9,
    "image": ""
   },
   {
-   "title": "[sample] Storm disrupts transport links near Johannesburg",
-   "url": "https://nord-avis.example/news/77t2z",
-   "source": "nord-avis.example",
-   "country": "NO",
-   "lang": "no",
-   "time": "2026-10-20T07:39:00Z",
-   "tone": 4.2,
+   "title": "[sample] Officials meet over regional dispute near Johannesburg",
+   "url": "https://global-desk.example/news/dxfl5k",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-21T01:24:00Z",
+   "tone": 4.4,
    "image": ""
   },
   {
-   "title": "[sample] Storm disrupts transport links near Johannesburg",
-   "url": "https://kyiv-herald.example/news/4460im",
-   "source": "kyiv-herald.example",
-   "country": "UA",
-   "lang": "uk",
-   "time": "2026-10-20T07:21:00Z",
-   "tone": -4.5,
-   "image": ""
-  },
-  {
-   "title": "[sample] Central bank holds interest rate near Johannesburg",
-   "url": "https://asahi-sample.example/news/bp1511",
-   "source": "asahi-sample.example",
-   "country": "JP",
-   "lang": "ja",
-   "time": "2026-10-20T06:45:00Z",
-   "tone": 3.7,
+   "title": "[sample] Wildfire forces evacuations near Johannesburg",
+   "url": "https://haaretz-sample.example/news/frsf7h",
+   "source": "haaretz-sample.example",
+   "country": "IL",
+   "lang": "he",
+   "time": "2026-10-21T00:57:00Z",
+   "tone": -6.5,
    "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Johannesburg",
-   "url": "https://jakarta-pos.example/news/b54lzl",
+   "url": "https://nord-avis.example/news/a9z31a",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-21T00:26:00Z",
+   "tone": -2.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Johannesburg",
+   "url": "https://wire-service.example/news/65ir9y",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-21T00:02:00Z",
+   "tone": -0.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Johannesburg",
+   "url": "https://gazeta-sample.example/news/enap5r",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T23:23:00Z",
+   "tone": -5.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Johannesburg",
+   "url": "https://seoul-daily.example/news/cav9y4",
+   "source": "seoul-daily.example",
+   "country": "KR",
+   "lang": "ko",
+   "time": "2026-10-20T23:00:00Z",
+   "tone": -3.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Johannesburg",
+   "url": "https://nation-ke.example/news/50jcdr",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T22:35:00Z",
+   "tone": 2.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Johannesburg",
+   "url": "https://morning-wire.example/news/b4nlq7",
+   "source": "morning-wire.example",
+   "country": "GB",
+   "lang": "en",
+   "time": "2026-10-20T22:12:00Z",
+   "tone": -2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Johannesburg",
+   "url": "https://jakarta-pos.example/news/b1iub6",
    "source": "jakarta-pos.example",
    "country": "ID",
    "lang": "id",
-   "time": "2026-10-20T06:14:00Z",
-   "tone": -4.6,
+   "time": "2026-10-20T21:33:00Z",
+   "tone": -2.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Johannesburg",
+   "url": "https://cape-mail.example/news/vqt11",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T21:04:00Z",
+   "tone": 1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Aid convoy reaches border crossing near Johannesburg",
+   "url": "https://tageszeitung.example/news/7pd062",
+   "source": "tageszeitung.example",
+   "country": "DE",
+   "lang": "de",
+   "time": "2026-10-20T20:32:00Z",
+   "tone": -1.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Johannesburg",
+   "url": "https://xinhua-sample.example/news/adpx5h",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T20:16:00Z",
+   "tone": 2.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Johannesburg",
+   "url": "https://kyiv-herald.example/news/g1qddz",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T19:54:00Z",
+   "tone": -1.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Johannesburg",
+   "url": "https://wire-service.example/news/11ir0k",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T19:09:00Z",
+   "tone": 0.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Protest gathers in city centre near Johannesburg",
+   "url": "https://lagos-sun.example/news/6o59xy",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T18:46:00Z",
+   "tone": -6.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Ministers discuss energy prices near Johannesburg",
+   "url": "https://lagos-sun.example/news/bt7oxr",
+   "source": "lagos-sun.example",
+   "country": "NG",
+   "lang": "en",
+   "time": "2026-10-20T18:14:00Z",
+   "tone": 3.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Johannesburg",
+   "url": "https://cape-mail.example/news/g0kbm4",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T17:51:00Z",
+   "tone": 3.5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Johannesburg",
+   "url": "https://corriere-sample.example/news/88qbc8",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T17:22:00Z",
+   "tone": 0.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Johannesburg",
+   "url": "https://le-quotidien.example/news/d6tswk",
+   "source": "le-quotidien.example",
+   "country": "FR",
+   "lang": "fr",
+   "time": "2026-10-20T17:05:00Z",
+   "tone": -3.3,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Johannesburg",
+   "url": "https://xinhua-sample.example/news/94bac4",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T16:37:00Z",
+   "tone": -7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Johannesburg",
+   "url": "https://xinhua-sample.example/news/1thr11",
+   "source": "xinhua-sample.example",
+   "country": "CN",
+   "lang": "zh",
+   "time": "2026-10-20T15:55:00Z",
+   "tone": -2.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Johannesburg",
+   "url": "https://wire-service.example/news/9qajdo",
+   "source": "wire-service.example",
+   "country": "",
+   "lang": "en",
+   "time": "2026-10-20T15:31:00Z",
+   "tone": 0.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Johannesburg",
+   "url": "https://nord-avis.example/news/25fps1",
+   "source": "nord-avis.example",
+   "country": "NO",
+   "lang": "no",
+   "time": "2026-10-20T15:19:00Z",
+   "tone": -1.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Johannesburg",
+   "url": "https://kyiv-herald.example/news/2b9zfe",
+   "source": "kyiv-herald.example",
+   "country": "UA",
+   "lang": "uk",
+   "time": "2026-10-20T14:41:00Z",
+   "tone": 4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Johannesburg",
+   "url": "https://o-correio.example/news/99jenj",
+   "source": "o-correio.example",
+   "country": "BR",
+   "lang": "pt",
+   "time": "2026-10-20T14:17:00Z",
+   "tone": -2.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Central bank holds interest rate near Johannesburg",
+   "url": "https://corriere-sample.example/news/1fo8un",
+   "source": "corriere-sample.example",
+   "country": "IT",
+   "lang": "it",
+   "time": "2026-10-20T13:47:00Z",
+   "tone": -6.1,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Johannesburg",
+   "url": "https://cape-mail.example/news/av88wz",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T13:16:00Z",
+   "tone": -6.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Johannesburg",
+   "url": "https://el-diario.example/news/2pomgk",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T13:00:00Z",
+   "tone": -0.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Johannesburg",
+   "url": "https://gazeta-sample.example/news/3f511l",
+   "source": "gazeta-sample.example",
+   "country": "PL",
+   "lang": "pl",
+   "time": "2026-10-20T12:19:00Z",
+   "tone": 0.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Johannesburg",
+   "url": "https://el-diario.example/news/5w9li2",
+   "source": "el-diario.example",
+   "country": "MX",
+   "lang": "es",
+   "time": "2026-10-20T12:03:00Z",
+   "tone": -3.6,
+   "image": ""
+  },
+  {
+   "title": "[sample] Court hears appeal in landmark case near Johannesburg",
+   "url": "https://vesti-news.example/news/fnh314",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T11:28:00Z",
+   "tone": -1.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Trade talks resume after pause near Johannesburg",
+   "url": "https://hindustan-post.example/news/5x4wmf",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T11:07:00Z",
+   "tone": 1.8,
+   "image": ""
+  },
+  {
+   "title": "[sample] Researchers report vaccine trial results near Johannesburg",
+   "url": "https://cape-mail.example/news/3s5jrd",
+   "source": "cape-mail.example",
+   "country": "ZA",
+   "lang": "en",
+   "time": "2026-10-20T10:27:00Z",
+   "tone": 3.9,
+   "image": ""
+  },
+  {
+   "title": "[sample] Football club confirms new coach near Johannesburg",
+   "url": "https://la-voz.example/news/8j3vfa",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T10:00:00Z",
+   "tone": -4.7,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Johannesburg",
+   "url": "https://global-desk.example/news/g5moza",
+   "source": "global-desk.example",
+   "country": "CA",
+   "lang": "en",
+   "time": "2026-10-20T09:43:00Z",
+   "tone": 3.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Johannesburg",
+   "url": "https://hindustan-post.example/news/ffaoxr",
+   "source": "hindustan-post.example",
+   "country": "IN",
+   "lang": "en",
+   "time": "2026-10-20T09:14:00Z",
+   "tone": 5,
+   "image": ""
+  },
+  {
+   "title": "[sample] Storm disrupts transport links near Johannesburg",
+   "url": "https://vesti-news.example/news/3qwiev",
+   "source": "vesti-news.example",
+   "country": "RU",
+   "lang": "ru",
+   "time": "2026-10-20T08:38:00Z",
+   "tone": -3.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Johannesburg",
+   "url": "https://al-akhbar.example/news/apf590",
+   "source": "al-akhbar.example",
+   "country": "EG",
+   "lang": "ar",
+   "time": "2026-10-20T08:19:00Z",
+   "tone": -5.2,
+   "image": ""
+  },
+  {
+   "title": "[sample] Election commission publishes turnout figures near Johannesburg",
+   "url": "https://nation-ke.example/news/d8sor0",
+   "source": "nation-ke.example",
+   "country": "KE",
+   "lang": "en",
+   "time": "2026-10-20T07:51:00Z",
+   "tone": -4.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Officials meet over regional dispute near Johannesburg",
+   "url": "https://la-voz.example/news/13n0pj",
+   "source": "la-voz.example",
+   "country": "AR",
+   "lang": "es",
+   "time": "2026-10-20T07:25:00Z",
+   "tone": 1.4,
+   "image": ""
+  },
+  {
+   "title": "[sample] Wildfire forces evacuations near Johannesburg",
+   "url": "https://hurriyet-sample.example/news/f5q423",
+   "source": "hurriyet-sample.example",
+   "country": "TR",
+   "lang": "tr",
+   "time": "2026-10-20T06:59:00Z",
+   "tone": 3.7,
    "image": ""
   }
- ]
+ ],
+ "stories": [
+  {
+   "n": 37,
+   "o": 10,
+   "c": 10,
+   "l": 7,
+   "t": -0.9,
+   "first": "2026-10-20T19:45:00Z",
+   "last": "2026-10-21T03:58:00Z",
+   "headline": "[sample] Strike halts rail services in Johannesburg: latest",
+   "headlineSource": "el-diario.example",
+   "headlineLang": "es",
+   "entities": [
+    "trade union",
+    "rail",
+    "labour",
+    "johannesburg"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Strike halts rail services in Johannesburg: latest",
+     "url": "https://el-diario.example/story/4pjx6f",
+     "source": "el-diario.example",
+     "country": "MX",
+     "lang": "es",
+     "time": "2026-10-21T03:58:00Z",
+     "tone": -3.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Johannesburg: timeline",
+     "url": "https://nation-ke.example/story/2oqsr9",
+     "source": "nation-ke.example",
+     "country": "KE",
+     "lang": "en",
+     "time": "2026-10-21T03:12:00Z",
+     "tone": -4.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Johannesburg: reactions",
+     "url": "https://tehran-times.example/story/35v346",
+     "source": "tehran-times.example",
+     "country": "IR",
+     "lang": "fa",
+     "time": "2026-10-21T02:30:00Z",
+     "tone": 1.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Johannesburg: timeline",
+     "url": "https://lagos-sun.example/story/fkdvpq",
+     "source": "lagos-sun.example",
+     "country": "NG",
+     "lang": "en",
+     "time": "2026-10-21T02:10:00Z",
+     "tone": 1.9,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Johannesburg: what we know",
+     "url": "https://asahi-sample.example/story/6tk1ns",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T00:14:00Z",
+     "tone": 2.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Strike halts rail services in Johannesburg: in pictures",
+     "url": "https://morning-wire.example/story/1mroo2",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-21T00:38:00Z",
+     "tone": -2.9,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 34,
+   "o": 10,
+   "c": 10,
+   "l": 7,
+   "t": -2.7,
+   "first": "2026-10-20T20:12:00Z",
+   "last": "2026-10-21T04:20:00Z",
+   "headline": "[sample] Election count enters second day in Johannesburg: live updates",
+   "headlineSource": "la-voz.example",
+   "headlineLang": "es",
+   "entities": [
+    "election commission",
+    "parliament",
+    "voters",
+    "johannesburg"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Election count enters second day in Johannesburg: latest",
+     "url": "https://asahi-sample.example/story/546liu",
+     "source": "asahi-sample.example",
+     "country": "JP",
+     "lang": "ja",
+     "time": "2026-10-21T04:20:00Z",
+     "tone": -1.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Johannesburg: explained",
+     "url": "https://morning-wire.example/story/fz3yx0",
+     "source": "morning-wire.example",
+     "country": "GB",
+     "lang": "en",
+     "time": "2026-10-21T03:54:00Z",
+     "tone": -0.9,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Johannesburg: reactions",
+     "url": "https://tageszeitung.example/story/88i84y",
+     "source": "tageszeitung.example",
+     "country": "DE",
+     "lang": "de",
+     "time": "2026-10-21T03:04:00Z",
+     "tone": -2.6,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Johannesburg: timeline",
+     "url": "https://al-akhbar.example/story/acj8h",
+     "source": "al-akhbar.example",
+     "country": "EG",
+     "lang": "ar",
+     "time": "2026-10-21T02:47:00Z",
+     "tone": -3.9,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Johannesburg: live updates",
+     "url": "https://la-voz.example/story/6iofne",
+     "source": "la-voz.example",
+     "country": "AR",
+     "lang": "es",
+     "time": "2026-10-21T02:08:00Z",
+     "tone": -3.1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Election count enters second day in Johannesburg: analysis",
+     "url": "https://global-desk.example/story/8y9j1v",
+     "source": "global-desk.example",
+     "country": "CA",
+     "lang": "en",
+     "time": "2026-10-20T23:40:00Z",
+     "tone": -4.1,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 12,
+   "o": 5,
+   "c": 4,
+   "l": 3,
+   "t": -1.3,
+   "first": "2026-10-21T00:38:00Z",
+   "last": "2026-10-21T04:13:00Z",
+   "headline": "[sample] Storm damage closes main roads in Johannesburg: explained",
+   "headlineSource": "hindustan-post.example",
+   "headlineLang": "en",
+   "entities": [
+    "natural disaster",
+    "transport",
+    "emergency services",
+    "johannesburg"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Storm damage closes main roads in Johannesburg: explained",
+     "url": "https://harbour-press.example/story/9xwsus",
+     "source": "harbour-press.example",
+     "country": "AU",
+     "lang": "en",
+     "time": "2026-10-21T04:13:00Z",
+     "tone": -3.4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Johannesburg: explained",
+     "url": "https://cape-mail.example/story/3jl3ii",
+     "source": "cape-mail.example",
+     "country": "ZA",
+     "lang": "en",
+     "time": "2026-10-21T03:31:00Z",
+     "tone": -2.2,
+     "image": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Johannesburg: explained",
+     "url": "https://hindustan-post.example/story/elx4ai",
+     "source": "hindustan-post.example",
+     "country": "IN",
+     "lang": "en",
+     "time": "2026-10-21T02:33:00Z",
+     "tone": -4,
+     "image": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Johannesburg: live updates",
+     "url": "https://le-quotidien.example/story/5hq160",
+     "source": "le-quotidien.example",
+     "country": "FR",
+     "lang": "fr",
+     "time": "2026-10-21T02:52:00Z",
+     "tone": 2.1,
+     "image": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Johannesburg: reactions",
+     "url": "https://corriere-sample.example/story/992r1",
+     "source": "corriere-sample.example",
+     "country": "IT",
+     "lang": "it",
+     "time": "2026-10-21T00:17:00Z",
+     "tone": 1.8,
+     "image": ""
+    },
+    {
+     "title": "[sample] Storm damage closes main roads in Johannesburg: timeline",
+     "url": "https://cape-mail.example/story/5c27oc",
+     "source": "cape-mail.example",
+     "country": "ZA",
+     "lang": "en",
+     "time": "2026-10-21T00:38:00Z",
+     "tone": -2.3,
+     "image": ""
+    }
+   ]
+  },
+  {
+   "n": 11,
+   "o": 6,
+   "c": 3,
+   "l": 6,
+   "t": -0.2,
+   "first": "2026-10-20T22:15:00Z",
+   "last": "2026-10-21T04:38:00Z",
+   "headline": "[sample] Ministers meet over energy prices in Johannesburg: what we know",
+   "headlineSource": "tageszeitung.example",
+   "headlineLang": "de",
+   "entities": [
+    "energy",
+    "european union",
+    "oil prices",
+    "johannesburg"
+   ],
+   "articles": [
+    {
+     "title": "[sample] Ministers meet over energy prices in Johannesburg: timeline",
+     "url": "https://gulf-report.example/story/8wyx95",
+     "source": "gulf-report.example",
+     "country": "AE",
+     "lang": "ar",
+     "time": "2026-10-21T04:38:00Z",
+     "tone": 0.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Johannesburg: timeline",
+     "url": "https://la-voz.example/story/ackmr5",
+     "source": "la-voz.example",
+     "country": "AR",
+     "lang": "es",
+     "time": "2026-10-21T04:07:00Z",
+     "tone": -0.7,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Johannesburg: what we know",
+     "url": "https://seoul-daily.example/story/ayhjdr",
+     "source": "seoul-daily.example",
+     "country": "KR",
+     "lang": "ko",
+     "time": "2026-10-21T02:54:00Z",
+     "tone": 3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Johannesburg: what we know",
+     "url": "https://tageszeitung.example/story/3ahmd2",
+     "source": "tageszeitung.example",
+     "country": "DE",
+     "lang": "de",
+     "time": "2026-10-21T02:14:00Z",
+     "tone": 3.3,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Johannesburg: latest",
+     "url": "https://haaretz-sample.example/story/w9azf",
+     "source": "haaretz-sample.example",
+     "country": "IL",
+     "lang": "he",
+     "time": "2026-10-21T02:34:00Z",
+     "tone": -3.5,
+     "image": ""
+    },
+    {
+     "title": "[sample] Ministers meet over energy prices in Johannesburg: in pictures",
+     "url": "https://xinhua-sample.example/story/nsq94",
+     "source": "xinhua-sample.example",
+     "country": "CN",
+     "lang": "zh",
+     "time": "2026-10-21T00:03:00Z",
+     "tone": -3.9,
+     "image": ""
+    }
+   ]
+  }
+ ],
+ "unclustered": 24
 }
