@@ -5,6 +5,15 @@ import { stampOf, utcTime } from './format';
 
 const FPS = 6;
 const PREFETCH_CONCURRENCY = 3;
+const MIN_FRAMES = 4;
+
+/** The span the frames cover, from the data: "6 hours", or "45 minutes" below an hour. */
+export function spanLabel(firstAt: string, lastAt: string): string {
+  const minutes = Math.max(0, Math.round((Date.parse(lastAt) - Date.parse(firstAt)) / 60000));
+  if (minutes < 60) return minutes === 1 ? '1 minute' : `${minutes} minutes`;
+  const hours = Math.round(minutes / 60);
+  return hours === 1 ? '1 hour' : `${hours} hours`;
+}
 
 export interface FrameView {
   /** The frame the scrubber points at (what goes in the permalink). */
@@ -52,7 +61,8 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
   if (!frames.length || Date.parse(frames[frames.length - 1].at) !== liveTime) {
     frames.push({ at: live.at, file: '', windowHours: live.windowHours, totals: live.totals });
   }
-  if (frames.length < 2) return null;
+  // Too few frames make a replay that says nothing; keep the control hidden until there are more.
+  if (frames.length < MIN_FRAMES) return null;
 
   const root = $<HTMLElement>('scrubber');
   const range = $<HTMLInputElement>('scrub-range');
@@ -62,6 +72,9 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
   const ticks = $<HTMLElement>('scrub-ticks');
 
   const last = frames.length - 1;
+  // Labels say the span the frames actually cover, not a fixed 24 hours.
+  const span = spanLabel(frames[0].at, frames[last].at);
+  const playLabel = `Play the last ${span}`;
   const cache = new Map<number, FrameRow[]>();
   const loading = new Map<number, Promise<void>>();
   const failed = new Set<number>();
@@ -126,7 +139,7 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
     window.clearInterval(timer);
     timer = 0;
     play.classList.toggle('is-playing', on);
-    play.setAttribute('aria-label', on ? 'Pause' : 'Play the last 24 hours');
+    play.setAttribute('aria-label', on ? 'Pause' : playLabel);
     if (!on) return;
     if (target === last) go(0);
     prefetchFrom(target);
@@ -180,6 +193,8 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
   });
   play.addEventListener('click', () => setPlaying(!timer));
 
+  play.setAttribute('aria-label', playLabel);
+  root.setAttribute('aria-label', `Replay the last ${span}`);
   updateControl();
   root.hidden = false;
 

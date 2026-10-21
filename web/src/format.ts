@@ -56,8 +56,9 @@ export function shortName(name: string): string {
 
 /**
  * Key for matching a city to a news place name: lowercase, no diacritics, the part before
- * the first comma, without a trailing "d.c." / "city" / "metropolitan".
- * "Washington, D.C." -> "washington", "Zürich" -> "zurich", "Mexico City" -> "mexico".
+ * the first comma, without a trailing "d.c." / "metropolitan". "City" stays, because
+ * Kansas City is not Kansas.
+ * "Washington, D.C." -> "washington", "Zürich" -> "zurich", "Kansas City" -> "kansas city".
  */
 export function placeKey(name: string): string {
   return name
@@ -66,7 +67,7 @@ export function placeKey(name: string): string {
     .replace(/\p{Diacritic}/gu, '')
     .toLowerCase()
     .trim()
-    .replace(/\s+(d\.c\.|city|metropolitan)$/, '')
+    .replace(/\s+(d\.c\.|metropolitan)$/, '')
     .trim();
 }
 
@@ -88,7 +89,8 @@ export function youtubeId(url: string): string | null {
   if (host === 'youtu.be' && parts.length === 1) id = parts[0];
   else if (host === 'youtube.com' && parts.length === 1 && parts[0] === 'watch') id = u.searchParams.get('v');
   else if (host === 'youtube.com' && parts.length === 2 && ['shorts', 'embed', 'live', 'v'].includes(parts[0])) id = parts[1];
-  return id && /^[A-Za-z0-9_-]{11}$/.test(id) ? id : null;
+  // "videoseries" is a playlist path that happens to be 11 characters, not a video id.
+  return id && id !== 'videoseries' && /^[A-Za-z0-9_-]{11}$/.test(id) ? id : null;
 }
 
 /** Permalink / clip stamp of a frame time: "2026-10-21T04:47:14Z" -> "20261021T044714Z" */

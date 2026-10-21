@@ -3,6 +3,7 @@ import { isCellId, loadCell, loadHeat, type FrameRow, type HeatCell, type Totals
 import { count, plural, utcTime } from './format';
 import { createMap, type HeatMode, type MapCell } from './map';
 import * as panel from './panel';
+import type { PlaceRow } from './panel';
 import { readPref, writePref } from './prefs';
 import { initQuakes } from './quakes';
 import { initReplay, type FrameView, type Replay } from './replay';
@@ -10,6 +11,11 @@ import { initReplay, type FrameView, type Replay } from './replay';
 /** Relative heat needs this many complete days of per-cell history (see DATA-CONTRACT "Baseline"). */
 const MIN_BASELINE_DAYS = 3;
 const MODE_PREF = 'toe.heatMode';
+/** Set once someone has opened a place; until then a one-line hint says how. */
+const SEEN_PREF = 'toe.seenCell';
+const HINT = 'Tap a glow to see who is covering it';
+/** How many places the Places list shows. */
+const PLACES_MAX = 100;
 
 const status = document.getElementById('status')!;
 const totals = document.getElementById('totals')!;
@@ -29,12 +35,17 @@ function showTotals(t: Totals, at: string, replay: boolean) {
   ];
   // Articles that only name a country have no place on the map. Saying so is part of
   // showing the coverage gap rather than hiding it.
-  if (t.unplaced) parts.push(`${count(t.unplaced)} not placed on the map`);
   totals.textContent = parts.join(' · ');
+  if (t.unplaced) {
+    // "on the map" drops on very narrow screens so the line fits ("8,842 not placed").
+    const wide = Object.assign(document.createElement('span'), { className: 'wide-only', textContent: ' on the map' });
+    totals.append(` · ${count(t.unplaced)} not placed`, wide);
+  }
   totals.title = t.unplaced
     ? `${count(t.unplaced)} articles mention only a country, so they are counted but not drawn anywhere.`
     : '';
   const time = utcTime(at);
+  document.body.classList.toggle('is-replay', replay);
   if (replay) {
     snapshot.replaceChildren(Object.assign(document.createElement('span'), { className: 'replay-tag', textContent: 'replay' }), ` ${time}`);
   } else {
@@ -72,8 +83,18 @@ async function start() {
   const updateNote = () =>
     panel.setNote(selectedIsLive && !frame.live ? 'Details are for the current snapshot.' : '');
 
+  const placesButton = document.getElementById('places-button') as HTMLButtonElement;
+  let hintShown = false;
+
   const openCell = async (cell: MapCell) => {
     const mine = ++request;
+    map.hideTooltip();
+    placesButton.setAttribute('aria-expanded', 'false');
+    if (hintShown) {
+      hintShown = false;
+      setStatus('');
+    }
+    writePref(SEEN_PREF, '1');
     selected = cell.id;
     void map.outline(cell.id);
     // Detail files describe the current snapshot only, whichever frame is on screen.
@@ -102,6 +123,7 @@ async function start() {
     selectedIsLive = false;
     void map.outline(null);
     map.setSheet(0);
+    placesButton.setAttribute('aria-expanded', 'false');
     writeHash();
   }, (height) => map.setSheet(height));
   initQuakes(document.getElementById('quake-toggle') as HTMLButtonElement, (data) => map.setQuakes(data));
@@ -153,12 +175,51 @@ async function start() {
   }
   setMode(mode);
   setStatus(liveCells.length ? '' : 'No coverage in this snapshot.');
+  if (liveCells.length && readPref(SEEN_PREF) !== '1' && !panel.isOpen()) {
+    hintShown = true;
+    setStatus(HINT);
+  }
+
+  // Places: the cells on screen (this frame's, names from live where known) as a list, the
+  // keyboard path to every place and a list view for anyone who prefers one.
+  const shownCells = (): MapCell[] =>
+    shownRows ? shownRows.map(([id, lat, lon, n]) => ({ id, lat, lon, n, name: live.get(id)?.name ?? '' })) : liveCells;
+  const coords = (lat: number, lon: number) =>
+    `${Math.abs(lat).toFixed(1)}°${lat >= 0 ? 'N' : 'S'} ${Math.abs(lon).toFixed(1)}°${lon >= 0 ? 'E' : 'W'}`;
+  const placeRows = (): PlaceRow[] =>
+    [...shownCells()]
+      .sort((a, b) => b.n - a.n)
+      .slice(0, PLACES_MAX)
+      .map((c) => {
+        // Outlet and country counts exist only for the live snapshot.
+        const now = shownRows ? undefined : live.get(c.id);
+        const parts = [plural(c.n, 'article', 'articles')];
+        if (now) parts.push(plural(now.o, 'outlet', 'outlets'), plural(now.c, 'country', 'countries'));
+        return { id: c.id, name: c.name || coords(c.lat, c.lon), counts: parts.join(' · ') };
+      });
+  const pickPlace = (id: string) => {
+    const cell = shownCells().find((c) => c.id === id);
+    if (cell) void openCell(cell);
+  };
+  placesButton.addEventListener('click', () => {
+    if (panel.isPlaces()) return panel.close();
+    request++;
+    selected = null;
+    selectedIsLive = false;
+    void map.outline(null);
+    map.hideTooltip();
+    writeHash();
+    panel.openPlaces(placeRows(), pickPlace, placesButton);
+    placesButton.setAttribute('aria-expanded', 'true');
+  });
+  placesButton.hidden = !liveCells.length;
 
   const showFrame = (view: FrameView) => {
     frame = view;
     // Past frame: live names where the cell still exists, otherwise just counts.
     shownRows = view.rows;
     redraw();
+    if (panel.isPlaces()) panel.updatePlaces(placeRows());
     if (view.live) showTotals(heat.totals, heat.generatedAt, false);
     else showTotals(view.shown.totals, view.shown.at, true);
     updateNote();

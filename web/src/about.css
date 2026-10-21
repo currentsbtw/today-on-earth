@@ -61,7 +61,8 @@ a:focus-visible {
 }
 
 .doc {
-  max-width: 680px;
+  /* About 65 characters per line, plus the side padding. */
+  max-width: calc(65ch + 40px);
   margin: 0 auto;
   padding: 40px 20px 64px;
 }

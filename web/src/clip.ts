@@ -57,7 +57,10 @@ async function render() {
   }
 
   const live = new Map(heat.cells.map((c) => [c.id, c]));
-  const maxN = Math.max(1, ...heat.cells.map((c) => c.n));
+  // `max=<n>` fixes the heat scale so every frame of a time-lapse uses the same one;
+  // without it (or if invalid) the live snapshot's largest n is used, as in replay.
+  const requestedMax = Number(params.get('max'));
+  const maxN = Number.isFinite(requestedMax) && requestedMax >= 1 ? requestedMax : Math.max(1, ...heat.cells.map((c) => c.n));
   const cells: MapCell[] = rows
     ? rows.map(([id, lat, lon, n]) => ({ id, lat, lon, n, name: live.get(id)?.name ?? '' }))
     : heat.cells;

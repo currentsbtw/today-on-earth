@@ -72,7 +72,11 @@ function hasBaseline(c: Pick<MapCell, 'b'>): boolean {
 }
 
 /** Point features for the heat source, shared by the map page and the clip page. */
+/** The largest places by article count are named even at world zoom. */
+const TOP_LABELS = 5;
+
 export function heatFeatures(cells: MapCell[], maxN: number, mode: HeatMode): GeoJSON.Feature<GeoJSON.Point>[] {
+  const top = new Set([...cells].sort((a, b) => b.n - a.n).slice(0, TOP_LABELS).map((c) => c.id));
   return cells.map((c) => {
     const short = c.name ? shortName(c.name) : '';
     return {
@@ -83,6 +87,7 @@ export function heatFeatures(cells: MapCell[], maxN: number, mode: HeatMode): Ge
         n: c.n,
         label: mode === 'normal' && short && ratioLabel(c) ? `${short}\n${ratioLabel(c)}` : short,
         w: heatWeight(c, maxN, mode),
+        top: top.has(c.id) ? 1 : 0,
       },
     };
   });
@@ -314,6 +319,27 @@ export function style(): StyleSpecification {
         paint: { 'line-color': '#fff6e6', 'line-width': 1.25, 'line-opacity': 0.9 },
       },
       {
+        id: 'cell-label-top',
+        type: 'symbol',
+        source: 'heat',
+        maxzoom: 4,
+        filter: ['==', ['get', 'top'], 1],
+        layout: {
+          'text-field': ['get', 'label'],
+          'text-font': LABEL_FONTS,
+          'text-size': 11,
+          'text-anchor': 'top',
+          'text-offset': [0, 0.8],
+          'text-padding': 4,
+          'symbol-sort-key': ['-', 0, ['get', 'n']],
+        },
+        paint: {
+          'text-color': '#b9b2a6',
+          'text-halo-color': '#050608',
+          'text-halo-width': 1.2,
+        },
+      },
+      {
         id: 'cell-label',
         type: 'symbol',
         source: 'heat',
@@ -365,6 +391,7 @@ export interface WorldMap {
    * given, ease it into the middle of that area. 0 clears the padding.
    */
   setSheet(height: number, focus?: [lon: number, lat: number]): void;
+  hideTooltip(): void;
 }
 
 /** A non-interactive map for the clip page: same style, world fitted inside `padding`. */
@@ -477,6 +504,7 @@ export function createMap(
   map.on('mouseout', hideTooltip);
   map.on('movestart', hideTooltip);
   map.on('click', (e) => {
+    hideTooltip();
     const { quake, cell } = hit(e.point);
     if (quake) {
       // USGS event pages only over https.
@@ -503,6 +531,8 @@ export function createMap(
       for (const [layer, tier] of Object.entries(PLACE_TIERS)) map.setFilter(layer, ['all', tier, notNews]);
       map.setFilter('place-dot', notNews);
     },
+
+    hideTooltip,
 
     setQuakes(data) {
       map.getSource<GeoJSONSource>('quakes')?.setData(data ?? EMPTY);
@@ -563,6 +593,12 @@ export function createMap(
         .catch(() => {});
     }
   };
+
+  // Portrait screens: start with the world filling the height (the width then overflows, so
+  // no world edge shows); the contain-fit stays the minimum zoom.
+  const w = container.clientWidth;
+  const h = container.clientHeight;
+  if (h > w && w > 0) map.jumpTo({ center: [15, 20], zoom: Math.log2(h / (mercY(LAT_SOUTH) - mercY(LAT_NORTH)) / TILE) });
 
   return new Promise((resolve) =>
     map.once('load', () => {

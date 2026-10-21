@@ -13,6 +13,10 @@ const list = $<HTMLOListElement>('panel-list');
 const stories = $<HTMLDivElement>('panel-stories');
 const videos = $<HTMLElement>('panel-videos');
 const closeButton = $<HTMLButtonElement>('panel-close');
+const coverage = $<HTMLDivElement>('panel-coverage');
+const placesFilter = $<HTMLInputElement>('places-filter');
+const placesList = $<HTMLOListElement>('places-list');
+const placesCount = $<HTMLParagraphElement>('places-count');
 const handle = $<HTMLButtonElement>('sheet-handle');
 
 let returnFocus: HTMLElement | null = null;
@@ -42,6 +46,11 @@ const el = <K extends keyof HTMLElementTagNameMap>(tag: K, className: string, te
   return node;
 };
 
+/** Marks text with its language (ISO 639 codes only) so screen readers and fonts follow it. */
+function setLang(node: HTMLElement, lang: string) {
+  if (/^[a-z]{2,3}$/.test(lang)) node.lang = lang;
+}
+
 const STORY_PREVIEW = 3;
 let storySeq = 0;
 
@@ -67,6 +76,7 @@ function storyCard(story: Story, now: number): HTMLElement {
   const text = story.headline.trim();
   if (text) {
     const words = href ? el('a', 'story-link', text) : el('span', '', text);
+    setLang(words, story.headlineLang);
     if (words instanceof HTMLAnchorElement && href) {
       words.href = href;
       words.target = '_blank';
@@ -210,7 +220,7 @@ function renderVideos(detail: CellDetail | null) {
   videos.hidden = false;
 }
 
-/** Stories first (when the cell file has them), then the "All newest" heading for the flat list. */
+/** Stories first (when the cell file has them), then the "All articles" heading for the flat list. */
 function renderStories(detail: CellDetail | null, now: number) {
   const groups = detail?.stories ?? [];
   if (!detail || !groups.length) {
@@ -222,9 +232,32 @@ function renderStories(detail: CellDetail | null, now: number) {
   if (detail.unclustered && detail.unclustered > 0) {
     nodes.push(el('p', 'stories-rest', `${plural(detail.unclustered, 'more article', 'more articles')} not grouped`));
   }
-  nodes.push(el('h3', 'panel-section', 'All newest'));
+  nodes.push(el('h3', 'panel-section', 'All articles'));
   stories.replaceChildren(...nodes);
   stories.hidden = false;
+}
+
+// Coverage -----------------------------------------------------------------
+// Where the covering outlets are based and which languages they write in: counts only,
+// in the order the cell file gives them (by count), no ranking words.
+
+const MAX_CHIPS = 8;
+
+function chipRow(label: string, entries: [string, number][]): HTMLElement {
+  const row = el('div', 'coverage-row');
+  const chips = el('ul', 'chips');
+  chips.setAttribute('aria-label', label);
+  for (const [key, n] of entries.slice(0, MAX_CHIPS)) chips.append(el('li', 'chip', `${key || 'unknown'} ${count(n)}`));
+  row.append(el('span', 'coverage-label', label), chips);
+  return row;
+}
+
+function renderCoverage(detail: CellDetail | null) {
+  const rows: HTMLElement[] = [];
+  if (detail?.topCountries?.length) rows.push(chipRow('Outlets based in', detail.topCountries));
+  if (detail?.languages?.length) rows.push(chipRow('Languages', detail.languages));
+  coverage.replaceChildren(...rows);
+  coverage.hidden = !rows.length;
 }
 
 function setState(text: string) {
@@ -237,8 +270,10 @@ function toneMarker(tone: number): HTMLElement {
   const scale = document.createElement('span');
   scale.className = 'tone';
   scale.setAttribute('role', 'img');
-  scale.setAttribute('aria-label', `tone ${tone.toFixed(1)}`);
-  scale.title = `tone ${tone.toFixed(1)}`;
+  // A true minus sign reads better than a hyphen, aloud and on screen.
+  const value = tone.toFixed(1).replace('-', '\u2212');
+  scale.setAttribute('aria-label', `tone ${value} on GDELT's scale, negative to positive`);
+  scale.title = `tone ${value}`;
   const tick = document.createElement('span');
   tick.className = 'tone-tick';
   tick.style.left = `${((Math.max(-10, Math.min(10, tone)) + 10) / 20) * 100}%`;
@@ -253,6 +288,7 @@ function articleItem(a: Article, now: number): HTMLLIElement {
   const headline = document.createElement(href ? 'a' : 'span');
   headline.className = 'article-title';
   headline.textContent = a.title.trim() || host(a.url);
+  if (a.title.trim()) setLang(headline, a.lang);
   if (href && headline instanceof HTMLAnchorElement) {
     headline.href = href;
     headline.target = '_blank';
@@ -284,21 +320,90 @@ function articleItem(a: Article, now: number): HTMLLIElement {
   return li;
 }
 
-function show() {
+function show(focus: HTMLElement = title) {
   if (panel.hidden) {
     const active = document.activeElement;
     returnFocus = active instanceof HTMLElement && !panel.contains(active) ? active : null;
     panel.hidden = false;
+    panel.parentElement!.classList.add('panel-open');
   }
   panel.scrollTop = 0;
-  title.focus();
+  focus.focus();
+}
+
+/** Cell mode: the panel shows one place's coverage (the default). */
+function cellMode() {
+  panel.classList.remove('is-places');
+}
+
+// Places (list mode) -----------------------------------------------------------
+
+export interface PlaceRow {
+  id: string;
+  /** The place name, or its coordinates when no name is known (replay-only cells). */
+  name: string;
+  /** "412 articles · 150 outlets · 23 countries", or just the articles on past frames. */
+  counts: string;
+}
+
+let placeRows: PlaceRow[] = [];
+let pickPlace: (id: string) => void = () => {};
+
+/** Lowercase, no diacritics: "Zürich" matches "zur". */
+const fold = (text: string) => text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+
+function renderPlaces() {
+  const q = fold(placesFilter.value.trim());
+  const shown = q ? placeRows.filter((r) => fold(r.name).includes(q)) : placeRows;
+  placesList.replaceChildren(
+    ...shown.map((r) => {
+      const li = el('li', 'place');
+      const button = el('button', 'place-row');
+      button.type = 'button';
+      button.dataset.id = r.id;
+      button.append(el('span', 'place-name', r.name), el('span', 'place-counts', r.counts));
+      button.addEventListener('click', () => pickPlace(r.id));
+      li.append(button);
+      return li;
+    }),
+  );
+  placesCount.textContent = q
+    ? `${count(shown.length)} of ${plural(placeRows.length, 'place', 'places')}`
+    : plural(placeRows.length, 'place', 'places');
+}
+
+/**
+ * Opens the panel as a filterable list of places. Focus goes to the filter; closing returns
+ * it to `opener` (the Places button).
+ */
+export function openPlaces(rows: PlaceRow[], pick: (id: string) => void, opener: HTMLElement) {
+  placeRows = rows;
+  pickPlace = pick;
+  panel.classList.add('is-places');
+  title.textContent = 'Places';
+  placesFilter.value = '';
+  renderPlaces();
+  show(placesFilter);
+  returnFocus = opener;
+}
+
+/** New rows for an open list (the replay frame changed); the filter text is kept. */
+export function updatePlaces(rows: PlaceRow[]) {
+  placeRows = rows;
+  renderPlaces();
+}
+
+export function isPlaces(): boolean {
+  return !panel.hidden && panel.classList.contains('is-places');
 }
 
 /** Opens the panel for a cell straight away, using the heat.json counts while the detail loads. */
 export function openLoading(cell: HeatCell, windowHours: number) {
+  cellMode();
   title.textContent = cell.name;
   why.textContent = whyLine(cell, windowHours);
   list.replaceChildren();
+  renderCoverage(null);
   renderStories(null, 0);
   renderVideos(null);
   setState('loading');
@@ -309,6 +414,7 @@ export function showDetail(detail: CellDetail, windowHours: number) {
   title.textContent = detail.name;
   why.textContent = whyLine(detail, windowHours);
   const now = Date.now();
+  renderCoverage(detail);
   renderVideos(detail);
   renderStories(detail, now);
   list.replaceChildren(...detail.articles.map((a) => articleItem(a, now)));
@@ -320,9 +426,11 @@ export function showDetail(detail: CellDetail, windowHours: number) {
 
 /** A replay cell that is not in the current snapshot: there is no detail file for it. */
 export function openMissing(n: number) {
+  cellMode();
   title.textContent = plural(n, 'article', 'articles');
   why.textContent = '';
   list.replaceChildren();
+  renderCoverage(null);
   renderStories(null, 0);
   renderVideos(null);
   setState('No current details for this place.');
@@ -337,6 +445,7 @@ export function setNote(text: string) {
 
 export function showError() {
   list.replaceChildren();
+  renderCoverage(null);
   renderStories(null, 0);
   renderVideos(null);
   setState('Could not load the articles for this place.');
@@ -357,6 +466,7 @@ export function sheetHeight(): number {
 export function close() {
   if (panel.hidden) return;
   panel.hidden = true;
+  panel.parentElement!.classList.remove('panel-open');
   setTall(false);
   onClose();
   returnFocus?.focus();
@@ -371,6 +481,16 @@ export function isOpen(): boolean {
 export function initPanel(handleClose: () => void, onSheet: (height: number) => void = () => {}) {
   onClose = handleClose;
   closeButton.addEventListener('click', close);
+  placesFilter.addEventListener('input', renderPlaces);
+  // Enter in the filter opens the first match, so a typed name is one keystroke from its place.
+  placesFilter.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    const first = placesList.querySelector<HTMLButtonElement>('.place-row');
+    if (first) {
+      e.preventDefault();
+      first.click();
+    }
+  });
   handle.addEventListener('click', () => setTall(!panel.classList.contains('is-tall')));
   // Expose the panel's height so the scrubber can sit above the bottom sheet on phones, and
   // report it so the map's padding follows the handle, rotation and viewport changes.

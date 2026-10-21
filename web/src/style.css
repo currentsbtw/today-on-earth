@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+:where(button, a, input, select, summary, [tabindex]:not([tabindex='-1'])):focus-visible {
+  outline: 1px solid var(--heat);
+  outline-offset: 2px;
+}
+
 html,
 body {
   height: 100%;
@@ -72,7 +77,6 @@ body {
   text-decoration: underline;
   text-decoration-color: var(--faint);
   text-underline-offset: 3px;
-  outline: none;
 }
 
 .about-glyph {
@@ -121,7 +125,6 @@ body {
 .mode button:hover,
 .mode button:focus-visible {
   color: var(--text);
-  outline: none;
 }
 
 /* Map --------------------------------------------------------------------- */
@@ -145,7 +148,8 @@ body {
 .status {
   position: absolute;
   left: 16px;
-  bottom: 14px;
+  top: 12px;
+  z-index: 1;
   margin: 0;
   color: var(--muted);
   font-size: 12px;
@@ -161,8 +165,8 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
-  height: 30px;
-  padding: 0 10px 0 8px;
+  height: 36px;
+  padding: 0 12px 0 10px;
   border: 1px solid var(--line);
   border-radius: 4px;
   background: rgba(8, 10, 13, 0.86);
@@ -195,7 +199,6 @@ body {
 .layer-toggle:hover,
 .layer-toggle:focus-visible {
   color: var(--text);
-  outline: none;
 }
 
 .layer-state {
@@ -246,7 +249,7 @@ body {
 .stage .maplibregl-ctrl-attrib,
 .stage .maplibregl-ctrl-attrib.maplibregl-compact {
   background: rgba(5, 6, 8, 0.7);
-  color: var(--faint);
+  color: #7f8791;
 }
 
 .stage .maplibregl-ctrl-attrib a {
@@ -303,9 +306,9 @@ body {
 
 .panel-close {
   flex: none;
-  width: 28px;
-  height: 28px;
-  margin: -4px -6px 0 0;
+  width: 36px;
+  height: 36px;
+  margin: -8px -10px 0 0;
   padding: 0;
   border: 0;
   border-radius: 3px;
@@ -319,12 +322,11 @@ body {
 .panel-close:focus-visible {
   color: var(--text);
   background: var(--line);
-  outline: none;
 }
 
 .panel-why {
   margin: 6px 0 0;
-  color: var(--heat);
+  color: #c9c6c0;
   font-size: 12px;
   font-variant-numeric: tabular-nums;
 }
@@ -459,6 +461,7 @@ body {
 }
 
 .article-play {
+  position: relative;
   flex: none;
   display: grid;
   place-items: center;
@@ -473,11 +476,17 @@ body {
   cursor: pointer;
 }
 
+/* The visible ring stays small; the hit area extends to 36x36. */
+.article-play::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+}
+
 .article-play:hover,
 .article-play:focus-visible {
   color: var(--text);
   border-color: var(--faint);
-  outline: none;
 }
 
 /* Stories ------------------------------------------------------------------ */
@@ -595,7 +604,6 @@ body {
   color: var(--text);
   text-decoration: underline;
   text-underline-offset: 2px;
-  outline: none;
 }
 
 .stories-rest {
@@ -636,16 +644,17 @@ body {
 }
 
 /* Keep the scrubber centred on the visible map when the side panel is open. */
-.panel:not([hidden]) ~ .scrubber {
+.stage.panel-open .scrubber {
   right: var(--panel-w);
+  width: min(560px, calc(100vw - var(--panel-w) - 24px));
 }
 
 .scrub-play {
   flex: none;
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   padding: 0;
   border: 0;
   border-radius: 3px;
@@ -673,7 +682,6 @@ body {
 .scrub-play:focus-visible {
   color: var(--text);
   background: var(--line);
-  outline: none;
 }
 
 .scrub-track {
@@ -734,7 +742,7 @@ body {
   margin-top: -6.5px;
   border: 0;
   border-radius: 2px;
-  background: var(--text);
+  background: var(--muted);
 }
 
 .scrub-range::-moz-range-thumb {
@@ -742,7 +750,7 @@ body {
   height: 14px;
   border: 0;
   border-radius: 2px;
-  background: var(--text);
+  background: var(--muted);
 }
 
 .scrubber.is-live .scrub-range::-webkit-slider-thumb {
@@ -754,7 +762,7 @@ body {
 }
 
 .scrub-range:focus-visible {
-  outline: 1px solid var(--faint);
+  outline: 1px solid var(--heat);
   outline-offset: 2px;
   border-radius: 2px;
 }
@@ -871,11 +879,22 @@ a.article-title:visited {
   .totals {
     order: 3;
     flex-basis: 100%;
+    white-space: normal;
+    text-overflow: clip;
   }
 
   /* On phones the link shrinks to a "?" in a small ring. */
   .about-text {
     display: none;
+  }
+
+  /* 36x36 hit area around the 18px "?" ring. */
+  .about-link {
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    margin: -9px -6px;
   }
 
   .about-glyph {
@@ -904,7 +923,7 @@ a.article-title:visited {
   }
 
   /* The quake toggle steps aside while the sheet is open. */
-  .panel:not([hidden]) ~ .layer-toggle {
+  .stage.panel-open .layer-toggle {
     display: none;
   }
 
@@ -934,8 +953,8 @@ a.article-title:visited {
     display: grid;
     place-items: center;
     width: calc(100% + 36px);
-    height: 22px;
-    margin: 0 -18px 6px;
+    height: 44px;
+    margin: 0 -18px -6px;
     padding: 0;
     border: 0;
     background: rgba(11, 14, 18, 0.98);
@@ -954,12 +973,12 @@ a.article-title:visited {
   }
 
   .sheet-handle:focus-visible {
-    outline: none;
   }
 
   /* With the bottom sheet open, ride just above it. */
-  .panel:not([hidden]) ~ .scrubber {
+  .stage.panel-open .scrubber {
     right: 0;
+    width: calc(100% - 24px);
     bottom: calc(var(--sheet-h, 0px) + 8px);
   }
 
@@ -985,4 +1004,127 @@ a.article-title:visited {
   .layer-toggle {
     bottom: 80px;
   }
+}
+
+@media (max-width: 480px) {
+  .wide-only {
+    display: none;
+  }
+}
+
+/* Replay: a thin amber line under the header says the map is not live. */
+body.is-replay .bar {
+  border-bottom-color: rgba(242, 166, 74, 0.55);
+}
+
+/* Header: the Places button, a plain text control like "How it works". */
+.places-button {
+  flex: none;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.places-button[hidden] {
+  display: none;
+}
+
+.places-button:hover,
+.places-button[aria-expanded='true'] {
+  color: var(--text);
+}
+
+/* Panel modes: cell parts hide in the Places list, and the list hides for a cell. */
+.panel.is-places .cell-only,
+.panel:not(.is-places) .places {
+  display: none;
+}
+
+.places-filter {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--bg);
+  color: var(--text);
+  font: 13px var(--font);
+}
+
+.places-filter::placeholder {
+  color: var(--faint);
+}
+
+.places-count {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.places-list {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.place-row {
+  display: grid;
+  gap: 1px;
+  width: 100%;
+  padding: 8px 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: none;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.place-row:hover .place-name {
+  text-decoration: underline;
+  text-decoration-color: var(--faint);
+  text-underline-offset: 2px;
+}
+
+.place-counts {
+  color: var(--muted);
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Coverage: where the outlets are based and the languages, as count chips. */
+.coverage[hidden] {
+  display: none;
+}
+
+.coverage {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.coverage-row {
+  display: grid;
+  gap: 4px;
+}
+
+.coverage-label {
+  color: var(--faint);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.coverage .chips {
+  margin: 0;
+}
+
+.coverage .chip {
+  font-variant-numeric: tabular-nums;
 }
