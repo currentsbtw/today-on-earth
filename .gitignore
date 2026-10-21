@@ -3,3 +3,4 @@ ingest/out/
 web/dist/
 web/public/data/
 .env
+carry/

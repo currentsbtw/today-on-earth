@@ -3,9 +3,13 @@
  * Output layout and field rules: docs/DATA-CONTRACT.md.
  *
  * Env:
- *   STATE_URL         previous run's /data/state.json.gz (live site). If unset or not an
- *                     http(s) URL, OUT_DIR/state.json.gz is tried instead.
- *   OUT_DIR           output directory (default ingest/out)
+ *   OUT_DIR           output directory for the site's data (default ingest/out)
+ *   CARRY_DIR         where state.json.gz and history.json.gz are read from and written to
+ *                     (default OUT_DIR). In CI this folder travels between runs via the
+ *                     Actions cache and is never part of the deployed site.
+ *   STATE_URL         optional http(s) URL to read the previous state from instead of
+ *                     CARRY_DIR (404 = cold start, any other failure fails the run)
+ *   HISTORY_URL       same, for history.json.gz
  *   WINDOW_HOURS      rolling window (default 24)
  *   COLD_START_HOURS  hours of files to fetch when there is no state (default 6)
  *   RETRY_HOURS       how long to keep retrying files that were not published yet (default 3)
@@ -17,7 +21,9 @@ import { buildSnapshot } from "./aggregate.ts";
 import { loadCountryLookup } from "./domains.ts";
 import { FEEDS, fileUrl, mapLimit, streamZipLines, type Feed } from "./fetch.ts";
 import { createRecordAssembler, parseGkgLine, type SkipReason } from "./gkg.ts";
-import { encodeState, loadState, StateLoadError, type IngestState, type StateSource } from "./state.ts";
+import { CarryLoadError, resolveCarrySource } from "./carry.ts";
+import { appendFrame, buildHistoryEntry, buildIndex, encodeHistory, frameFileName, loadHistory, toFrame, type HistoryEntry } from "./history.ts";
+import { encodeState, loadState, type IngestState } from "./state.ts";
 import type { ArticleRecord } from "./types.ts";
 import { coveredHours, mergeRecords, planSlots, pruneProcessed, type FeedProgress } from "./window.ts";
 
@@ -48,27 +54,25 @@ async function main(): Promise<number> {
   const coldStartHours = numEnv("COLD_START_HOURS", 6);
   const retryHours = numEnv("RETRY_HOURS", 3);
   const outDir = resolve(process.env.OUT_DIR?.trim() || join(INGEST_DIR, "out"));
+  const carryDir = resolve(process.env.CARRY_DIR?.trim() || outDir);
   const windowStartMs = now.getTime() - windowHours * 3_600_000;
   const windowStartIso = new Date(windowStartMs).toISOString().replace(/\.\d{3}Z$/, "Z");
 
-  log(`ingest: now=${now.toISOString()} window=${windowHours}h out=${outDir}`);
+  log(`ingest: now=${now.toISOString()} window=${windowHours}h out=${outDir} carry=${carryDir}`);
 
-  // Tolerate a trailing slash on SITE_URL ("https://x.github.io/repo/" + "/data/...").
-  const stateUrl = (process.env.STATE_URL?.trim() ?? "").replace(/([^:/])\/{2,}/g, "$1/");
-  let source: StateSource;
-  if (/^https?:\/\/[^/]+/i.test(stateUrl)) {
-    source = { kind: "url", url: stateUrl };
-  } else {
-    if (stateUrl) log(`state: STATE_URL "${stateUrl}" is not an http(s) URL, ignoring it`);
-    source = { kind: "file", path: join(outDir, "state.json.gz") };
-  }
+  // State and history are carried independently: a missing (404) state cold-starts the
+  // window but keeps history, and vice versa. Any other load failure fails the run.
+  const stateSource = resolveCarrySource(process.env.STATE_URL, carryDir, "state.json.gz", "STATE_URL", log);
+  const historySource = resolveCarrySource(process.env.HISTORY_URL, carryDir, "history.json.gz", "HISTORY_URL", log);
   let prev: IngestState | null;
+  let prevHistory: HistoryEntry[] | null;
   try {
-    prev = await loadState(source, log);
+    prev = await loadState(stateSource, log);
+    prevHistory = await loadHistory(historySource, log);
   } catch (err) {
-    if (!(err instanceof StateLoadError)) throw err;
+    if (!(err instanceof CarryLoadError)) throw err;
     log(`ingest: ${err.message}`);
-    log("ingest: refusing to cold-start over an existing state; failing this run so nothing is deployed");
+    log("ingest: refusing to start over existing data; failing this run so nothing is deployed");
     return 1;
   }
   if (!prev) log(`state: cold start, fetching the last ${coldStartHours}h of files`);
@@ -138,7 +142,24 @@ async function main(): Promise<number> {
   const heatJson = JSON.stringify(snapshot.heat);
   await writeFile(join(outDir, "heat.json"), heatJson);
   const stateBytes = encodeState({ feeds, records }, snapshot.heat.generatedAt);
-  await writeFile(join(outDir, "state.json.gz"), stateBytes);
+  await mkdir(carryDir, { recursive: true });
+  await writeFile(join(carryDir, "state.json.gz"), stateBytes);
+
+  // Replay history: append this run's frame, trim, and re-emit every retained frame
+  // (the Pages deploy replaces the whole site each run).
+  const history = appendFrame(prevHistory ?? [], buildHistoryEntry(snapshot.heat));
+  const historyDir = join(outDir, "history");
+  await rm(historyDir, { recursive: true, force: true });
+  await mkdir(historyDir, { recursive: true });
+  let largestFrame = 0;
+  for (const entry of history) {
+    const json = JSON.stringify(toFrame(entry));
+    largestFrame = Math.max(largestFrame, Buffer.byteLength(json));
+    await writeFile(join(historyDir, frameFileName(entry.at)), json);
+  }
+  await writeFile(join(historyDir, "index.json"), JSON.stringify(buildIndex(history)));
+  const historyBytes = encodeHistory(history);
+  await writeFile(join(carryDir, "history.json.gz"), historyBytes);
 
   const t = snapshot.heat.totals;
   log(
@@ -146,6 +167,7 @@ async function main(): Promise<number> {
       `new records=${ok.reduce((s, r) => s + r.records.length, 0)}; ` +
       `window articles=${t.articles} (unplaced=${t.unplaced}) outlets=${t.outlets} countries=${t.countries} cells=${t.cells}; ` +
       `heat.json=${Buffer.byteLength(heatJson)}B state.json.gz=${stateBytes.length}B; ` +
+      `history frames=${history.length} largest frame=${largestFrame}B history.json.gz=${historyBytes.length}B; ` +
       `${((Date.now() - started) / 1000).toFixed(1)}s`,
   );
   return 0;

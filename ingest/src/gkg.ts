@@ -123,6 +123,15 @@ export function createRecordAssembler(onRecord: (record: string) => void) {
   };
 }
 
+/**
+ * Copy a string so it no longer points into the GKG line it was cut from. V8 keeps substrings
+ * as slices of their parent, and a GKG line is ~10 KB (mostly GCAM), so without this every
+ * retained record pins its whole line: a 24h cold start ran out of a 4 GB heap.
+ */
+export function detach(s: string): string {
+  return s ? Buffer.from(s, "utf8").toString("utf8") : "";
+}
+
 /** Parse one GKG 2.1 line into an article record, or say why it was skipped. */
 export function parseGkgLine(line: string, countryOf: CountryLookup): ParseResult {
   const f = line.split("\t");
@@ -141,18 +150,18 @@ export function parseGkgLine(line: string, countryOf: CountryLookup): ParseResul
   return {
     ok: true,
     record: {
-      url,
-      title: extractTitle(f[COL.EXTRAS]),
-      source,
+      url: detach(url),
+      title: detach(extractTitle(f[COL.EXTRAS])),
+      source: detach(source),
       country: source ? countryOf(source) : "",
-      lang: langFromTranslationInfo(f[COL.TRANSLATION_INFO]),
-      time,
+      lang: detach(langFromTranslationInfo(f[COL.TRANSLATION_INFO])),
+      time: detach(time),
       tone: parseTone(f[COL.V2_TONE]),
-      image: /^https?:\/\//i.test(image) ? image : "",
+      image: /^https?:\/\//i.test(image) ? detach(image) : "",
       lat: placed?.lat ?? 0,
       lon: placed?.lon ?? 0,
       cellId: placed ? latLngToCell(placed.lat, placed.lon, H3_RES) : "",
-      locationName: placed?.name ?? "",
+      locationName: detach(placed?.name ?? ""),
     },
   };
 }

@@ -152,12 +152,101 @@ for (const f of files) {
   }
 }
 
+// ---- history/index.json and history/<file>.json ----
+const FRAME_TARGET_BYTES = 150 * 1024;
+const warnings: string[] = [];
+const historyDir = join(dir, "history");
+const indexPath = join(historyDir, "index.json");
+let frameCount = 0;
+let largestFrame = 0;
+if (!existsSync(indexPath)) {
+  err("history", "missing history/index.json");
+} else {
+  const index = JSON.parse(readFileSync(indexPath, "utf8")) as Record<string, unknown>;
+  exactKeys("history/index", index, ["frames"]);
+  const frames = Array.isArray(index.frames) ? (index.frames as unknown[]) : (err("history/index.frames", "not an array"), []);
+  frameCount = frames.length;
+  if (frames.length === 0) err("history/index.frames", "empty; the current run must be the last entry");
+  if (frames.length > 100) err("history/index.frames", `${frames.length} frames > 100`);
+  const listed = new Set<string>();
+  const totalKeys = ["articles", "outlets", "countries", "cells", "unplaced"];
+  frames.forEach((f, i) => {
+    const w = `history/index.frames[${i}]`;
+    if (!isObj(f)) return err(w, "not an object");
+    exactKeys(w, f, ["at", "file", "windowHours", "totals"]);
+    if (typeof f.at !== "string" || !ISO_UTC.test(f.at)) return err(`${w}.at`, "not ISO 8601 UTC with Z");
+    const expectedFile = `${f.at.replace(/[-:]/g, "")}.json`;
+    if (f.file !== expectedFile) err(`${w}.file`, `expected ${expectedFile}, got ${JSON.stringify(f.file)}`);
+    int(`${w}.windowHours`, f.windowHours, 1);
+    const t = isObj(f.totals) ? f.totals : (err(`${w}.totals`, "not an object"), {});
+    exactKeys(`${w}.totals`, t, totalKeys);
+    for (const k of totalKeys) int(`${w}.totals.${k}`, t[k]);
+    const prev = frames[i - 1] as Record<string, string> | undefined;
+    if (prev && !(prev.at < f.at)) err(w, "frames not strictly oldest first");
+    listed.add(expectedFile);
+
+    // The frame file itself.
+    const path = join(historyDir, expectedFile);
+    if (!existsSync(path)) return err(w, `file ${expectedFile} does not exist`);
+    const raw = readFileSync(path);
+    largestFrame = Math.max(largestFrame, raw.length);
+    if (raw.length > FRAME_TARGET_BYTES) warnings.push(`history/${expectedFile}: ${raw.length} B exceeds the 150 KB target`);
+    const frame = JSON.parse(raw.toString("utf8")) as Record<string, unknown>;
+    const fw = `history/${expectedFile}`;
+    exactKeys(fw, frame, ["at", "cells"]);
+    if (frame.at !== f.at) err(`${fw}.at`, `does not match index (${String(frame.at)} vs ${f.at})`);
+    const fcells = Array.isArray(frame.cells) ? (frame.cells as unknown[]) : (err(`${fw}.cells`, "not an array"), []);
+    if (isObj(f.totals) && f.totals.cells !== fcells.length) err(fw, `cells.length ${fcells.length} != totals.cells ${String(f.totals.cells)}`);
+    const ids = new Set<string>();
+    fcells.forEach((c, j) => {
+      const cw = `${fw}.cells[${j}]`;
+      if (!Array.isArray(c) || c.length !== 4) return err(cw, `expected [id, lat, lon, n], got ${JSON.stringify(c)}`);
+      const [id, lat, lon, n] = c as [unknown, unknown, unknown, unknown];
+      cellId(`${cw}[0]`, id);
+      if (ids.has(id as string)) err(`${cw}[0]`, "duplicate cell id");
+      ids.add(id as string);
+      num(`${cw}[1]`, lat, 2);
+      num(`${cw}[2]`, lon, 2);
+      if (typeof lat === "number" && Math.abs(lat) > 90) err(`${cw}[1]`, "lat out of range");
+      if (typeof lon === "number" && (lon < -180 || lon > 180)) err(`${cw}[2]`, "lon out of [-180, 180]");
+      int(`${cw}[3]`, n, 2);
+      const p = fcells[j - 1] as unknown[] | undefined;
+      if (p && typeof n === "number" && (p[3] as number) < n) err(fw, "cells not sorted by n desc");
+    });
+  });
+
+  // 24h retention and "last entry is the current snapshot".
+  const last = frames.at(-1);
+  if (isObj(last)) {
+    if (last.at !== heat.generatedAt) err("history/index last frame", `at ${String(last.at)} != heat.generatedAt ${String(heat.generatedAt)}`);
+    if (last.windowHours !== heat.windowHours) err("history/index last frame", "windowHours differs from heat.json");
+    if (JSON.stringify(last.totals) !== JSON.stringify(heat.totals)) err("history/index last frame", "totals differ from heat.json");
+    if (typeof heat.generatedAt === "string") {
+      const cutoff = Date.parse(heat.generatedAt) - 24 * 3_600_000;
+      frames.forEach((f, i) => {
+        if (isObj(f) && typeof f.at === "string" && Date.parse(f.at) < cutoff) err(`history/index.frames[${i}]`, `${f.at} is older than 24h`);
+      });
+      const lastFile = join(historyDir, `${heat.generatedAt.replace(/[-:]/g, "")}.json`);
+      if (existsSync(lastFile)) {
+        const lf = JSON.parse(readFileSync(lastFile, "utf8")) as { cells?: unknown };
+        const expected = cells.filter(isObj).map((c) => [c.id, c.lat, c.lon, c.n]);
+        if (JSON.stringify(lf.cells) !== JSON.stringify(expected)) err(`history/${lastFile}`, "current frame's cells differ from heat.json cells");
+      }
+    }
+  }
+
+  const onDisk = readdirSync(historyDir).filter((f) => f !== "index.json");
+  for (const f of onDisk) if (!listed.has(f)) err("history", `${f} is not listed in index.json`);
+}
+
 console.log(`checked ${dir}`);
 console.log(`  heat.json: ${bytes} bytes, ${cells.length} cells`);
 console.log(`  cell files: ${files.length}, articles checked: ${articlesChecked}`);
+console.log(`  history: ${frameCount} frames, largest frame ${largestFrame} bytes`);
+for (const w of warnings) console.log(`  WARN ${w}`);
 if (errors.length) {
   console.log(`FAIL: ${errors.length}${errors.length >= 200 ? "+" : ""} violations`);
   for (const e of errors) console.log(`  - ${e}`);
   process.exit(1);
 }
-console.log("OK: heat.json and every cell file match docs/DATA-CONTRACT.md");
+console.log("OK: heat.json, every cell file, history/index.json and every frame match docs/DATA-CONTRACT.md");

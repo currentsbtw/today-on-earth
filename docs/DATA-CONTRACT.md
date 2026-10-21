@@ -62,10 +62,81 @@ Cells are sorted by `n` descending. Cells with `n` < 2 may be dropped.
 spread of outlets: no outlet contributes more than 5 of the 50 unless the cell has
 fewer than 10 outlets.
 
-## `/data/state.json.gz`  (ingest-internal, frontend never reads it)
+### Stories (added 2026-10-21)
 
-Compact per-article records for the rolling window so the next run can merge new
-files without refetching the whole window. Format is up to the ingest side.
+A cell file also carries `stories`: groups of the cell's articles that are about the
+same thing, computed deterministically from what GDELT already tags per article
+(persons, organisations, themes) plus title tokens. No model, no text of ours.
+
+```jsonc
+"stories": [
+  {
+    "n": 212, "o": 96, "c": 21, "l": 7, "t": -4.1,   // same meaning as the cell counters, over the story's articles
+    "first": "2026-10-21T01:15:00Z", "last": "2026-10-21T04:30:00Z",
+    "headline": "…",            // the title of the story's medoid article (max token overlap with the rest); may be empty
+    "headlineSource": "bbc.co.uk",
+    "headlineLang": "en",
+    "entities": ["donald trump", "nato", "brussels"],  // up to 5 most shared persons/orgs/themes, lowercase, as GDELT spells them
+    "articles": [ { …same article object as above… } ] // newest 6, outlet-spread (max 2 per outlet)
+  }
+],
+"unclustered": 140        // articles in the cell that belong to no story with n >= 3
+```
+
+Rules:
+- Stories are sorted by `n` descending; at most 12 per cell; a story needs `n` >= 3.
+- Every article in the cell belongs to at most one story. `sum(stories[].n) +
+  unclustered == n` of the cell.
+- `headline` is a verbatim title from an outlet, chosen by overlap, never written or
+  edited by us. If the medoid has no title, use the next best article that has one.
+- The flat `articles` list stays as it is (newest 50 across the whole cell).
+- The grouping must be stable run to run for the same inputs (deterministic order of
+  processing: by time, then URL).
+
+## `/data/history/index.json`  (small; fetched on page load so the scrubber can show)
+
+One entry per retained snapshot, oldest first, covering at most the last 24 hours
+(so at most ~96 entries at a 15-minute cadence; fewer if runs were missed). The last
+entry is always the current snapshot, i.e. the same moment as `heat.json`.
+
+```jsonc
+{
+  "frames": [
+    {
+      "at": "2026-10-21T04:47:14Z",        // == generatedAt of that run
+      "file": "20261021T044714Z.json",     // relative to /data/history/
+      "windowHours": 6,
+      "totals": { "articles": 39304, "outlets": 5384, "countries": 159, "cells": 1600, "unplaced": 9200 }
+    }
+  ]
+}
+```
+
+## `/data/history/<file>.json`  (one compact frame, fetched on demand)
+
+```jsonc
+{
+  "at": "2026-10-21T04:47:14Z",
+  "cells": [
+    ["832aa8fffffffff", 38.96, -76.55, 1401]   // [id, lat, lon, n], sorted by n descending
+  ]
+}
+```
+
+Frames carry only what the heat layer needs. Target size: under 150 KB per frame
+uncompressed (a full 24h window measured 127 KB, about 36 KB gzipped on the wire).
+Cells with `n` < 2 are dropped, as in `heat.json`. No per-cell detail files exist for
+past frames: `cells/<id>.json` always describes the current snapshot only.
+
+## Carried files: `state.json.gz` and `history.json.gz`  (ingest-internal)
+
+Compact per-article records for the rolling window, and the retained frames, so the
+next run can merge new files without refetching. Formats are up to the ingest side.
+They are **not published on the site**: in CI they live in `CARRY_DIR` and travel
+between runs through the GitHub Actions cache (a full 24h state is ~37 MB, far too
+much to fetch from Pages 96 times a day). The ingest job can still read them from an
+http(s) URL (`STATE_URL`, `HISTORY_URL`) where a 404 means start empty and any other
+failure fails the run; that path is unused in production.
 
 ## Rules both sides rely on
 
@@ -86,4 +157,7 @@ files without refetching the whole window. Format is up to the ingest side.
 - `windowHours` is the span the data actually covers (floor of hours, minimum 1), not
   the configured window, so a fresh cold start reports 6 and a full window reports 24.
 - Times are ISO 8601 UTC with a `Z` suffix.
+- Permalinks (frontend only): the URL hash `#c=<cellId>&t=<frame at>` selects a cell
+  and a frame. `t` is the frame's `at` value with punctuation removed
+  (`20261021T044714Z`). Either key may be absent. Unknown values are ignored silently.
 - Missing values are `""` for strings and `0` for numbers, never `null`.

@@ -1,8 +1,9 @@
 name: Snapshot
 
 # Every 15 minutes: pull the newest GDELT GKG files, rebuild the static data files,
-# build the site, and deploy it to GitHub Pages. The previous run's rolling-window
-# state is read back from the live site (/data/state.json.gz).
+# build the site, and deploy it to GitHub Pages. The rolling-window state and the
+# replay history (state.json.gz, history.json.gz) travel between runs through the
+# Actions cache in the repo-root carry/ folder; they are never part of the site.
 on:
   schedule:
     - cron: "*/15 * * * *"
@@ -12,6 +13,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  actions: write # prune old carry-* caches
 
 # Never let two snapshots overlap; a queued run waits for the current one.
 concurrency:
@@ -33,14 +35,51 @@ jobs:
             ingest/package-lock.json
             web/package-lock.json
 
+      # Each run saves under a unique key; the prefix match restores the newest one.
+      - name: Restore carried state
+        id: carry
+        uses: actions/cache/restore@v6
+        with:
+          path: carry
+          key: carry-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: carry-
+          # A miss (cache outage, evicted entry) fails the run unless the repository
+          # variable ALLOW_COLD_START is "true" (first run, or a deliberate reset).
+          fail-on-cache-miss: ${{ vars.ALLOW_COLD_START != 'true' }}
+
+      - name: Report carry cache miss
+        if: steps.carry.outputs.cache-matched-key == ''
+        run: echo "::notice title=Cold start::No carried state in the Actions cache and ALLOW_COLD_START is true; this run cold-starts and begins a new replay history."
+
       - name: Ingest GDELT
         working-directory: ingest
         env:
-          STATE_URL: ${{ vars.SITE_URL }}/data/state.json.gz
           OUT_DIR: ../web/public/data
+          CARRY_DIR: ../carry
         run: |
           npm ci
           npm run ingest
+
+      - name: Save carried state
+        if: success()
+        uses: actions/cache/save@v6
+        with:
+          path: carry
+          key: carry-${{ github.run_id }}-${{ github.run_attempt }}
+
+      # Keep the 3 newest carry-* entries so the cache stays small; never fails the snapshot.
+      - name: Prune old carried state
+        if: success()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh cache list --ref refs/heads/main --key carry- --json id,createdAt --limit 100 \
+            --jq 'sort_by(.createdAt) | reverse | .[3:] | .[].id' |
+          while read -r id; do
+            gh cache delete "$id"
+          done
 
       - name: Build site
         working-directory: web

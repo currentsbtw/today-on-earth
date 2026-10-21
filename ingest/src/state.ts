@@ -1,5 +1,5 @@
-import { readFile } from "node:fs/promises";
-import { gunzipSync, gzipSync } from "node:zlib";
+import { gzipSync } from "node:zlib";
+import { gunzipMaybe, loadCarried, type CarrySource } from "./carry.ts";
 import type { ArticleRecord } from "./types.ts";
 import type { FeedProgress } from "./window.ts";
 
@@ -48,10 +48,7 @@ export function encodeState(state: IngestState, savedAt: string): Buffer {
 }
 
 export function decodeState(bytes: Uint8Array): IngestState {
-  // Some hosts serve .gz with Content-Encoding: gzip and fetch() already inflated it.
-  const isGzip = bytes.length >= 2 && bytes[0] === 0x1f && bytes[1] === 0x8b;
-  const json = (isGzip ? gunzipSync(bytes) : Buffer.from(bytes)).toString("utf8");
-  const parsed = JSON.parse(json) as PackedState;
+  const parsed = JSON.parse(gunzipMaybe(bytes)) as PackedState;
   if (parsed.v !== STATE_VERSION || !Array.isArray(parsed.records) || typeof parsed.feeds !== "object") {
     throw new Error(`unsupported state version ${String(parsed.v)}`);
   }
@@ -61,55 +58,7 @@ export function decodeState(bytes: Uint8Array): IngestState {
   };
 }
 
-export type StateSource = { kind: "url"; url: string } | { kind: "file"; path: string };
-
-/** Thrown when a remote state exists (or may exist) but could not be read. */
-export class StateLoadError extends Error {}
-
-/**
- * Load the previous state. Returns null for a cold start.
- *
- * - URL source: only HTTP 404 (nothing deployed yet) means cold start. Any other failure
- *   (non-404 status, timeout, network error, bad gzip/JSON, version mismatch) throws
- *   StateLoadError, so the run fails instead of deploying a short cold-start window over a
- *   good 24h state.
- * - File source (local runs): a missing or unreadable file means cold start.
- */
-export async function loadState(
-  source: StateSource,
-  log: (msg: string) => void,
-  fetchImpl: typeof fetch = fetch,
-): Promise<IngestState | null> {
-  if (source.kind === "url") {
-    let bytes: Uint8Array;
-    try {
-      const res = await fetchImpl(source.url, { signal: AbortSignal.timeout(120_000) });
-      if (res.status === 404) {
-        log(`state: ${source.url} returned HTTP 404 (no state deployed yet)`);
-        return null;
-      }
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      bytes = new Uint8Array(await res.arrayBuffer());
-    } catch (err) {
-      throw new StateLoadError(`could not fetch state from ${source.url}: ${(err as Error).message}`);
-    }
-    let state: IngestState;
-    try {
-      state = decodeState(bytes);
-    } catch (err) {
-      throw new StateLoadError(`state at ${source.url} is unreadable: ${(err as Error).message}`);
-    }
-    log(`state: loaded ${state.records.length} records from ${source.url}`);
-    return state;
-  }
-
-  try {
-    const state = decodeState(await readFile(source.path));
-    log(`state: loaded ${state.records.length} records from ${source.path}`);
-    return state;
-  } catch (err) {
-    const code = (err as NodeJS.ErrnoException).code;
-    log(code === "ENOENT" ? `state: no file at ${source.path}` : `state: could not load ${source.path}: ${(err as Error).message}`);
-    return null;
-  }
+/** Load the previous state (null = cold start). Fetch rules: see loadCarried in carry.ts. */
+export function loadState(source: CarrySource, log: (msg: string) => void, fetchImpl: typeof fetch = fetch): Promise<IngestState | null> {
+  return loadCarried(source, "state", decodeState, log, fetchImpl);
 }

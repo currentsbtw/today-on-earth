@@ -123,12 +123,52 @@ Goal: prove the map is compelling to look at.
 - Done when: a stranger can open the URL, see the planet glowing, and click into a
   hotspot to read what is happening there.
 
-### Phase 2: Events, not points
-- Cluster articles into events (shared GDELT event IDs first, then GKG themes +
-  location + time window).
-- Per-event coverage breadth: outlets, countries, languages, tone spread.
-- Coverage-gap shading for regions with few sources.
-- Postgres (Neon) for 7-30 days of history.
+### Overnight autonomous run (2026-10-21, started ~05:35 UTC)
+
+The user authorized working through the whole roadmap unattended. Sequence, each
+step = build -> fresh review -> verify -> commit/push -> confirm deploy:
+
+1. Finish Phase 2 slice 1 (replay + permalinks + cache-carried state). Confirm the
+   cron fires and the cache carry works across two runs.
+2. Richer base map when zoomed in (Natural Earth 10m admin-1 + populated places).
+3. Stories inside a cell (GKG persons/orgs/themes + title tokens; no LLM).
+4. Baseline mechanics: per-cell daily counts carried in state; relative heat once
+   7 days exist.
+5. Phase 3 pieces that cost nothing: YouTube embeds from GKG SocialVideoEmbeds,
+   earthquake and disaster layers (USGS, ReliefWeb) fetched client-side.
+6. Trust and polish: a methodology page (how heat is computed, what is not shown),
+   meta/OG tags, first-paint speed, phone layout (pan selected cell into view).
+7. If time remains: a workflow that renders the day's frames to an MP4 for TikTok.
+
+Out of bounds without the user: anything that costs money or needs a new account,
+accounts/auth on the site, store listings.
+
+## Phase 2: Time and stories (re-scoped 2026-10-21 for "impress the first visitor")
+
+The two things a first-time visitor will remember: watching a day sweep across the
+planet, and clicking a glow and seeing a *story* with every outlet behind it rather
+than a list of headlines. Both can be done static-first, still $0.
+
+1. **Time scrubber / replay.** Keep the last 96 `heat.json` snapshots (one per
+   15 min, ~200 KB each, ~20 MB total) in the deploy as `data/history/<stamp>.json`
+   plus an index. The site gets a scrubber under the map and a play button that
+   sweeps the last 24 h; heat crossfades between frames. This is also the raw
+   material for the TikTok time-lapse clips.
+2. **Stories inside a cell.** Group a cell's articles into stories using what GKG
+   already gives per article: shared persons, organisations and themes within a
+   time window, plus title-token overlap. Each story shows its headline set,
+   outlet count, country and language spread, and tone range. Unclustered articles
+   stay listed below. No LLM, no editorial text.
+3. **Permalinks.** `#c=<cell>&t=<stamp>` so a view can be shared and the clips can
+   link to the exact moment.
+4. **Richer base map when zoomed in.** Natural Earth 10m admin-1 boundaries and
+   populated places (small, static) appear from zoom ~4, so zooming in feels like
+   arriving somewhere. PMTiles stays the later upgrade.
+5. **Hot relative to baseline.** Keep a compact per-cell daily count table in the
+   deploy; once there are 7+ days, weight heat by today vs. the cell's own median so
+   a quiet region lighting up shows. Defers the Postgres decision again.
+
+Order: 1 -> 3 -> 2 -> 4 -> 5. 1 and 3 are a few days; 2 is the hard one.
 
 ### Phase 3: Rich media and time
 - Embedded video where the platform allows embeds (YouTube etc.).
@@ -140,14 +180,38 @@ Goal: prove the map is compelling to look at.
 - Mobile-friendly layout, then possibly native apps.
 - Shareable permalinks to an event or a region at a moment in time.
 
-## Monetization (later, logged now)
+## Monetization (discussed 2026-10-21, nothing built)
 
-- **Free tier** stays the full map; monetization never compromises the no-voice promise.
-- **Pro**: alerts, long history, time-lapse exports, API access for researchers and
-  newsrooms.
-- **Embeds**: licensed map widgets for other sites.
-- **Sponsorship / non-targeted ads** only if clearly separated from the map. No
-  sponsored "hot spots", ever.
+Ground rule: the free map stays complete, and nothing paid ever changes what glows.
+Revenue has to come from convenience, depth, and distribution, not from attention
+steering. Every option below also needs an audience first; the TikTok channel is the
+distribution engine that makes the rest possible.
+
+Ranked by fit and by how little traffic each needs:
+
+1. **Data / API for organisations** (newsrooms, researchers, risk and intel teams,
+   NGOs). GDELT is free, but the cleaned, binned, de-duplicated, outlet-labelled
+   hourly snapshots are the product. Highest revenue per customer, smallest audience
+   needed. Validate early: pitch 5 people before building anything. Confirm GDELT's
+   attribution/commercial terms before selling derived data.
+2. **Pro subscription** for individuals: region alerts, 7 to 30 days of history with
+   the time scrubber, saved views, permalinks. Needs Phase 2 (DB) and Phase 4
+   (accounts). Realistic price band: a few dollars a month.
+3. **Embeddable widget** licensed to publishers and newsletters, preset to their
+   region, with attribution back to the site.
+4. **One sponsor slot**, clearly labelled, in the header or panel footer, never on
+   the map. Flat weekly or monthly fee once traffic justifies it.
+5. **Supporters / donations** as a bridge while revenue is zero. "Built in public"
+   content on TikTok feeds this.
+6. **TikTok creator payouts** on the time-lapse clips: small, but nonzero, and the
+   clips are the funnel for everything above.
+
+Not doing, ever: sponsored hotspots, paid outlet placement, selling user data,
+display ad networks (they pay little for news traffic and wreck the instrument feel),
+narration that editorialises.
+
+Order of operations: grow the audience with daily clips -> pitch the data product
+to a handful of organisations -> build Pro once Phase 2 history exists.
 
 ## TikTok channel (idea logged 2026-10-20, not yet planned)
 
