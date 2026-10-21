@@ -4,7 +4,9 @@ import {
   LngLat,
   Map as MapLibreMap,
   setWorkerUrl,
+  type FilterSpecification,
   type GeoJSONSource,
+  type LayerSpecification,
   type MapLayerMouseEvent,
   type StyleSpecification,
 } from 'maplibre-gl';
@@ -55,6 +57,31 @@ function worldConstrain(container: HTMLElement) {
   };
 }
 
+/** One tier of city labels: muted grey, capitals a little brighter, capitals first. */
+function placeLabels(id: string, minzoom: number, filter: FilterSpecification): LayerSpecification {
+  return {
+    id,
+    type: 'symbol',
+    source: 'places',
+    minzoom,
+    filter,
+    layout: {
+      'text-field': ['get', 'name'],
+      'text-font': LABEL_FONTS,
+      'text-size': 10.5,
+      'text-variable-anchor': ['left', 'right', 'top', 'bottom'],
+      'text-radial-offset': 0.45,
+      'text-padding': 3,
+      'symbol-sort-key': ['-', ['get', 'rank'], ['*', 3, ['get', 'cap']]],
+    },
+    paint: {
+      'text-color': ['case', ['==', ['get', 'cap'], 1], '#a3abb4', '#7c858f'],
+      'text-halo-color': '#050608',
+      'text-halo-width': 1,
+    },
+  };
+}
+
 function style(): StyleSpecification {
   return {
     version: 8,
@@ -62,12 +89,27 @@ function style(): StyleSpecification {
     // No `glyphs`: labels are drawn with local system fonts, so no font server is needed.
     sources: {
       countries: { type: 'geojson', data: siteUrl('geo/countries.json') },
+      // Detail for closer zooms; filled in by loadDetail() the first time zoom reaches 3.
+      admin1: { type: 'geojson', data: EMPTY },
+      places: { type: 'geojson', data: EMPTY },
+      'country-labels': { type: 'geojson', data: EMPTY },
       heat: { type: 'geojson', data: EMPTY },
       selected: { type: 'geojson', data: EMPTY },
     },
     layers: [
       { id: 'background', type: 'background', paint: { 'background-color': '#050608' } },
       { id: 'land', type: 'fill', source: 'countries', paint: { 'fill-color': '#0f141a' } },
+      {
+        id: 'admin1',
+        type: 'line',
+        source: 'admin1',
+        minzoom: 3.5,
+        paint: {
+          'line-color': '#5d6b7a',
+          'line-opacity': ['interpolate', ['linear'], ['zoom'], 3.5, 0, 4.5, 0.14, 8, 0.22],
+          'line-width': ['interpolate', ['linear'], ['zoom'], 3.5, 0.3, 8, 0.6],
+        },
+      },
       {
         id: 'borders',
         type: 'line',
@@ -76,6 +118,49 @@ function style(): StyleSpecification {
           'line-color': '#5d6b7a',
           'line-opacity': ['interpolate', ['linear'], ['zoom'], 1, 0.22, 6, 0.4],
           'line-width': ['interpolate', ['linear'], ['zoom'], 1, 0.4, 6, 0.9],
+        },
+      },
+      // Base labels sit beneath every heat layer and stay grey, so they never compete with
+      // the amber. Symbols are placed top layer first, so news cell labels (topmost) win
+      // collisions, then country names, then cities by rank.
+      {
+        id: 'place-dot',
+        type: 'circle',
+        source: 'places',
+        minzoom: 4.5,
+        paint: {
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 4.5, 1.2, 8, 2],
+          'circle-color': ['case', ['==', ['get', 'cap'], 1], '#a3abb4', '#6f7882'],
+          // Dots appear with their label tier: rank 0-2, then 3-4 from 5.5, then 5-7 from 6.5.
+          'circle-opacity': ['step', ['zoom'],
+            ['case', ['<=', ['get', 'rank'], 2], 0.8, 0],
+            5.5, ['case', ['<=', ['get', 'rank'], 4], 0.8, 0],
+            6.5, 0.8],
+        },
+      },
+      placeLabels('place-label-minor', 6.5, ['all', ['>=', ['get', 'rank'], 5], ['<=', ['get', 'rank'], 7]]),
+      placeLabels('place-label-mid', 5.5, ['all', ['>=', ['get', 'rank'], 3], ['<=', ['get', 'rank'], 4]]),
+      placeLabels('place-label-major', 4.5, ['<=', ['get', 'rank'], 2]),
+      {
+        id: 'country-label',
+        type: 'symbol',
+        source: 'country-labels',
+        minzoom: 2.5,
+        layout: {
+          'text-field': ['get', 'name'],
+          'text-font': LABEL_FONTS,
+          'text-transform': 'uppercase',
+          'text-letter-spacing': 0.16,
+          'text-size': ['interpolate', ['linear'], ['zoom'], 2.5, 8.5, 6, 11],
+          'text-max-width': 7,
+          'text-padding': 4,
+          'symbol-sort-key': ['get', 'rank'],
+        },
+        paint: {
+          'text-color': '#5f6873',
+          'text-halo-color': '#050608',
+          'text-halo-width': 1,
+          'text-opacity': ['interpolate', ['linear'], ['zoom'], 2.5, 0, 3, 1],
         },
       },
       {
@@ -211,6 +296,8 @@ export function createMap(
   });
   map.touchZoomRotate.disableRotation();
   map.keyboard.disableRotation();
+  // Dev builds only: a handle for headless checks. Stripped from production bundles.
+  if (import.meta.env.DEV) (window as unknown as { __map: MapLibreMap }).__map = map;
 
   const byId = new Map<string, MapCell>();
   let outlineRequest = 0;
@@ -293,5 +380,33 @@ export function createMap(
     },
   };
 
-  return new Promise((resolve) => map.once('load', () => resolve(api)));
+  // First paint uses only the 110m outlines. The first time the camera reaches zoom 3,
+  // fetch the finer outlines, admin-1 lines and label points once. Each file is fetched
+  // on the main thread so a failure leaves what is there (the 110m outlines) in place.
+  let detailRequested = false;
+  const loadDetail = () => {
+    if (detailRequested || map.getZoom() < 3) return;
+    detailRequested = true;
+    map.off('zoom', loadDetail);
+    const files: [source: string, path: string][] = [
+      ['countries', 'geo/countries-50m.json'],
+      ['admin1', 'geo/admin1-lines.json'],
+      ['places', 'geo/places.json'],
+      ['country-labels', 'geo/country-labels.json'],
+    ];
+    for (const [source, path] of files) {
+      fetch(siteUrl(path))
+        .then((res) => (res.ok ? res.json() : Promise.reject(new Error(`${res.status} ${path}`))))
+        .then((data: GeoJSON.FeatureCollection) => map.getSource<GeoJSONSource>(source)?.setData(data))
+        .catch(() => {});
+    }
+  };
+
+  return new Promise((resolve) =>
+    map.once('load', () => {
+      map.on('zoom', loadDetail);
+      loadDetail();
+      resolve(api);
+    }),
+  );
 }
