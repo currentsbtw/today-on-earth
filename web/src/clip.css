@@ -1,23 +1,42 @@
-/* clip.html: a fixed-size frame for time-lapse rendering. Sizes scale with --u (1% of the
-   frame's shorter side) so 1080x1920 and 1920x1080 frames share one layout. */
+/* clip.html: a fixed-size frame for time-lapse rendering, in the Datamatics Field world:
+   #000 and #fff only for chrome and type, greys only inside the map, no rounding, shadows,
+   gradients or colour. Sizes scale with --u (1% of the frame's shorter side) so 1080x1920
+   and 1920x1080 frames share one layout. --edge-top / --edge-bottom (set by clip.ts) are
+   where the map window starts and ends; the text bands above and below are black with the
+   dot grid. */
 @import './tokens.css';
 
-html,
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font);
-  -webkit-font-smoothing: antialiased;
-  overflow: hidden;
-}
-
 .clip {
+  /* Fallbacks until tokens.css carries the self-hosted faces; same family names. */
+  --c-mono: var(--mono, 'Azeret Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace);
+  --c-hum: var(--hum, 'Source Sans 3', system-ui, sans-serif);
+  --c-pix: var(--pix, 'Silkscreen', var(--c-mono));
+  --k: #000;
+  --w: #fff;
+  /* Side margin of every text block, and the tick length of the frame edges. */
+  --m: calc(var(--u) * 7);
+  --tick: max(5px, calc(var(--u) * 1.1));
   position: relative;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: var(--bg);
+  background: var(--k);
+  color: var(--w);
+  font-family: var(--c-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+html,
+body {
+  margin: 0;
+  background: #000;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+[hidden] {
+  display: none !important;
 }
 
 /* Child selector: maplibre-gl.css sets .maplibregl-map { position: relative }. */
@@ -26,125 +45,228 @@ body {
   inset: 0;
 }
 
-.clip-top,
-.clip-counts {
+/* The bands: solid black with an 8px dot grid (scaled with the frame by --dot). */
+.clip-band {
   position: absolute;
   left: 0;
   right: 0;
-  margin: 0;
-  text-align: center;
+  pointer-events: none;
+  background-color: var(--k);
+  background-image: radial-gradient(circle, rgb(255 255 255 / 0.26) calc(var(--dot) * 0.07), transparent calc(var(--dot) * 0.1));
+  background-size: var(--dot) var(--dot);
+  background-position: calc(var(--dot) / 2) calc(var(--dot) / 2);
+}
+
+.clip-band-top {
+  top: 0;
+  height: var(--edge-top);
+}
+
+.clip-band-bottom {
+  top: var(--edge-bottom);
+  bottom: 0;
+}
+
+/* Frame edges: a full-width hairline with 25 ticks between the text margins, pointing out
+   of the map into the band. */
+.clip-edge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--tick);
   pointer-events: none;
 }
 
-/* The wordmark and date sit in the reserved top band, the counts in the bottom band. */
+.clip-edge-top {
+  top: calc(var(--edge-top) - var(--tick));
+  border-bottom: 1px solid var(--w);
+}
+
+.clip-edge-bottom {
+  top: calc(var(--edge-bottom) - 1px);
+  border-top: 1px solid var(--w);
+}
+
+.clip-ticks {
+  position: absolute;
+  inset: 0 var(--m);
+  display: flex;
+  justify-content: space-between;
+}
+
+.clip-ticks i {
+  width: 1px;
+  background: var(--w);
+}
+
+/* Text sits on black blocks so the dot grid never runs through a glyph. */
+.clip-wordmark,
+.clip-time,
+.clip-count,
+.clip-line,
+.clip-quote,
+.clip-cta {
+  background: var(--k);
+  width: fit-content;
+}
+
+/* Top: the pixel wordmark and the date. Frames centre it in the reserved top band;
+   portrait frames keep it below the 12% strip a short's platform UI covers. */
 .clip-top {
+  position: absolute;
   top: 0;
+  left: var(--m);
+  right: var(--m);
   height: var(--top-band);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: calc(var(--u) * 1.4);
+  gap: calc(var(--u) * 2);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.clip--portrait .clip-top {
+  top: var(--safe-top);
+  height: calc(var(--top-band) - var(--safe-top) - var(--tick));
 }
 
 .clip-wordmark {
   margin: 0;
-  font-size: calc(var(--u) * 6.4);
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  line-height: 1.1;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 2.4);
+  padding-right: calc(var(--u) * 1.4);
+  font-family: var(--c-pix);
+  font-weight: 400;
+  font-size: calc(var(--u) * 4.2);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.clip-globe {
+  display: block;
+  width: calc(var(--u) * 7.2);
+  height: calc(var(--u) * 7.2);
+  flex: none;
 }
 
 .clip-time {
   margin: 0;
-  color: var(--muted);
-  font-size: calc(var(--u) * 2.6);
-  font-variant-numeric: tabular-nums;
-}
-
-.clip-counts {
-  bottom: 0;
-  height: var(--bottom-band);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--muted);
-  font-size: calc(var(--u) * 2.2);
-  font-variant-numeric: tabular-nums;
+  align-items: baseline;
+  gap: calc(var(--u) * 2);
+  padding-right: calc(var(--u) * 1.4);
+  font-size: calc(var(--u) * 2.3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
-/* Cards (?signal= and ?end=1): text kept between --safe-top and --safe-bottom, the strips a
-   9:16 short's platform UI covers. The wordmark and date keep the frames' look. */
-[hidden] {
-  display: none !important;
+.clip-time b {
+  font-size: calc(var(--u) * 3.6);
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
-.clip--card .clip-top {
-  top: var(--safe-top);
-  height: auto;
-  justify-content: flex-start;
+/* Totals along the foot: number over label, four columns. */
+.clip-counts {
+  position: absolute;
+  top: calc(var(--edge-bottom) + var(--tick) + var(--u) * 1.8);
+  left: var(--m);
+  right: var(--m);
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-content: space-between;
+  pointer-events: none;
   z-index: 2;
 }
 
-.clip-scrim {
-  position: absolute;
-  left: 0;
-  right: 0;
-  pointer-events: none;
-  z-index: 1;
+.clip-count {
+  padding-right: calc(var(--u) * 1);
 }
 
-.clip-scrim-top {
-  top: 0;
-  height: calc(var(--top-band) + var(--u) * 6);
-  background: linear-gradient(to bottom, rgb(5 6 8 / 0.92) 0%, rgb(5 6 8 / 0.85) 70%, rgb(5 6 8 / 0) 100%);
+.clip-count b {
+  display: block;
+  font-size: calc(var(--u) * 3.6);
+  font-weight: 500;
+  line-height: 1;
 }
 
-.clip-scrim-bottom {
-  bottom: 0;
-  background: linear-gradient(to bottom, rgb(5 6 8 / 0) 0%, rgb(5 6 8 / 0.86) calc(var(--u) * 12), rgb(5 6 8 / 0.94) 100%);
+.clip-count span {
+  display: block;
+  margin-top: calc(var(--u) * 1);
+  font-size: calc(var(--u) * 2.04);
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
-/* Signal card: label, the fixed sentence (the lead), then the outlet's own headline. Left
-   and right insets differ in portrait to stay clear of the platform's side buttons. */
+/* Portrait time-lapse frames: the bottom band is mostly the strip a short's platform UI
+   covers, so the totals sit inside the map plate, on its lower tick rule. */
+.clip--portrait:not(.clip--card) .clip-counts {
+  top: auto;
+  bottom: calc(100% - var(--edge-bottom) + var(--u) * 2.4);
+}
+
+/* Cards (?signal= and ?end=1): text kept between --safe-top and --safe-bottom, the strips a
+   9:16 short's platform UI covers, and clear of the right 15% in portrait. */
+.clip--portrait.clip--card .clip-top {
+  top: var(--safe-top);
+  height: auto;
+  justify-content: flex-start;
+}
+
+/* Signal card: the slot as a column header, the fixed sentence, then the outlet's own
+   headline (the one bold line). */
 .clip-card {
   --fit: 1;
   position: absolute;
   bottom: var(--safe-bottom);
-  left: calc(var(--u) * 7);
-  right: calc(var(--u) * 7);
+  left: var(--m);
+  right: var(--m);
   max-width: calc(var(--u) * 130);
   z-index: 2;
 }
 
-.clip--portrait .clip-card {
+.clip--portrait .clip-card,
+.clip--portrait .clip-end {
   right: calc(var(--u) * 15);
 }
 
+/* The slot name is the entry's heading in the table register: a column header over a
+   hairline rule. */
 .clip-slot {
-  margin: 0 0 calc(var(--u) * 2);
-  color: var(--heat);
-  font-size: calc(var(--u) * 2.5);
-  font-weight: 600;
+  margin: 0 0 calc(var(--u) * 2.6);
+  padding-bottom: calc(var(--u) * 1.3);
+  border-bottom: 1px solid var(--w);
+  background: var(--k);
+  font-size: calc(var(--u) * 2.04);
+  font-weight: 500;
+  line-height: 1;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
+/* The fixed sentence reads as body text; the outlet's headline below is the bold line. */
 .clip-line {
   margin: 0;
-  font-size: calc(var(--u) * 5.6 * var(--fit));
-  font-weight: 600;
-  line-height: 1.14;
-  letter-spacing: -0.005em;
-  font-variant-numeric: tabular-nums;
+  padding-right: calc(var(--u) * 1);
+  font-family: var(--c-hum);
+  font-size: calc(var(--u) * 3.6 * var(--fit));
+  font-weight: 400;
+  line-height: 1.32;
+  font-variant-numeric: lining-nums tabular-nums;
   text-wrap: pretty;
   overflow-wrap: anywhere;
 }
 
 .clip-quote {
-  margin: calc(var(--u) * 4.4 * var(--fit)) 0 0;
-  padding-left: calc(var(--u) * 3);
-  border-left: calc(var(--u) * 0.5) solid var(--heat);
+  margin: calc(var(--u) * 3.4 * var(--fit)) 0 0;
+  padding: 0 calc(var(--u) * 1) 0 calc(var(--u) * 3);
+  border-left: 1px solid var(--w);
 }
 
 .clip-quote blockquote {
@@ -153,9 +275,11 @@ body {
 
 .clip-headline {
   margin: 0;
-  font-size: calc(var(--u) * 3.6 * var(--fit));
-  line-height: 1.28;
-  color: var(--text);
+  font-family: var(--c-hum);
+  font-size: calc(var(--u) * 5 * var(--fit));
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.01em;
   text-wrap: pretty;
   overflow-wrap: anywhere;
   display: -webkit-box;
@@ -165,34 +289,55 @@ body {
 }
 
 .clip-outlet {
-  margin-top: calc(var(--u) * 1.6);
-  color: var(--muted);
-  font-size: calc(var(--u) * 2.5);
+  margin-top: calc(var(--u) * 1.8);
+  font-size: calc(var(--u) * 2.1);
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
 }
 
-/* End card: the counts and the site address under the world, above the bottom strip. */
+/* End card: the observer beside the totals and the site address, above the bottom strip. */
 .clip-end {
   position: absolute;
-  left: calc(var(--u) * 5);
-  right: calc(var(--u) * 5);
+  left: var(--m);
+  right: var(--m);
   bottom: var(--safe-bottom);
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: calc(var(--u) * 2.4);
-  text-align: center;
+  align-items: flex-end;
+  gap: calc(var(--u) * 3.6);
   pointer-events: none;
+  z-index: 2;
+}
+
+.clip-observer {
+  display: block;
+  flex: none;
+  width: calc(var(--u) * 9.6);
+  height: calc(var(--u) * 11.2);
+  padding: calc(var(--u) * 0.6);
+  background: var(--k);
+}
+
+.clip-end-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 3);
 }
 
 .clip-end .clip-counts {
   position: static;
-  height: auto;
 }
 
 .clip-cta {
+  --fit: 1;
   margin: 0;
-  color: var(--heat);
-  font-size: calc(var(--u) * 3.8);
-  font-weight: 600;
+  padding-right: calc(var(--u) * 1);
+  font-size: calc(var(--u) * 3 * var(--fit));
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.01em;
   white-space: nowrap;
 }

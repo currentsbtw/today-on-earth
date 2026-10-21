@@ -6,12 +6,13 @@
 //   ?signal=<slot>   one broadcast slot: the map zoomed to the slot's cell with the live
 //                    heat, the slot label, its fixed sentence and the outlet's own headline;
 //   ?end=1           the live snapshot's world with the counts and the site address.
-// Nothing animates.
+// Nothing animates. The look (Datamatics Field) lives in clip.css: black text bands with the
+// dot grid above and below a tick-edged map window.
 import './clip.css';
 import type { GeoJSONSource, Map as MapLibreMap } from 'maplibre-gl';
 import { loadBroadcast, signalLine, SLOT_IDS, SLOT_LABELS, type SlotId } from './broadcast';
 import { loadFrame, loadHeat, loadHistoryIndex, siteUrl, type FrameRow, type Heat, type Totals } from './data';
-import { plural, stampOf, utcTime } from './format';
+import { count, stampOf, utcTime } from './format';
 import { createClipMap, type MapCell } from './map';
 
 const params = new URLSearchParams(location.search);
@@ -40,8 +41,20 @@ root.style.setProperty('--bottom-band', `${bottomBand}px`);
 root.style.setProperty('--safe-top', `${safeTop}px`);
 root.style.setProperty('--safe-bottom', `${safeBottom}px`);
 root.classList.toggle('clip--portrait', portrait);
+// The 8px dot grid of a 540 px wide frame, scaled with the frame.
+root.style.setProperty('--dot', `${Math.max(8, Math.round(unit * 1.48))}px`);
+for (const ticks of document.querySelectorAll('.clip-ticks')) ticks.replaceChildren(...Array.from({ length: 25 }, () => document.createElement('i')));
 
-const dateFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+/** Where the map window starts and ends (px from the top); the bands and edges follow. */
+function setEdges(top: number, bottom: number) {
+  root.style.setProperty('--edge-top', `${Math.round(top)}px`);
+  root.style.setProperty('--edge-bottom', `${Math.round(bottom)}px`);
+}
+setEdges(topBand, H - bottomBand);
+/** The tick length clip.css resolves for --tick. */
+const tickLength = () => el('clip-edge-top').offsetHeight;
+
+const dateFormat = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' });
 const el = (id: string) => document.getElementById(id)!;
 
 let marked = false;
@@ -54,16 +67,36 @@ function markReady(error?: string) {
   document.body.dataset.ready = '1';
 }
 
+/** "WED 21 OCT 2026  19:30 UTC" (uppercased by CSS). */
 function setTime(at: string) {
-  el('clip-time').textContent = `${dateFormat.format(new Date(at))} · ${utcTime(at)}`;
+  const date = dateFormat.format(new Date(at)).replace(/,/g, '');
+  el('clip-time').replaceChildren(Object.assign(document.createElement('span'), { textContent: date }), Object.assign(document.createElement('b'), { textContent: utcTime(at) }));
 }
 
+/** Totals along the foot: number over label. */
 function setCounts(totals: Totals) {
-  el('clip-counts').textContent = [
-    plural(totals.articles, 'article', 'articles'),
-    plural(totals.outlets, 'outlet', 'outlets'),
-    plural(totals.countries, 'country', 'countries'),
-  ].join(' · ');
+  const items: [n: number, one: string, many: string][] = [
+    [totals.articles, 'article', 'articles'],
+    [totals.cells, 'place', 'places'],
+    [totals.outlets, 'outlet', 'outlets'],
+    [totals.countries, 'country', 'countries'],
+  ];
+  el('clip-counts').replaceChildren(
+    ...items.map(([n, one, many]) => {
+      const item = Object.assign(document.createElement('div'), { className: 'clip-count' });
+      item.append(Object.assign(document.createElement('b'), { textContent: count(n) }), Object.assign(document.createElement('span'), { textContent: n === 1 ? one : many }));
+      return item;
+    }),
+  );
+}
+
+/** Shrink a one-line element's type (its --fit) until it fits its parent's width. */
+function fitWidth(node: HTMLElement) {
+  const room = node.parentElement!.clientWidth;
+  for (let step = 0; step <= 10; step++) {
+    node.style.setProperty('--fit', String(1 - step * 0.05));
+    if (node.scrollWidth <= room) return;
+  }
 }
 
 /**
@@ -175,21 +208,20 @@ async function renderSignal(id: string) {
   }
   const card = el('clip-card');
   card.hidden = false;
-  el('clip-scrim-top').hidden = false;
-  el('clip-scrim').hidden = false;
 
-  // Lay the text out before the map so the cell can be centred in the area left between the
-  // wordmark and the card; at least 22% of the frame stays map.
+  // Lay the text out before the map so the cell can be centred in the window left between
+  // the wordmark's band and the card's band; at least 22% of the frame stays map.
   await document.fonts.ready;
-  const textTop = Math.max(topBand, Math.round(document.querySelector<HTMLElement>('.clip-top')!.getBoundingClientRect().bottom + unit * 2));
-  fitCard(card, H - safeBottom - textTop - Math.round(H * 0.22));
-  const cardTop = H - safeBottom - card.offsetHeight;
-  el('clip-scrim-top').style.height = `${textTop + Math.round(unit * 6)}px`;
-  el('clip-scrim').style.height = `${H - cardTop + Math.round(unit * 12)}px`;
+  const tick = tickLength();
+  const textTop = Math.max(topBand, Math.round(document.querySelector<HTMLElement>('.clip-top')!.getBoundingClientRect().bottom + unit * 2.4 + tick));
+  const gap = Math.round(unit * 3.6 + tick);
+  fitCard(card, H - safeBottom - textTop - gap - Math.round(H * 0.22));
+  const windowBottom = H - safeBottom - card.offsetHeight - gap;
+  setEdges(textTop, windowBottom);
 
   const { map, setCells } = await createClipMap(
     el('clip-map'),
-    { top: textTop, bottom: H - cardTop, left: 0, right: 0 },
+    { top: textTop, bottom: H - windowBottom, left: 0, right: 0 },
     { center: [cell.lon, cell.lat], zoom: signalZoom() },
   );
   await Promise.all([loadDetail(map), outlineCell(map, cell.id).catch(() => {})]);
@@ -204,8 +236,14 @@ async function renderEnd() {
   setTime(heat.generatedAt);
   setCounts(heat.totals);
   const end = el('clip-end');
-  end.prepend(el('clip-counts'));
+  el('clip-end-text').prepend(el('clip-counts'));
   end.hidden = false;
+  await document.fonts.ready;
+  fitWidth(el('clip-cta'));
+  // The bottom band starts above the totals; the world keeps the time-lapse's framing (the
+  // band only covers it where the totals need the room).
+  const endTop = end.getBoundingClientRect().top;
+  setEdges(topBand, Math.min(H - bottomBand, endTop - unit * 3.6 - tickLength()));
 
   // Same framing as the last frame of the time-lapse: the live snapshot's whole world.
   const { map, setCells } = await createClipMap(el('clip-map'), {

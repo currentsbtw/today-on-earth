@@ -4,16 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#050608" />
+    <meta name="theme-color" content="#000000" />
     <meta name="description" content="How Today On Earth builds its map of news coverage from GDELT, with no editor and no feed." />
     <link rel="canonical" href="https://currentsbtw.github.io/today-on-earth/about.html" />
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 fill=%27%23050608%27/%3E%3Ccircle cx=%278%27 cy=%278%27 r=%274%27 fill=%27%23f2a64a%27/%3E%3C/svg%3E" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 shape-rendering=%27crispEdges%27%3E%3Crect width=%2716%27 height=%2716%27 fill=%27%23000%27/%3E%3Cpath fill=%27%23fff%27 d=%27M7 0h2v1H7zM4 1h3v1H4zM9 1h3v1H9zM3 2h1v1H3zM5 2h2v1H5zM9 2h2v1H9zM12 2h1v1h-1zM2 3h1v1H2zM13 3h1v1h-1zM1 4h6v1H1zM9 4h6v1H9zM1 5h1v1H1zM14 5h1v1h-1zM1 6h14v1H1zM0 7h16v2H0zM1 9h14v1H1zM1 10h1v1H1zM14 10h1v1h-1zM1 11h6v1H1zM9 11h6v1H9zM2 12h1v1H2zM13 12h1v1h-1zM3 13h1v1H3zM5 13h2v1H5zM9 13h2v1H9zM12 13h1v1h-1zM4 14h3v1H4zM9 14h3v1H9zM7 15h2v1H7z%27/%3E%3C/svg%3E" />
+    <link rel="preload" href="/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="./src/about.css" />
     <title>How Today On Earth works</title>
   </head>
   <body>
-    <header class="bar">
-      <a class="wordmark" href="./">Today On Earth</a>
+    <header class="top">
+      <a class="brand" href="./" aria-label="Today On Earth, back to the map">
+        <svg class="globe" viewBox="0 0 16 16" width="32" height="32" shape-rendering="crispEdges" aria-hidden="true"><path d="M7 0h2v1H7zM4 1h3v1H4zM9 1h3v1H9zM3 2h1v1H3zM5 2h2v1H5zM9 2h2v1H9zM12 2h1v1h-1zM2 3h1v1H2zM13 3h1v1h-1zM1 4h6v1H1zM9 4h6v1H9zM1 5h1v1H1zM14 5h1v1h-1zM1 6h14v1H1zM0 7h16v2H0zM1 9h14v1H1zM1 10h1v1H1zM14 10h1v1h-1zM1 11h6v1H1zM9 11h6v1H9zM2 12h1v1H2zM13 12h1v1h-1zM3 13h1v1H3zM5 13h2v1H5zM9 13h2v1H9zM12 13h1v1h-1zM4 14h3v1H4zM9 14h3v1H9zM7 15h2v1H7z" /></svg>
+        <span class="wordmark">Today On Earth</span>
+      </a>
+      <nav class="nav" aria-label="Views">
+        <a class="nav-item" href="./">Map</a>
+        <a class="nav-item" href="./about.html" aria-current="page">Method</a>
+      </nav>
       <a class="back" href="./">Back to the map</a>
     </header>
     <main class="doc">

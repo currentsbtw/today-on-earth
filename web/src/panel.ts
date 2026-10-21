@@ -7,7 +7,7 @@ const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as 
 
 const panel = $<HTMLElement>('panel');
 const title = $<HTMLHeadingElement>('panel-title');
-const why = $<HTMLParagraphElement>('panel-why');
+const why = $<HTMLDListElement>('panel-why');
 const reach = $<HTMLParagraphElement>('panel-reach');
 const state = $<HTMLParagraphElement>('panel-state');
 const note = $<HTMLParagraphElement>('panel-note');
@@ -38,11 +38,6 @@ function countsLine(c: Counts): string {
   ].join(' · ');
 }
 
-/** The counts plus the window: "… · 9 languages · last 24h" */
-function whyLine(c: Counts, windowHours: number): string {
-  return `${countsLine(c)} · last ${windowHours}h`;
-}
-
 type Reach = Counts & { u?: number; i?: number };
 
 /** "heard in 19 other countries"; "" when the file has no `i` or no outlet country is known. */
@@ -51,18 +46,17 @@ function heardIn(c: Reach): string {
   return c.i === 0 ? 'heard in no other country' : `heard in ${plural(c.i, 'other country', 'other countries')}`;
 }
 
-/** "61 distinct · 3 reprints · heard in 19 other countries"; the reprint part only when there are copies. */
-function reachLine(c: Reach): string {
+/** "31 reprints collapsed · last 24h"; the reprint part only when there are copies. */
+function reachLine(c: Reach, windowHours: number): string {
   const parts: string[] = [];
   const copies = c.u === undefined ? 0 : c.n - c.u;
-  if (copies > 0) parts.push(`${count(c.u!)} distinct`, plural(copies, 'reprint', 'reprints'));
-  const heard = heardIn(c);
-  if (heard) parts.push(heard);
+  if (copies > 0) parts.push(`${plural(copies, 'reprint', 'reprints')} collapsed`);
+  parts.push(`last ${windowHours}h`);
   return parts.join(' · ');
 }
 
-function setReach(c: Reach | null) {
-  reach.textContent = c ? reachLine(c) : '';
+function setReach(c: Reach | null, windowHours = 24) {
+  reach.textContent = c ? reachLine(c, windowHours) : '';
   reach.hidden = !reach.textContent;
 }
 
@@ -72,6 +66,26 @@ const el = <K extends keyof HTMLElementTagNameMap>(tag: K, className: string, te
   if (text !== undefined) node.textContent = text;
   return node;
 };
+
+/**
+ * The place's counts as a mono table: articles, headlines (reprints collapsed), outlets,
+ * countries, languages, and the countries other than its own that covered it.
+ */
+function setCounts(c: Reach | null) {
+  if (!c) return void why.replaceChildren();
+  const rows: [string, string][] = [['Articles', count(c.n)]];
+  if (c.u !== undefined) rows.push(['Headlines', count(c.u)]);
+  rows.push(['Outlets', count(c.o)], ['Countries', count(c.c)], ['Languages', count(c.l)]);
+  const heard = heardIn(c);
+  if (heard) rows.push(['Heard in', heard.replace(/^heard in /, '')]);
+  why.replaceChildren(
+    ...rows.map(([k, v]) => {
+      const row = el('div', 'count-row');
+      row.append(el('dt', '', k), el('dd', '', v));
+      return row;
+    }),
+  );
+}
 
 /** Marks text with its language (ISO 639 codes only) so screen readers and fonts follow it. */
 function setLang(node: HTMLElement, lang: string) {
@@ -161,7 +175,8 @@ function storyCard(story: Story, now: number): HTMLElement {
 // Never autoplay.
 
 const MAX_CLIPS = 8;
-const PLAY_SVG = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z"/></svg>';
+const PLAY_SVG =
+  '<svg viewBox="0 0 4 7" width="4" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h1v7H0zM1 1h1v5H1zM2 2h1v3H2zM3 3h1v1H3z"/></svg>';
 
 interface Clip {
   id: string;
@@ -268,24 +283,34 @@ function renderStories(detail: CellDetail | null, now: number) {
 }
 
 // Coverage -----------------------------------------------------------------
-// Where the covering outlets are based and which languages they write in: counts only,
-// in the order the cell file gives them (by count), no ranking words.
+// The covering outlets, where they are based and which languages they write in: counts
+// only, in the order the cell file gives them (by count), no ranking words. Each row has a
+// 1px strip as long as its share of the largest count.
 
-const MAX_CHIPS = 8;
+const MAX_ROWS = 8;
 
-function chipRow(label: string, entries: [string, number][]): HTMLElement {
-  const row = el('div', 'coverage-row');
-  const chips = el('ul', 'chips');
-  chips.setAttribute('aria-label', label);
-  for (const [key, n] of entries.slice(0, MAX_CHIPS)) chips.append(el('li', 'chip', `${key || 'unknown'} ${count(n)}`));
-  row.append(el('span', 'coverage-label', label), chips);
-  return row;
+function stripRows(label: string, entries: [string, number][]): HTMLElement {
+  const block = el('div', 'coverage-row');
+  const rows = el('ul', 'strips');
+  rows.setAttribute('aria-label', label);
+  const top = Math.max(1, ...entries.slice(0, MAX_ROWS).map(([, n]) => n));
+  for (const [key, n] of entries.slice(0, MAX_ROWS)) {
+    const li = el('li', 'strip-row');
+    const strip = el('span', 'strip');
+    strip.style.width = `${Math.max(2, (n / top) * 100)}%`;
+    strip.setAttribute('aria-hidden', 'true');
+    li.append(el('span', 'strip-key', key || 'unknown'), el('span', 'strip-n', count(n)), strip);
+    rows.append(li);
+  }
+  block.append(el('h3', 'coverage-label', label), rows);
+  return block;
 }
 
 function renderCoverage(detail: CellDetail | null) {
   const rows: HTMLElement[] = [];
-  if (detail?.topCountries?.length) rows.push(chipRow('Outlets based in', detail.topCountries));
-  if (detail?.languages?.length) rows.push(chipRow('Languages', detail.languages));
+  if (detail?.topOutlets?.length) rows.push(stripRows('Outlets', detail.topOutlets));
+  if (detail?.topCountries?.length) rows.push(stripRows('Outlets based in', detail.topCountries));
+  if (detail?.languages?.length) rows.push(stripRows('Languages', detail.languages));
   coverage.replaceChildren(...rows);
   coverage.hidden = !rows.length;
 }
@@ -380,6 +405,10 @@ export interface PlaceRow {
   name: string;
   /** "412 articles · 150 outlets · 23 countries", or just the articles on past frames. */
   counts: string;
+  /** Articles; outlets and outlet countries exist only for the live snapshot. */
+  n: number;
+  o?: number;
+  c?: number;
 }
 
 let placeRows: PlaceRow[] = [];
@@ -525,8 +554,8 @@ export function isSignals(): boolean {
 export function openLoading(cell: HeatCell, windowHours: number) {
   cellMode();
   title.textContent = cell.name;
-  why.textContent = whyLine(cell, windowHours);
-  setReach(cell);
+  setCounts(cell);
+  setReach(cell, windowHours);
   list.replaceChildren();
   renderCoverage(null);
   renderStories(null, 0);
@@ -537,8 +566,8 @@ export function openLoading(cell: HeatCell, windowHours: number) {
 
 export function showDetail(detail: CellDetail, windowHours: number) {
   title.textContent = detail.name;
-  why.textContent = whyLine(detail, windowHours);
-  setReach(detail);
+  setCounts(detail);
+  setReach(detail, windowHours);
   const now = Date.now();
   renderCoverage(detail);
   renderVideos(detail);
@@ -554,7 +583,7 @@ export function showDetail(detail: CellDetail, windowHours: number) {
 export function openMissing(n: number) {
   cellMode();
   title.textContent = plural(n, 'article', 'articles');
-  why.textContent = '';
+  setCounts(null);
   setReach(null);
   list.replaceChildren();
   renderCoverage(null);

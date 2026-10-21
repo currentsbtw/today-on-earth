@@ -1,11 +1,16 @@
-// The time scrubber: replays the frames in history/index.json. The last frame is the
-// live snapshot (heat.json), so it never needs its own fetch.
+// The replay: the frames in history/index.json drawn as a field of 1px bars (articles per
+// snapshot), a trend line and a table of recent frames. The last frame is the live snapshot
+// (heat.json), so it never needs its own fetch. A range input stays as the keyboard and
+// screen-reader scrubber (and what the clip renderer waits for).
 import { loadFrame, loadHistoryIndex, type FrameRow, type HistoryFrame } from './data';
-import { stampOf, utcTime } from './format';
+import { count, stampOf, utcTime } from './format';
 
 const FPS = 6;
 const PREFETCH_CONCURRENCY = 3;
 const MIN_FRAMES = 4;
+/** Frames on each side of the centre in the trend line's mean (9-frame window). */
+const TREND_HALF = 4;
+const RECENT_ROWS = 8;
 
 /** The span the frames cover, from the data: "6 hours", or "45 minutes" below an hour. */
 export function spanLabel(firstAt: string, lastAt: string): string {
@@ -43,14 +48,39 @@ export interface LiveMoment {
   totals: HistoryFrame['totals'];
 }
 
-const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+const $ = <T extends Element>(id: string) => document.getElementById(id) as unknown as T;
 
-/** Loads the index and wires up the control. Resolves null (control stays hidden) if there is nothing to replay. */
+/** Two-digit frame index: 00 … 95. */
+const pad = (i: number) => String(i).padStart(2, '0');
+
+/** "+11", "−45" (a true minus sign), "0". */
+const signed = (d: number) => (d > 0 ? `+${count(d)}` : d < 0 ? `−${count(-d)}` : '0');
+
+/**
+ * The whole frame inverts for one painted frame at the moment the map returns to the live
+ * snapshot or replay starts. Never under reduced motion.
+ */
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+function invertOnce() {
+  if (reducedMotion.matches) return;
+  const root = document.documentElement;
+  root.classList.add('invert');
+  requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('invert')));
+}
+
+function showEmpty(text: string) {
+  const empty = $<HTMLElement>('replay-empty');
+  empty.textContent = text;
+  empty.hidden = false;
+}
+
+/** Loads the index and wires up the field. Resolves null (field stays hidden) if there is nothing to replay. */
 export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) => void): Promise<Replay | null> {
   let frames: HistoryFrame[];
   try {
     frames = await loadHistoryIndex();
   } catch {
+    showEmpty('No replay history in this snapshot.');
     return null;
   }
   // heat.json and index.json are fetched separately, so a deploy or a stale cached copy in
@@ -61,15 +91,23 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
   if (!frames.length || Date.parse(frames[frames.length - 1].at) !== liveTime) {
     frames.push({ at: live.at, file: '', windowHours: live.windowHours, totals: live.totals });
   }
-  // Too few frames make a replay that says nothing; keep the control hidden until there are more.
-  if (frames.length < MIN_FRAMES) return null;
+  // Too few frames make a replay that says nothing: the field still draws the frames that
+  // exist (on a 96-slot scale), but there is nothing to scrub, and a note says why.
+  const tooFew = frames.length < MIN_FRAMES;
 
   const root = $<HTMLElement>('scrubber');
   const range = $<HTMLInputElement>('scrub-range');
   const play = $<HTMLButtonElement>('scrub-play');
   const label = $<HTMLElement>('scrub-time');
   const liveTag = $<HTMLElement>('scrub-live');
-  const ticks = $<HTMLElement>('scrub-ticks');
+  const barsEl = $<HTMLElement>('bars');
+  const barTag = $<HTMLElement>('bar-tag');
+  const idx = $<HTMLElement>('bar-idx');
+  const fieldCount = $<HTMLElement>('field-count');
+  const trendLine = $<SVGPolylineElement>('trend-line');
+  const trendMax = $<HTMLElement>('trend-max');
+  const recent = $<HTMLTableSectionElement>('recent');
+  const observer = document.getElementById('observer-label');
 
   const last = frames.length - 1;
   // Labels say the span the frames actually cover, not a fixed 24 hours.
@@ -119,6 +157,96 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
     onFrame({ index: target, live: target === last, shown: frames[shown], rows: shown === last ? null : cache.get(shown)! });
   }
 
+  // The field ------------------------------------------------------------------
+  const articles = frames.map((f) => f.totals?.articles ?? 0);
+  const max = Math.max(1, ...articles);
+  const slots = tooFew ? 95 : Math.max(1, last);
+  const frac = (i: number) => i / slots;
+  const pos = (i: number) => `${frac(i) * 100}%`;
+
+  const bars = articles.map((n, i) => {
+    const bar = document.createElement('span');
+    bar.className = 'bar';
+    bar.style.left = pos(i);
+    bar.style.setProperty('--h', `${Math.max(2, (n / max) * 100)}%`);
+    return bar;
+  });
+  barsEl.replaceChildren(...bars);
+
+  // Index labels every 12 frames (three hours), plus the last frame.
+  const labels: HTMLElement[] = [];
+  for (let i = 0; i <= last; i++) {
+    if (i % 12 !== 0 && i !== last) continue;
+    if (i !== last && last - i < 6) continue; // no label crowding the last one
+    const tag = document.createElement('span');
+    tag.textContent = pad(i);
+    tag.style.left = pos(i);
+    if (frac(i) > 0.97) tag.className = 'is-end';
+    labels.push(tag);
+  }
+  idx.replaceChildren(...labels);
+
+  // Trend: a 9-frame centred mean, as one polyline in a 1000 x 44 box.
+  const means = articles.map((_, i) => {
+    const a = Math.max(0, i - TREND_HALF);
+    const b = Math.min(last, i + TREND_HALF);
+    let sum = 0;
+    for (let j = a; j <= b; j++) sum += articles[j];
+    return sum / (b - a + 1);
+  });
+  trendLine.setAttribute(
+    'points',
+    means.map((m, i) => `${(frac(i) * 1000).toFixed(1)},${(43 - (m / max) * 41).toFixed(1)}`).join(' '),
+  );
+  trendMax.textContent = `${count(max)} max`;
+
+  // Recent frames: the newest few, each a click away (the last one returns to live).
+  const rows = Array.from({ length: Math.min(RECENT_ROWS, frames.length) }, () => {
+    const tr = document.createElement('tr');
+    for (let c = 0; c < 4; c++) tr.append(document.createElement('td'));
+    tr.addEventListener('click', () => {
+      const i = Number(tr.dataset.index);
+      if (Number.isNaN(i) || tooFew) return;
+      setPlaying(false);
+      go(i);
+    });
+    recent.append(tr);
+    return tr;
+  });
+
+  function updateField() {
+    bars.forEach((bar, i) => {
+      bar.classList.toggle('is-after', i > target);
+      bar.classList.toggle('is-current', i === target);
+    });
+    barTag.textContent = pad(target);
+    barTag.style.left = pos(target);
+    barTag.classList.toggle('is-end', frac(target) > 0.97);
+    barTag.classList.toggle('is-start', frac(target) < 0.03);
+    fieldCount.textContent = `${pad(target)}/${pad(last)}`;
+    if (observer) observer.textContent = `Observer · ${pad(target)}`;
+    // Always the newest frames, ending at live; the frame on screen is inverted when listed.
+    rows.forEach((tr, r) => {
+      const i = last - rows.length + 1 + r;
+      const cells = tr.children;
+      tr.dataset.index = String(i);
+      cells[0].textContent = pad(i);
+      cells[1].textContent = utcTime(frames[i].at).replace(' UTC', '');
+      cells[2].textContent = count(articles[i]);
+      cells[3].textContent = i > 0 ? signed(articles[i] - articles[i - 1]) : '';
+      tr.classList.toggle('is-on', i === target);
+      tr.title = i === last ? 'live snapshot' : '';
+    });
+  }
+
+  if (tooFew) {
+    updateField();
+    root.classList.add('is-static');
+    root.hidden = false;
+    showEmpty(`Replay starts at ${MIN_FRAMES} snapshots. ${frames.length} so far.`);
+    return null;
+  }
+
   function updateControl() {
     const time = utcTime(frames[target].at);
     range.value = String(target);
@@ -126,10 +254,13 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
     liveTag.hidden = target !== last;
     range.setAttribute('aria-valuetext', target === last ? `${time}, live` : time);
     root.classList.toggle('is-live', target === last);
+    updateField();
   }
 
   function go(i: number) {
+    const before = target;
     target = Math.max(0, Math.min(last, i));
+    if (target === last && before !== last) invertOnce();
     updateControl();
     void fetchFrame(target);
     render();
@@ -140,7 +271,9 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
     timer = 0;
     play.classList.toggle('is-playing', on);
     play.setAttribute('aria-label', on ? 'Pause' : playLabel);
+    root.classList.toggle('is-playing', on);
     if (!on) return;
+    invertOnce();
     if (target === last) go(0);
     prefetchFrom(target);
     timer = window.setInterval(() => {
@@ -167,16 +300,24 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
     });
   }
 
-  // Faint hour ticks; a slightly taller one every six hours (00, 06, 12, 18 UTC).
-  const hourOf = (i: number) => Math.floor(Date.parse(frames[i].at) / 3600000);
-  for (let i = 1; i <= last; i++) {
-    const hour = hourOf(i);
-    if (Number.isNaN(hour) || hour === hourOf(i - 1)) continue;
-    const tick = document.createElement('span');
-    if (hour % 6 === 0) tick.className = 'major';
-    tick.style.left = `${(i / last) * 100}%`;
-    ticks.append(tick);
-  }
+  // Pointer scrubbing on the bars: a press or a drag picks the nearest frame.
+  const indexAt = (clientX: number) => {
+    const box = barsEl.getBoundingClientRect();
+    return Math.max(0, Math.min(last, Math.round(((clientX - box.left) / Math.max(1, box.width)) * last)));
+  };
+  let dragging = false;
+  barsEl.addEventListener('pointerdown', (e) => {
+    dragging = true;
+    barsEl.setPointerCapture(e.pointerId);
+    setPlaying(false);
+    go(indexAt(e.clientX));
+  });
+  barsEl.addEventListener('pointermove', (e) => {
+    if (dragging && indexAt(e.clientX) !== target) go(indexAt(e.clientX));
+  });
+  const stopDrag = () => (dragging = false);
+  barsEl.addEventListener('pointerup', stopDrag);
+  barsEl.addEventListener('pointercancel', stopDrag);
 
   range.min = '0';
   range.max = String(last);

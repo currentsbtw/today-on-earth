@@ -1,0 +1,13 @@
+{
+  "buildPath": "code",
+  "buildPathNote": "2026-10-21: no image generation in this harness (context.mjs: no IMAGE_GEN_AVAILABLE, no API key); code-led is the only path, so nothing was chosen",
+  "detector": {
+    "ignoreRules": [
+      "codex-grid-background"
+    ],
+    "ignoreFiles": [
+      ".impeccable/mocks/**"
+    ],
+    "ignoreValues": []
+  }
+}

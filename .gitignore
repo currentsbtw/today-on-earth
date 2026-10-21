@@ -7,3 +7,6 @@ carry/
 clip-out/
 .impeccable/references/
 .impeccable/mocks/
+.impeccable/review/
+.impeccable/build/
+.impeccable/questions/

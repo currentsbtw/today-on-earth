@@ -495,6 +495,23 @@ GitHub release `clips`. What remains:
 - [ ] **Analytics and checkpoints.** Free, privacy-friendly analytics; checkpoints at
       3 and 6 months.
 
+## Visual redesign: Datamatics Field (shipped 2026-10-21)
+
+The web app's visual world was replaced on 2026-10-21 through the Impeccable workflow:
+PRODUCT.md written; four coded direction mockups (Departures Board, Listening Post,
+Datamatics Field, the category standard) shown to the owner, who chose Datamatics
+Field (after Ryoji Ikeda); code-led build (no image generation available); finish
+review "fix" (8 items) -> all resolved, 3 regressions -> resolved -> "ship"; DESIGN.md
+written from the built world and is now the visual authority. World: pure black and
+white chrome, white heat on a grey planet, Azeret Mono for every number and label,
+Source Sans 3 for the one sentence and reading text, Silkscreen pixel wordmark with a
+one-bit globe mark, 8px dot grid, hairlines, stepped motion, one-frame inversion on
+snapshot change, a pixel observer mascot. Fonts are self-hosted (140 KB, SIL OFL).
+Surfaces: map page (places column, tick-framed map, 96-bar replay field, log-style
+panel, Signals entries), about page, clip frames and cards. Follow-ups: map labels
+render small in the 1080x1920 clip (fixed pixel size); og.jpg to recapture in the new
+look; the amber heat is retired (not binding).
+
 ## Phase 1 build decisions (2026-10-20)
 
 - **GKG is the only feed in phase 1.** It carries URL, source domain, page title,

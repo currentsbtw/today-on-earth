@@ -1,7 +1,7 @@
 import './style.css';
 import { loadBroadcast, type Broadcast, type Slot } from './broadcast';
 import { isCellId, loadCell, loadHeat, type FrameRow, type HeatCell, type Totals } from './data';
-import { count, plural, utcTime } from './format';
+import { count, plural, shortName, utcTime } from './format';
 import { createMap, type HeatMode, type MapCell } from './map';
 import * as panel from './panel';
 import type { PlaceRow } from './panel';
@@ -14,37 +14,67 @@ const MIN_BASELINE_DAYS = 3;
 const MODE_PREF = 'toe.heatMode';
 /** Set once someone has opened a place; until then a one-line hint says how. */
 const SEEN_PREF = 'toe.seenCell';
-const HINT = 'Tap a glow to see who is covering it';
-/** How many places the Places list shows. */
+const HINT = 'Open a glow to see who is covering it';
+/** How many places the Places list and the places column show. */
 const PLACES_MAX = 100;
 
-const status = document.getElementById('status')!;
-const totals = document.getElementById('totals')!;
-const snapshot = document.getElementById('snapshot')!;
+const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+
+const status = $('status');
+const sentence = $('totals');
+const snapshot = $('snapshot');
+const footTotals = $('foot-totals');
+const colTotals = $('col-totals');
+const selLine = $('sel-line');
+const mapFrame = $('map-frame');
+
+/** Phones: the bottom sheet. Wide: the three-column field with the panel in the right column. */
+const phone = window.matchMedia('(max-width: 720px)');
+const wide = window.matchMedia('(min-width: 1100px)');
 
 function setStatus(text: string) {
   status.textContent = text;
   status.hidden = !text;
 }
 
-/** Header counts for the live snapshot, or for a replay frame (marked "replay"). */
+// The clock ---------------------------------------------------------------------
+// UTC with seconds, ticking on the second. Only the text changes.
+const clockTime = $<HTMLTimeElement>('clock');
+const clockDate = $('clock-date');
+const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const two = (n: number) => String(n).padStart(2, '0');
+function tick() {
+  const d = new Date();
+  clockTime.textContent = `${two(d.getUTCHours())}:${two(d.getUTCMinutes())}:${two(d.getUTCSeconds())} UTC`;
+  clockTime.dateTime = d.toISOString();
+  const date = `${DAYS[d.getUTCDay()]} ${d.getUTCFullYear()}-${two(d.getUTCMonth() + 1)}-${two(d.getUTCDate())}`;
+  if (clockDate.textContent !== date) clockDate.textContent = date;
+}
+tick();
+window.setTimeout(() => {
+  tick();
+  window.setInterval(tick, 1000);
+}, 1000 - (Date.now() % 1000));
+
+/** <div><dt>label</dt><dd>value</dd></div> rows for a description list. */
+function dlRows(target: HTMLElement, rows: [label: string, value: string][]) {
+  target.replaceChildren(
+    ...rows.map(([label, value]) => {
+      const row = document.createElement('div');
+      const dt = document.createElement('dt');
+      const dd = document.createElement('dd');
+      dt.textContent = label;
+      dd.textContent = value;
+      row.append(dt, dd);
+      return row;
+    }),
+  );
+}
+
+/** The sentence, the stamp, the foot line and the column totals for the live snapshot or a replay frame. */
 function showTotals(t: Totals, at: string, replay: boolean) {
-  const parts = [
-    plural(t.articles, 'article', 'articles'),
-    plural(t.outlets, 'outlet', 'outlets'),
-    plural(t.countries, 'country', 'countries'),
-  ];
-  // Articles that only name a country have no place on the map. Saying so is part of
-  // showing the coverage gap rather than hiding it.
-  totals.textContent = parts.join(' · ');
-  if (t.unplaced) {
-    // "on the map" drops on very narrow screens so the line fits ("8,842 not placed").
-    const wide = Object.assign(document.createElement('span'), { className: 'wide-only', textContent: ' on the map' });
-    totals.append(` · ${count(t.unplaced)} not placed`, wide);
-  }
-  totals.title = t.unplaced
-    ? `${count(t.unplaced)} articles mention only a country, so they are counted but not drawn anywhere.`
-    : '';
+  const verb = replay ? 'were' : 'are';
+  sentence.textContent = `${plural(t.articles, 'article', 'articles')} ${verb} pointing at ${plural(t.cells, 'place', 'places')}.`;
   const time = utcTime(at);
   document.body.classList.toggle('is-replay', replay);
   if (replay) {
@@ -54,12 +84,141 @@ function showTotals(t: Totals, at: string, replay: boolean) {
     document.title = `Today On Earth · ${count(t.articles)} articles`;
   }
   snapshot.title = at;
+
+  const stamp = time.replace(' UTC', 'Z');
+  const foot: [string, string][] = [['Articles', count(t.articles)]];
+  if (t.reprints !== undefined) foot.push(['Reprints', count(t.reprints)]);
+  foot.push(['Outlets', count(t.outlets)], ['Outlet countries', count(t.countries)], ['Places', count(t.cells)]);
+  // Articles that only name a country have no place on the map. Saying so is part of
+  // showing the coverage gap rather than hiding it.
+  if (t.unplaced !== undefined) foot.push(['Not placed', count(t.unplaced)]);
+  foot.push([replay ? 'Replay frame' : 'Snapshot', stamp], ['Source · no editing', 'GDELT 2.0']);
+  dlRows(footTotals, foot);
+  footTotals.title = t.unplaced
+    ? `${count(t.unplaced)} articles mention only a country, so they are counted but not drawn anywhere.`
+    : '';
+
+  const col: [string, string][] = [['Places with articles', count(t.cells)]];
+  if (t.reprints !== undefined) col.push(['Reprints collapsed', count(t.reprints)]);
+  if (t.unplaced !== undefined) col.push(['Not placed', count(t.unplaced)]);
+  dlRows(colTotals, col);
 }
+
+// The places column ----------------------------------------------------------------
+// The ranked places as mono rows (name, articles, outlets, outlet countries) with a strip
+// as long as the row's share of the top count. One tab stop; arrows move between rows.
+
+const colList = $<HTMLOListElement>('places-col-list');
+const colFilter = $<HTMLInputElement>('places-col-filter');
+const colEmpty = $('places-col-empty');
+const colSection = $('places-col');
+let colRows: PlaceRow[] = [];
+let colSelected: string | null = null;
+let colPick: (id: string) => void = () => {};
+
+const fold = (text: string) => text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+
+function renderCol() {
+  const q = fold(colFilter.value.trim());
+  const shown = q ? colRows.filter((r) => fold(r.name).includes(q)) : colRows;
+  const top = Math.max(1, ...colRows.map((r) => r.n));
+  const dash = '–';
+  colList.replaceChildren(
+    ...shown.map((r) => {
+      const li = document.createElement('li');
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'rank-row';
+      button.dataset.id = r.id;
+      button.tabIndex = -1;
+      button.title = r.name;
+      button.setAttribute('aria-label', `${r.name}, ${r.counts}`);
+      const cells = [shortName(r.name) || r.name, count(r.n), r.o === undefined ? dash : count(r.o), r.c === undefined ? dash : count(r.c)];
+      cells.forEach((text, i) => {
+        const span = document.createElement('span');
+        span.className = i ? 'rank-n' : 'rank-name';
+        span.textContent = text;
+        button.append(span);
+      });
+      const strip = document.createElement('span');
+      strip.className = 'rank-strip';
+      strip.setAttribute('aria-hidden', 'true');
+      strip.style.width = `${Math.max(2, (r.n / top) * 100)}%`;
+      button.append(strip);
+      button.addEventListener('click', () => colPick(r.id));
+      li.append(button);
+      return li;
+    }),
+  );
+  colEmpty.hidden = !!shown.length || !colRows.length;
+  colEmpty.textContent = q ? `No place matches "${colFilter.value.trim()}".` : '';
+  markCol();
+}
+
+/** Pulls the selected place's row to white and gives the list its one tab stop. */
+function markCol() {
+  const buttons = [...colList.querySelectorAll<HTMLButtonElement>('.rank-row')];
+  let stop: HTMLButtonElement | undefined;
+  for (const b of buttons) {
+    const on = b.dataset.id === colSelected;
+    b.classList.toggle('is-selected', on);
+    if (on) b.setAttribute('aria-current', 'true');
+    else b.removeAttribute('aria-current');
+    if (on) stop = b;
+  }
+  stop ??= buttons[0];
+  for (const b of buttons) b.tabIndex = b === stop ? 0 : -1;
+  colList.classList.toggle('has-selection', !!colSelected && buttons.some((b) => b.dataset.id === colSelected));
+  // Keep the selected row in view inside the column (never scrolls the page).
+  if (colSelected && wide.matches) {
+    const row = buttons.find((b) => b.dataset.id === colSelected);
+    if (row) {
+      const top = row.offsetTop - colList.offsetTop;
+      if (top < colList.scrollTop || top + row.offsetHeight > colList.scrollTop + colList.clientHeight) {
+        colList.scrollTop = Math.max(0, top - colList.clientHeight / 3);
+      }
+    }
+  }
+}
+
+colList.addEventListener('scroll', () => colList.classList.toggle('is-scrolled', colList.scrollTop > 0), { passive: true });
+colFilter.addEventListener('input', renderCol);
+colFilter.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    const first = colList.querySelector<HTMLButtonElement>('.rank-row');
+    if (first) {
+      e.preventDefault();
+      first.click();
+    }
+  } else if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    colList.querySelector<HTMLButtonElement>('.rank-row')?.focus();
+  }
+});
+colList.addEventListener('keydown', (e) => {
+  const buttons = [...colList.querySelectorAll<HTMLButtonElement>('.rank-row')];
+  const at = buttons.indexOf(document.activeElement as HTMLButtonElement);
+  if (at < 0) return;
+  let next = -1;
+  if (e.key === 'ArrowDown') next = Math.min(buttons.length - 1, at + 1);
+  else if (e.key === 'ArrowUp') next = at - 1;
+  else if (e.key === 'Home') next = 0;
+  else if (e.key === 'End') next = buttons.length - 1;
+  else return;
+  e.preventDefault();
+  if (next < 0) return colFilter.focus();
+  for (const b of buttons) b.tabIndex = -1;
+  buttons[next].tabIndex = 0;
+  buttons[next].focus();
+});
 
 async function start() {
   // The header fills in as soon as the snapshot arrives; the map catches up when ready.
   const heatPromise = loadHeat();
-  heatPromise.then((h) => showTotals(h.totals, h.generatedAt, false), () => setStatus('Could not load the news snapshot.'));
+  heatPromise.then((h) => showTotals(h.totals, h.generatedAt, false), () => {
+    sentence.textContent = 'The news snapshot could not be loaded.';
+    setStatus('Could not load the news snapshot.');
+  });
 
   const live = new Map<string, HeatCell>();
   let liveCells: HeatCell[] = [];
@@ -86,11 +245,47 @@ async function start() {
   const updateNote = () =>
     panel.setNote(selectedIsLive && !frame.live ? 'Details are for the current snapshot.' : '');
 
-  const placesButton = document.getElementById('places-button') as HTMLButtonElement;
-  const signalsButton = document.getElementById('signals-button') as HTMLButtonElement;
+  const mapButton = $<HTMLButtonElement>('map-button');
+  const placesButton = $<HTMLButtonElement>('places-button');
+  const signalsButton = $<HTMLButtonElement>('signals-button');
+  const replayButton = $<HTMLButtonElement>('replay-button');
   let hintShown = false;
   let broadcast: Broadcast | null = null; // the daily broadcast, once loaded
   let wantSignals = false; // #signals asked for before the file arrived
+
+  /** MAP reads as current while no panel covers the field. */
+  const syncNav = () => {
+    if (panel.isOpen()) mapButton.removeAttribute('aria-current');
+    else mapButton.setAttribute('aria-current', 'true');
+  };
+
+  /** The selection under the map and in the places column. */
+  const showSelection = () => {
+    colSelected = selected;
+    markCol();
+    const cell = selected ? live.get(selected) : undefined;
+    if (!cell) return void (selLine.textContent = '');
+    const parts = [shortName(cell.name) || cell.name, plural(cell.n, 'article', 'articles')];
+    if (cell.u !== undefined) parts.push(plural(cell.u, 'headline', 'headlines'));
+    if (cell.i !== undefined && cell.c > 0) {
+      parts.push(cell.i === 0 ? 'heard in no other country' : `heard in ${plural(cell.i, 'other country', 'other countries')}`);
+    }
+    selLine.textContent = parts.join(' · ');
+  };
+
+  /**
+   * Phones: how much of the map the bottom sheet covers. The page scrolls, so the map frame
+   * is brought to the top first and only the overlap is padded.
+   */
+  const sheetPad = (height: number) => {
+    if (!height) return 0;
+    const r = mapFrame.getBoundingClientRect();
+    return Math.max(0, Math.min(r.height * 0.75, r.bottom - (window.innerHeight - height)));
+  };
+  const mapToTop = () => {
+    const top = mapFrame.getBoundingClientRect().top + window.scrollY - 8;
+    if (Math.abs(window.scrollY - top) > 1) window.scrollTo({ top, behavior: 'instant' });
+  };
 
   const openCell = async (cell: MapCell) => {
     const mine = ++request;
@@ -110,9 +305,14 @@ async function start() {
     selectedIsLive = !!current;
     if (current) panel.openLoading(current, windowHours);
     else panel.openMissing(cell.n);
+    showSelection();
+    syncNav();
     // Phones: keep the map's usable area above the bottom sheet and bring the cell into it.
     const sheet = panel.sheetHeight();
-    if (sheet) map.setSheet(sheet, [cell.lon, cell.lat]);
+    if (sheet) {
+      mapToTop();
+      map.setSheet(sheetPad(sheet), [cell.lon, cell.lat]);
+    }
     updateNote();
     writeHash();
     if (!current) return;
@@ -124,7 +324,7 @@ async function start() {
     }
   };
 
-  const map = await createMap(document.getElementById('map')!, document.getElementById('tooltip')!, openCell);
+  const map = await createMap($('map'), $('tooltip'), openCell);
   panel.initPanel(() => {
     request++;
     selected = null;
@@ -133,9 +333,18 @@ async function start() {
     map.setSheet(0);
     placesButton.setAttribute('aria-expanded', 'false');
     signalsButton.setAttribute('aria-expanded', 'false');
+    showSelection();
+    syncNav();
     writeHash();
-  }, (height) => map.setSheet(height));
-  initQuakes(document.getElementById('quake-toggle') as HTMLButtonElement, (data) => map.setQuakes(data));
+  }, (height) => map.setSheet(sheetPad(height)));
+  initQuakes($<HTMLButtonElement>('quake-toggle'), (data) => map.setQuakes(data));
+
+  // MAP: back to the bare map, keyboard focus on it.
+  mapButton.addEventListener('click', () => {
+    panel.close();
+    if (phone.matches) mapToTop();
+    document.querySelector<HTMLElement>('#map .maplibregl-canvas')?.focus();
+  });
 
   const heat = await heatPromise.catch(() => null);
   if (!heat) return;
@@ -152,6 +361,8 @@ async function start() {
     panel.openSignals(broadcast, pickSignal, signalsButton);
     signalsButton.setAttribute('aria-expanded', 'true');
     placesButton.setAttribute('aria-expanded', 'false');
+    showSelection();
+    syncNav();
     writeHash();
   };
   // A slot's cell, from the live snapshot when it is there (the broadcast is built from it).
@@ -176,11 +387,12 @@ async function start() {
   for (const c of liveCells) live.set(c.id, c);
   liveMax = Math.max(1, ...liveCells.map((c) => c.n));
   windowHours = heat.windowHours || 24;
+  $('legend-max').textContent = count(liveMax);
 
   // Brightness mode: absolute article counts, or each place against its own normal. The
   // relative view only exists once the ingest has enough days of per-cell history.
-  const modeControl = document.getElementById('mode')!;
-  const modeNote = document.getElementById('mode-note')!;
+  const modeControl = $('mode');
+  const modeNote = $('mode-note');
   const relativeAvailable = (heat.baselineDays ?? 0) >= MIN_BASELINE_DAYS;
   let mode: HeatMode = relativeAvailable && readPref(MODE_PREF) === 'normal' ? 'normal' : 'articles';
   let shownRows: FrameRow[] | null = null; // rows of the frame on screen; null = live
@@ -237,13 +449,28 @@ async function start() {
         const now = shownRows ? undefined : live.get(c.id);
         const parts = [plural(c.n, 'article', 'articles')];
         if (now) parts.push(plural(now.o, 'outlet', 'outlets'), plural(now.c, 'country', 'countries'));
-        return { id: c.id, name: c.name || coords(c.lat, c.lon), counts: parts.join(' · ') };
+        return { id: c.id, name: c.name || coords(c.lat, c.lon), counts: parts.join(' · '), n: c.n, o: now?.o, c: now?.c };
       });
   const pickPlace = (id: string) => {
     const cell = shownCells().find((c) => c.id === id);
     if (cell) void openCell(cell);
   };
+  colPick = pickPlace;
+  const refreshCol = () => {
+    colRows = placeRows();
+    renderCol();
+  };
+  refreshCol();
+  colSection.hidden = !liveCells.length;
+
+  // PLACES: the column's filter on wide screens; the list sheet on phones.
   placesButton.addEventListener('click', () => {
+    if (!phone.matches) {
+      if (panel.isOpen()) panel.close();
+      colFilter.focus();
+      colFilter.scrollIntoView({ block: 'nearest' });
+      return;
+    }
     if (panel.isPlaces()) return panel.close();
     request++;
     selected = null;
@@ -253,6 +480,8 @@ async function start() {
     panel.openPlaces(placeRows(), pickPlace, placesButton);
     placesButton.setAttribute('aria-expanded', 'true');
     signalsButton.setAttribute('aria-expanded', 'false');
+    showSelection();
+    syncNav();
     writeHash();
   });
   placesButton.hidden = !liveCells.length;
@@ -263,6 +492,7 @@ async function start() {
     shownRows = view.rows;
     redraw();
     if (panel.isPlaces()) panel.updatePlaces(placeRows());
+    refreshCol();
     if (view.live) showTotals(heat.totals, heat.generatedAt, false);
     else showTotals(view.shown.totals, view.shown.at, true);
     updateNote();
@@ -272,6 +502,17 @@ async function start() {
     { at: heat.generatedAt, windowHours: heat.windowHours, totals: heat.totals },
     showFrame,
   );
+
+  // REPLAY: the field's scrubber; on wide screens an open panel gives the column back first.
+  if (replay) {
+    replayButton.hidden = false;
+    replayButton.addEventListener('click', () => {
+      if (!phone.matches && panel.isOpen()) panel.close();
+      const range = $<HTMLInputElement>('scrub-range');
+      range.focus();
+      range.scrollIntoView({ block: 'nearest' });
+    });
+  }
 
   // An absent key means its default (live frame, no cell); an unknown value is ignored.
   const applyHash = async () => {

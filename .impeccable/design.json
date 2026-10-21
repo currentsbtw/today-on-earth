@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-21T21:30:00Z",
+  "title": "Design System: Today On Earth",
+  "extensions": {
+    "colorMeta": {
+      "ink": { "role": "primary", "displayName": "Ink", "canonical": "#000", "tonalRamp": ["#000000", "#1a1a1a", "#333333", "#4d4d4d", "#666666", "#808080", "#b3b3b3", "#f2f2f2"] },
+      "white": { "role": "primary", "displayName": "White", "canonical": "#fff", "tonalRamp": ["#262626", "#404040", "#595959", "#737373", "#8c8c8c", "#a6a6a6", "#d9d9d9", "#ffffff"] },
+      "muted": { "role": "neutral", "displayName": "Muted", "canonical": "#9a9a9a", "tonalRamp": ["#000000", "#333333", "#5c5c5c", "#777777", "#9a9a9a", "#c4c4c4", "#e6e6e6", "#ffffff"] },
+      "dim-rank": { "role": "neutral", "displayName": "Dim Rank", "canonical": "#777", "tonalRamp": ["#000000", "#333333", "#5c5c5c", "#777777", "#9a9a9a", "#c4c4c4", "#e6e6e6", "#ffffff"] },
+      "faint": { "role": "neutral", "displayName": "Faint", "canonical": "#5c5c5c", "tonalRamp": ["#000000", "#333333", "#5c5c5c", "#777777", "#9a9a9a", "#c4c4c4", "#e6e6e6", "#ffffff"] },
+      "rule": { "role": "neutral", "displayName": "Rule", "canonical": "#333", "tonalRamp": ["#000000", "#333333", "#5c5c5c", "#777777", "#9a9a9a", "#c4c4c4", "#e6e6e6", "#ffffff"] },
+      "visited": { "role": "neutral", "displayName": "Visited", "canonical": "#c4c4c4", "tonalRamp": ["#000000", "#333333", "#5c5c5c", "#777777", "#9a9a9a", "#c4c4c4", "#e6e6e6", "#ffffff"] },
+      "hairline": { "role": "neutral", "displayName": "Hairline", "canonical": "rgba(255, 255, 255, 0.18)", "tonalRamp": ["rgba(255,255,255,0.1)", "rgba(255,255,255,0.18)", "rgba(255,255,255,0.25)", "rgba(255,255,255,0.35)", "rgba(255,255,255,0.4)", "rgba(255,255,255,0.5)", "rgba(255,255,255,0.6)", "rgba(255,255,255,1)"] },
+      "hairline-mid": { "role": "neutral", "displayName": "Hairline Mid", "canonical": "rgba(255, 255, 255, 0.35)", "tonalRamp": ["rgba(255,255,255,0.1)", "rgba(255,255,255,0.18)", "rgba(255,255,255,0.25)", "rgba(255,255,255,0.35)", "rgba(255,255,255,0.4)", "rgba(255,255,255,0.5)", "rgba(255,255,255,0.6)", "rgba(255,255,255,1)"] },
+      "hairline-strong": { "role": "neutral", "displayName": "Hairline Strong", "canonical": "rgba(255, 255, 255, 0.4)", "tonalRamp": ["rgba(255,255,255,0.1)", "rgba(255,255,255,0.18)", "rgba(255,255,255,0.25)", "rgba(255,255,255,0.35)", "rgba(255,255,255,0.4)", "rgba(255,255,255,0.5)", "rgba(255,255,255,0.6)", "rgba(255,255,255,1)"] },
+      "map-ocean": { "role": "neutral", "displayName": "Map Ocean", "canonical": "#000000", "tonalRamp": ["#000000", "#222222", "#383838", "#404040", "#666666", "#8c8c8c", "#cccccc", "#ffffff"] },
+      "map-land": { "role": "neutral", "displayName": "Map Land", "canonical": "#222222", "tonalRamp": ["#000000", "#222222", "#383838", "#404040", "#666666", "#8c8c8c", "#cccccc", "#ffffff"] },
+      "map-border": { "role": "neutral", "displayName": "Map Border", "canonical": "#383838", "tonalRamp": ["#000000", "#222222", "#383838", "#404040", "#666666", "#8c8c8c", "#cccccc", "#ffffff"] },
+      "map-admin": { "role": "neutral", "displayName": "Map Admin", "canonical": "#404040", "tonalRamp": ["#000000", "#222222", "#383838", "#404040", "#666666", "#8c8c8c", "#cccccc", "#ffffff"] },
+      "map-heat": { "role": "primary", "displayName": "Map Heat", "canonical": "#ffffff", "tonalRamp": ["rgba(255,255,255,0.05)", "rgba(255,255,255,0.15)", "rgba(255,255,255,0.3)", "rgba(255,255,255,0.45)", "rgba(255,255,255,0.6)", "rgba(255,255,255,0.75)", "rgba(255,255,255,0.9)", "#ffffff"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The one sentence of totals above the map; the about page h1." },
+      "headline": { "displayName": "Headline", "purpose": "Panel title (place name); about page h2." },
+      "title": { "displayName": "Title", "purpose": "Story headlines, signal sentences, article titles (14px), place names in the phone list (15px)." },
+      "body": { "displayName": "Body", "purpose": "Methodology page reading text in a 68ch measure." },
+      "label": { "displayName": "Label", "purpose": "Column heads, nav items, section heads, button words; mono 500 uppercase 0.1em." },
+      "data": { "displayName": "Data", "purpose": "Rank rows, count rows, meta lines, status, attribution; mono 400, tracking 0.02-0.08em by string length." },
+      "figure": { "displayName": "Figure", "purpose": "The UTC clock (22px); foot totals reuse the face at 500 15px." },
+      "wordmark": { "displayName": "Wordmark", "purpose": "TODAY ON EARTH in Silkscreen beside the 16x16 pixel globe; the only use of the face." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "step", "value": "none", "purpose": "No transition or animation is defined; every state switches in one step." },
+      { "name": "invert-frame", "value": "html.invert { filter: invert(1) } for one painted frame (two requestAnimationFrame calls)", "purpose": "Marks the map returning to live and replay starting; skipped under prefers-reduced-motion." }
+    ],
+    "breakpoints": [
+      { "name": "phone-narrow", "value": "420px" },
+      { "name": "phone", "value": "720px" },
+      { "name": "wide", "value": "1100px" }
+    ],
+    "grid": { "dot": "8px", "tick": "64px", "topline": "64px", "margin": "36px", "gutter": "28px", "places-col": "200px", "right-col": "280px", "panel": "360px", "drawer": "min(400px, 100%)" }
+  },
+  "components": [
+    {
+      "name": "Nav Item",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Text-only mono control in the top line; current or expanded inverts to black-on-white.",
+      "html": "<nav class=\"ds-nav\"><button class=\"ds-nav-item\" aria-current=\"true\">Map</button><button class=\"ds-nav-item\">Places</button><button class=\"ds-nav-item\">Signals</button><button class=\"ds-nav-item\">Replay</button><a class=\"ds-nav-item\" href=\"#\">Method</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 4px; background: var(--bg, #000); } .ds-nav-item { display: inline-flex; align-items: center; min-height: 28px; padding: 0 10px; border: 0; border-radius: 0; background: var(--bg, #000); color: var(--fg, #fff); font: 500 11px/1 var(--mono, 'Azeret Mono', ui-monospace, monospace); letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; cursor: pointer; } .ds-nav-item:hover { text-decoration: underline; text-underline-offset: 4px; } .ds-nav-item[aria-current='true'], .ds-nav-item[aria-expanded='true'] { background: var(--fg, #fff); color: var(--bg, #000); text-decoration: none; } .ds-nav-item:focus-visible { outline: 1px solid var(--fg, #fff); outline-offset: 2px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "The play, more, open and quake controls: 1px hairline border, black fill; hover and pressed invert.",
+      "html": "<button class=\"ds-btn-outline\"><span>Play</span><svg viewBox=\"0 0 4 7\" width=\"4\" height=\"7\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path d=\"M0 0h1v7H0zM1 1h1v5H1zM2 2h1v3H2zM3 3h1v1H3z\"/></svg></button> <button class=\"ds-btn-outline\" aria-pressed=\"true\">Quakes</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 0; background: var(--bg, #000); color: var(--fg, #fff); font: 500 11px/1 var(--mono, 'Azeret Mono', ui-monospace, monospace); letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; } .ds-btn-outline svg { display: block; fill: currentColor; } .ds-btn-outline:hover, .ds-btn-outline[aria-pressed='true'] { border-color: var(--fg, #fff); background: var(--fg, #fff); color: var(--bg, #000); } .ds-btn-outline:focus-visible { outline: 1px solid var(--fg, #fff); outline-offset: 2px; }"
+    },
+    {
+      "name": "Filter Input",
+      "kind": "input",
+      "refersTo": "input-filter",
+      "description": "The places filter: 28px, hairline border, mono, placeholder in muted; focus lifts the border to white.",
+      "html": "<input class=\"ds-input-filter\" type=\"search\" placeholder=\"FILTER PLACES\" aria-label=\"Filter places by name\" />",
+      "css": ".ds-input-filter { display: block; width: 100%; height: 28px; margin: 0; padding: 0 8px; border: 1px solid rgba(255, 255, 255, 0.35); border-radius: 0; background: var(--bg, #000); color: var(--fg, #fff); font: 400 11px/1 var(--mono, 'Azeret Mono', ui-monospace, monospace); letter-spacing: 0.06em; -webkit-appearance: none; appearance: none; } .ds-input-filter::placeholder { color: var(--muted, #9a9a9a); opacity: 1; } .ds-input-filter:focus-visible { border-color: var(--fg, #fff); outline: 1px solid var(--fg, #fff); outline-offset: 2px; }"
+    },
+    {
+      "name": "Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Read-only language and country tags under a story.",
+      "html": "<ul class=\"ds-chips\"><li class=\"ds-chip\">EN</li><li class=\"ds-chip\">FR</li><li class=\"ds-chip\">IT</li></ul>",
+      "css": ".ds-chips { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; padding: 0; list-style: none; } .ds-chip { padding: 2px 5px; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 0; color: var(--fg, #fff); font: 400 11px/1.2 var(--mono, 'Azeret Mono', ui-monospace, monospace); letter-spacing: 0.04em; text-transform: uppercase; }"
+    },
+    {
+      "name": "Column Head",
+      "kind": "custom",
+      "refersTo": "col-head",
+      "description": "The section heading grammar everywhere: mono label over a 1px solid white rule.",
+      "html": "<div class=\"ds-col-head\"><span>Outlets</span><span>179</span></div>",
+      "css": ".ds-col-head { display: flex; justify-content: space-between; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--fg, #fff); background: var(--bg, #000); color: var(--fg, #fff); font: 500 11px/1 var(--mono, 'Azeret Mono', ui-monospace, monospace); letter-spacing: 0.1em; text-transform: uppercase; }"
+    },
+    {
+      "name": "Rank Row",
+      "kind": "custom",
+      "refersTo": "col-head",
+      "description": "A place in the ranked column: name, three figures, a strip of 1px bars; the selected row pulls to white.",
+      "html": "<ol class=\"ds-rank-list\"><li><button class=\"ds-rank-row\"><span class=\"ds-rank-name\">London</span><span>234</span><span>195</span><span>42</span><span class=\"ds-rank-strip\" style=\"width: 60%\"></span></button></li><li><button class=\"ds-rank-row is-selected\"><span class=\"ds-rank-name\">Paris</span><span>210</span><span>179</span><span>50</span><span class=\"ds-rank-strip\" style=\"width: 54%\"></span></button></li><li><button class=\"ds-rank-row\"><span class=\"ds-rank-name\">Texas</span><span>174</span><span>89</span><span>12</span><span class=\"ds-rank-strip\" style=\"width: 45%\"></span></button></li></ol>",
+      "css": ".ds-rank-list { width: 200px; margin: 0; padding: 0; list-style: none; background: var(--bg, #000); } .ds-rank-row { display: grid; grid-template-columns: minmax(0, 1fr) 30px 28px 22px; column-gap: 4px; row-gap: 5px; width: 100%; padding: 8px 0 6px; border: 0; border-top: 1px solid transparent; border-bottom: 1px solid transparent; background: none; color: #777; font: 400 11px/1 var(--mono, 'Azeret Mono', ui-monospace, monospace); letter-spacing: 0.02em; text-align: right; cursor: pointer; } .ds-rank-name { overflow: hidden; text-align: left; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; } .ds-rank-strip { grid-column: 1 / -1; justify-self: start; height: 5px; color: var(--faint, #5c5c5c); background: repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 3px); } .ds-rank-row:hover { color: var(--fg, #fff); } .ds-rank-row.is-selected { padding: 9px 0 8px; border-color: var(--fg, #fff); color: var(--fg, #fff); font-size: 13px; font-weight: 500; } .ds-rank-row.is-selected .ds-rank-strip { height: 8px; background: repeating-linear-gradient(90deg, var(--fg, #fff) 0 2px, transparent 2px 3px); } .ds-rank-row:focus-visible { outline: 1px solid var(--fg, #fff); outline-offset: -1px; }"
+    },
+    {
+      "name": "Count Rows",
+      "kind": "card",
+      "refersTo": "col-head",
+      "description": "The panel's definition rows: muted label left, white figure right, hairlines between.",
+      "html": "<dl class=\"ds-counts\"><div class=\"ds-count-row\"><dt>Articles</dt><dd>210</dd></div><div class=\"ds-count-row\"><dt>Headlines</dt><dd>179</dd></div><div class=\"ds-count-row\"><dt>Heard in</dt><dd>49 other countries</dd></div></dl>",
+      "css": ".ds-counts { margin: 0; background: var(--bg, #000); border-top: 1px solid var(--rule, #333); } .ds-count-row { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; border-bottom: 1px solid var(--rule, #333); color: var(--fg, #fff); font: 400 11px/1.3 var(--mono, 'Azeret Mono', ui-monospace, monospace); letter-spacing: 0.06em; text-transform: uppercase; } .ds-count-row dt { color: var(--muted, #9a9a9a); } .ds-count-row dd { margin: 0; font-size: 12px; text-align: right; }"
+    },
+    {
+      "name": "Story Entry",
+      "kind": "card",
+      "refersTo": "chip",
+      "description": "A log entry: 1px left rule, humanist headline, muted mono source and meta, chips.",
+      "html": "<article class=\"ds-story\"><h3 class=\"ds-story-headline\"><a class=\"ds-story-link\" href=\"#\">Macron condemns claims blaming migrants for riots</a></h3><span class=\"ds-story-source\">dunfermlinepress.com</span><p class=\"ds-story-meta\"><span class=\"ds-story-counts\">37 reports · 36 outlets</span><span>7 languages</span></p></article>",
+      "css": ".ds-story { margin: 0; padding: 2px 0 2px 12px; border-left: 1px solid rgba(255, 255, 255, 0.4); background: var(--bg, #000); color: var(--fg, #fff); } .ds-story-headline { margin: 0; font: 400 16px/1.35 var(--hum, 'Source Sans 3', system-ui, sans-serif); overflow-wrap: anywhere; } .ds-story-link { color: var(--fg, #fff); text-decoration: none; } .ds-story-link:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; } .ds-story-link:visited { color: #c4c4c4; } .ds-story-link:focus-visible { outline: 1px solid var(--fg, #fff); outline-offset: 2px; } .ds-story-source { display: block; margin-top: 4px; color: var(--muted, #9a9a9a); font: 400 11px/1.3 var(--mono, 'Azeret Mono', ui-monospace, monospace); letter-spacing: 0.06em; text-transform: uppercase; } .ds-story-meta { display: flex; flex-wrap: wrap; gap: 2px 10px; margin: 6px 0 0; color: var(--muted, #9a9a9a); font: 400 11px/1.4 var(--mono, 'Azeret Mono', ui-monospace, monospace); letter-spacing: 0.04em; text-transform: uppercase; } .ds-story-counts { color: var(--fg, #fff); }"
+    },
+    {
+      "name": "Tooltip",
+      "kind": "custom",
+      "refersTo": "tooltip",
+      "description": "The map hover tag: a white block with black mono text.",
+      "html": "<div class=\"ds-tooltip\"><strong>Paris</strong><span>210 articles · 179 headlines</span></div>",
+      "css": ".ds-tooltip { display: grid; gap: 1px; width: max-content; max-width: 260px; padding: 4px 6px; background: var(--fg, #fff); color: var(--bg, #000); font: 400 11px/1.3 var(--mono, 'Azeret Mono', ui-monospace, monospace); letter-spacing: 0.03em; } .ds-tooltip strong { font-weight: 500; text-transform: uppercase; }"
+    },
+    {
+      "name": "Brand",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "The 16x16 one-bit pixel globe and the Silkscreen wordmark.",
+      "html": "<a class=\"ds-brand\" href=\"#\"><svg class=\"ds-globe\" viewBox=\"0 0 16 16\" width=\"32\" height=\"32\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path d=\"M7 0h2v1H7zM4 1h3v1H4zM9 1h3v1H9zM3 2h1v1H3zM5 2h2v1H5zM9 2h2v1H9zM12 2h1v1h-1zM2 3h1v1H2zM13 3h1v1h-1zM1 4h6v1H1zM9 4h6v1H9zM1 5h1v1H1zM14 5h1v1h-1zM1 6h14v1H1zM0 7h16v2H0zM1 9h14v1H1zM1 10h1v1H1zM14 10h1v1h-1zM1 11h6v1H1zM9 11h6v1H9zM2 12h1v1H2zM13 12h1v1h-1zM3 13h1v1H3zM5 13h2v1H5zM9 13h2v1H9zM12 13h1v1h-1zM4 14h3v1H4zM9 14h3v1H9zM7 15h2v1H7z\"/></svg><span class=\"ds-wordmark\">Today On Earth</span></a>",
+      "css": ".ds-brand { display: inline-flex; align-items: center; gap: 12px; padding: 4px 8px 4px 0; background: var(--bg, #000); color: var(--fg, #fff); text-decoration: none; } .ds-globe { display: block; fill: var(--fg, #fff); } .ds-wordmark { font: 400 16px/1 var(--pix, 'Silkscreen', monospace); letter-spacing: 0.02em; text-transform: uppercase; white-space: nowrap; } .ds-brand:focus-visible { outline: 1px solid var(--fg, #fff); outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Datamatics Field",
+    "overview": "The product is a measurement, and the surface is built to look like one. The canvas is pure black with an 8px dot grid in its margins; the only light on the page is the data: the map plate glows white where article volume is high, and every number, label and control is set in a monospaced face at data density. There is no colour anywhere (the amber heat of the previous world was rejected and does not return), no rounded corner, no shadow, no gradient used as decoration, and no eased motion: a state is either on or off, and the whole frame inverts for one painted frame when the map returns to live or replay starts.\n\nTwo voices share the page. Azeret Mono carries the chrome: the top line, the ranked places column, the bar field, the panel's count rows, the foot totals, the map labels. Source Sans 3 is reserved for what a person reads as prose: the one large sentence above the map, panel titles, story headlines, the methodology page, and a signal's fixed sentence. Silkscreen appears once, as the wordmark beside the 16x16 one-bit globe. The one-bit pixel observer in the bottom-right corner and the crisp-edged pixel icons (play, pause, close, quake, the attribution \"i\") are drawn as inline SVG on integer grids, never as icon-font glyphs.\n\nDensity is high and the hierarchy is carried by three things only: white versus grey text, a 1px rule versus none, and a few fixed type sizes. Depth is never implied; a surface is either black or inverted to white.",
+    "keyCharacteristics": [
+      "Chrome, marks and type in #000 and #fff; greys only inside the map plate and the muted text steps.",
+      "Azeret Mono 11px uppercase with 0.06-0.1em tracking for every label, control and figure; Source Sans 3 for every sentence a person reads.",
+      "8px dot grid on the body and the panel ground; text sits on solid black blocks so the grid never runs through a glyph.",
+      "Hairlines (1px, solid white or a white alpha) are the only separators; no cards, no fills.",
+      "Stepped motion: states switch in one step; the only \"animation\" is a one-frame full-page inversion.",
+      "Pixel marks: the globe, the observer, and every icon are crispEdges SVG on a small integer grid."
+    ],
+    "rules": [
+      { "name": "The Two-Ink Rule", "body": "Chrome, marks and type use #000 and #fff only. Grey is allowed in exactly two places: the map plate's land and borders, and the text hierarchy's muted steps (#9a9a9a, #777, #5c5c5c, #333). No other grey and no hue may be introduced.", "section": "colors" },
+      { "name": "The Inversion Rule", "body": "Selection, activation and the pressed state are expressed by swapping ink and white (background: #fff; color: #000), never by tint, opacity or a second colour. One painted frame of filter: invert(1) on the root marks a snapshot change (skipped under reduced motion).", "section": "colors" },
+      { "name": "The Faint-Is-Not-Text Rule", "body": "#5c5c5c appears only on strips, bars and baselines. Text drops no lower than #777.", "section": "colors" },
+      { "name": "The Mono-For-Data Rule", "body": "Any number, unit, timestamp, column head, control word or meta line is Azeret Mono. Source Sans 3 is only for a sentence, a title or a headline. A value never appears in the humanist face.", "section": "typography" },
+      { "name": "The One-Size Chrome Rule", "body": "Chrome type is 11px. Emphasis comes from weight (400 to 500), colour (muted to white) or inversion, not from size; the only chrome sizes outside 11px are the 22px clock, the 15px foot totals, the 12px count values and the 9px bar annotations.", "section": "typography" },
+      { "name": "The Uppercase Ledger Rule", "body": "Mono labels are uppercase with letter-spacing between 0.06em and 0.1em. Mono content that must be read verbatim (domain names, names in tooltips) keeps its case and tightens to 0.02-0.03em.", "section": "typography" },
+      { "name": "The No-Shadow Rule", "body": "box-shadow appears in the stylesheets only to cancel MapLibre's focus glow. Focus is a 1px solid white outline offset 2px (inset where a container clips).", "section": "elevation" }
+    ],
+    "dos": [
+      "Do set every text block's background to var(--bg) so the dot grid never crosses a glyph.",
+      "Do express selection, activation and the current frame by inverting (background: var(--fg); color: var(--bg)).",
+      "Do put every number, timestamp, column head and control word in Azeret Mono at 11px, uppercase, 0.06-0.1em tracking; keep tabular-nums on.",
+      "Do separate repeated entries with a 1px --rule hairline and head a section with a 1px solid white rule under a mono 500 11px 0.1em label.",
+      "Do keep controls at least 28px tall (36px on phones) with a 1px border at 0.4 alpha that lifts to solid white on hover.",
+      "Do draw any new icon or mark as crispEdges inline SVG on an integer grid, one colour.",
+      "Do switch state in one step; if motion is unavoidable, make it a stepped change, and honour prefers-reduced-motion for the inversion frame.",
+      "Do keep greys to the map plate (#222, #383838, #404040) and the muted text steps (#9a9a9a, #777, #5c5c5c, #333)."
+    ],
+    "donts": [
+      "Don't introduce any hue, including the former amber heat; the palette is black, white and the listed greys.",
+      "Don't round a corner, add a box-shadow, a tint, an opacity fade or a gradient fill (the only gradients in the build draw 1px marks: the dot grid, strips and tick marks).",
+      "Don't ease or fade a transition; no transition or animation is defined anywhere in the build.",
+      "Don't set a figure or a label in Source Sans 3, or a sentence in Azeret Mono.",
+      "Don't use --faint (#5c5c5c) for text that must be read; it is for strips, bars and baselines only.",
+      "Don't add a card: content is a log of entries separated by hairlines, never a filled box; the 160x96 video tile is the one bordered container and stays 1px-bordered on black.",
+      "Don't use icon fonts, glyph icons or raster icons; the only icons are the pixel SVGs on integer grids.",
+      "Don't let the map's chrome compete with the glow: overlays are small black or white blocks at the frame's inside corners, nothing larger."
+    ]
+  }
+}

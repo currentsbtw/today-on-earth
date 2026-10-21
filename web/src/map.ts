@@ -1,5 +1,5 @@
 // The map: a tile-free MapLibre style with country outlines, the heat layers and the
-// selected-cell outline.
+// selected-cell outline with its tag.
 import {
   LngLat,
   Map as MapLibreMap,
@@ -24,7 +24,24 @@ const LAT_NORTH = 84;
 const LAT_SOUTH = -58;
 const TILE = 512;
 
-const LABEL_FONTS = ['system-ui', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'];
+// The map plate's palette (Datamatics Field): black ocean, grey land, white heat. Greys
+// live only here, inside the map. Hardcoded rather than read from tokens.css: the style is
+// built before any stylesheet is guaranteed to have applied (the clip page), and MapLibre
+// needs literal colours. MAP_HEAT is the same white as tokens.css --heat.
+export const MAP_OCEAN = '#000000';
+export const MAP_LAND = '#222222';
+/** Country borders, which also draw the coasts, so unlit land still separates from the ocean. */
+export const MAP_BORDER = '#383838';
+export const MAP_ADMIN = '#404040';
+export const MAP_HEAT = '#ffffff';
+/** Base labels (cities, countries): white at reduced alpha over a black halo. */
+export const MAP_LABEL = 'rgba(255,255,255,0.8)';
+export const MAP_LABEL_MINOR = 'rgba(255,255,255,0.56)';
+/** White at alpha `a`, for the heat ramp. */
+const heatAt = (a: number) => `rgba(255,255,255,${a})`;
+
+// Labels draw from local fonts (no glyph server); MapLibre waits for the web font to load.
+const LABEL_FONTS = ['Azeret Mono', 'ui-monospace', 'Consolas', 'monospace'];
 const EMPTY: GeoJSON.FeatureCollection = { type: 'FeatureCollection', features: [] };
 
 const mercX = (lng: number) => (lng + 180) / 360;
@@ -129,7 +146,7 @@ const PLACE_TIERS: Record<string, ExpressionSpecification> = {
 /** Cells get a news label from this weight up (see the cell-label layer). */
 const CELL_LABEL_MIN_W = 0.4;
 
-/** One tier of city labels: muted grey, capitals a little brighter, capitals first. */
+/** One tier of city labels: mono uppercase, capitals brighter and placed first. */
 function placeLabels(id: string, minzoom: number, filter: FilterSpecification): LayerSpecification {
   return {
     id,
@@ -140,15 +157,17 @@ function placeLabels(id: string, minzoom: number, filter: FilterSpecification): 
     layout: {
       'text-field': ['get', 'name'],
       'text-font': LABEL_FONTS,
-      'text-size': 10.5,
+      'text-size': 9.5,
+      'text-transform': 'uppercase',
+      'text-letter-spacing': 0.08,
       'text-variable-anchor': ['left', 'right', 'top', 'bottom'],
       'text-radial-offset': 0.45,
       'text-padding': 3,
       'symbol-sort-key': ['-', ['get', 'rank'], ['*', 3, ['get', 'cap']]],
     },
     paint: {
-      'text-color': ['case', ['==', ['get', 'cap'], 1], '#a3abb4', '#7c858f'],
-      'text-halo-color': '#050608',
+      'text-color': ['case', ['==', ['get', 'cap'], 1], MAP_LABEL, MAP_LABEL_MINOR],
+      'text-halo-color': MAP_OCEAN,
       'text-halo-width': 1,
     },
   };
@@ -167,19 +186,21 @@ export function style(): StyleSpecification {
       'country-labels': { type: 'geojson', data: EMPTY },
       heat: { type: 'geojson', data: EMPTY },
       selected: { type: 'geojson', data: EMPTY },
+      // The selected cell's centre: its reticle and its "NAME · n" tag.
+      'selected-tag': { type: 'geojson', data: EMPTY },
       quakes: { type: 'geojson', data: EMPTY },
     },
     layers: [
-      { id: 'background', type: 'background', paint: { 'background-color': '#050608' } },
-      { id: 'land', type: 'fill', source: 'countries', paint: { 'fill-color': '#0f141a' } },
+      { id: 'background', type: 'background', paint: { 'background-color': MAP_OCEAN } },
+      { id: 'land', type: 'fill', source: 'countries', paint: { 'fill-color': MAP_LAND } },
       {
         id: 'admin1',
         type: 'line',
         source: 'admin1',
         minzoom: 3.5,
         paint: {
-          'line-color': '#5d6b7a',
-          'line-opacity': ['interpolate', ['linear'], ['zoom'], 3.5, 0, 4.5, 0.14, 8, 0.22],
+          'line-color': MAP_ADMIN,
+          'line-opacity': ['interpolate', ['linear'], ['zoom'], 3.5, 0, 4.5, 0.8, 8, 1],
           'line-width': ['interpolate', ['linear'], ['zoom'], 3.5, 0.3, 8, 0.6],
         },
       },
@@ -188,13 +209,13 @@ export function style(): StyleSpecification {
         type: 'line',
         source: 'countries',
         paint: {
-          'line-color': '#5d6b7a',
-          'line-opacity': ['interpolate', ['linear'], ['zoom'], 1, 0.22, 6, 0.4],
+          'line-color': MAP_BORDER,
+          'line-opacity': 1,
           'line-width': ['interpolate', ['linear'], ['zoom'], 1, 0.4, 6, 0.9],
         },
       },
       // Base labels sit beneath every heat layer and stay grey, so they never compete with
-      // the amber. Symbols are placed top layer first, so news cell labels (topmost) win
+      // the white heat. Symbols are placed top layer first, so news cell labels (topmost) win
       // collisions, then country names, then cities by rank.
       {
         id: 'place-dot',
@@ -203,7 +224,7 @@ export function style(): StyleSpecification {
         minzoom: 4.5,
         paint: {
           'circle-radius': ['interpolate', ['linear'], ['zoom'], 4.5, 1.2, 8, 2],
-          'circle-color': ['case', ['==', ['get', 'cap'], 1], '#a3abb4', '#6f7882'],
+          'circle-color': ['case', ['==', ['get', 'cap'], 1], MAP_LABEL, MAP_LABEL_MINOR],
           // Dots appear with their label tier: rank 0-2, then 3-4 from 5.5, then 5-7 from 6.5.
           'circle-opacity': ['step', ['zoom'],
             ['case', ['<=', ['get', 'rank'], 2], 0.8, 0],
@@ -224,14 +245,14 @@ export function style(): StyleSpecification {
           'text-font': LABEL_FONTS,
           'text-transform': 'uppercase',
           'text-letter-spacing': 0.16,
-          'text-size': ['interpolate', ['linear'], ['zoom'], 2.5, 8.5, 6, 11],
+          'text-size': ['interpolate', ['linear'], ['zoom'], 2.5, 8, 6, 10.5],
           'text-max-width': 7,
           'text-padding': 4,
           'symbol-sort-key': ['get', 'rank'],
         },
         paint: {
-          'text-color': '#5f6873',
-          'text-halo-color': '#050608',
+          'text-color': MAP_LABEL_MINOR,
+          'text-halo-color': MAP_OCEAN,
           'text-halo-width': 1,
           'text-opacity': ['interpolate', ['linear'], ['zoom'], 2.5, 0, 3, 1],
         },
@@ -247,15 +268,17 @@ export function style(): StyleSpecification {
           'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 0, 0.9, 3, 1.4, 5, 2.2],
           'heatmap-radius': ['interpolate', ['exponential', 1.5], ['zoom'], 0, 8, 2, 15, 4, 30, 6, 56],
           'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 3.5, 0.95, 5.5, 0],
+          // White on black: alpha carries the density. The low stops lift faint places off
+          // the grey land; full white is held back for the top of the scale.
           'heatmap-color': [
             'interpolate', ['linear'], ['heatmap-density'],
-            0, 'rgba(0,0,0,0)',
-            0.08, 'rgba(90,32,0,0.25)',
-            0.25, 'rgba(150,62,4,0.6)',
-            0.45, 'rgba(206,110,18,0.85)',
-            0.7, 'rgba(246,170,64,0.95)',
-            0.88, 'rgba(255,224,170,1)',
-            1, 'rgba(255,250,240,1)',
+            0, heatAt(0),
+            0.02, heatAt(0.26),
+            0.1, heatAt(0.46),
+            0.25, heatAt(0.64),
+            0.5, heatAt(0.82),
+            0.75, heatAt(0.94),
+            1, MAP_HEAT,
           ],
         },
       },
@@ -268,9 +291,9 @@ export function style(): StyleSpecification {
           'circle-radius': ['interpolate', ['linear'], ['zoom'],
             4, ['+', 5, ['*', ['get', 'w'], 16]],
             9, ['+', 10, ['*', ['get', 'w'], 48]]],
-          'circle-color': '#e08a2a',
+          'circle-color': MAP_HEAT,
           'circle-blur': 1,
-          'circle-opacity': ['interpolate', ['linear'], ['zoom'], 3.5, 0, 4.5, 0.32],
+          'circle-opacity': ['interpolate', ['linear'], ['zoom'], 3.5, 0, 4.5, 0.2],
         },
       },
       {
@@ -283,13 +306,15 @@ export function style(): StyleSpecification {
           'circle-radius': ['interpolate', ['linear'], ['zoom'],
             4, ['+', 1.5, ['*', ['get', 'w'], 6]],
             9, ['+', 3, ['*', ['get', 'w'], 20]]],
-          'circle-color': ['interpolate', ['linear'], ['get', 'w'],
-            0, '#8a3d06', 0.5, '#e08a2a', 0.85, '#ffd79a', 1, '#fff6e6'],
-          'circle-opacity': ['interpolate', ['linear'], ['zoom'], 3.5, 0, 4.5, 0.95],
+          'circle-color': MAP_HEAT,
+          // Size carries the weight; faint places stay a little dimmer so peaks stand out.
+          'circle-opacity': ['interpolate', ['linear'], ['zoom'],
+            3.5, 0,
+            4.5, ['interpolate', ['linear'], ['get', 'w'], 0, 0.55, 0.5, 0.85, 1, 1]],
         },
       },
       {
-        // USGS earthquakes (opt-in layer): hollow rings in a cool grey-blue, never amber.
+        // USGS earthquakes (opt-in layer): hollow white hairline rings, no fill.
         id: 'quake-ring',
         type: 'circle',
         source: 'quakes',
@@ -299,24 +324,24 @@ export function style(): StyleSpecification {
           'circle-radius': ['interpolate', ['linear'], ['zoom'],
             1, ['interpolate', ['linear'], ['get', 'mag'], 2.5, 3, 5, 8, 7, 18, 9, 30],
             6, ['interpolate', ['linear'], ['get', 'mag'], 2.5, 5.4, 5, 14.4, 7, 32.4, 9, 54]],
-          'circle-color': '#8fa8c8',
+          'circle-color': MAP_HEAT,
           'circle-opacity': 0,
-          'circle-stroke-color': '#8fa8c8',
-          'circle-stroke-width': ['interpolate', ['linear'], ['get', 'mag'], 2.5, 0.8, 6, 1.6],
-          'circle-stroke-opacity': 0.85,
+          'circle-stroke-color': MAP_HEAT,
+          'circle-stroke-width': 1,
+          'circle-stroke-opacity': 0.9,
         },
       },
       {
         id: 'selected-fill',
         type: 'fill',
         source: 'selected',
-        paint: { 'fill-color': '#ffd79a', 'fill-opacity': 0.06 },
+        paint: { 'fill-color': MAP_HEAT, 'fill-opacity': 0.06 },
       },
       {
         id: 'selected-line',
         type: 'line',
         source: 'selected',
-        paint: { 'line-color': '#fff6e6', 'line-width': 1.25, 'line-opacity': 0.9 },
+        paint: { 'line-color': MAP_HEAT, 'line-width': 1, 'line-opacity': 1 },
       },
       {
         id: 'cell-label-top',
@@ -327,15 +352,17 @@ export function style(): StyleSpecification {
         layout: {
           'text-field': ['get', 'label'],
           'text-font': LABEL_FONTS,
-          'text-size': 11,
+          'text-size': 10,
+          'text-transform': 'uppercase',
+          'text-letter-spacing': 0.08,
           'text-anchor': 'top',
           'text-offset': [0, 0.8],
           'text-padding': 4,
           'symbol-sort-key': ['-', 0, ['get', 'n']],
         },
         paint: {
-          'text-color': '#b9b2a6',
-          'text-halo-color': '#050608',
+          'text-color': MAP_HEAT,
+          'text-halo-color': MAP_OCEAN,
           'text-halo-width': 1.2,
         },
       },
@@ -348,15 +375,17 @@ export function style(): StyleSpecification {
         layout: {
           'text-field': ['get', 'label'],
           'text-font': LABEL_FONTS,
-          'text-size': 11,
+          'text-size': 10,
+          'text-transform': 'uppercase',
+          'text-letter-spacing': 0.08,
           'text-anchor': 'top',
           'text-offset': [0, 0.9],
           'text-padding': 6,
           'symbol-sort-key': ['-', 0, ['get', 'n']],
         },
         paint: {
-          'text-color': '#b9b2a6',
-          'text-halo-color': '#050608',
+          'text-color': MAP_HEAT,
+          'text-halo-color': MAP_OCEAN,
           'text-halo-width': 1.2,
         },
       },
@@ -371,6 +400,40 @@ export function style(): StyleSpecification {
             4, ['+', 6, ['*', ['get', 'w'], 8]],
             9, ['+', 6, ['*', ['get', 'w'], 24]]],
           'circle-opacity': 0,
+        },
+      },
+      {
+        // A 6px hollow reticle at the selected cell's centre.
+        id: 'selected-reticle',
+        type: 'circle',
+        source: 'selected-tag',
+        paint: {
+          'circle-radius': 3,
+          'circle-opacity': 0,
+          'circle-stroke-color': MAP_HEAT,
+          'circle-stroke-width': 1,
+        },
+      },
+      {
+        // Topmost symbol layer: placed first, so base and news labels that would collide
+        // with the tag are dropped rather than drawn under it.
+        id: 'selected-tag',
+        type: 'symbol',
+        source: 'selected-tag',
+        layout: {
+          'text-field': ['get', 'label'],
+          'text-font': LABEL_FONTS,
+          'text-size': 11,
+          'text-transform': 'uppercase',
+          'text-letter-spacing': 0.06,
+          'text-anchor': 'top-left',
+          'text-offset': [0.6, 1.9],
+          'text-allow-overlap': true,
+        },
+        paint: {
+          'text-color': MAP_HEAT,
+          'text-halo-color': MAP_OCEAN,
+          'text-halo-width': 2,
         },
       },
     ],
@@ -456,6 +519,16 @@ export function createMap(
 
   const byId = new Map<string, MapCell>();
   let outlineRequest = 0;
+  let selectedId: string | null = null; // the outlined cell, whose tag follows setCells
+
+  /** The selected cell's reticle and "NAME · n" tag, from the cells last given to setCells. */
+  const drawTag = () => {
+    const source = map.getSource<GeoJSONSource>('selected-tag');
+    const cell = selectedId ? byId.get(selectedId) : undefined;
+    if (!cell) return void source?.setData(EMPTY);
+    const label = cell.name ? `${shortName(cell.name)} · ${count(cell.n)}` : count(cell.n);
+    source?.setData({ type: 'Feature', geometry: { type: 'Point', coordinates: [cell.lon, cell.lat] }, properties: { label } });
+  };
   let heatMode: HeatMode = 'articles';
   let sheetPadding = 0; // bottom padding last asked for by setSheet
 
@@ -538,6 +611,7 @@ export function createMap(
       const notNews: ExpressionSpecification = ['!', ['in', ['get', 'key'], ['literal', [...labelled]]]];
       for (const [layer, tier] of Object.entries(PLACE_TIERS)) map.setFilter(layer, ['all', tier, notNews]);
       map.setFilter('place-dot', notNews);
+      drawTag();
     },
 
     hideTooltip,
@@ -559,6 +633,8 @@ export function createMap(
     async outline(id) {
       const source = map.getSource<GeoJSONSource>('selected');
       const mine = ++outlineRequest;
+      selectedId = id;
+      drawTag();
       if (!id) return void source?.setData(EMPTY);
       // h3-js is only needed after a click, so it loads lazily.
       const { cellToBoundary } = await import('h3-js');

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#050608" />
+    <meta name="theme-color" content="#000000" />
     <meta name="description" content="A map of where the world's news is pointing right now, rebuilt every 15 minutes from GDELT, with no editor and no feed." />
     <link rel="canonical" href="https://currentsbtw.github.io/today-on-earth/" />
     <meta property="og:type" content="website" />
@@ -15,67 +15,116 @@
     <meta property="og:image" content="https://currentsbtw.github.io/today-on-earth/og.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="A dark world map with amber glows where news coverage is concentrated." />
+    <meta property="og:image:alt" content="A world map on black, glowing white where the news is pointing, with a ranked list of places and a 96-bar day of coverage." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Today On Earth" />
     <meta name="twitter:description" content="A map of where the world's news is pointing right now, rebuilt every 15 minutes from GDELT, with no editor and no feed." />
     <meta name="twitter:image" content="https://currentsbtw.github.io/today-on-earth/og.jpg" />
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 fill=%27%23050608%27/%3E%3Ccircle cx=%278%27 cy=%278%27 r=%274%27 fill=%27%23f2a64a%27/%3E%3C/svg%3E" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 shape-rendering=%27crispEdges%27%3E%3Crect width=%2716%27 height=%2716%27 fill=%27%23000%27/%3E%3Cpath fill=%27%23fff%27 d=%27M7 0h2v1H7zM4 1h3v1H4zM9 1h3v1H9zM3 2h1v1H3zM5 2h2v1H5zM9 2h2v1H9zM12 2h1v1h-1zM2 3h1v1H2zM13 3h1v1h-1zM1 4h6v1H1zM9 4h6v1H9zM1 5h1v1H1zM14 5h1v1h-1zM1 6h14v1H1zM0 7h16v2H0zM1 9h14v1H1zM1 10h1v1H1zM14 10h1v1h-1zM1 11h6v1H1zM9 11h6v1H9zM2 12h1v1H2zM13 12h1v1h-1zM3 13h1v1H3zM5 13h2v1H5zM9 13h2v1H9zM12 13h1v1h-1zM4 14h3v1H4zM9 14h3v1H9zM7 15h2v1H7z%27/%3E%3C/svg%3E" />
+    <link rel="preload" href="/fonts/azeret-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
     <title>Today On Earth</title>
   </head>
   <body>
-    <header class="bar">
-      <h1 class="wordmark">Today On Earth</h1>
-      <p class="totals" id="totals" aria-live="polite"></p>
-      <p class="mode-note" id="mode-note" hidden>vs. each place's 7-day normal</p>
-      <span class="bar-spacer"></span>
-      <div class="mode" id="mode" role="group" aria-label="Brightness" hidden>
-        <button type="button" data-mode="articles" aria-pressed="true">articles</button>
-        <button type="button" data-mode="normal" aria-pressed="false">vs. normal</button>
-      </div>
-      <button id="signals-button" class="places-button" type="button" aria-controls="panel" aria-expanded="false" hidden>Signals</button>
-      <button id="places-button" class="places-button" type="button" aria-controls="panel" aria-expanded="false" hidden>Places</button>
-      <a class="about-link" href="./about.html" aria-label="How it works"><span class="about-text">How it works</span><span class="about-glyph" aria-hidden="true">?</span></a>
-      <p class="snapshot" id="snapshot"></p>
-    </header>
-    <main class="stage">
-      <div id="map" class="map" aria-label="World map of news coverage"></div>
-      <div id="tooltip" class="tooltip" hidden></div>
-      <p id="status" class="status" role="status">loading</p>
-      <div id="scrubber" class="scrubber" role="group" aria-label="Replay" hidden>
-        <button id="scrub-play" class="scrub-play" type="button" aria-label="Play">
-          <svg class="icon-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z" /></svg>
-          <svg class="icon-pause" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.5h2.5v9H2.5zM7 1.5h2.5v9H7z" /></svg>
-        </button>
-        <div class="scrub-track">
-          <div id="scrub-ticks" class="scrub-ticks" aria-hidden="true"></div>
-          <input id="scrub-range" class="scrub-range" type="range" min="0" max="0" step="1" value="0" aria-label="Snapshot time" />
+    <div class="shell" id="shell">
+      <header class="top">
+        <a class="brand" href="./" aria-label="Today On Earth">
+          <svg class="globe" viewBox="0 0 16 16" width="32" height="32" shape-rendering="crispEdges" aria-hidden="true"><path d="M7 0h2v1H7zM4 1h3v1H4zM9 1h3v1H9zM3 2h1v1H3zM5 2h2v1H5zM9 2h2v1H9zM12 2h1v1h-1zM2 3h1v1H2zM13 3h1v1h-1zM1 4h6v1H1zM9 4h6v1H9zM1 5h1v1H1zM14 5h1v1h-1zM1 6h14v1H1zM0 7h16v2H0zM1 9h14v1H1zM1 10h1v1H1zM14 10h1v1h-1zM1 11h6v1H1zM9 11h6v1H9zM2 12h1v1H2zM13 12h1v1h-1zM3 13h1v1H3zM5 13h2v1H5zM9 13h2v1H9zM12 13h1v1h-1zM4 14h3v1H4zM9 14h3v1H9zM7 15h2v1H7z" /></svg>
+          <span class="wordmark">Today On Earth</span>
+        </a>
+        <nav class="nav" aria-label="Views">
+          <button id="map-button" class="nav-item nav-wide" type="button" aria-current="true">Map</button>
+          <button id="places-button" class="nav-item" type="button" aria-controls="places-col" aria-expanded="false" hidden>Places</button>
+          <button id="signals-button" class="nav-item" type="button" aria-controls="panel" aria-expanded="false" hidden>Signals</button>
+          <button id="replay-button" class="nav-item nav-wide" type="button" aria-controls="scrubber" hidden>Replay</button>
+          <a class="nav-item" href="./about.html">Method</a>
+        </nav>
+        <div class="clock">
+          <p class="clock-now"><span id="clock-date" class="clock-date"></span> <time id="clock" class="clock-time"></time></p>
+          <p class="snapshot" id="snapshot"></p>
         </div>
-        <p class="scrub-label"><span id="scrub-time"></span><span id="scrub-live" class="scrub-live">live</span></p>
+      </header>
+
+      <h1 id="totals" class="sentence">Loading the latest snapshot.</h1>
+
+      <section id="places-col" class="col col-places" aria-label="Places by articles" hidden>
+        <input id="places-col-filter" class="col-filter" type="search" placeholder="FILTER PLACES" aria-label="Filter places by name" autocomplete="off" spellcheck="false" />
+        <div class="col-head rank-head" aria-hidden="true"><span>Place</span><span>Art</span><span>Out</span><span>Cty</span></div>
+        <ol id="places-col-list" class="rank-list"></ol>
+        <p id="places-col-empty" class="col-empty" hidden></p>
+        <dl id="col-totals" class="col-totals"></dl>
+      </section>
+
+      <div class="map-wrap">
+        <div class="map-frame" id="map-frame">
+          <div id="map" class="map" aria-label="World map of news coverage"></div>
+          <div id="tooltip" class="tooltip" hidden></div>
+          <p id="status" class="status" role="status">loading</p>
+          <button id="quake-toggle" class="layer-toggle" type="button" aria-pressed="false" hidden>
+            <svg viewBox="0 0 12 12" width="12" height="12" shape-rendering="crispEdges" aria-hidden="true"><path d="M1 5h1v2H1zM2 3h1v2H2zM2 7h1v2H2zM3 2h2v1H3zM3 9h2v1H3zM5 1h2v1H5zM5 10h2v1H5zM7 2h2v1H7zM7 9h2v1H7zM9 3h1v2H9zM9 7h1v2H9zM10 5h1v2h-1z" /></svg>
+            <span>Quakes</span><span class="layer-state"></span>
+          </button>
+        </div>
+        <div class="under">
+          <p id="sel-line" class="sel-line"></p>
+          <div class="mode" id="mode" role="group" aria-label="Brightness" hidden>
+            <button type="button" data-mode="articles" aria-pressed="true">articles</button>
+            <button type="button" data-mode="normal" aria-pressed="false">vs. normal</button>
+          </div>
+          <p class="mode-note" id="mode-note" hidden>vs. each place's 7-day normal</p>
+          <p class="legend"><span>0</span><svg class="legend-bar" viewBox="0 0 72 9" width="72" height="9" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h1v9H0zM7 0h1v9H7zM13 0h1v9h-1zM19 0h1v9h-1zM24 0h1v9h-1zM29 0h1v9h-1zM33 0h1v9h-1zM37 0h1v9h-1zM40 0h1v9h-1zM43 0h1v9h-1zM46 0h1v9h-1zM48 0h1v9h-1zM50 0h1v9h-1zM52 0h1v9h-1zM54 0h1v9h-1zM56 0h1v9h-1zM57 0h1v9h-1zM59 0h1v9h-1zM60 0h1v9h-1zM62 0h1v9h-1zM63 0h1v9h-1zM65 0h1v9h-1zM66 0h1v9h-1zM68 0h1v9h-1zM69 0h1v9h-1zM71 0h1v9h-1z" /></svg><span id="legend-max"></span><span class="legend-note">· bright = volume, not importance</span></p>
+        </div>
       </div>
-      <button id="quake-toggle" class="layer-toggle" type="button" aria-pressed="false" hidden>
-        <svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4.2" /></svg>
-        <span>Quakes</span><span class="layer-state"></span>
-      </button>
+
+      <section id="replay-col" class="col col-replay" aria-label="Replay">
+        <div id="scrubber" class="field" role="group" aria-label="Replay" hidden>
+          <div class="col-head"><span>Articles / snapshot</span><span id="field-count"></span></div>
+          <div class="bars-wrap">
+            <div id="bars" class="bars"></div>
+            <span id="bar-tag" class="bar-tag" aria-hidden="true"></span>
+          </div>
+          <div id="bar-idx" class="bar-idx" aria-hidden="true"></div>
+          <input id="scrub-range" class="scrub-range" type="range" min="0" max="0" step="1" value="0" aria-label="Snapshot time" />
+          <div class="field-controls">
+            <button id="scrub-play" class="scrub-play" type="button" aria-label="Play">
+              <span class="play-word" aria-hidden="true">Play</span><svg class="icon-play" viewBox="0 0 4 7" width="4" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h1v7H0zM1 1h1v5H1zM2 2h1v3H2zM3 3h1v1H3z" /></svg>
+              <span class="pause-word" aria-hidden="true">Pause</span><svg class="icon-pause" viewBox="0 0 5 7" width="5" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h2v7H0zM3 0h2v7H3z" /></svg>
+            </button>
+            <p class="scrub-label"><span id="scrub-time"></span><span id="scrub-live" class="scrub-live">live</span></p>
+          </div>
+          <div class="col-head trend-head" aria-hidden="true"><span>Trend · 9-frame mean</span><span id="trend-max"></span></div>
+          <svg id="trend" class="trend" viewBox="0 0 1000 44" preserveAspectRatio="none" aria-hidden="true"><polyline id="trend-line" fill="none" stroke="#fff" stroke-width="1" vector-effect="non-scaling-stroke" points="" /></svg>
+          <table class="recent">
+            <caption class="visually-hidden">Recent snapshots</caption>
+            <thead><tr><th scope="col">Fr</th><th scope="col">UTC</th><th scope="col">Art</th><th scope="col">Diff</th></tr></thead>
+            <tbody id="recent"></tbody>
+          </table>
+        </div>
+        <p id="replay-empty" class="col-empty" hidden></p>
+        <div class="observer" aria-hidden="true">
+          <span id="observer-label" class="observer-label">Observer</span>
+          <svg viewBox="0 0 12 14" width="36" height="42" shape-rendering="crispEdges"><path d="M11 0h1v1H11zM10 1h2v1H10zM3 2h4v1H3zM9 2h2v1H9zM2 3h6v1H2zM9 3h1v1H9zM2 4h2v1H2zM5 4h4v1H5zM2 5h6v1H2zM3 6h4v1H3zM2 7h6v1H2zM1 8h8v1H1zM0 9h1v1H0zM3 9h4v1H3zM9 9h1v1H9zM3 10h4v1H3zM3 11h1v1H3zM6 11h1v1H6zM3 12h1v1H3zM6 12h1v1H6zM2 13h2v1H2zM6 13h2v1H6z" /></svg>
+        </div>
+      </section>
+
       <aside id="panel" class="panel" role="dialog" aria-modal="false" aria-labelledby="panel-title" hidden>
         <button id="sheet-handle" class="sheet-handle" type="button" aria-label="Expand details" aria-controls="panel" aria-expanded="false"><span aria-hidden="true"></span></button>
-        <div class="panel-head">
-          <h2 id="panel-title" class="panel-title" tabindex="-1"></h2>
-          <button id="panel-close" class="panel-close" type="button" aria-label="Close">&times;</button>
+        <div class="panel-bar">
+          <button id="panel-close" class="panel-close" type="button">Close<svg viewBox="0 0 7 7" width="7" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM6 0h1v1H6zM5 1h1v1H5zM4 2h1v1H4zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z" /></svg></button>
         </div>
-        <!-- List mode (the Places button): every place on the map as keyboard-reachable rows. -->
+        <h2 id="panel-title" class="panel-title" tabindex="-1"></h2>
+        <!-- List mode (Places on phones): every place on the map as keyboard-reachable rows. -->
         <div id="panel-places" class="places">
-          <input id="places-filter" class="places-filter" type="search" placeholder="Filter by name" aria-label="Filter places by name" autocomplete="off" spellcheck="false" />
+          <input id="places-filter" class="places-filter" type="search" placeholder="FILTER BY NAME" aria-label="Filter places by name" autocomplete="off" spellcheck="false" />
           <p id="places-count" class="places-count"></p>
           <ol id="places-list" class="places-list"></ol>
         </div>
-        <!-- Broadcast mode (the Signals button): the daily broadcast's six slots as cards. -->
+        <!-- Broadcast mode (Signals): the daily broadcast's six slots as log lines. -->
         <div id="panel-signals" class="signals">
           <p id="signals-when" class="panel-why"></p>
           <ol id="signals-list" class="signals-list"></ol>
         </div>
         <!-- Cell mode. -->
-        <p id="panel-why" class="panel-why cell-only"></p>
+        <dl id="panel-why" class="counts cell-only"></dl>
         <p id="panel-reach" class="panel-reach cell-only" hidden></p>
         <p id="panel-note" class="panel-note cell-only" hidden></p>
         <div id="panel-coverage" class="coverage cell-only" hidden></div>
@@ -84,7 +133,12 @@
         <p id="panel-state" class="panel-state cell-only" hidden></p>
         <ol id="panel-list" class="articles cell-only"></ol>
       </aside>
-    </main>
+
+      <footer class="foot">
+        <dl id="foot-totals" class="foot-totals"></dl>
+        <p class="foot-links"><a href="https://www.naturalearthdata.com/" rel="noopener">Natural Earth</a> · <a href="https://www.gdeltproject.org/" rel="noopener">GDELT</a> · <a href="https://earthquake.usgs.gov/" rel="noopener">USGS</a> · <a href="./about.html">How it works</a></p>
+      </footer>
+    </div>
     <script type="module" src="./src/main.ts"></script>
   </body>
 </html>
