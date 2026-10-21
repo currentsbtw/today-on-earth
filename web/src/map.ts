@@ -180,15 +180,19 @@ function style(): StyleSpecification {
   };
 }
 
+/** What the heat layers draw: a live cell, or a replay row with the live name when known. */
+export type MapCell = Pick<HeatCell, 'id' | 'lat' | 'lon' | 'n' | 'name'>;
+
 export interface WorldMap {
-  setHeat(cells: HeatCell[]): void;
+  /** `maxN` is the live snapshot's largest n, so every frame is scaled the same way. */
+  setCells(cells: MapCell[], maxN: number): void;
   outline(id: string | null): Promise<void>;
 }
 
 export function createMap(
   container: HTMLElement,
   tooltip: HTMLElement,
-  onSelect: (cell: HeatCell) => void,
+  onSelect: (cell: MapCell) => void,
 ): Promise<WorldMap> {
   const map = new MapLibreMap({
     container,
@@ -208,11 +212,11 @@ export function createMap(
   map.touchZoomRotate.disableRotation();
   map.keyboard.disableRotation();
 
-  const byId = new Map<string, HeatCell>();
+  const byId = new Map<string, MapCell>();
   let outlineRequest = 0;
 
-  const cellAt = (e: MapLayerMouseEvent): HeatCell | undefined => {
-    let best: HeatCell | undefined;
+  const cellAt = (e: MapLayerMouseEvent): MapCell | undefined => {
+    let best: MapCell | undefined;
     for (const f of e.features ?? []) {
       const cell = byId.get(String(f.properties?.id));
       if (cell && (!best || cell.n > best.n)) best = cell;
@@ -229,10 +233,12 @@ export function createMap(
     const cell = cellAt(e);
     if (!cell) return hideTooltip();
     map.getCanvas().style.cursor = 'pointer';
-    tooltip.replaceChildren(
-      Object.assign(document.createElement('strong'), { textContent: cell.name }),
-      Object.assign(document.createElement('span'), { textContent: `${count(cell.n)} articles` }),
-    );
+    const articles = Object.assign(document.createElement('span'), { textContent: `${count(cell.n)} articles` });
+    if (cell.name) {
+      tooltip.replaceChildren(Object.assign(document.createElement('strong'), { textContent: cell.name }), articles);
+    } else {
+      tooltip.replaceChildren(articles);
+    }
     tooltip.hidden = false;
     const x = Math.min(e.point.x + 14, container.clientWidth - tooltip.offsetWidth - 8);
     const y = e.point.y + 14 + tooltip.offsetHeight > container.clientHeight
@@ -248,15 +254,20 @@ export function createMap(
   });
 
   const api: WorldMap = {
-    setHeat(cells) {
+    setCells(cells, maxN) {
       byId.clear();
-      const max = Math.log1p(Math.max(1, ...cells.map((c) => c.n)));
+      const max = Math.log1p(Math.max(1, maxN));
       const features: GeoJSON.Feature<GeoJSON.Point>[] = cells.map((c) => {
         byId.set(c.id, c);
         return {
           type: 'Feature',
           geometry: { type: 'Point', coordinates: [c.lon, c.lat] },
-          properties: { id: c.id, n: c.n, name: c.name, label: shortName(c.name), w: Math.log1p(c.n) / max },
+          properties: {
+            id: c.id,
+            n: c.n,
+            label: c.name ? shortName(c.name) : '',
+            w: Math.min(1, Math.log1p(c.n) / max),
+          },
         };
       });
       map.getSource<GeoJSONSource>('heat')?.setData({ type: 'FeatureCollection', features });

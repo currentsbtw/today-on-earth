@@ -25,9 +25,21 @@
           <button id="panel-close" class="panel-close" type="button" aria-label="Close">&times;</button>
         </div>
         <p id="panel-why" class="panel-why"></p>
+        <p id="panel-note" class="panel-note" hidden></p>
         <p id="panel-state" class="panel-state" hidden></p>
         <ol id="panel-list" class="articles"></ol>
       </aside>
+      <div id="scrubber" class="scrubber" role="group" aria-label="Replay the last 24 hours" hidden>
+        <button id="scrub-play" class="scrub-play" type="button" aria-label="Play the last 24 hours">
+          <svg class="icon-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z" /></svg>
+          <svg class="icon-pause" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.5h2.5v9H2.5zM7 1.5h2.5v9H7z" /></svg>
+        </button>
+        <div class="scrub-track">
+          <div id="scrub-ticks" class="scrub-ticks" aria-hidden="true"></div>
+          <input id="scrub-range" class="scrub-range" type="range" min="0" max="0" step="1" value="0" aria-label="Snapshot time" />
+        </div>
+        <p class="scrub-label"><span id="scrub-time"></span><span id="scrub-live" class="scrub-live">live</span></p>
+      </div>
     </main>
     <script type="module" src="./src/main.ts"></script>
   </body>

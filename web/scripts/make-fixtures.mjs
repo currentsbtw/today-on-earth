@@ -105,6 +105,7 @@ for (const [name, lat, lon, n, home] of PLACES) {
       lang: outlet[2],
       time: iso(new Date(now.getTime() - minutesAgo * 60000)),
       tone: round1(rand() * 12 - 7),
+      image: '',
     });
   }
   const tally = (key) => {
@@ -136,18 +137,56 @@ for (const [name, lat, lon, n, home] of PLACES) {
 }
 
 cells.sort((a, b) => b.n - a.n);
+// Totals for a frame with `placed` articles in cells. About 18% more articles only name a
+// country: they are counted in totals (and `unplaced`) but never binned into a cell.
+const totalsFor = (placed, cellCount) => {
+  const articles = placed + Math.round(placed * 0.18);
+  return {
+    articles,
+    outlets: Math.max(Math.min(allOutlets.size, cellCount), Math.round(Math.sqrt(articles) * 9)),
+    countries: Math.max(Math.min(allCountries.size, cellCount), Math.round(64 * Math.min(1, placed / totalArticles + 0.2))),
+    cells: cellCount,
+    unplaced: articles - placed,
+  };
+};
 const heat = {
   generatedAt: iso(now),
   windowHours: 24,
   newestArticleAt: iso(new Date(now.getTime() - 10 * 60000)),
   // Like the per-cell counts, totals describe the whole window, not just the listed articles.
-  totals: {
-    articles: totalArticles,
-    outlets: Math.max(allOutlets.size, Math.round(Math.sqrt(totalArticles) * 9)),
-    countries: Math.max(allCountries.size, 64),
-    cells: cells.length,
-  },
+  totals: totalsFor(totalArticles, cells.length),
   cells,
 };
 writeFileSync(new URL('heat.json', OUT), JSON.stringify(heat, null, 1) + '\n');
-console.log(`wrote ${cells.length} cells, ${totalArticles} articles`);
+
+// History: 12 frames two hours apart, the last one equal to heat.json. Earlier frames
+// cover a shorter window (a cold start) and follow local daytime, so replay visibly moves.
+const FRAMES = 12;
+const stamp = (at) => at.replace(/[-:.]/g, '');
+mkdirSync(new URL('history/', OUT), { recursive: true });
+const frames = [];
+const daylight = (d, lon) => {
+  const localHour = (d.getUTCHours() + d.getUTCMinutes() / 60 + lon / 15 + 24) % 24;
+  return 0.6 + 0.4 * Math.max(0, Math.cos((2 * Math.PI * (localHour - 14)) / 24));
+};
+for (let k = 0; k < FRAMES; k++) {
+  const at = new Date(now.getTime() - (FRAMES - 1 - k) * 2 * 3600000);
+  const atIso = iso(at);
+  const last = k === FRAMES - 1;
+  const windowHours = last ? heat.windowHours : Math.min(24, 6 + 2 * k);
+  const rows = cells
+    .map((c) => {
+      if (last) return [c.id, c.lat, c.lon, c.n];
+      // Coverage follows local daytime, relative to the current moment so the frames meet heat.json.
+      const n = Math.round(c.n * (windowHours / 24) * (daylight(at, c.lon) / daylight(now, c.lon)) * (0.85 + rand() * 0.3));
+      return [c.id, c.lat, c.lon, n];
+    })
+    .filter((r) => r[3] >= 2)
+    .sort((a, b) => b[3] - a[3]);
+  const placed = rows.reduce((sum, r) => sum + r[3], 0);
+  const file = `${stamp(atIso)}.json`;
+  writeFileSync(new URL(`history/${file}`, OUT), JSON.stringify({ at: atIso, cells: rows }) + '\n');
+  frames.push({ at: atIso, file, windowHours, totals: last ? heat.totals : totalsFor(placed, rows.length) });
+}
+writeFileSync(new URL('history/index.json', OUT), JSON.stringify({ frames }, null, 1) + '\n');
+console.log(`wrote ${cells.length} cells, ${totalArticles} placed articles, ${FRAMES} history frames`);

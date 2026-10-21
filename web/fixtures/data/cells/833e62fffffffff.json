@@ -139,8 +139,9 @@
    "source": "jakarta-pos.example",
    "country": "ID",
    "lang": "id",
-   "time": "2026-10-21T03:47:00Z",
-   "tone": -5.8
+   "time": "2026-10-21T04:47:00Z",
+   "tone": -5.8,
+   "image": ""
   },
   {
    "title": "[sample] Wildfire forces evacuations near Cairo",
@@ -148,8 +149,9 @@
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-21T03:32:00Z",
-   "tone": 2.5
+   "time": "2026-10-21T04:32:00Z",
+   "tone": 2.5,
+   "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Cairo",
@@ -157,8 +159,9 @@
    "source": "el-diario.example",
    "country": "MX",
    "lang": "es",
-   "time": "2026-10-21T03:01:00Z",
-   "tone": -1.5
+   "time": "2026-10-21T04:01:00Z",
+   "tone": -1.5,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Cairo",
@@ -166,8 +169,9 @@
    "source": "vesti-news.example",
    "country": "RU",
    "lang": "ru",
-   "time": "2026-10-21T02:31:00Z",
-   "tone": 0.5
+   "time": "2026-10-21T03:31:00Z",
+   "tone": 0.5,
+   "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Cairo",
@@ -175,8 +179,9 @@
    "source": "la-voz.example",
    "country": "AR",
    "lang": "es",
-   "time": "2026-10-21T02:14:00Z",
-   "tone": 1.5
+   "time": "2026-10-21T03:14:00Z",
+   "tone": 1.5,
+   "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Cairo",
@@ -184,8 +189,9 @@
    "source": "daily-ledger.example",
    "country": "US",
    "lang": "en",
-   "time": "2026-10-21T01:46:00Z",
-   "tone": -3
+   "time": "2026-10-21T02:46:00Z",
+   "tone": -3,
+   "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Cairo",
@@ -193,8 +199,9 @@
    "source": "daily-ledger.example",
    "country": "US",
    "lang": "en",
-   "time": "2026-10-21T01:18:00Z",
-   "tone": -0.6
+   "time": "2026-10-21T02:18:00Z",
+   "tone": -0.6,
+   "image": ""
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Cairo",
@@ -202,8 +209,9 @@
    "source": "haaretz-sample.example",
    "country": "IL",
    "lang": "he",
-   "time": "2026-10-21T00:47:00Z",
-   "tone": 0.4
+   "time": "2026-10-21T01:47:00Z",
+   "tone": 0.4,
+   "image": ""
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Cairo",
@@ -211,8 +219,9 @@
    "source": "jakarta-pos.example",
    "country": "ID",
    "lang": "id",
-   "time": "2026-10-21T00:09:00Z",
-   "tone": -0.2
+   "time": "2026-10-21T01:09:00Z",
+   "tone": -0.2,
+   "image": ""
   },
   {
    "title": "[sample] Wildfire forces evacuations near Cairo",
@@ -220,8 +229,9 @@
    "source": "gulf-report.example",
    "country": "AE",
    "lang": "ar",
-   "time": "2026-10-20T23:40:00Z",
-   "tone": 0.4
+   "time": "2026-10-21T00:40:00Z",
+   "tone": 0.4,
+   "image": ""
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Cairo",
@@ -229,8 +239,9 @@
    "source": "wire-service.example",
    "country": "",
    "lang": "en",
-   "time": "2026-10-20T23:28:00Z",
-   "tone": 1.7
+   "time": "2026-10-21T00:28:00Z",
+   "tone": 1.7,
+   "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Cairo",
@@ -238,8 +249,9 @@
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-20T22:55:00Z",
-   "tone": -0.3
+   "time": "2026-10-20T23:55:00Z",
+   "tone": -0.3,
+   "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Cairo",
@@ -247,8 +259,9 @@
    "source": "cape-mail.example",
    "country": "ZA",
    "lang": "en",
-   "time": "2026-10-20T22:26:00Z",
-   "tone": -4.1
+   "time": "2026-10-20T23:26:00Z",
+   "tone": -4.1,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Cairo",
@@ -256,8 +269,9 @@
    "source": "global-desk.example",
    "country": "CA",
    "lang": "en",
-   "time": "2026-10-20T21:48:00Z",
-   "tone": 4.3
+   "time": "2026-10-20T22:48:00Z",
+   "tone": 4.3,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Cairo",
@@ -265,8 +279,9 @@
    "source": "nord-avis.example",
    "country": "NO",
    "lang": "no",
-   "time": "2026-10-20T21:34:00Z",
-   "tone": -5.1
+   "time": "2026-10-20T22:34:00Z",
+   "tone": -5.1,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Cairo",
@@ -274,8 +289,9 @@
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T21:09:00Z",
-   "tone": -0.4
+   "time": "2026-10-20T22:09:00Z",
+   "tone": -0.4,
+   "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Cairo",
@@ -283,8 +299,9 @@
    "source": "wire-service.example",
    "country": "",
    "lang": "en",
-   "time": "2026-10-20T20:33:00Z",
-   "tone": -6.1
+   "time": "2026-10-20T21:33:00Z",
+   "tone": -6.1,
+   "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Cairo",
@@ -292,8 +309,9 @@
    "source": "xinhua-sample.example",
    "country": "CN",
    "lang": "zh",
-   "time": "2026-10-20T20:08:00Z",
-   "tone": 3.6
+   "time": "2026-10-20T21:08:00Z",
+   "tone": 3.6,
+   "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Cairo",
@@ -301,8 +319,9 @@
    "source": "gulf-report.example",
    "country": "AE",
    "lang": "ar",
-   "time": "2026-10-20T19:37:00Z",
-   "tone": -1
+   "time": "2026-10-20T20:37:00Z",
+   "tone": -1,
+   "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Cairo",
@@ -310,8 +329,9 @@
    "source": "o-correio.example",
    "country": "BR",
    "lang": "pt",
-   "time": "2026-10-20T19:03:00Z",
-   "tone": 1.8
+   "time": "2026-10-20T20:03:00Z",
+   "tone": 1.8,
+   "image": ""
   },
   {
    "title": "",
@@ -319,8 +339,9 @@
    "source": "daily-ledger.example",
    "country": "US",
    "lang": "en",
-   "time": "2026-10-20T18:38:00Z",
-   "tone": 2.6
+   "time": "2026-10-20T19:38:00Z",
+   "tone": 2.6,
+   "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Cairo",
@@ -328,8 +349,9 @@
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-20T18:11:00Z",
-   "tone": -1.6
+   "time": "2026-10-20T19:11:00Z",
+   "tone": -1.6,
+   "image": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Cairo",
@@ -337,8 +359,9 @@
    "source": "al-akhbar.example",
    "country": "EG",
    "lang": "ar",
-   "time": "2026-10-20T17:47:00Z",
-   "tone": 0.5
+   "time": "2026-10-20T18:47:00Z",
+   "tone": 0.5,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Cairo",
@@ -346,8 +369,9 @@
    "source": "al-akhbar.example",
    "country": "EG",
    "lang": "ar",
-   "time": "2026-10-20T17:17:00Z",
-   "tone": -0.5
+   "time": "2026-10-20T18:17:00Z",
+   "tone": -0.5,
+   "image": ""
   },
   {
    "title": "[sample] Aid convoy reaches border crossing near Cairo",
@@ -355,8 +379,9 @@
    "source": "daily-ledger.example",
    "country": "US",
    "lang": "en",
-   "time": "2026-10-20T16:47:00Z",
-   "tone": -1.1
+   "time": "2026-10-20T17:47:00Z",
+   "tone": -1.1,
+   "image": ""
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Cairo",
@@ -364,8 +389,9 @@
    "source": "vesti-news.example",
    "country": "RU",
    "lang": "ru",
-   "time": "2026-10-20T16:22:00Z",
-   "tone": -2.6
+   "time": "2026-10-20T17:22:00Z",
+   "tone": -2.6,
+   "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Cairo",
@@ -373,8 +399,9 @@
    "source": "el-diario.example",
    "country": "MX",
    "lang": "es",
-   "time": "2026-10-20T16:00:00Z",
-   "tone": -3.4
+   "time": "2026-10-20T17:00:00Z",
+   "tone": -3.4,
+   "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Cairo",
@@ -382,8 +409,9 @@
    "source": "cape-mail.example",
    "country": "ZA",
    "lang": "en",
-   "time": "2026-10-20T15:32:00Z",
-   "tone": -5.1
+   "time": "2026-10-20T16:32:00Z",
+   "tone": -5.1,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Cairo",
@@ -391,8 +419,9 @@
    "source": "cape-mail.example",
    "country": "ZA",
    "lang": "en",
-   "time": "2026-10-20T14:57:00Z",
-   "tone": 0.2
+   "time": "2026-10-20T15:57:00Z",
+   "tone": 0.2,
+   "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Cairo",
@@ -400,8 +429,9 @@
    "source": "harbour-press.example",
    "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T14:38:00Z",
-   "tone": -2.5
+   "time": "2026-10-20T15:38:00Z",
+   "tone": -2.5,
+   "image": ""
   },
   {
    "title": "[sample] Trade talks resume after pause near Cairo",
@@ -409,8 +439,9 @@
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T14:01:00Z",
-   "tone": -3.7
+   "time": "2026-10-20T15:01:00Z",
+   "tone": -3.7,
+   "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Cairo",
@@ -418,8 +449,9 @@
    "source": "asahi-sample.example",
    "country": "JP",
    "lang": "ja",
-   "time": "2026-10-20T13:44:00Z",
-   "tone": -2.7
+   "time": "2026-10-20T14:44:00Z",
+   "tone": -2.7,
+   "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Cairo",
@@ -427,8 +459,9 @@
    "source": "wire-service.example",
    "country": "",
    "lang": "en",
-   "time": "2026-10-20T13:08:00Z",
-   "tone": 4.4
+   "time": "2026-10-20T14:08:00Z",
+   "tone": 4.4,
+   "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Cairo",
@@ -436,8 +469,9 @@
    "source": "haaretz-sample.example",
    "country": "IL",
    "lang": "he",
-   "time": "2026-10-20T12:39:00Z",
-   "tone": -0.9
+   "time": "2026-10-20T13:39:00Z",
+   "tone": -0.9,
+   "image": ""
   },
   {
    "title": "[sample] Trade talks resume after pause near Cairo",
@@ -445,8 +479,9 @@
    "source": "vesti-news.example",
    "country": "RU",
    "lang": "ru",
-   "time": "2026-10-20T12:26:00Z",
-   "tone": 4.3
+   "time": "2026-10-20T13:26:00Z",
+   "tone": 4.3,
+   "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Cairo",
@@ -454,8 +489,9 @@
    "source": "vesti-news.example",
    "country": "RU",
    "lang": "ru",
-   "time": "2026-10-20T11:59:00Z",
-   "tone": 3.4
+   "time": "2026-10-20T12:59:00Z",
+   "tone": 3.4,
+   "image": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Cairo",
@@ -463,8 +499,9 @@
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-20T11:12:00Z",
-   "tone": 3.9
+   "time": "2026-10-20T12:12:00Z",
+   "tone": 3.9,
+   "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Cairo",
@@ -472,8 +509,9 @@
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-20T10:54:00Z",
-   "tone": -1.1
+   "time": "2026-10-20T11:54:00Z",
+   "tone": -1.1,
+   "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Cairo",
@@ -481,8 +519,9 @@
    "source": "global-desk.example",
    "country": "CA",
    "lang": "en",
-   "time": "2026-10-20T10:33:00Z",
-   "tone": -0.3
+   "time": "2026-10-20T11:33:00Z",
+   "tone": -0.3,
+   "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Cairo",
@@ -490,8 +529,9 @@
    "source": "lagos-sun.example",
    "country": "NG",
    "lang": "en",
-   "time": "2026-10-20T10:00:00Z",
-   "tone": 3.9
+   "time": "2026-10-20T11:00:00Z",
+   "tone": 3.9,
+   "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Cairo",
@@ -499,8 +539,9 @@
    "source": "la-voz.example",
    "country": "AR",
    "lang": "es",
-   "time": "2026-10-20T09:28:00Z",
-   "tone": 4.2
+   "time": "2026-10-20T10:28:00Z",
+   "tone": 4.2,
+   "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Cairo",
@@ -508,8 +549,9 @@
    "source": "lagos-sun.example",
    "country": "NG",
    "lang": "en",
-   "time": "2026-10-20T09:03:00Z",
-   "tone": -0.3
+   "time": "2026-10-20T10:03:00Z",
+   "tone": -0.3,
+   "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Cairo",
@@ -517,8 +559,9 @@
    "source": "la-voz.example",
    "country": "AR",
    "lang": "es",
-   "time": "2026-10-20T08:42:00Z",
-   "tone": -3.7
+   "time": "2026-10-20T09:42:00Z",
+   "tone": -3.7,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Cairo",
@@ -526,8 +569,9 @@
    "source": "jakarta-pos.example",
    "country": "ID",
    "lang": "id",
-   "time": "2026-10-20T08:18:00Z",
-   "tone": -5.2
+   "time": "2026-10-20T09:18:00Z",
+   "tone": -5.2,
+   "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Cairo",
@@ -535,8 +579,9 @@
    "source": "hurriyet-sample.example",
    "country": "TR",
    "lang": "tr",
-   "time": "2026-10-20T07:31:00Z",
-   "tone": -1.8
+   "time": "2026-10-20T08:31:00Z",
+   "tone": -1.8,
+   "image": ""
   },
   {
    "title": "",
@@ -544,8 +589,9 @@
    "source": "wire-service.example",
    "country": "",
    "lang": "en",
-   "time": "2026-10-20T07:16:00Z",
-   "tone": -6.6
+   "time": "2026-10-20T08:16:00Z",
+   "tone": -6.6,
+   "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Cairo",
@@ -553,8 +599,9 @@
    "source": "daily-ledger.example",
    "country": "US",
    "lang": "en",
-   "time": "2026-10-20T06:41:00Z",
-   "tone": -3.9
+   "time": "2026-10-20T07:41:00Z",
+   "tone": -3.9,
+   "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Cairo",
@@ -562,8 +609,9 @@
    "source": "vesti-news.example",
    "country": "RU",
    "lang": "ru",
-   "time": "2026-10-20T06:09:00Z",
-   "tone": -4.5
+   "time": "2026-10-20T07:09:00Z",
+   "tone": -4.5,
+   "image": ""
   },
   {
    "title": "",
@@ -571,8 +619,9 @@
    "source": "asahi-sample.example",
    "country": "JP",
    "lang": "ja",
-   "time": "2026-10-20T05:44:00Z",
-   "tone": 1.6
+   "time": "2026-10-20T06:44:00Z",
+   "tone": 1.6,
+   "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Cairo",
@@ -580,8 +629,9 @@
    "source": "harbour-press.example",
    "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T05:15:00Z",
-   "tone": -2.2
+   "time": "2026-10-20T06:15:00Z",
+   "tone": -2.2,
+   "image": ""
   }
  ]
 }

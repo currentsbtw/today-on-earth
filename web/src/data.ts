@@ -12,11 +12,19 @@ export interface HeatCell {
   name: string;
 }
 
+export interface Totals {
+  articles: number;
+  outlets: number;
+  countries: number;
+  cells: number;
+  unplaced?: number;
+}
+
 export interface Heat {
   generatedAt: string;
   windowHours: number;
   newestArticleAt: string;
-  totals: { articles: number; outlets: number; countries: number; cells: number; unplaced?: number };
+  totals: Totals;
   cells: HeatCell[];
 }
 
@@ -61,7 +69,32 @@ export function loadHeat(): Promise<Heat> {
   return getJson<Heat>('data/heat.json');
 }
 
+/** An H3 index as the ingest job writes it. Anything else never reaches a URL. */
+export const isCellId = (id: string) => /^[0-9a-f]{15}$/.test(id);
+
 export function loadCell(id: string): Promise<CellDetail> {
-  if (!/^[0-9a-f]{15}$/i.test(id)) return Promise.reject(new Error(`bad cell id ${id}`));
+  if (!isCellId(id)) return Promise.reject(new Error(`bad cell id ${id}`));
   return getJson<CellDetail>(`data/cells/${id}.json`);
+}
+
+/** One entry of history/index.json, oldest first; the last one is the live snapshot. */
+export interface HistoryFrame {
+  at: string;
+  file: string;
+  windowHours: number;
+  totals: Totals;
+}
+
+/** [id, lat, lon, n], sorted by n descending. */
+export type FrameRow = [string, number, number, number];
+
+export async function loadHistoryIndex(): Promise<HistoryFrame[]> {
+  const index = await getJson<{ frames?: HistoryFrame[] }>('data/history/index.json');
+  return Array.isArray(index.frames) ? index.frames : [];
+}
+
+export async function loadFrame(file: string): Promise<FrameRow[]> {
+  if (!/^[\w.-]+\.json$/.test(file)) throw new Error(`bad frame file ${file}`);
+  const frame = await getJson<{ cells?: FrameRow[] }>(`data/history/${file}`);
+  return Array.isArray(frame.cells) ? frame.cells : [];
 }

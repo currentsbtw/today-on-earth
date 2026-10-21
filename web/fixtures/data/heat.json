@@ -1,12 +1,13 @@
 {
- "generatedAt": "2026-10-21T04:15:00Z",
+ "generatedAt": "2026-10-21T05:15:00Z",
  "windowHours": 24,
- "newestArticleAt": "2026-10-21T04:05:00Z",
+ "newestArticleAt": "2026-10-21T05:05:00Z",
  "totals": {
-  "articles": 19952,
-  "outlets": 1271,
+  "articles": 23543,
+  "outlets": 1381,
   "countries": 64,
-  "cells": 30
+  "cells": 30,
+  "unplaced": 3591
  },
  "cells": [
   {

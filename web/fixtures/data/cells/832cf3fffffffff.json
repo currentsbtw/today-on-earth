@@ -139,8 +139,9 @@
    "source": "o-correio.example",
    "country": "BR",
    "lang": "pt",
-   "time": "2026-10-21T03:55:00Z",
-   "tone": 1.7
+   "time": "2026-10-21T04:55:00Z",
+   "tone": 1.7,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Tehran",
@@ -148,8 +149,9 @@
    "source": "nord-avis.example",
    "country": "NO",
    "lang": "no",
-   "time": "2026-10-21T03:33:00Z",
-   "tone": 4.8
+   "time": "2026-10-21T04:33:00Z",
+   "tone": 4.8,
+   "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Tehran",
@@ -157,8 +159,9 @@
    "source": "vesti-news.example",
    "country": "RU",
    "lang": "ru",
-   "time": "2026-10-21T03:08:00Z",
-   "tone": 2.9
+   "time": "2026-10-21T04:08:00Z",
+   "tone": 2.9,
+   "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Tehran",
@@ -166,8 +169,9 @@
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-21T02:40:00Z",
-   "tone": -1.1
+   "time": "2026-10-21T03:40:00Z",
+   "tone": -1.1,
+   "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Tehran",
@@ -175,8 +179,9 @@
    "source": "gulf-report.example",
    "country": "AE",
    "lang": "ar",
-   "time": "2026-10-21T01:58:00Z",
-   "tone": -5
+   "time": "2026-10-21T02:58:00Z",
+   "tone": -5,
+   "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Tehran",
@@ -184,8 +189,9 @@
    "source": "haaretz-sample.example",
    "country": "IL",
    "lang": "he",
-   "time": "2026-10-21T01:34:00Z",
-   "tone": 3.1
+   "time": "2026-10-21T02:34:00Z",
+   "tone": 3.1,
+   "image": ""
   },
   {
    "title": "[sample] Aid convoy reaches border crossing near Tehran",
@@ -193,8 +199,9 @@
    "source": "asahi-sample.example",
    "country": "JP",
    "lang": "ja",
-   "time": "2026-10-21T01:02:00Z",
-   "tone": -3.1
+   "time": "2026-10-21T02:02:00Z",
+   "tone": -3.1,
+   "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Tehran",
@@ -202,8 +209,9 @@
    "source": "la-voz.example",
    "country": "AR",
    "lang": "es",
-   "time": "2026-10-21T00:38:00Z",
-   "tone": 1.5
+   "time": "2026-10-21T01:38:00Z",
+   "tone": 1.5,
+   "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Tehran",
@@ -211,8 +219,9 @@
    "source": "daily-ledger.example",
    "country": "US",
    "lang": "en",
-   "time": "2026-10-21T00:05:00Z",
-   "tone": -0.6
+   "time": "2026-10-21T01:05:00Z",
+   "tone": -0.6,
+   "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Tehran",
@@ -220,8 +229,9 @@
    "source": "asahi-sample.example",
    "country": "JP",
    "lang": "ja",
-   "time": "2026-10-20T23:40:00Z",
-   "tone": 1.4
+   "time": "2026-10-21T00:40:00Z",
+   "tone": 1.4,
+   "image": ""
   },
   {
    "title": "",
@@ -229,8 +239,9 @@
    "source": "el-diario.example",
    "country": "MX",
    "lang": "es",
-   "time": "2026-10-20T23:19:00Z",
-   "tone": -3.2
+   "time": "2026-10-21T00:19:00Z",
+   "tone": -3.2,
+   "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Tehran",
@@ -238,8 +249,9 @@
    "source": "asahi-sample.example",
    "country": "JP",
    "lang": "ja",
-   "time": "2026-10-20T22:44:00Z",
-   "tone": 2.5
+   "time": "2026-10-20T23:44:00Z",
+   "tone": 2.5,
+   "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Tehran",
@@ -247,8 +259,9 @@
    "source": "nation-ke.example",
    "country": "KE",
    "lang": "en",
-   "time": "2026-10-20T22:17:00Z",
-   "tone": 1.7
+   "time": "2026-10-20T23:17:00Z",
+   "tone": 1.7,
+   "image": ""
   },
   {
    "title": "[sample] Aid convoy reaches border crossing near Tehran",
@@ -256,8 +269,9 @@
    "source": "nord-avis.example",
    "country": "NO",
    "lang": "no",
-   "time": "2026-10-20T21:48:00Z",
-   "tone": 0.2
+   "time": "2026-10-20T22:48:00Z",
+   "tone": 0.2,
+   "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Tehran",
@@ -265,8 +279,9 @@
    "source": "corriere-sample.example",
    "country": "IT",
    "lang": "it",
-   "time": "2026-10-20T21:39:00Z",
-   "tone": -5.4
+   "time": "2026-10-20T22:39:00Z",
+   "tone": -5.4,
+   "image": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Tehran",
@@ -274,8 +289,9 @@
    "source": "tageszeitung.example",
    "country": "DE",
    "lang": "de",
-   "time": "2026-10-20T21:07:00Z",
-   "tone": -1
+   "time": "2026-10-20T22:07:00Z",
+   "tone": -1,
+   "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Tehran",
@@ -283,8 +299,9 @@
    "source": "la-voz.example",
    "country": "AR",
    "lang": "es",
-   "time": "2026-10-20T20:27:00Z",
-   "tone": -4.2
+   "time": "2026-10-20T21:27:00Z",
+   "tone": -4.2,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Tehran",
@@ -292,8 +309,9 @@
    "source": "asahi-sample.example",
    "country": "JP",
    "lang": "ja",
-   "time": "2026-10-20T20:05:00Z",
-   "tone": 0.7
+   "time": "2026-10-20T21:05:00Z",
+   "tone": 0.7,
+   "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Tehran",
@@ -301,8 +319,9 @@
    "source": "el-diario.example",
    "country": "MX",
    "lang": "es",
-   "time": "2026-10-20T19:32:00Z",
-   "tone": 1.4
+   "time": "2026-10-20T20:32:00Z",
+   "tone": 1.4,
+   "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Tehran",
@@ -310,8 +329,9 @@
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-20T19:15:00Z",
-   "tone": -0.6
+   "time": "2026-10-20T20:15:00Z",
+   "tone": -0.6,
+   "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Tehran",
@@ -319,8 +339,9 @@
    "source": "hurriyet-sample.example",
    "country": "TR",
    "lang": "tr",
-   "time": "2026-10-20T18:48:00Z",
-   "tone": 1.8
+   "time": "2026-10-20T19:48:00Z",
+   "tone": 1.8,
+   "image": ""
   },
   {
    "title": "",
@@ -328,8 +349,9 @@
    "source": "morning-wire.example",
    "country": "GB",
    "lang": "en",
-   "time": "2026-10-20T18:15:00Z",
-   "tone": 0.3
+   "time": "2026-10-20T19:15:00Z",
+   "tone": 0.3,
+   "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Tehran",
@@ -337,8 +359,9 @@
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T17:45:00Z",
-   "tone": -6.6
+   "time": "2026-10-20T18:45:00Z",
+   "tone": -6.6,
+   "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Tehran",
@@ -346,8 +369,9 @@
    "source": "vesti-news.example",
    "country": "RU",
    "lang": "ru",
-   "time": "2026-10-20T17:21:00Z",
-   "tone": -2.9
+   "time": "2026-10-20T18:21:00Z",
+   "tone": -2.9,
+   "image": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Tehran",
@@ -355,8 +379,9 @@
    "source": "lagos-sun.example",
    "country": "NG",
    "lang": "en",
-   "time": "2026-10-20T16:45:00Z",
-   "tone": -6.4
+   "time": "2026-10-20T17:45:00Z",
+   "tone": -6.4,
+   "image": ""
   },
   {
    "title": "[sample] Wildfire forces evacuations near Tehran",
@@ -364,8 +389,9 @@
    "source": "el-diario.example",
    "country": "MX",
    "lang": "es",
-   "time": "2026-10-20T16:35:00Z",
-   "tone": 4.8
+   "time": "2026-10-20T17:35:00Z",
+   "tone": 4.8,
+   "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Tehran",
@@ -373,8 +399,9 @@
    "source": "hindustan-post.example",
    "country": "IN",
    "lang": "en",
-   "time": "2026-10-20T15:53:00Z",
-   "tone": -6.6
+   "time": "2026-10-20T16:53:00Z",
+   "tone": -6.6,
+   "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Tehran",
@@ -382,8 +409,9 @@
    "source": "wire-service.example",
    "country": "",
    "lang": "en",
-   "time": "2026-10-20T15:32:00Z",
-   "tone": 4.4
+   "time": "2026-10-20T16:32:00Z",
+   "tone": 4.4,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Tehran",
@@ -391,8 +419,9 @@
    "source": "haaretz-sample.example",
    "country": "IL",
    "lang": "he",
-   "time": "2026-10-20T15:07:00Z",
-   "tone": -5.3
+   "time": "2026-10-20T16:07:00Z",
+   "tone": -5.3,
+   "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Tehran",
@@ -400,8 +429,9 @@
    "source": "jakarta-pos.example",
    "country": "ID",
    "lang": "id",
-   "time": "2026-10-20T14:37:00Z",
-   "tone": 2.7
+   "time": "2026-10-20T15:37:00Z",
+   "tone": 2.7,
+   "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Tehran",
@@ -409,8 +439,9 @@
    "source": "la-voz.example",
    "country": "AR",
    "lang": "es",
-   "time": "2026-10-20T14:06:00Z",
-   "tone": 0.2
+   "time": "2026-10-20T15:06:00Z",
+   "tone": 0.2,
+   "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Tehran",
@@ -418,8 +449,9 @@
    "source": "nord-avis.example",
    "country": "NO",
    "lang": "no",
-   "time": "2026-10-20T13:32:00Z",
-   "tone": 2.4
+   "time": "2026-10-20T14:32:00Z",
+   "tone": 2.4,
+   "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Tehran",
@@ -427,8 +459,9 @@
    "source": "al-akhbar.example",
    "country": "EG",
    "lang": "ar",
-   "time": "2026-10-20T13:09:00Z",
-   "tone": 0.6
+   "time": "2026-10-20T14:09:00Z",
+   "tone": 0.6,
+   "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Tehran",
@@ -436,8 +469,9 @@
    "source": "wire-service.example",
    "country": "",
    "lang": "en",
-   "time": "2026-10-20T12:43:00Z",
-   "tone": -1
+   "time": "2026-10-20T13:43:00Z",
+   "tone": -1,
+   "image": ""
   },
   {
    "title": "[sample] Wildfire forces evacuations near Tehran",
@@ -445,8 +479,9 @@
    "source": "harbour-press.example",
    "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T12:12:00Z",
-   "tone": 2.4
+   "time": "2026-10-20T13:12:00Z",
+   "tone": 2.4,
+   "image": ""
   },
   {
    "title": "[sample] Trade talks resume after pause near Tehran",
@@ -454,8 +489,9 @@
    "source": "el-diario.example",
    "country": "MX",
    "lang": "es",
-   "time": "2026-10-20T11:59:00Z",
-   "tone": 2.9
+   "time": "2026-10-20T12:59:00Z",
+   "tone": 2.9,
+   "image": ""
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Tehran",
@@ -463,8 +499,9 @@
    "source": "el-diario.example",
    "country": "MX",
    "lang": "es",
-   "time": "2026-10-20T11:23:00Z",
-   "tone": -6.2
+   "time": "2026-10-20T12:23:00Z",
+   "tone": -6.2,
+   "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Tehran",
@@ -472,8 +509,9 @@
    "source": "tehran-times.example",
    "country": "IR",
    "lang": "fa",
-   "time": "2026-10-20T10:52:00Z",
-   "tone": 2.2
+   "time": "2026-10-20T11:52:00Z",
+   "tone": 2.2,
+   "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Tehran",
@@ -481,8 +519,9 @@
    "source": "asahi-sample.example",
    "country": "JP",
    "lang": "ja",
-   "time": "2026-10-20T10:20:00Z",
-   "tone": -0.2
+   "time": "2026-10-20T11:20:00Z",
+   "tone": -0.2,
+   "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Tehran",
@@ -490,8 +529,9 @@
    "source": "nord-avis.example",
    "country": "NO",
    "lang": "no",
-   "time": "2026-10-20T09:51:00Z",
-   "tone": -1.8
+   "time": "2026-10-20T10:51:00Z",
+   "tone": -1.8,
+   "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Tehran",
@@ -499,8 +539,9 @@
    "source": "morning-wire.example",
    "country": "GB",
    "lang": "en",
-   "time": "2026-10-20T09:24:00Z",
-   "tone": 0.6
+   "time": "2026-10-20T10:24:00Z",
+   "tone": 0.6,
+   "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Tehran",
@@ -508,8 +549,9 @@
    "source": "o-correio.example",
    "country": "BR",
    "lang": "pt",
-   "time": "2026-10-20T09:02:00Z",
-   "tone": 4.9
+   "time": "2026-10-20T10:02:00Z",
+   "tone": 4.9,
+   "image": ""
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Tehran",
@@ -517,8 +559,9 @@
    "source": "al-akhbar.example",
    "country": "EG",
    "lang": "ar",
-   "time": "2026-10-20T08:36:00Z",
-   "tone": -5.5
+   "time": "2026-10-20T09:36:00Z",
+   "tone": -5.5,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Tehran",
@@ -526,8 +569,9 @@
    "source": "nation-ke.example",
    "country": "KE",
    "lang": "en",
-   "time": "2026-10-20T08:06:00Z",
-   "tone": 3.6
+   "time": "2026-10-20T09:06:00Z",
+   "tone": 3.6,
+   "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Tehran",
@@ -535,8 +579,9 @@
    "source": "hurriyet-sample.example",
    "country": "TR",
    "lang": "tr",
-   "time": "2026-10-20T07:32:00Z",
-   "tone": -5.4
+   "time": "2026-10-20T08:32:00Z",
+   "tone": -5.4,
+   "image": ""
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Tehran",
@@ -544,8 +589,9 @@
    "source": "daily-ledger.example",
    "country": "US",
    "lang": "en",
-   "time": "2026-10-20T07:16:00Z",
-   "tone": 0.9
+   "time": "2026-10-20T08:16:00Z",
+   "tone": 0.9,
+   "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Tehran",
@@ -553,8 +599,9 @@
    "source": "corriere-sample.example",
    "country": "IT",
    "lang": "it",
-   "time": "2026-10-20T06:53:00Z",
-   "tone": 3.2
+   "time": "2026-10-20T07:53:00Z",
+   "tone": 3.2,
+   "image": ""
   },
   {
    "title": "",
@@ -562,8 +609,9 @@
    "source": "lagos-sun.example",
    "country": "NG",
    "lang": "en",
-   "time": "2026-10-20T06:18:00Z",
-   "tone": -3.1
+   "time": "2026-10-20T07:18:00Z",
+   "tone": -3.1,
+   "image": ""
   },
   {
    "title": "[sample] Wildfire forces evacuations near Tehran",
@@ -571,8 +619,9 @@
    "source": "daily-ledger.example",
    "country": "US",
    "lang": "en",
-   "time": "2026-10-20T05:57:00Z",
-   "tone": -4.6
+   "time": "2026-10-20T06:57:00Z",
+   "tone": -4.6,
+   "image": ""
   },
   {
    "title": "[sample] Aid convoy reaches border crossing near Tehran",
@@ -580,8 +629,9 @@
    "source": "harbour-press.example",
    "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T05:27:00Z",
-   "tone": 4.8
+   "time": "2026-10-20T06:27:00Z",
+   "tone": 4.8,
+   "image": ""
   }
  ]
 }

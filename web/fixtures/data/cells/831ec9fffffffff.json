@@ -139,8 +139,9 @@
    "source": "hurriyet-sample.example",
    "country": "TR",
    "lang": "tr",
-   "time": "2026-10-21T03:54:00Z",
-   "tone": -2.6
+   "time": "2026-10-21T04:54:00Z",
+   "tone": -2.6,
+   "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Istanbul",
@@ -148,8 +149,9 @@
    "source": "morning-wire.example",
    "country": "GB",
    "lang": "en",
-   "time": "2026-10-21T03:20:00Z",
-   "tone": 3.3
+   "time": "2026-10-21T04:20:00Z",
+   "tone": 3.3,
+   "image": ""
   },
   {
    "title": "[sample] Football club confirms new coach near Istanbul",
@@ -157,8 +159,9 @@
    "source": "hurriyet-sample.example",
    "country": "TR",
    "lang": "tr",
-   "time": "2026-10-21T03:02:00Z",
-   "tone": 0.4
+   "time": "2026-10-21T04:02:00Z",
+   "tone": 0.4,
+   "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Istanbul",
@@ -166,8 +169,9 @@
    "source": "la-voz.example",
    "country": "AR",
    "lang": "es",
-   "time": "2026-10-21T02:33:00Z",
-   "tone": -5.1
+   "time": "2026-10-21T03:33:00Z",
+   "tone": -5.1,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Istanbul",
@@ -175,8 +179,9 @@
    "source": "global-desk.example",
    "country": "CA",
    "lang": "en",
-   "time": "2026-10-21T02:08:00Z",
-   "tone": 2
+   "time": "2026-10-21T03:08:00Z",
+   "tone": 2,
+   "image": ""
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Istanbul",
@@ -184,8 +189,9 @@
    "source": "harbour-press.example",
    "country": "AU",
    "lang": "en",
-   "time": "2026-10-21T01:34:00Z",
-   "tone": -0.4
+   "time": "2026-10-21T02:34:00Z",
+   "tone": -0.4,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Istanbul",
@@ -193,8 +199,9 @@
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-21T01:03:00Z",
-   "tone": -6.3
+   "time": "2026-10-21T02:03:00Z",
+   "tone": -6.3,
+   "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Istanbul",
@@ -202,8 +209,9 @@
    "source": "vesti-news.example",
    "country": "RU",
    "lang": "ru",
-   "time": "2026-10-21T00:40:00Z",
-   "tone": -2.3
+   "time": "2026-10-21T01:40:00Z",
+   "tone": -2.3,
+   "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Istanbul",
@@ -211,8 +219,9 @@
    "source": "kyiv-herald.example",
    "country": "UA",
    "lang": "uk",
-   "time": "2026-10-21T00:24:00Z",
-   "tone": 3.9
+   "time": "2026-10-21T01:24:00Z",
+   "tone": 3.9,
+   "image": ""
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Istanbul",
@@ -220,8 +229,9 @@
    "source": "hurriyet-sample.example",
    "country": "TR",
    "lang": "tr",
-   "time": "2026-10-20T23:54:00Z",
-   "tone": -4
+   "time": "2026-10-21T00:54:00Z",
+   "tone": -4,
+   "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Istanbul",
@@ -229,8 +239,9 @@
    "source": "kyiv-herald.example",
    "country": "UA",
    "lang": "uk",
-   "time": "2026-10-20T23:24:00Z",
-   "tone": -6.4
+   "time": "2026-10-21T00:24:00Z",
+   "tone": -6.4,
+   "image": ""
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Istanbul",
@@ -238,8 +249,9 @@
    "source": "asahi-sample.example",
    "country": "JP",
    "lang": "ja",
-   "time": "2026-10-20T22:47:00Z",
-   "tone": -2
+   "time": "2026-10-20T23:47:00Z",
+   "tone": -2,
+   "image": ""
   },
   {
    "title": "[sample] Election commission publishes turnout figures near Istanbul",
@@ -247,8 +259,9 @@
    "source": "jakarta-pos.example",
    "country": "ID",
    "lang": "id",
-   "time": "2026-10-20T22:18:00Z",
-   "tone": -5.1
+   "time": "2026-10-20T23:18:00Z",
+   "tone": -5.1,
+   "image": ""
   },
   {
    "title": "",
@@ -256,8 +269,9 @@
    "source": "tageszeitung.example",
    "country": "DE",
    "lang": "de",
-   "time": "2026-10-20T21:59:00Z",
-   "tone": -0.9
+   "time": "2026-10-20T22:59:00Z",
+   "tone": -0.9,
+   "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Istanbul",
@@ -265,8 +279,9 @@
    "source": "gazeta-sample.example",
    "country": "PL",
    "lang": "pl",
-   "time": "2026-10-20T21:22:00Z",
-   "tone": 1
+   "time": "2026-10-20T22:22:00Z",
+   "tone": 1,
+   "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Istanbul",
@@ -274,8 +289,9 @@
    "source": "xinhua-sample.example",
    "country": "CN",
    "lang": "zh",
-   "time": "2026-10-20T21:09:00Z",
-   "tone": 4.9
+   "time": "2026-10-20T22:09:00Z",
+   "tone": 4.9,
+   "image": ""
   },
   {
    "title": "[sample] Aid convoy reaches border crossing near Istanbul",
@@ -283,8 +299,9 @@
    "source": "nation-ke.example",
    "country": "KE",
    "lang": "en",
-   "time": "2026-10-20T20:42:00Z",
-   "tone": 1.7
+   "time": "2026-10-20T21:42:00Z",
+   "tone": 1.7,
+   "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Istanbul",
@@ -292,8 +309,9 @@
    "source": "nation-ke.example",
    "country": "KE",
    "lang": "en",
-   "time": "2026-10-20T20:03:00Z",
-   "tone": 3.7
+   "time": "2026-10-20T21:03:00Z",
+   "tone": 3.7,
+   "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Istanbul",
@@ -301,8 +319,9 @@
    "source": "corriere-sample.example",
    "country": "IT",
    "lang": "it",
-   "time": "2026-10-20T19:45:00Z",
-   "tone": 1.6
+   "time": "2026-10-20T20:45:00Z",
+   "tone": 1.6,
+   "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Istanbul",
@@ -310,8 +329,9 @@
    "source": "gulf-report.example",
    "country": "AE",
    "lang": "ar",
-   "time": "2026-10-20T19:05:00Z",
-   "tone": -4.1
+   "time": "2026-10-20T20:05:00Z",
+   "tone": -4.1,
+   "image": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Istanbul",
@@ -319,8 +339,9 @@
    "source": "hurriyet-sample.example",
    "country": "TR",
    "lang": "tr",
-   "time": "2026-10-20T18:44:00Z",
-   "tone": 1.3
+   "time": "2026-10-20T19:44:00Z",
+   "tone": 1.3,
+   "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Istanbul",
@@ -328,8 +349,9 @@
    "source": "nord-avis.example",
    "country": "NO",
    "lang": "no",
-   "time": "2026-10-20T18:14:00Z",
-   "tone": 4.2
+   "time": "2026-10-20T19:14:00Z",
+   "tone": 4.2,
+   "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Istanbul",
@@ -337,8 +359,9 @@
    "source": "corriere-sample.example",
    "country": "IT",
    "lang": "it",
-   "time": "2026-10-20T17:48:00Z",
-   "tone": -2.4
+   "time": "2026-10-20T18:48:00Z",
+   "tone": -2.4,
+   "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Istanbul",
@@ -346,8 +369,9 @@
    "source": "vesti-news.example",
    "country": "RU",
    "lang": "ru",
-   "time": "2026-10-20T17:20:00Z",
-   "tone": -6.2
+   "time": "2026-10-20T18:20:00Z",
+   "tone": -6.2,
+   "image": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Istanbul",
@@ -355,8 +379,9 @@
    "source": "cape-mail.example",
    "country": "ZA",
    "lang": "en",
-   "time": "2026-10-20T16:49:00Z",
-   "tone": -4.1
+   "time": "2026-10-20T17:49:00Z",
+   "tone": -4.1,
+   "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Istanbul",
@@ -364,8 +389,9 @@
    "source": "le-quotidien.example",
    "country": "FR",
    "lang": "fr",
-   "time": "2026-10-20T16:32:00Z",
-   "tone": -5.3
+   "time": "2026-10-20T17:32:00Z",
+   "tone": -5.3,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Istanbul",
@@ -373,8 +399,9 @@
    "source": "hindustan-post.example",
    "country": "IN",
    "lang": "en",
-   "time": "2026-10-20T16:03:00Z",
-   "tone": -6.6
+   "time": "2026-10-20T17:03:00Z",
+   "tone": -6.6,
+   "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Istanbul",
@@ -382,8 +409,9 @@
    "source": "lagos-sun.example",
    "country": "NG",
    "lang": "en",
-   "time": "2026-10-20T15:27:00Z",
-   "tone": 2.7
+   "time": "2026-10-20T16:27:00Z",
+   "tone": 2.7,
+   "image": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Istanbul",
@@ -391,8 +419,9 @@
    "source": "gulf-report.example",
    "country": "AE",
    "lang": "ar",
-   "time": "2026-10-20T15:13:00Z",
-   "tone": -1.1
+   "time": "2026-10-20T16:13:00Z",
+   "tone": -1.1,
+   "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Istanbul",
@@ -400,8 +429,9 @@
    "source": "hindustan-post.example",
    "country": "IN",
    "lang": "en",
-   "time": "2026-10-20T14:44:00Z",
-   "tone": -6.7
+   "time": "2026-10-20T15:44:00Z",
+   "tone": -6.7,
+   "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Istanbul",
@@ -409,8 +439,9 @@
    "source": "hurriyet-sample.example",
    "country": "TR",
    "lang": "tr",
-   "time": "2026-10-20T14:06:00Z",
-   "tone": -1.9
+   "time": "2026-10-20T15:06:00Z",
+   "tone": -1.9,
+   "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Istanbul",
@@ -418,8 +449,9 @@
    "source": "tageszeitung.example",
    "country": "DE",
    "lang": "de",
-   "time": "2026-10-20T13:44:00Z",
-   "tone": 4
+   "time": "2026-10-20T14:44:00Z",
+   "tone": 4,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Istanbul",
@@ -427,8 +459,9 @@
    "source": "o-correio.example",
    "country": "BR",
    "lang": "pt",
-   "time": "2026-10-20T13:18:00Z",
-   "tone": -5.3
+   "time": "2026-10-20T14:18:00Z",
+   "tone": -5.3,
+   "image": ""
   },
   {
    "title": "[sample] Officials meet over regional dispute near Istanbul",
@@ -436,8 +469,9 @@
    "source": "tageszeitung.example",
    "country": "DE",
    "lang": "de",
-   "time": "2026-10-20T12:43:00Z",
-   "tone": 0.2
+   "time": "2026-10-20T13:43:00Z",
+   "tone": 0.2,
+   "image": ""
   },
   {
    "title": "[sample] Storm disrupts transport links near Istanbul",
@@ -445,8 +479,9 @@
    "source": "hindustan-post.example",
    "country": "IN",
    "lang": "en",
-   "time": "2026-10-20T12:09:00Z",
-   "tone": -4.3
+   "time": "2026-10-20T13:09:00Z",
+   "tone": -4.3,
+   "image": ""
   },
   {
    "title": "[sample] Court hears appeal in landmark case near Istanbul",
@@ -454,8 +489,9 @@
    "source": "el-diario.example",
    "country": "MX",
    "lang": "es",
-   "time": "2026-10-20T11:54:00Z",
-   "tone": 2.3
+   "time": "2026-10-20T12:54:00Z",
+   "tone": 2.3,
+   "image": ""
   },
   {
    "title": "[sample] Wildfire forces evacuations near Istanbul",
@@ -463,8 +499,9 @@
    "source": "daily-ledger.example",
    "country": "US",
    "lang": "en",
-   "time": "2026-10-20T11:28:00Z",
-   "tone": 4.6
+   "time": "2026-10-20T12:28:00Z",
+   "tone": 4.6,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Istanbul",
@@ -472,8 +509,9 @@
    "source": "daily-ledger.example",
    "country": "US",
    "lang": "en",
-   "time": "2026-10-20T10:53:00Z",
-   "tone": 4.6
+   "time": "2026-10-20T11:53:00Z",
+   "tone": 4.6,
+   "image": ""
   },
   {
    "title": "[sample] Trade talks resume after pause near Istanbul",
@@ -481,8 +519,9 @@
    "source": "o-correio.example",
    "country": "BR",
    "lang": "pt",
-   "time": "2026-10-20T10:33:00Z",
-   "tone": 5
+   "time": "2026-10-20T11:33:00Z",
+   "tone": 5,
+   "image": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Istanbul",
@@ -490,8 +529,9 @@
    "source": "le-quotidien.example",
    "country": "FR",
    "lang": "fr",
-   "time": "2026-10-20T09:59:00Z",
-   "tone": -0.5
+   "time": "2026-10-20T10:59:00Z",
+   "tone": -0.5,
+   "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Istanbul",
@@ -499,8 +539,9 @@
    "source": "corriere-sample.example",
    "country": "IT",
    "lang": "it",
-   "time": "2026-10-20T09:36:00Z",
-   "tone": 3.7
+   "time": "2026-10-20T10:36:00Z",
+   "tone": 3.7,
+   "image": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Istanbul",
@@ -508,8 +549,9 @@
    "source": "harbour-press.example",
    "country": "AU",
    "lang": "en",
-   "time": "2026-10-20T09:03:00Z",
-   "tone": 4.8
+   "time": "2026-10-20T10:03:00Z",
+   "tone": 4.8,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Istanbul",
@@ -517,8 +559,9 @@
    "source": "gulf-report.example",
    "country": "AE",
    "lang": "ar",
-   "time": "2026-10-20T08:38:00Z",
-   "tone": 3
+   "time": "2026-10-20T09:38:00Z",
+   "tone": 3,
+   "image": ""
   },
   {
    "title": "[sample] Aid convoy reaches border crossing near Istanbul",
@@ -526,8 +569,9 @@
    "source": "la-voz.example",
    "country": "AR",
    "lang": "es",
-   "time": "2026-10-20T08:12:00Z",
-   "tone": -6.1
+   "time": "2026-10-20T09:12:00Z",
+   "tone": -6.1,
+   "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Istanbul",
@@ -535,8 +579,9 @@
    "source": "lagos-sun.example",
    "country": "NG",
    "lang": "en",
-   "time": "2026-10-20T07:31:00Z",
-   "tone": 0.5
+   "time": "2026-10-20T08:31:00Z",
+   "tone": 0.5,
+   "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Istanbul",
@@ -544,8 +589,9 @@
    "source": "nord-avis.example",
    "country": "NO",
    "lang": "no",
-   "time": "2026-10-20T07:10:00Z",
-   "tone": 4.2
+   "time": "2026-10-20T08:10:00Z",
+   "tone": 4.2,
+   "image": ""
   },
   {
    "title": "[sample] Ministers discuss energy prices near Istanbul",
@@ -553,8 +599,9 @@
    "source": "nation-ke.example",
    "country": "KE",
    "lang": "en",
-   "time": "2026-10-20T06:48:00Z",
-   "tone": -0.7
+   "time": "2026-10-20T07:48:00Z",
+   "tone": -0.7,
+   "image": ""
   },
   {
    "title": "[sample] Protest gathers in city centre near Istanbul",
@@ -562,8 +609,9 @@
    "source": "global-desk.example",
    "country": "CA",
    "lang": "en",
-   "time": "2026-10-20T06:14:00Z",
-   "tone": -1.7
+   "time": "2026-10-20T07:14:00Z",
+   "tone": -1.7,
+   "image": ""
   },
   {
    "title": "[sample] Central bank holds interest rate near Istanbul",
@@ -571,8 +619,9 @@
    "source": "vesti-news.example",
    "country": "RU",
    "lang": "ru",
-   "time": "2026-10-20T05:54:00Z",
-   "tone": -2
+   "time": "2026-10-20T06:54:00Z",
+   "tone": -2,
+   "image": ""
   },
   {
    "title": "[sample] Researchers report vaccine trial results near Istanbul",
@@ -580,8 +629,9 @@
    "source": "daily-ledger.example",
    "country": "US",
    "lang": "en",
-   "time": "2026-10-20T05:15:00Z",
-   "tone": 1.3
+   "time": "2026-10-20T06:15:00Z",
+   "tone": 1.3,
+   "image": ""
   }
  ]
 }

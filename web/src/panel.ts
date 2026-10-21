@@ -8,6 +8,7 @@ const panel = $<HTMLElement>('panel');
 const title = $<HTMLHeadingElement>('panel-title');
 const why = $<HTMLParagraphElement>('panel-why');
 const state = $<HTMLParagraphElement>('panel-state');
+const note = $<HTMLParagraphElement>('panel-note');
 const list = $<HTMLOListElement>('panel-list');
 const closeButton = $<HTMLButtonElement>('panel-close');
 
@@ -99,6 +100,21 @@ export function showDetail(detail: CellDetail, windowHours: number) {
   else setState('');
 }
 
+/** A replay cell that is not in the current snapshot: there is no detail file for it. */
+export function openMissing(n: number) {
+  title.textContent = plural(n, 'article', 'articles');
+  why.textContent = '';
+  list.replaceChildren();
+  setState('No current details for this place.');
+  show();
+}
+
+/** One quiet line under the counts, e.g. while replaying a past frame. */
+export function setNote(text: string) {
+  note.textContent = text;
+  note.hidden = !text;
+}
+
 export function showError() {
   list.replaceChildren();
   setState('Could not load the articles for this place.');
@@ -119,6 +135,11 @@ export function isOpen(): boolean {
 export function initPanel(handleClose: () => void) {
   onClose = handleClose;
   closeButton.addEventListener('click', close);
+  // Expose the panel's height so the scrubber can sit above the bottom sheet on phones.
+  const stage = panel.parentElement!;
+  new ResizeObserver(() => {
+    stage.style.setProperty('--sheet-h', `${panel.hidden ? 0 : panel.offsetHeight}px`);
+  }).observe(panel);
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !panel.hidden) close();
   });
