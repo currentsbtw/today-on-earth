@@ -29,6 +29,11 @@ export interface ArticleRecord {
   themes: string[];
   /** First YouTube video URL from GKG SocialVideoEmbeds, "" when none. */
   video: string;
+  /**
+   * Kinds of the article from its raw V2Themes (kinds.ts): sorted distinct letters among
+   * c (conflict), d (disaster), k (crime), p (politics), "" when none. Ingest-internal.
+   */
+  kinds: string;
 }
 
 /** `/data/heat.json` (docs/DATA-CONTRACT.md). */
@@ -114,6 +119,55 @@ export interface Story {
   headline: string;
   headlineSource: string;
   headlineLang: string;
+  /** URL of the article the headline comes from, "" when none. */
+  headlineUrl: string;
   entities: string[];
   articles: CellArticle[];
+}
+
+/** `/data/broadcast.json` (docs/DATA-CONTRACT.md "Broadcast"); mirrors web/src/broadcast.ts. */
+export type SlotId = "loudest" | "planet" | "rising" | "brightest" | "ordinary" | "faint";
+
+export interface SlotCell {
+  id: string;
+  name: string;
+  lat: number;
+  lon: number;
+  home: string;
+}
+
+export interface SlotStory {
+  headline: string;
+  headlineSource: string;
+  headlineLang: string;
+  headlineUrl: string;
+  n: number;
+  u: number;
+  o: number;
+  c: number;
+  i: number;
+  l: number;
+  t: number;
+  first: string;
+  last: string;
+}
+
+export interface Slot {
+  id: SlotId;
+  available: boolean;
+  reason?: "baseline" | "none";
+  availableFrom?: string;
+  cell?: SlotCell;
+  story?: SlotStory;
+  /** Rising only. */
+  ratio?: number;
+  /** Rising and faint. */
+  b?: number;
+}
+
+export interface BroadcastFile {
+  generatedAt: string;
+  windowHours: number;
+  baselineDays: number;
+  slots: Slot[];
 }

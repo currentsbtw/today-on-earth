@@ -167,6 +167,7 @@ same thing, computed deterministically from what GDELT already tags per article
     "headline": "…",            // the title of the story's medoid article (max token overlap with the rest); may be empty
     "headlineSource": "bbc.co.uk",
     "headlineLang": "en",
+    "headlineUrl": "https://…", // URL of the article the headline comes from (the medoid); "" when none (added 2026-10-21)
     "entities": ["donald trump", "nato", "brussels"],  // up to 5 most shared persons/orgs, lowercase as GDELT spells them;
                                                        // themes only top up when fewer than 2, rendered as words ("climatechange")
     "articles": [ { …same article object as above… } ] // newest 6, outlet-spread (max 2 per outlet), one per reprint key
@@ -227,6 +228,94 @@ Frames carry only what the heat layer needs. Target size: under 150 KB per frame
 uncompressed (a full 24h window measured 127 KB, about 36 KB gzipped on the wire).
 Cells with `n` < 2 are dropped, as in `heat.json`. No per-cell detail files exist for
 past frames: `cells/<id>.json` always describes the current snapshot only.
+
+## Broadcast (added 2026-10-21): `/data/broadcast.json`  (one small file, written every run)
+
+Six fixed slots, each filled by a published, deterministic rule from the stories of this
+snapshot. No text of ours: a slot carries an outlet's own headline plus the story's numbers.
+
+```jsonc
+{
+  "generatedAt": "2026-10-26T19:14:58Z", "windowHours": 24, "baselineDays": 5,  // == heat.json
+  "slots": [   // always six, in this order: loudest, planet, rising, brightest, ordinary, faint
+    { "id": "loudest", "available": true,
+      "cell": { "id": "832aa8fffffffff", "name": "Washington, United States", "lat": 38.96, "lon": -76.55, "home": "US" },
+      "story": { "headline": "…", "headlineSource": "bbc.co.uk", "headlineLang": "en", "headlineUrl": "https://…",
+                 "n": 212, "u": 150, "o": 96, "c": 21, "i": 20, "l": 7, "t": -4.1,
+                 "first": "2026-10-26T01:15:00Z", "last": "2026-10-26T04:30:00Z" } },
+    { "id": "planet", "available": true, "cell": { … }, "story": { … } },
+    { "id": "rising", "available": true, "cell": { … }, "story": { … }, "ratio": 6.3, "b": 12.5 },
+    { "id": "brightest", "available": true, "cell": { … }, "story": { … } },
+    { "id": "ordinary", "available": false, "reason": "none" },
+    { "id": "faint", "available": true, "cell": { … }, "story": { … }, "b": 1.5 }
+  ]
+}
+```
+
+While `baselineDays` < 3, rising and faint wait instead:
+`{ "id": "rising", "available": false, "reason": "baseline", "availableFrom": "2026-10-24" }`.
+
+- `cell`: the cell's `id`, `name`, `lat`, `lon` as in `heat.json`, and `home` as in its cell file.
+- `story`: the story's fields exactly as in the cell file's `stories` (without `entities` and
+  `articles`). The headline is the story's medoid title, verbatim.
+- `ratio` (1 decimal) only on rising; `b` (the cell's `b` from `heat.json`) only on rising and
+  faint. An unavailable slot carries no `cell`, `story`, `ratio` or `b`.
+- `reason`: `"none"` when no story meets the rule; `"baseline"` for rising and faint while
+  `baselineDays` < 3. Only a `"baseline"` slot has `availableFrom`.
+- `availableFrom`: the first UTC day on which 3 complete baseline days can exist. Complete
+  days are strictly after the carried baseline's `since` and before today (see Baseline), so
+  the third one (`since` + 3) has passed on `since` + 4 days. When days were lost to missed
+  files it is never earlier than today + (3 - `baselineDays`) days, so it is always in the
+  future. `""` when no baseline exists yet.
+- If building the broadcast fails, the run logs the error and still writes the file, with
+  all six slots `available: false, reason: "none"`: the map snapshot is never held back by it.
+
+**Rules.** Candidates are every story of every cell in this snapshot (the cell files'
+`stories`), each with its cell. **Every slot requires `u` >= 3**: a story with fewer than
+three distinct headlines is one report echoed, not a signal. **Every slot also requires a
+non-empty `headline`**: a filled slot always carries an outlet's own headline. Each story fills at most one
+slot. Slots are filled in the order listed, so a story taken by "loudest" is no longer a
+candidate for "planet". Ties go to the higher `n`, then the earlier `first`, then the cell
+id ascending (then the story's position in its cell). The thresholds are constants in
+`ingest/src/broadcast.ts`.
+
+| Slot | Picks | Requires (besides `u` >= 3 and a headline) |
+|---|---|---|
+| `loudest` | the story with the most independent voices, min(`u`, `o`) (distinct headlines, at most one per outlet, so neither syndication networks nor one outlet's many copies win); ties go to the higher `o`, then the higher `n`, the earlier `first`, the cell id | nothing more |
+| `planet` | the story with the highest international attention `i` (outlet countries other than the place's own) | `o` >= 10, and the cell's `home` is known (not `""`; with an unknown home `i` equals `c` and would count the place's own country) |
+| `rising` | among cells with `n` >= 20, the cell with the highest `ratio` = `n` / max(`b`, 3), 1 decimal (ties: higher cell `n`, then cell id); its story is that cell's story with the most `o`. If every story of that cell is already taken, the next cell by `ratio`. | `baselineDays` >= 3 |
+| `brightest` | the story with the highest mean tone `t` | `o` >= 10, `c` >= 3, `n` >= 10 |
+| `ordinary` | the story with the most `o` among stories mostly outside conflict, politics, crime and disaster: at most 25% of the story's articles carry any kind (below) | `o` >= 10, `c` >= 2 |
+| `faint` | the story with the most `o` from a usually quiet cell: `b` <= 3 (brand-new cells with `b` = 0 included) | `baselineDays` >= 3, `o` >= 5, `c` >= 2 |
+
+Every cell in `heat.json` has a `b`, so for rising every cell with `n` >= 20 is a candidate;
+a brand-new cell (`b` = 0) is measured against the floor of 3.
+
+**Kinds** (ingest-internal, never in a public file). Each article gets the set of kinds among
+`c` conflict, `p` politics, `k` crime, `d` disaster, from GDELT's raw V2Themes (every theme
+of the article, before the grouping deny list in Stories drops the broad families). A theme
+name matches a rule exactly, or by prefix where the rule ends in `*` (case-insensitive):
+
+- conflict: ARMEDCONFLICT, MILITARY, TERROR, WMD, REBELLION, REBELS, SEIGE, BLOCKADE,
+  CEASEFIRE, KILL, WOUND, UNREST_*
+- politics: ELECTION, LEGISLATION, GENERAL_GOVERNMENT, LEADER, GOV_*,
+  USPEC_POLITICS_GENERAL1, POLITICAL_TURMOIL, RESIGNATION, APPOINTMENT, CONSTITUTIONAL,
+  DEMOCRACY, NEGOTIATIONS, ALLIANCE, SANCTIONS, SOVEREIGNTY
+- crime: ARREST, TRIAL, SOC_GENERALCRIME, CRIME_*, KIDNAP, RAPE, DRUG_TRADE,
+  ORGANIZED_CRIME, CORRUPTION, CYBER_ATTACK
+- disaster: NATURAL_DISASTER_*, MANMADE_DISASTER_* except MANMADE_DISASTER_IMPLIED,
+  DISASTER_*, EVACUATION
+
+GDELT's CRISISLEX_ themes are not mapped: they are crisis-lexicon word matches, not topics.
+Measured 2026-10-21 on 10,652 placed articles (4 files of each feed): CRISISLEX_CRISISLEXREC
+tagged 35% and CRISISLEX_C07_SAFETY 28% of articles, and 5.4% were tagged by a CRISISLEX_C*
+or CRISISLEX_T* theme alone (restaurant reviews, earnings calls, celebrity quotes). With the
+lists above, articles carrying each kind: conflict 33%, politics 49%, crime 24%, disaster 9%,
+any 67%.
+
+A story's tagged share = its articles with any kind / its `n`. Records carried from before
+this field existed (state version 4 and older) have no kinds and count as untagged, so
+"ordinary" may be loose during the first 24 h after the deploy that added it.
 
 ## Archive (GitHub Releases, added 2026-10-21)
 

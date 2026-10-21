@@ -31,6 +31,7 @@ function rec(p: Partial<ArticleRecord> = {}): ArticleRecord {
     themes: [],
     video: "",
     locationCountry: "",
+    kinds: "",
     ...p,
   };
 }

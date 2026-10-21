@@ -26,7 +26,7 @@ import { mergeRecords } from "../src/window.ts";
 const FEEDS = ["english", "translingual"];
 const rec = (url: string, time: string, cellId = "832aa8fffffffff"): ArticleRecord => ({
   url, title: "", source: "a.com", country: "", lang: "en", time, tone: 0, image: "", lat: 0, lon: 0,
-  cellId, locationName: "", persons: [], orgs: [], themes: [], video: "", locationCountry: "",
+  cellId, locationName: "", persons: [], orgs: [], themes: [], video: "", locationCountry: "", kinds: "",
 });
 const quiet = () => {};
 const day = (offset: number) => new Date(Date.UTC(2026, 9, 21 + offset)).toISOString().slice(0, 10);

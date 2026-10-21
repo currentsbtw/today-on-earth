@@ -2,6 +2,7 @@ import { latLngToCell } from "h3-js";
 import type { CountryLookup } from "./domains.ts";
 import { parseNames, parseOrgs, parseThemes } from "./entities.ts";
 import { fipsToIso } from "./fips-to-iso.ts";
+import { parseKinds } from "./kinds.ts";
 import { cleanPlaceName } from "./placename.ts";
 import { langFromTranslationInfo } from "./lang.ts";
 import type { ArticleRecord } from "./types.ts";
@@ -219,6 +220,7 @@ export function parseGkgLine(line: string, countryOf: CountryLookup): ParseResul
       orgs: parseOrgs(f[COL.V2_ORGANIZATIONS]).map(detach),
       themes: parseThemes(f[COL.V2_THEMES]).map(detach),
       video: detach(parseVideo(f[COL.SOCIAL_VIDEO_EMBEDS])),
+      kinds: parseKinds(f[COL.V2_THEMES]),
     },
   };
 }

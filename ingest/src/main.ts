@@ -18,6 +18,7 @@ import { mkdir, rm, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildSnapshot } from "./aggregate.ts";
+import { buildBroadcastSafe } from "./broadcast.ts";
 import { loadCountryLookup } from "./domains.ts";
 import { FEEDS, fileUrl, mapLimit, streamZipLines, type Feed } from "./fetch.ts";
 import { createRecordAssembler, parseGkgLine, type SkipReason } from "./gkg.ts";
@@ -158,6 +159,8 @@ async function main(): Promise<number> {
   await mapLimit(snapshot.cells, 32, (cell) => writeFile(join(cellsDir, `${cell.id}.json`), JSON.stringify(cell)));
   const heatJson = JSON.stringify(snapshot.heat);
   await writeFile(join(outDir, "heat.json"), heatJson);
+  const broadcast = buildBroadcastSafe({ heat: snapshot.heat, cells: snapshot.cells, storyTagged: snapshot.storyTagged, baselineSince: nextBaseline.since }, log);
+  await writeFile(join(outDir, "broadcast.json"), JSON.stringify(broadcast));
   const stateBytes = encodeState({ feeds, records }, snapshot.heat.generatedAt);
   await mkdir(carryDir, { recursive: true });
   await writeFile(join(carryDir, "state.json.gz"), stateBytes);
@@ -182,6 +185,7 @@ async function main(): Promise<number> {
 
   const t = snapshot.heat.totals;
   const storyCount = snapshot.cells.reduce((sum, c) => sum + c.stories.length, 0);
+  log(`broadcast: ${broadcast.slots.map((s) => `${s.id}=${s.available ? "on" : s.reason}`).join(" ")}`);
   log(`stories: ${storyCount} stories across ${snapshot.cells.length} cells, grouped in ${(snapshot.storiesMs / 1000).toFixed(2)}s`);
   log(
     `ingest: files fetched=${ok.length} missing=${missing.length} failed=${failed.length}; ` +

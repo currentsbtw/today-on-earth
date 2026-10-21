@@ -10,7 +10,7 @@ const CELL = "832aa8fffffffff";
 function art(p: Partial<ArticleRecord> & { url: string; time: string }): ArticleRecord {
   return {
     title: "", source: "x.com", country: "US", lang: "en", tone: 0, image: "", lat: 38.9, lon: -77,
-    cellId: CELL, locationName: "Washington", persons: [], orgs: [], themes: [], video: "", locationCountry: "", ...p,
+    cellId: CELL, locationName: "Washington", persons: [], orgs: [], themes: [], video: "", locationCountry: "", kinds: "", ...p,
   };
 }
 const t = (h: number, m = 0) => `2026-10-21T${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:00Z`;
@@ -138,8 +138,8 @@ test("title tokens: lowercase, punctuation stripped, short and stop words droppe
   assert.deepEqual(titleTokens(""), []);
 });
 
-test("state v4 stores entity lists, video and location country; v3, v2 and v1 state still load", () => {
-  const rec = { ...fixture[0], video: "https://youtu.be/dQw4w9WgXcQ", locationCountry: "US" };
+test("state v5 stores entity lists, video, location country and kinds; v4, v3, v2 and v1 state still load", () => {
+  const rec = { ...fixture[0], video: "https://youtu.be/dQw4w9WgXcQ", locationCountry: "US", kinds: "ck" };
   const round = decodeState(encodeState({ feeds: {}, records: [rec] }, t(6)));
   assert.deepEqual(round.records[0], rec);
   const v1Fields = [rec.url, rec.title, rec.source, rec.country, rec.lang, rec.time, rec.tone, rec.image, rec.lat, rec.lon, rec.cellId, rec.locationName];
@@ -154,7 +154,12 @@ test("state v4 stores entity lists, video and location country; v3, v2 and v1 st
   const v3 = gzipSync(JSON.stringify({ v: 3, savedAt: t(6), feeds: {}, records: [[...v1Fields, "jane doe", "", "", rec.video]] }));
   const prev = decodeState(v3).records[0];
   assert.deepEqual([prev.persons, prev.video, prev.locationCountry], [["jane doe"], rec.video, ""]);
-  assert.throws(() => decodeState(gzipSync(JSON.stringify({ v: 5, feeds: {}, records: [] }))));
+  // A v4 record (no kinds) loads with kinds ""; a malformed kinds value is cleared.
+  const v4 = gzipSync(JSON.stringify({ v: 4, savedAt: t(6), feeds: {}, records: [[...v1Fields, "", "", "", "", "US"]] }));
+  const v4r = decodeState(v4).records[0];
+  assert.deepEqual([v4r.locationCountry, v4r.kinds], ["US", ""]);
+  assert.equal(decodeState(encodeState({ feeds: {}, records: [{ ...rec, kinds: "kc" }] }, t(6))).records[0].kinds, "");
+  assert.throws(() => decodeState(gzipSync(JSON.stringify({ v: 6, feeds: {}, records: [] }))));
   // A raw GDELT place name stored by older code is tidied on load.
   const raw = { ...rec, locationName: "London, London, City Of, United Kingdom" };
   assert.equal(decodeState(encodeState({ feeds: {}, records: [raw] }, t(6))).records[0].locationName, "London, United Kingdom");

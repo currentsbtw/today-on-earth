@@ -3,7 +3,7 @@ import { cellStats, compareNewestFirst, round, toCellArticle } from "./stats.ts"
 import type { BaselineView } from "./baseline.ts";
 import { keyCounts, keyOf } from "./reprints.ts";
 import { buildStories } from "./stories.ts";
-import type { ArticleRecord, CellFile, HeatCell, HeatFile } from "./types.ts";
+import type { ArticleRecord, CellFile, HeatCell, HeatFile, Story } from "./types.ts";
 
 export { compareNewestFirst, countSorted } from "./stats.ts";
 
@@ -55,6 +55,8 @@ export interface Snapshot {
   cells: CellFile[];
   /** Time spent grouping stories, for the run log. */
   storiesMs: number;
+  /** Per story: how many of its articles carry any kind (ingest-internal, for the broadcast). */
+  storyTagged: Map<Story, number>;
 }
 
 /**
@@ -87,6 +89,7 @@ export function buildSnapshot(
   const heatCells: HeatCell[] = [];
   const cellFiles = new Map<string, CellFile>();
   let reprints = 0;
+  const storyTagged = new Map<Story, number>();
   for (const [id, list] of byCell) {
     if (list.length < MIN_CELL_ARTICLES) continue; // a 1-article cell holds no copies
     const s = cellStats(list);
@@ -98,6 +101,8 @@ export function buildSnapshot(
       const key = keyOf(r);
       return key ? copies.get(key)! - 1 : 0;
     };
+    const { stories, unclustered, tagged } = timed(() => buildStories(list, s.home));
+    stories.forEach((story, k) => storyTagged.set(story, tagged[k]));
     cellFiles.set(id, {
       id,
       name: s.name,
@@ -114,7 +119,8 @@ export function buildSnapshot(
       languages: s.languages.slice(0, TOP_LIST_SIZE),
       articles: selectArticles(list).map((r) => toCellArticle(r, others(r))),
       videos: list.reduce((k, r) => k + (r.video ? 1 : 0), 0),
-      ...timed(() => buildStories(list, s.home)),
+      stories,
+      unclustered,
     });
   }
   heatCells.sort((a, b) => b.n - a.n || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
@@ -136,5 +142,5 @@ export function buildSnapshot(
     totals: { articles: records.length, outlets: outlets.size, countries: countries.size, cells: heatCells.length, unplaced, reprints },
     cells: heatCells,
   };
-  return { heat, cells: heatCells.map((c) => cellFiles.get(c.id)!), storiesMs };
+  return { heat, cells: heatCells.map((c) => cellFiles.get(c.id)!), storiesMs, storyTagged };
 }

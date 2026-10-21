@@ -251,6 +251,7 @@ function toStory(group: Item[], home: string, copies: Map<string, number>): Stor
     headline: medoid.title,
     headlineSource: medoid.source,
     headlineLang: medoid.lang,
+    headlineUrl: medoid.url,
     entities: displayEntities(nameDf, themeDf),
     articles: articles.map((r) => {
       const key = keyOf(r);
@@ -259,8 +260,15 @@ function toStory(group: Item[], home: string, copies: Map<string, number>): Stor
   };
 }
 
-/** `records` are one cell's articles; `home` is that cell's own country (for each story's `i`). */
-export function buildStories(records: readonly ArticleRecord[], home = homeCountry(records)): { stories: Story[]; unclustered: number } {
+/**
+ * `records` are one cell's articles; `home` is that cell's own country (for each story's `i`).
+ * `tagged[k]` (ingest-internal, not part of the cell file) is how many of `stories[k]`'s articles
+ * carry any kind (conflict, politics, crime, disaster), for the broadcast's "ordinary" slot.
+ */
+export function buildStories(
+  records: readonly ArticleRecord[],
+  home = homeCountry(records),
+): { stories: Story[]; unclustered: number; tagged: number[] } {
   const items = [...records].sort(oldestFirst).map(itemOf);
   removeBackground(items);
   const groups = merge(cluster(items))
@@ -269,7 +277,9 @@ export function buildStories(records: readonly ArticleRecord[], home = homeCount
   // Largest first; ties by earliest article, then by order of creation (stable sort).
   groups.sort((a, b) => b.g.length - a.g.length || (a.first < b.first ? -1 : a.first > b.first ? 1 : 0));
   const copies = keyCounts(records);
-  const stories = groups.slice(0, MAX_STORIES).map(({ g }) => toStory(g, home, copies));
+  const kept = groups.slice(0, MAX_STORIES);
+  const stories = kept.map(({ g }) => toStory(g, home, copies));
+  const tagged = kept.map(({ g }) => g.reduce((k, x) => k + (x.r.kinds ? 1 : 0), 0));
   const clustered = stories.reduce((sum, s) => sum + s.n, 0);
-  return { stories, unclustered: records.length - clustered };
+  return { stories, unclustered: records.length - clustered, tagged };
 }

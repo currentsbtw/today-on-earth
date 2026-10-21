@@ -9,6 +9,10 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { getResolution, isValidCell } from "h3-js";
 import { isYouTubeVideoUrl } from "../src/gkg.ts";
+import {
+  BRIGHTEST_MIN_C, BRIGHTEST_MIN_N, BRIGHTEST_MIN_O, BROADCAST_MIN_BASELINE_DAYS, FAINT_MAX_B, FAINT_MIN_C, FAINT_MIN_O, ORDINARY_MIN_C,
+  MIN_STORY_U, ORDINARY_MIN_O, PLANET_MIN_O, RISING_MIN_N, SLOT_ORDER, risingRatio, voices,
+} from "../src/broadcast.ts";
 import { reprintKey } from "../src/reprints.ts";
 
 const dir = resolve(process.argv[2] ?? process.env.OUT_DIR ?? join(fileURLToPath(new URL("..", import.meta.url)), "out"));
@@ -155,7 +159,7 @@ function checkStories(w: string, cell: Record<string, unknown>) {
     const sw = `${w}.stories[${i}]`;
     if (!isObj(s)) return err(sw, "not an object");
     storiesChecked++;
-    exactKeys(sw, s, ["n", "u", "o", "c", "i", "l", "t", "first", "last", "headline", "headlineSource", "headlineLang", "entities", "articles"]);
+    exactKeys(sw, s, ["n", "u", "o", "c", "i", "l", "t", "first", "last", "headline", "headlineSource", "headlineLang", "headlineUrl", "entities", "articles"]);
     int(`${sw}.n`, s.n, 3);
     int(`${sw}.u`, s.u, 1);
     int(`${sw}.o`, s.o);
@@ -169,7 +173,9 @@ function checkStories(w: string, cell: Record<string, unknown>) {
     if (typeof s.o === "number" && typeof s.n === "number" && s.o > s.n) err(sw, "o > n");
     for (const k of ["first", "last"]) if (typeof s[k] !== "string" || !ISO_UTC.test(s[k] as string)) err(`${sw}.${k}`, "not ISO 8601 UTC with Z");
     if (typeof s.first === "string" && typeof s.last === "string" && s.first > s.last) err(sw, "first > last");
-    for (const k of ["headline", "headlineSource", "headlineLang"]) str(`${sw}.${k}`, s[k]);
+    for (const k of ["headline", "headlineSource", "headlineLang", "headlineUrl"]) str(`${sw}.${k}`, s[k]);
+    if (typeof s.headlineUrl === "string" && s.headlineUrl !== "" && !/^https?:\/\//.test(s.headlineUrl)) err(`${sw}.headlineUrl`, "not an http(s) URL");
+    if (s.headlineUrl === "" && s.headline !== "") err(`${sw}.headlineUrl`, "empty while the headline is not");
     if (typeof s.headline === "string" && Array.from(s.headline).length > 160) err(`${sw}.headline`, "longer than 160 chars");
     const ents = Array.isArray(s.entities) ? (s.entities as unknown[]) : (err(`${sw}.entities`, "not an array"), []);
     if (ents.length > 5) err(`${sw}.entities`, `${ents.length} > 5`);
@@ -204,6 +210,8 @@ function checkStories(w: string, cell: Record<string, unknown>) {
 }
 
 const heatById = new Map(cells.filter(isObj).map((c) => [c.id as string, c]));
+/** Every story of every cell file, for the broadcast checks. */
+const allStories: { cell: Record<string, unknown>; pos: number; s: Record<string, unknown> }[] = [];
 let articlesChecked = 0;
 for (const f of files) {
   const id = f.slice(0, -5);
@@ -217,6 +225,7 @@ for (const f of files) {
     if (shown > cell.videos) err(`${w}.videos`, `${cell.videos} < ${shown} articles shown with a video`);
   }
   checkStories(w, cell);
+  if (Array.isArray(cell.stories)) (cell.stories as unknown[]).forEach((s, pos) => isObj(s) && allStories.push({ cell, pos, s }));
   if (cell.id !== id) err(`${w}.id`, `does not match file name`);
   str(`${w}.name`, cell.name);
   int(`${w}.n`, cell.n, 1);
@@ -347,14 +356,129 @@ if (!existsSync(indexPath)) {
   for (const f of onDisk) if (!listed.has(f)) err("history", `${f} is not listed in index.json`);
 }
 
+// ---- broadcast.json (contract section "Broadcast") ----
+let broadcastSummary = "missing";
+const broadcastPath = join(dir, "broadcast.json");
+if (!existsSync(broadcastPath)) {
+  err("broadcast", "missing broadcast.json");
+} else {
+  const bc = JSON.parse(readFileSync(broadcastPath, "utf8")) as Record<string, unknown>;
+  exactKeys("broadcast", bc, ["generatedAt", "windowHours", "baselineDays", "slots"]);
+  for (const k of ["generatedAt", "windowHours", "baselineDays"]) if (bc[k] !== heat[k]) err(`broadcast.${k}`, `differs from heat.json (${String(bc[k])} vs ${String(heat[k])})`);
+  const gated = typeof heat.baselineDays !== "number" || heat.baselineDays < BROADCAST_MIN_BASELINE_DAYS;
+  const slots = Array.isArray(bc.slots) ? (bc.slots as unknown[]) : (err("broadcast.slots", "not an array"), []);
+  if (slots.length !== SLOT_ORDER.length) err("broadcast.slots", `${slots.length} slots, expected ${SLOT_ORDER.length}`);
+
+  type Cand = (typeof allStories)[number] & { h: Record<string, unknown> };
+  const cands: Cand[] = allStories.flatMap((c) => {
+    const h = heatById.get(c.cell.id as string);
+    return h ? [{ ...c, h }] : [];
+  });
+  const keyOfCand = (c: Cand) => `${String(c.cell.id)}#${c.pos}`;
+  const used = new Set<string>();
+  const n = (o: Record<string, unknown>, k: string) => (typeof o[k] === "number" ? (o[k] as number) : NaN);
+  // Each slot's qualifying rule and the measure it maximises (ordinary: the kinds share is
+  // ingest-internal, so only its outlet and country thresholds can be checked here).
+  // Metrics compare lexicographically (loudest: independent voices min(u, o), then outlets o).
+  const rules: Record<string, { ok: (c: Cand) => boolean; metric: (c: Cand) => number[] } | undefined> = {
+    loudest: { ok: () => true, metric: (c) => [voices({ u: n(c.s, "u"), o: n(c.s, "o") }), n(c.s, "o")] },
+    planet: { ok: (c) => n(c.s, "o") >= PLANET_MIN_O && c.cell.home !== "", metric: (c) => [n(c.s, "i")] },
+    brightest: {
+      ok: (c) => n(c.s, "o") >= BRIGHTEST_MIN_O && n(c.s, "c") >= BRIGHTEST_MIN_C && n(c.s, "n") >= BRIGHTEST_MIN_N,
+      metric: (c) => [n(c.s, "t")],
+    },
+    faint: { ok: (c) => n(c.h, "b") <= FAINT_MAX_B && n(c.s, "o") >= FAINT_MIN_O && n(c.s, "c") >= FAINT_MIN_C, metric: (c) => [n(c.s, "o")] },
+  };
+  /** a > b lexicographically. */
+  const above = (a: number[], b: number[]) => {
+    for (let k = 0; k < a.length; k++) if (a[k] !== b[k]) return a[k] > b[k];
+    return false;
+  };
+  const filled: string[] = [];
+
+  slots.forEach((slot, i) => {
+    const w = `broadcast.slots[${i}]`;
+    if (!isObj(slot)) return err(w, "not an object");
+    const id = SLOT_ORDER[i];
+    if (slot.id !== id) err(`${w}.id`, `expected "${id}" (fixed order), got ${JSON.stringify(slot.id)}`);
+    if (typeof slot.available !== "boolean") err(`${w}.available`, "not a boolean");
+    const baselineSlot = id === "rising" || id === "faint";
+    // Unused stories that meet what every slot requires: u >= MIN_STORY_U and a headline.
+    const free = cands.filter((c) => !used.has(keyOfCand(c)) && n(c.s, "u") >= MIN_STORY_U && c.s.headline !== "");
+
+    if (slot.available !== true) {
+      exactKeys(w, slot, ["id", "available", "reason"], slot.reason === "baseline" ? ["availableFrom"] : []);
+      if (slot.reason !== "baseline" && slot.reason !== "none") err(`${w}.reason`, `expected "baseline" or "none", got ${JSON.stringify(slot.reason)}`);
+      if (baselineSlot && gated && slot.reason !== "baseline") err(`${w}.reason`, "must be \"baseline\" while baselineDays < 3");
+      if (slot.reason === "baseline" && (!baselineSlot || !gated)) err(`${w}.reason`, "\"baseline\" only for rising/faint while baselineDays < 3");
+      if (slot.reason === "baseline" && (typeof slot.availableFrom !== "string" || !(slot.availableFrom === "" || /^\d{4}-\d{2}-\d{2}$/.test(slot.availableFrom)))) {
+        err(`${w}.availableFrom`, `expected YYYY-MM-DD (or "" without a baseline), got ${JSON.stringify(slot.availableFrom)}`);
+      }
+      if (typeof slot.availableFrom === "string" && typeof heat.generatedAt === "string" && slot.availableFrom !== "" && slot.availableFrom <= heat.generatedAt.slice(0, 10)) {
+        err(`${w}.availableFrom`, "not after today");
+      }
+      // "none" must be true: no unused story meets the rule.
+      if (slot.reason === "none") {
+        const rule = rules[id];
+        if (rule && free.some(rule.ok)) err(w, `reason "none" but ${free.filter(rule.ok).length} unused stories qualify`);
+        if (id === "rising" && free.some((c) => n(c.h, "n") >= RISING_MIN_N)) err(w, "reason \"none\" but a cell with n >= 20 has an unused story");
+      }
+      return;
+    }
+
+    const optional = id === "rising" ? ["ratio", "b"] : id === "faint" ? ["b"] : [];
+    exactKeys(w, slot, ["id", "available", "cell", "story", ...optional]);
+    if (baselineSlot && gated) err(w, "available while baselineDays < 3");
+    const cell = isObj(slot.cell) ? slot.cell : (err(`${w}.cell`, "not an object"), {});
+    const story = isObj(slot.story) ? slot.story : (err(`${w}.story`, "not an object"), {});
+    exactKeys(`${w}.cell`, cell, ["id", "name", "lat", "lon", "home"]);
+    exactKeys(`${w}.story`, story, ["headline", "headlineSource", "headlineLang", "headlineUrl", "n", "u", "o", "c", "i", "l", "t", "first", "last"]);
+    const h = heatById.get(cell.id as string);
+    if (!h) return err(`${w}.cell.id`, `${String(cell.id)} is not a cell of heat.json`);
+    for (const k of ["lat", "lon", "name"]) if (cell[k] !== h[k]) err(`${w}.cell.${k}`, `differs from heat.json (${String(cell[k])} vs ${String(h[k])})`);
+    const match = cands.find((c) => c.cell.id === cell.id && Object.keys(story).every((k) => c.s[k] === story[k]));
+    if (!match) return err(`${w}.story`, "no story in that cell file matches it field for field");
+    if (cell.home !== match.cell.home) err(`${w}.cell.home`, "differs from the cell file");
+    if (used.has(keyOfCand(match))) err(`${w}.story`, "story already used by an earlier slot");
+    used.add(keyOfCand(match));
+    filled.push(id);
+    const s = match.s;
+    if (n(s, "u") < MIN_STORY_U) err(w, `story u ${String(s.u)} < ${MIN_STORY_U} (the floor for every slot)`);
+    if (s.headline === "") err(`${w}.story.headline`, "empty; a filled slot must carry an outlet's headline");
+
+    if (id === "rising") {
+      if (h.n as number < RISING_MIN_N) err(w, `cell n ${String(h.n)} < ${RISING_MIN_N}`);
+      if (slot.b !== h.b) err(`${w}.b`, `differs from heat.json b ${String(h.b)}`);
+      if (slot.ratio !== risingRatio(h.n as number, h.b as number)) err(`${w}.ratio`, `expected ${risingRatio(h.n as number, h.b as number)}`);
+      num(`${w}.ratio`, slot.ratio, 1);
+      // No other cell with an unused story rises higher; within the cell, the most outlets.
+      const top = Math.max(...free.filter((c) => n(c.h, "n") >= RISING_MIN_N).map((c) => risingRatio(n(c.h, "n"), n(c.h, "b"))));
+      if (typeof slot.ratio === "number" && slot.ratio < top) err(`${w}.ratio`, `${slot.ratio} but a cell with an unused story reaches ${top}`);
+      const inCell = Math.max(...free.filter((c) => c.cell.id === cell.id).map((c) => n(c.s, "o")));
+      if (n(s, "o") < inCell) err(w, `story has o ${String(s.o)} but the cell has an unused story with o ${inCell}`);
+    } else if (id === "ordinary") {
+      if (n(s, "o") < ORDINARY_MIN_O || n(s, "c") < ORDINARY_MIN_C) err(w, `o ${String(s.o)} / c ${String(s.c)} below the ordinary thresholds`);
+    } else {
+      const rule = rules[id]!;
+      if (!rule.ok(match)) err(w, "story does not meet the slot's thresholds");
+      const better = free.find((c) => rule.ok(c) && above(rule.metric(c), rule.metric(match)));
+      if (better) err(w, `[${rule.metric(match).join(", ")}] but an unused qualifying story reaches [${rule.metric(better).join(", ")}]`);
+      if (id === "faint" && slot.b !== h.b) err(`${w}.b`, `differs from heat.json b ${String(h.b)}`);
+      if (id === "faint") num(`${w}.b`, slot.b, 1);
+    }
+  });
+  broadcastSummary = `${filled.length}/6 slots filled (${filled.join(", ") || "none"})`;
+}
+
 console.log(`checked ${dir}`);
 console.log(`  heat.json: ${bytes} bytes, ${cells.length} cells`);
 console.log(`  cell files: ${files.length}, articles checked: ${articlesChecked}, stories checked: ${storiesChecked}`);
 console.log(`  history: ${frameCount} frames, largest frame ${largestFrame} bytes`);
+console.log(`  broadcast: ${broadcastSummary}`);
 for (const w of warnings) console.log(`  WARN ${w}`);
 if (errors.length) {
   console.log(`FAIL: ${errors.length}${errors.length >= 200 ? "+" : ""} violations`);
   for (const e of errors) console.log(`  - ${e}`);
   process.exit(1);
 }
-console.log("OK: heat.json, every cell file, history/index.json and every frame match docs/DATA-CONTRACT.md");
+console.log("OK: heat.json, every cell file, history/index.json, every frame and broadcast.json match docs/DATA-CONTRACT.md");
