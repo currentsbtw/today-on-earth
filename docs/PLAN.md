@@ -143,6 +143,43 @@ step = build -> fresh review -> verify -> commit/push -> confirm deploy:
 Out of bounds without the user: anything that costs money or needs a new account,
 accounts/auth on the site, store listings.
 
+## Morning report (2026-10-21, written ~06:40 UTC; see the final status line below)
+
+What shipped overnight, all live at https://currentsbtw.github.io/today-on-earth/ :
+
+| Area | What | Commit |
+|---|---|---|
+| Replay | 24h scrubber + play, permalinks `#c=&t=` | 2ea3053 |
+| Data carry | state/history/baseline via Actions cache, not Pages | e45d14b |
+| Base map | 50m shapes, state lines, city + country labels when zoomed | 67c1e3a |
+| Stories | per-cell story clustering (ingest) + story cards (web) | 912f4a0, 4cfd59f |
+| Trust | methodology page, OG/Twitter tags, og.jpg | 54ee892 |
+| Media | YouTube click-to-load cards (no request before click) | 54ee892, 6b6c7de |
+| Baseline | per-cell 7-day median + "vs. normal" mode (shows after 3 full days) | ba5901f, 9330c16 |
+| Layers | USGS M2.5+ quakes toggle | 9330c16 |
+| Phone | sheet with handle, cell eased above the sheet, tap targets | 9330c16, 9dc4749 |
+| Clip | clip.html + render/ + clip.yml daily mp4 on release `clips` | 2f1d5eb, 8bfaa70 |
+| Cron | keepalive job chains runs while GitHub's schedule stays silent | 9d8a3e1, 8bfaa70 |
+| A11y | keyboard Places list, focus rings, contrast, lang, DOM order | 9dc4749 |
+
+Reviews: three fresh-context code reviews (replay; web features; ingest/workflows/
+render) and one two-assessment design critique (27/40 before fixes; archive in
+`.impeccable/critique/`). Every confirmed finding was fixed or consciously deferred
+(listed under follow-ups).
+
+Things only you can decide or do:
+1. **Cron.** GitHub's `*/15` schedule never fired in 2 hours. The keepalive chain
+   keeps snapshots flowing (~every 14 min) and costs nothing on a public repo. If
+   you would rather not depend on it, an external scheduler (cron-job.org) can call
+   the workflow_dispatch API with a fine-grained PAT; that needs your token.
+2. **og.jpg** was captured on a 1-hour window and looks sparse. Recapture after a
+   full 24h: `node scratchpad/scripts/cdp-og.mjs` or ask me.
+3. **Clips.** `clip-YYYY-MM-DD.mp4` appears daily on the `clips` release (00:20 UTC
+   or the first keepalive after it). Posting to TikTok is manual. Watch the first
+   full-length one for pacing (8 fps, 96 frames ≈ 12 s + 2 s hold).
+4. **"vs. normal"** appears by itself once three complete UTC days of baseline exist
+   (earliest Friday 2026-10-24).
+
 ## Phase 2: Time and stories (re-scoped 2026-10-21 for "impress the first visitor")
 
 The two things a first-time visitor will remember: watching a day sweep across the

@@ -47,7 +47,7 @@ test("translingual line: language from srclc, entities decoded, first non-countr
   assert.equal(a.source, "eju.tv");
   assert.equal(a.country, "BO"); // FIPS "BL" -> ISO "BO"
   assert.equal(a.title, "Gobernador de Oruro propone nacionalizar «chutos» y arancel cero contra el contrabando");
-  assert.equal(a.locationName, "La Paz, La Paz, Bolivia");
+  assert.equal(a.locationName, "La Paz, Bolivia"); // GDELT: "La Paz, La Paz, Bolivia", tidied by cleanPlaceName
   assert.equal(a.lat, -16.5);
   assert.equal(a.lon, -68.15);
   assert.equal(a.cellId, latLngToCell(-16.5, -68.15, 3));

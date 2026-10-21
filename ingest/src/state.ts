@@ -1,6 +1,7 @@
 import { gzipSync } from "node:zlib";
 import { gunzipMaybe, loadCarried, type CarrySource } from "./carry.ts";
 import { isYouTubeVideoUrl } from "./gkg.ts";
+import { cleanPlaceName } from "./placename.ts";
 import type { ArticleRecord } from "./types.ts";
 import type { FeedProgress } from "./window.ts";
 
@@ -50,7 +51,8 @@ function unpack(p: PackedRecord | PackedRecordV2 | PackedRecordV1): ArticleRecor
   const [url, title, source, country, lang, time, tone, image, lat, lon, cellId, locationName] = p;
   // Re-check stored videos so URLs accepted by an older, looser rule are cleared.
   const video = p[15] && isYouTubeVideoUrl(p[15]) ? p[15] : "";
-  return { url, title, source, country, lang, time, tone, image, lat, lon, cellId, locationName, persons: list(p[12]), orgs: list(p[13]), themes: list(p[14]), video };
+  // Older states hold raw GDELT names; tidy them on load so no raw name survives.
+  return { url, title, source, country, lang, time, tone, image, lat, lon, cellId, locationName: locationName && cleanPlaceName(locationName), persons: list(p[12]), orgs: list(p[13]), themes: list(p[14]), video };
 }
 
 export function encodeState(state: IngestState, savedAt: string): Buffer {

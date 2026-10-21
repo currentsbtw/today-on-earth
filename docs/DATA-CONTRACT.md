@@ -24,7 +24,8 @@ deployed site. In local dev the frontend serves `web/public/data/` at `/data/`.
       "c": 23,                   // distinct source countries (outlets' countries), 0 if unknown
       "l": 9,                    // distinct languages
       "t": -2.1,                 // mean tone, 1 decimal (GDELT V2Tone first value)
-      "name": "Paris, France"    // most common location full name in the cell
+      "name": "Paris, France"    // most common location full name in the cell, with GDELT artefacts removed
+                                 // ("(General)", "City Of", repeated parts): "Washington, Washington, United States" -> "Washington, United States"
     }
   ]
 }
