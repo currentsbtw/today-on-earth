@@ -15,11 +15,18 @@ function setStatus(text: string) {
 
 function showTotals(heat: Heat) {
   const t = heat.totals;
-  totals.textContent = [
+  const parts = [
     plural(t.articles, 'article', 'articles'),
     plural(t.outlets, 'outlet', 'outlets'),
     plural(t.countries, 'country', 'countries'),
-  ].join(' · ');
+  ];
+  // Articles that only name a country have no place on the map. Saying so is part of
+  // showing the coverage gap rather than hiding it.
+  if (t.unplaced) parts.push(`${count(t.unplaced)} not placed on the map`);
+  totals.textContent = parts.join(' · ');
+  totals.title = t.unplaced
+    ? `${count(t.unplaced)} articles mention only a country, so they are counted but not drawn anywhere.`
+    : '';
   const time = utcTime(heat.generatedAt);
   snapshot.textContent = time ? `snapshot ${time}` : '';
   if (heat.generatedAt) snapshot.title = heat.generatedAt;

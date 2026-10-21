@@ -16,7 +16,7 @@ export interface Heat {
   generatedAt: string;
   windowHours: number;
   newestArticleAt: string;
-  totals: { articles: number; outlets: number; countries: number; cells: number };
+  totals: { articles: number; outlets: number; countries: number; cells: number; unplaced?: number };
   cells: HeatCell[];
 }
 
