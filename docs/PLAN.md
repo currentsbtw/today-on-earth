@@ -169,9 +169,11 @@ render) and one two-assessment design critique (27/40 before fixes; archive in
 
 Things only you can decide or do:
 1. **Cron.** GitHub's `*/15` schedule never fired in 2 hours. The keepalive chain
-   keeps snapshots flowing (~every 14 min) and costs nothing on a public repo. If
-   you would rather not depend on it, an external scheduler (cron-job.org) can call
-   the workflow_dispatch API with a fine-grained PAT; that needs your token.
+   keeps snapshots flowing (~every 14 min) and costs nothing on a public repo.
+   **Decided 2026-10-21 morning: keep the keepalive chain.** Revisit (external
+   scheduler + fine-grained PAT) only if gaps over 30 min appear in the Actions
+   history. A cancelled run breaks the chain; restart with a manual dispatch.
+   Kill switch: repo variable KEEPALIVE=false.
 2. **og.jpg** was captured on a 1-hour window and looks sparse. Recapture after a
    full 24h: `node scratchpad/scripts/cdp-og.mjs` or ask me.
 3. **Clips.** `clip-YYYY-MM-DD.mp4` appears daily on the `clips` release (00:20 UTC
