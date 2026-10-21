@@ -183,8 +183,12 @@ Built and verified locally, nothing committed yet:
   phones. Build passes. Verified in the browser with real data: heat renders, click
   opens the Washington cell with 1,456 articles from 873 outlets.
 - `.github/workflows/snapshot.yml`: 15-min cron -> ingest -> build -> Pages deploy.
-  Not yet exercised (needs the repo pushed to GitHub, Pages set to "GitHub Actions",
-  repo variable `SITE_URL`).
+  **Deployed 2026-10-21 04:47 UTC.** Repo: https://github.com/currentsbtw/today-on-earth
+  (public). Live: https://currentsbtw.github.io/today-on-earth/ . Pages source =
+  GitHub Actions, repo variable `SITE_URL` set. First run cold-started (6h, 44 files,
+  14 s) and deployed; the site rendered with no console errors. The cron takes over
+  from here; the first warm run (state fetched back from the live site) is the next
+  thing to confirm in the Actions tab.
 
 Follow-ups noticed during the build (not blockers):
 - `state.json.gz` is ~0.8 MB per hour of window; at 24h it will be ~20 MB fetched
