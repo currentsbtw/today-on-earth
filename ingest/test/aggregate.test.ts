@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { latLngToCell } from "h3-js";
 import { buildSnapshot, selectArticles } from "../src/aggregate.ts";
+import { reprintKey } from "../src/reprints.ts";
 import type { ArticleRecord } from "../src/types.ts";
 import { coveredHours, mergeRecords, planSlots } from "../src/window.ts";
 
@@ -29,6 +30,7 @@ function rec(p: Partial<ArticleRecord> = {}): ArticleRecord {
     orgs: [],
     themes: [],
     video: "",
+    locationCountry: "",
     ...p,
   };
 }
@@ -92,7 +94,7 @@ test("buildSnapshot: cell stats, sorting, drop n<2, totals", () => {
   const { heat, cells } = buildSnapshot(records, { now: new Date("2026-10-20T19:30:00.123Z"), windowHours: 24 });
   assert.equal(heat.generatedAt, "2026-10-20T19:30:00Z");
   assert.equal(heat.windowHours, 24);
-  assert.deepEqual(heat.totals, { articles: 7, outlets: 5, countries: 4, cells: 2, unplaced: 0 });
+  assert.deepEqual(heat.totals, { articles: 7, outlets: 5, countries: 4, cells: 2, unplaced: 0, reprints: 0 });
   assert.deepEqual(heat.cells.map((c) => c.id), [PARIS, LAGOS]); // n desc; Sydney (n=1) dropped
   const paris = heat.cells[0];
   assert.equal(paris.n, 4);
@@ -108,6 +110,117 @@ test("buildSnapshot: cell stats, sorting, drop n<2, totals", () => {
   assert.deepEqual(pc.topCountries, [["FR", 2], ["", 1], ["GB", 1]]);
   assert.deepEqual(pc.languages, [["en", 2], ["fr", 2]]);
   assert.equal(pc.articles.length, 4);
+});
+
+test("reprint key: case, Unicode form, punctuation and a trailing outlet suffix are ignored", () => {
+  const k = reprintKey("Storm hits coast, thousands without power - Reuters");
+  assert.equal(k, "storm hits coast thousands without power");
+  assert.equal(reprintKey("STORM hits coast: thousands without power | The Daily Star", "thedailystar.net"), k);
+  assert.equal(reprintKey("Storm hits coast — thousands without power – AP News", "apnews.com"), k); // em dash is punctuation, en dash suffix goes
+  assert.equal(reprintKey("Ｓｔｏｒｍ hits coast, thousands without power"), k); // NFKC folds full-width letters
+  // Only the last suffix goes, and only when at least 20 characters remain.
+  assert.equal(reprintKey("Live - Storm hits coast - Reuters"), "live storm hits coast");
+  assert.equal(reprintKey("Short title - Reuters"), "short title reuters");
+  assert.equal(reprintKey("Storm hits coast-wide areas today"), "storm hits coastwide areas today"); // no spaces: not a suffix
+  assert.equal(reprintKey(""), "");
+  assert.equal(reprintKey("!!! ..."), "");
+});
+
+test("reprint key: an em-dash outlet suffix is removed like the other separators", () => {
+  assert.equal(
+    reprintKey("Storm hits coast, thousands without power — Reuters"),
+    reprintKey("Storm hits coast, thousands without power — The Daily Star", "thedailystar.net"),
+  );
+  assert.equal(reprintKey("Storm hits coast, thousands without power — Reuters", "reuters.com"), "storm hits coast thousands without power");
+});
+
+test("reprint key: a suffix goes only when it names the source outlet or is at most 2 words", () => {
+  // A parenthetical dash clause from an unrelated source is not an outlet name: kept whole.
+  assert.equal(
+    reprintKey("Group assisting long-planned review of firearms — including SKS — has yet to meet", "cbc.ca"),
+    "group assisting longplanned review of firearms including sks has yet to meet",
+  );
+  const head = "title here long enough";
+  assert.equal(reprintKey("Title here long enough — The Globe and Mail", "theglobeandmail.com"), head); // label match
+  assert.equal(reprintKey("Title here long enough — The Globe and Mail", "somesite.com"), head + " the globe and mail");
+  assert.equal(reprintKey("Title here long enough — Reuters", "somesite.com"), head); // 2-word rule
+  assert.equal(reprintKey("Title here long enough | NDTV Profit", "ndtv.com"), head); // label in tail (also only 2 words)
+  assert.equal(reprintKey("Title here long enough – BBC News Online", "bbc.co.uk"), head); // label under co.uk
+  assert.equal(reprintKey("Title here long enough - El País English Edition", "elpais.com"), head); // diacritics folded
+});
+
+test("reprints: u counts distinct headlines, the list keeps the newest copy, untitled never match", () => {
+  const wire = "Storm hits coast, thousands without power";
+  const records = [
+    rec({ url: "https://a/1", source: "a.com", title: wire + " - A", time: at(10, 0) }),
+    rec({ url: "https://b/1", source: "b.com", title: wire + " | B News", time: at(11, 0) }),
+    rec({ url: "https://c/1", source: "c.com", title: wire.toUpperCase(), time: at(9, 0) }),
+    rec({ url: "https://d/1", source: "d.com", title: "Council approves budget", time: at(8, 0) }),
+    rec({ url: "https://e/1", source: "e.com", title: "", time: at(7, 0) }),
+    rec({ url: "https://e/2", source: "e.com", title: "", time: at(6, 0) }),
+  ];
+  const { heat, cells } = buildSnapshot(records, { now: new Date("2026-10-20T13:00:00Z"), windowHours: 24 });
+  const [cell] = heat.cells;
+  assert.equal(cell.n, 6); // n still counts every URL
+  assert.equal(cell.u, 4); // the wire story, the budget story, two untitled
+  assert.equal(heat.totals.reprints, 2);
+  assert.deepEqual(Object.keys(cell).slice(0, 5), ["id", "lat", "lon", "n", "u"]);
+  const file = cells[0];
+  assert.equal(file.u, 4);
+  assert.deepEqual(file.articles.map((a) => [a.url, a.reprints]), [
+    ["https://b/1", 2], // newest copy of the wire story, carrying the other two
+    ["https://d/1", 0],
+    ["https://e/1", 0],
+    ["https://e/2", 0],
+  ]);
+});
+
+test("reprints: a copy from an outlet already at its cap gives way to the next newest copy", () => {
+  const records: ArticleRecord[] = [];
+  // big.com fills its 5 with the newest articles; 11 other outlets keep the cap on.
+  for (let i = 0; i < 6; i++) records.push(rec({ source: "big.com", title: `Big story number ${i} for today`, time: at(12, 50 + i) }));
+  records.push(rec({ source: "big.com", title: "Shared wire headline about the floods", time: at(12, 40) }));
+  records.push(rec({ source: "o0.com", title: "Shared wire headline about the floods - O0", time: at(12, 30) }));
+  for (let o = 1; o <= 10; o++) records.push(rec({ source: `o${o}.com`, time: at(11, o) }));
+  const picked = selectArticles(records);
+  const copies = picked.filter((r) => r.title.startsWith("Shared wire"));
+  assert.deepEqual(copies.map((r) => r.source), ["o0.com"]);
+});
+
+test("reprints: the older copy that replaces a capped outlet's copy appears once and keeps its count", () => {
+  const records: ArticleRecord[] = [];
+  // big.com's 5 newest articles fill its cap; its newest copy of the shared headline comes after.
+  for (let i = 0; i < 5; i++) records.push(rec({ url: `https://big/${i}`, source: "big.com", title: `Big story number ${i} for today`, time: at(12, 50 + i) }));
+  records.push(rec({ url: "https://big/wire", source: "big.com", title: "Shared wire headline about the floods - Big", time: at(12, 40) }));
+  records.push(rec({ url: "https://o0/wire", source: "o0.com", title: "Shared wire headline about the floods | O0", time: at(12, 30) }));
+  records.push(rec({ url: "https://o1/wire", source: "o1.com", title: "Shared wire headline about the floods", time: at(12, 20) }));
+  for (let o = 2; o <= 10; o++) records.push(rec({ url: `https://o${o}/x`, source: `o${o}.com`, time: at(11, o) }));
+  const { cells } = buildSnapshot(records, { now: new Date("2026-10-20T13:00:00Z"), windowHours: 24 });
+  const copies = cells[0].articles.filter((a) => a.url.endsWith("/wire"));
+  assert.deepEqual(copies.map((a) => [a.url, a.reprints]), [["https://o0/wire", 2]]);
+  assert.equal(cells[0].articles.filter((a) => a.url.startsWith("https://big/")).length, 5);
+});
+
+test("international attention: home is the most common location country; i excludes it", () => {
+  const where = { locationCountry: "FR" };
+  const records = [
+    rec({ ...where, country: "FR", source: "lemonde.fr" }),
+    rec({ ...where, country: "FR", source: "lefigaro.fr" }),
+    rec({ ...where, country: "GB", source: "bbc.co.uk" }),
+    rec({ ...where, country: "US", source: "nytimes.com" }),
+    rec({ locationCountry: "BE", country: "US", source: "wsj.com" }), // a stray location, outvoted
+    rec({ ...where, country: "", source: "mystery.net" }),
+  ];
+  const now = new Date("2026-10-20T13:00:00Z");
+  const { heat, cells } = buildSnapshot(records, { now, windowHours: 24 });
+  assert.equal(heat.cells[0].c, 3);
+  assert.equal(heat.cells[0].i, 2); // GB, US
+  assert.equal(cells[0].home, "FR");
+  assert.equal(cells[0].i, 2);
+  // Records from an older state carry no location country: home is "" and i falls back to c.
+  const old = buildSnapshot(records.map((r) => ({ ...r, locationCountry: "" })), { now, windowHours: 24 });
+  assert.equal(old.cells[0].home, "");
+  assert.equal(old.cells[0].i, 3);
 });
 
 test("mergeRecords keeps the earliest sighting and drops records outside the window", () => {

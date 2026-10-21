@@ -40,6 +40,15 @@ centre, but it is still a centre, and the label tells you so.
 - **Languages**: the language the article was written in, as GDELT recorded it.
 - **Tone**: GDELT's tone score for the article, from negative to positive. We show
   it as a small mark, never as a word.
+- **Distinct** and **reprints**: many sites republish the same wire story under the
+  same headline. Within one place, articles whose titles match after we ignore case,
+  punctuation and a trailing outlet name (" - Reuters", " | The Star") count as one
+  distinct headline; the others are reprints. Both numbers are shown and nothing is
+  hidden: the article list shows each headline once, marked with how many reprints it
+  has. Brightness still uses the article count, reprints included.
+- **Heard in N other countries**: the countries of the outlets covering a place, not
+  counting the place's own country (the country GDELT most often gives for the
+  place's articles). Outlets with an unknown country are not counted.
 
 ## How "hot" is decided
 

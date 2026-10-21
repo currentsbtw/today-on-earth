@@ -10,6 +10,10 @@ export interface HeatCell {
   l: number;
   t: number;
   name: string;
+  /** Distinct headlines (reprints collapsed). Absent in older files: treat as n. */
+  u?: number;
+  /** Outlet countries other than the place's own. Absent in older files: 0. */
+  i?: number;
   /** Median daily articles over the last up to 7 complete UTC days; 0 when unknown or new. */
   b?: number;
 }
@@ -20,6 +24,8 @@ export interface Totals {
   countries: number;
   cells: number;
   unplaced?: number;
+  /** Articles that copy another article's headline in the same cell (heat.json only). */
+  reprints?: number;
 }
 
 export interface Heat {
@@ -43,12 +49,20 @@ export interface Article {
   image?: string;
   /** A youtube.com / youtu.be URL, "" when none. */
   video?: string;
+  /** Other articles in the same cell with the same headline; absent means 0. */
+  reprints?: number;
 }
 
 export interface CellDetail {
   id: string;
   name: string;
+  /** The place's own country (ISO alpha-2), "" when unknown or absent. */
+  home?: string;
   n: number;
+  /** Distinct headlines; absent in older files. */
+  u?: number;
+  /** Outlet countries other than the place's own; absent in older files. */
+  i?: number;
   o: number;
   c: number;
   l: number;
@@ -67,6 +81,8 @@ export interface CellDetail {
 
 export interface Story {
   n: number;
+  u?: number;
+  i?: number;
   o: number;
   c: number;
   l: number;

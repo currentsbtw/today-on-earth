@@ -1,6 +1,7 @@
 import { latLngToCell } from "h3-js";
 import type { CountryLookup } from "./domains.ts";
 import { parseNames, parseOrgs, parseThemes } from "./entities.ts";
+import { fipsToIso } from "./fips-to-iso.ts";
 import { cleanPlaceName } from "./placename.ts";
 import { langFromTranslationInfo } from "./lang.ts";
 import type { ArticleRecord } from "./types.ts";
@@ -70,6 +71,8 @@ export function extractTitle(extras: string): string {
 
 export interface PrimaryLocation {
   name: string;
+  /** ISO 3166-1 alpha-2 from the entry's FIPS CountryCode, "" when unknown. */
+  country: string;
   lat: number;
   lon: number;
 }
@@ -92,7 +95,7 @@ export function parsePrimaryLocation(v2Locations: string): PrimaryLocation | "un
     const lon = Number(f[6]);
     if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
     if (lat < -90 || lat > 90 || lon < -180 || lon > 180) continue;
-    if (f[0] !== "1") return { name: f[1], lat, lon };
+    if (f[0] !== "1") return { name: f[1], country: fipsToIso(f[2]), lat, lon };
     sawCountry = true;
   }
   return sawCountry ? "unplaced" : null;
@@ -211,6 +214,7 @@ export function parseGkgLine(line: string, countryOf: CountryLookup): ParseResul
       lon: placed?.lon ?? 0,
       cellId: placed ? latLngToCell(placed.lat, placed.lon, H3_RES) : "",
       locationName: detach(placed ? cleanPlaceName(placed.name) : ""),
+      locationCountry: placed?.country ?? "",
       persons: parseNames(f[COL.V2_PERSONS]).map(detach),
       orgs: parseOrgs(f[COL.V2_ORGANIZATIONS]).map(detach),
       themes: parseThemes(f[COL.V2_THEMES]).map(detach),

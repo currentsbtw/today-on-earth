@@ -9,6 +9,7 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { getResolution, isValidCell } from "h3-js";
 import { isYouTubeVideoUrl } from "../src/gkg.ts";
+import { reprintKey } from "../src/reprints.ts";
 
 const dir = resolve(process.argv[2] ?? process.env.OUT_DIR ?? join(fileURLToPath(new URL("..", import.meta.url)), "out"));
 const errors: string[] = [];
@@ -65,15 +66,15 @@ int("heat.windowHours", heat.windowHours, 1);
 int("heat.baselineDays", heat.baselineDays);
 if (typeof heat.baselineDays === "number" && heat.baselineDays > 14) err("heat.baselineDays", "more than 14");
 const totals = isObj(heat.totals) ? heat.totals : (err("heat.totals", "not an object"), {});
-exactKeys("heat.totals", totals, ["articles", "outlets", "countries", "cells", "unplaced"]);
-for (const k of ["articles", "outlets", "countries", "cells", "unplaced"]) int(`heat.totals.${k}`, totals[k]);
+exactKeys("heat.totals", totals, ["articles", "outlets", "countries", "cells", "unplaced", "reprints"]);
+for (const k of ["articles", "outlets", "countries", "cells", "unplaced", "reprints"]) int(`heat.totals.${k}`, totals[k]);
 const cells = Array.isArray(heat.cells) ? (heat.cells as unknown[]) : (err("heat.cells", "not an array"), []);
 if (totals.cells !== cells.length) err("heat.totals.cells", `${String(totals.cells)} != cells.length ${cells.length}`);
 const seenIds = new Set<string>();
 cells.forEach((c, i) => {
   const w = `heat.cells[${i}]`;
   if (!isObj(c)) return err(w, "not an object");
-  exactKeys(w, c, ["id", "lat", "lon", "n", "o", "c", "l", "t", "name", "b"]);
+  exactKeys(w, c, ["id", "lat", "lon", "n", "u", "o", "c", "i", "l", "t", "name", "b"]);
   cellId(`${w}.id`, c.id);
   if (seenIds.has(c.id as string)) err(`${w}.id`, "duplicate");
   seenIds.add(c.id as string);
@@ -82,11 +83,15 @@ cells.forEach((c, i) => {
   if (typeof c.lat === "number" && Math.abs(c.lat) > 90) err(`${w}.lat`, "out of range");
   if (typeof c.lon === "number" && (c.lon < -180 || c.lon > 180)) err(`${w}.lon`, "out of [-180, 180]");
   int(`${w}.n`, c.n, 1);
+  int(`${w}.u`, c.u, 1);
   int(`${w}.o`, c.o);
   int(`${w}.c`, c.c);
+  int(`${w}.i`, c.i);
   int(`${w}.l`, c.l);
   num(`${w}.t`, c.t, 1);
   num(`${w}.b`, c.b, 1);
+  if (typeof c.u === "number" && typeof c.n === "number" && c.u > c.n) err(w, "u > n");
+  if (typeof c.i === "number" && typeof c.c === "number" && c.i > c.c) err(w, "i > c");
   if (typeof c.b === "number" && c.b < 0) err(`${w}.b`, "negative");
   if (typeof heat.baselineDays === "number" && heat.baselineDays < 3 && c.b !== 0) err(`${w}.b`, "must be 0 while baselineDays < 3");
   str(`${w}.name`, c.name);
@@ -100,6 +105,9 @@ const placed = cells.reduce((s: number, c) => s + (isObj(c) && typeof c.n === "n
 if (typeof totals.unplaced === "number" && typeof totals.articles === "number" && placed + totals.unplaced > totals.articles) {
   err("heat.totals.unplaced", `sum(n)=${placed} + unplaced=${totals.unplaced} > articles=${totals.articles}`);
 }
+// Copies only exist in cells with n >= 2, which are all kept, so the sum is exact.
+const copies = cells.reduce((s: number, c) => s + (isObj(c) && typeof c.n === "number" && typeof c.u === "number" ? c.n - c.u : 0), 0);
+if (totals.reprints !== copies) err("heat.totals.reprints", `${String(totals.reprints)} != sum(n - u) = ${copies}`);
 const bytes = heatBytes.length;
 if (bytes > 1.5 * 1024 * 1024) err("heat.json", `size ${bytes} B exceeds the 1.5 MB target`);
 
@@ -111,7 +119,8 @@ for (const f of files) if (!seenIds.has(f.slice(0, -5))) err("cells", `cells/${f
 
 /** One article object as in a cell file's `articles` (also used inside stories). */
 function checkArticle(aw: string, a: Record<string, unknown>) {
-  exactKeys(aw, a, ["title", "url", "source", "country", "lang", "time", "video"], ["tone", "image"]);
+  exactKeys(aw, a, ["title", "url", "source", "country", "lang", "time", "video", "reprints"], ["tone", "image"]);
+  int(`${aw}.reprints`, a.reprints);
   for (const k of ["title", "url", "source", "country", "lang", "time", "video"]) str(`${aw}.${k}`, a[k]);
   if (typeof a.video === "string" && a.video !== "" && !isYouTubeVideoUrl(a.video)) err(`${aw}.video`, `not a YouTube video URL: ${a.video}`);
   if ("image" in a) str(`${aw}.image`, a.image);
@@ -121,6 +130,17 @@ function checkArticle(aw: string, a: Record<string, unknown>) {
   if (typeof a.country === "string" && a.country !== "" && !/^[A-Z]{2}$/.test(a.country)) err(`${aw}.country`, `not ISO alpha-2: ${a.country}`);
   if (typeof a.time !== "string" || !ISO_UTC.test(a.time)) err(`${aw}.time`, "not ISO 8601 UTC with Z");
   if (typeof a.image === "string" && a.image !== "" && !/^https?:\/\//.test(a.image)) err(`${aw}.image`, "not an http(s) URL");
+}
+
+/** At most one article per non-empty reprint key in a list; reprints never exceed the cell's copies. */
+function uniqueKey(aw: string, a: Record<string, unknown>, keys: Set<string>, cell: Record<string, unknown>) {
+  const key = typeof a.title === "string" ? reprintKey(a.title, typeof a.source === "string" ? a.source : "") : "";
+  if (key && keys.has(key)) err(aw, `reprint key shown twice: ${JSON.stringify(key)}`);
+  if (key) keys.add(key);
+  if (!key && a.reprints !== 0) err(`${aw}.reprints`, "untitled article with reprints");
+  if (typeof a.reprints === "number" && typeof cell.n === "number" && typeof cell.u === "number" && a.reprints > cell.n - cell.u) {
+    err(`${aw}.reprints`, `${a.reprints} > n - u`);
+  }
 }
 
 /** `stories` and `unclustered` (contract section "Stories"). */
@@ -135,10 +155,14 @@ function checkStories(w: string, cell: Record<string, unknown>) {
     const sw = `${w}.stories[${i}]`;
     if (!isObj(s)) return err(sw, "not an object");
     storiesChecked++;
-    exactKeys(sw, s, ["n", "o", "c", "l", "t", "first", "last", "headline", "headlineSource", "headlineLang", "entities", "articles"]);
+    exactKeys(sw, s, ["n", "u", "o", "c", "i", "l", "t", "first", "last", "headline", "headlineSource", "headlineLang", "entities", "articles"]);
     int(`${sw}.n`, s.n, 3);
+    int(`${sw}.u`, s.u, 1);
     int(`${sw}.o`, s.o);
     int(`${sw}.c`, s.c);
+    int(`${sw}.i`, s.i);
+    if (typeof s.u === "number" && typeof s.n === "number" && s.u > s.n) err(sw, "u > n");
+    if (typeof s.i === "number" && typeof s.c === "number" && s.i > s.c) err(sw, "i > c");
     int(`${sw}.l`, s.l);
     num(`${sw}.t`, s.t, 1);
     if (typeof s.n === "number") sum += s.n;
@@ -155,10 +179,12 @@ function checkStories(w: string, cell: Record<string, unknown>) {
     if (arts.length === 0) err(`${sw}.articles`, "empty");
     if (typeof s.n === "number" && arts.length > s.n) err(`${sw}.articles`, "more articles than n");
     const perOutlet = new Map<string, number>();
+    const keys = new Set<string>();
     arts.forEach((a, j) => {
       const aw = `${sw}.articles[${j}]`;
       if (!isObj(a)) return err(aw, "not an object");
       checkArticle(aw, a);
+      uniqueKey(aw, a, keys, cell);
       if (shownUrls.has(a.url as string)) err(`${aw}.url`, "URL shown more than once across the stories");
       shownUrls.add(a.url as string);
       perOutlet.set(a.source as string, (perOutlet.get(a.source as string) ?? 0) + 1);
@@ -183,7 +209,7 @@ for (const f of files) {
   const id = f.slice(0, -5);
   const w = `cells/${f}`;
   const cell = JSON.parse(readFileSync(join(cellsDir, f), "utf8")) as Record<string, unknown>;
-  exactKeys(w, cell, ["id", "name", "n", "o", "c", "l", "t", "topOutlets", "topCountries", "languages", "articles", "videos", "stories", "unclustered"]);
+  exactKeys(w, cell, ["id", "name", "home", "n", "u", "o", "c", "i", "l", "t", "topOutlets", "topCountries", "languages", "articles", "videos", "stories", "unclustered"]);
   int(`${w}.videos`, cell.videos);
   if (typeof cell.videos === "number" && typeof cell.n === "number" && cell.videos > cell.n) err(`${w}.videos`, "more than n");
   if (Array.isArray(cell.articles) && typeof cell.videos === "number") {
@@ -194,12 +220,17 @@ for (const f of files) {
   if (cell.id !== id) err(`${w}.id`, `does not match file name`);
   str(`${w}.name`, cell.name);
   int(`${w}.n`, cell.n, 1);
+  int(`${w}.u`, cell.u, 1);
   int(`${w}.o`, cell.o);
   int(`${w}.c`, cell.c);
+  int(`${w}.i`, cell.i);
+  str(`${w}.home`, cell.home);
+  if (typeof cell.home === "string" && cell.home !== "" && !/^[A-Z]{2}$/.test(cell.home)) err(`${w}.home`, `not ISO alpha-2: ${cell.home}`);
+  if (cell.home === "" && cell.i !== cell.c) err(`${w}.i`, "must equal c when home is empty");
   int(`${w}.l`, cell.l);
   num(`${w}.t`, cell.t, 1);
   const h = heatById.get(id);
-  if (h) for (const k of ["name", "n", "o", "c", "l", "t"]) if (h[k] !== cell[k]) err(`${w}.${k}`, `differs from heat.json (${String(h[k])} vs ${String(cell[k])})`);
+  if (h) for (const k of ["name", "n", "u", "o", "c", "i", "l", "t"]) if (h[k] !== cell[k]) err(`${w}.${k}`, `differs from heat.json (${String(h[k])} vs ${String(cell[k])})`);
   pairs(`${w}.topOutlets`, cell.topOutlets, 10, (k) => k.length > 0);
   pairs(`${w}.topCountries`, cell.topCountries, 10, (k) => k === "" || /^[A-Z]{2}$/.test(k));
   pairs(`${w}.languages`, cell.languages, 10, (k) => /^[a-z]{2,3}$/.test(k) || k === "");
@@ -207,11 +238,13 @@ for (const f of files) {
   if (arts.length > 50) err(`${w}.articles`, `${arts.length} > 50`);
   if (typeof cell.n === "number" && arts.length > cell.n) err(`${w}.articles`, "more articles than n");
   const urls = new Set<string>();
+  const keys = new Set<string>();
   const perOutlet = new Map<string, number>();
   arts.forEach((a, i) => {
     const aw = `${w}.articles[${i}]`;
     if (!isObj(a)) return err(aw, "not an object");
     checkArticle(aw, a);
+    uniqueKey(aw, a, keys, cell);
     if (urls.has(a.url as string)) err(`${aw}.url`, "duplicate URL in cell");
     urls.add(a.url as string);
     perOutlet.set(a.source as string, (perOutlet.get(a.source as string) ?? 0) + 1);
@@ -293,7 +326,9 @@ if (!existsSync(indexPath)) {
   if (isObj(last)) {
     if (last.at !== heat.generatedAt) err("history/index last frame", `at ${String(last.at)} != heat.generatedAt ${String(heat.generatedAt)}`);
     if (last.windowHours !== heat.windowHours) err("history/index last frame", "windowHours differs from heat.json");
-    if (JSON.stringify(last.totals) !== JSON.stringify(heat.totals)) err("history/index last frame", "totals differ from heat.json");
+    // The index keeps the five original totals; heat.json also has `reprints`.
+    const { reprints: _copies, ...indexTotals } = totals;
+    if (JSON.stringify(last.totals) !== JSON.stringify(indexTotals)) err("history/index last frame", "totals differ from heat.json");
     if (typeof heat.generatedAt === "string") {
       const cutoff = Date.parse(heat.generatedAt) - 24 * 3_600_000;
       frames.forEach((f, i) => {

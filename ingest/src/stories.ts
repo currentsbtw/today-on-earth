@@ -1,5 +1,6 @@
 import { titleTokens } from "./entities.ts";
-import { cellStats, compareNewestFirst, toCellArticle } from "./stats.ts";
+import { keyCounts, keyOf } from "./reprints.ts";
+import { cellStats, compareNewestFirst, homeCountry, toCellArticle } from "./stats.ts";
 import type { ArticleRecord, Story } from "./types.ts";
 
 /**
@@ -15,6 +16,8 @@ import type { ArticleRecord, Story } from "./types.ts";
  *   then the older cluster; otherwise it starts a new cluster;
  * - then clusters whose top-5 entity sets overlap by >= 3 are merged (transitively);
  * - clusters with n >= 3 become stories, largest first, at most 12.
+ * A story's shown articles keep one per reprint key (the newest the outlet cap lets in), and
+ * each carries its reprint count over the whole cell.
  */
 export const MAX_STORIES = 12;
 export const MIN_STORY_ARTICLES = 3;
@@ -190,9 +193,9 @@ export function displayEntities(nameDf: Map<string, number>, themeDf: Map<string
   return out;
 }
 
-function toStory(group: Item[]): Story {
+function toStory(group: Item[], home: string, copies: Map<string, number>): Story {
   const records = group.map((g) => g.r);
-  const s = cellStats(records);
+  const s = cellStats(records, home);
   let first = records[0].time;
   let last = records[0].time;
   for (const r of records) {
@@ -222,19 +225,25 @@ function toStory(group: Item[]): Story {
   const medoid = ranked[0].g.r;
 
   const perOutlet = new Map<string, number>();
+  const keys = new Set<string>();
   const articles: ArticleRecord[] = [];
   for (const r of [...records].sort(compareNewestFirst)) {
     if (articles.length >= STORY_ARTICLES) break;
+    const key = keyOf(r);
+    if (key && keys.has(key)) continue;
     const k = perOutlet.get(r.source) ?? 0;
     if (k >= STORY_MAX_PER_OUTLET) continue;
     perOutlet.set(r.source, k + 1);
+    if (key) keys.add(key);
     articles.push(r);
   }
 
   return {
     n: s.n,
+    u: s.u,
     o: s.o,
     c: s.c,
+    i: s.i,
     l: s.l,
     t: s.t,
     first,
@@ -243,11 +252,15 @@ function toStory(group: Item[]): Story {
     headlineSource: medoid.source,
     headlineLang: medoid.lang,
     entities: displayEntities(nameDf, themeDf),
-    articles: articles.map(toCellArticle),
+    articles: articles.map((r) => {
+      const key = keyOf(r);
+      return toCellArticle(r, key ? copies.get(key)! - 1 : 0);
+    }),
   };
 }
 
-export function buildStories(records: readonly ArticleRecord[]): { stories: Story[]; unclustered: number } {
+/** `records` are one cell's articles; `home` is that cell's own country (for each story's `i`). */
+export function buildStories(records: readonly ArticleRecord[], home = homeCountry(records)): { stories: Story[]; unclustered: number } {
   const items = [...records].sort(oldestFirst).map(itemOf);
   removeBackground(items);
   const groups = merge(cluster(items))
@@ -255,7 +268,8 @@ export function buildStories(records: readonly ArticleRecord[]): { stories: Stor
     .map((g) => ({ g, first: g.reduce((m, x) => (x.r.time < m ? x.r.time : m), g[0].r.time) }));
   // Largest first; ties by earliest article, then by order of creation (stable sort).
   groups.sort((a, b) => b.g.length - a.g.length || (a.first < b.first ? -1 : a.first > b.first ? 1 : 0));
-  const stories = groups.slice(0, MAX_STORIES).map(({ g }) => toStory(g));
+  const copies = keyCounts(records);
+  const stories = groups.slice(0, MAX_STORIES).map(({ g }) => toStory(g, home, copies));
   const clustered = stories.reduce((sum, s) => sum + s.n, 0);
   return { stories, unclustered: records.length - clustered };
 }

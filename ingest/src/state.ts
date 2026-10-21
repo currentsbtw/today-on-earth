@@ -10,27 +10,29 @@ import type { FeedProgress } from "./window.ts";
  *
  * Records are stored as positional arrays to keep the file compact:
  *   [url, title, source, country, lang, time, tone, image, lat, lon, cellId, locationName,
- *    persons, orgs, themes, video]   (persons/orgs/themes are ";"-joined lists; GKG never puts
+ *    persons, orgs, themes, video, locationCountry]   (persons/orgs/themes are ";"-joined lists; GKG never puts
  *    ";" in a name)
  * Older files still load, so a deploy does not fail on the state already in the cache:
- * version 2 (15 fields, no video) gets video ""; version 1 (12 fields) also gets empty lists.
+ * version 3 (16 fields, no locationCountry) gets locationCountry ""; version 2 (15 fields, no
+ * video) also gets video ""; version 1 (12 fields) also gets empty lists.
  * `feeds` holds, per GDELT feed, the 15-minute file stamps already merged into `records`
  * (so files are never counted twice) and the first stamp ever planned (so late files can be
  * retried without widening the window backwards).
  */
-export const STATE_VERSION = 3;
+export const STATE_VERSION = 4;
 /** Record length per readable version. */
-const RECORD_LENGTH: Record<number, number> = { 1: 12, 2: 15, 3: 16 };
+const RECORD_LENGTH: Record<number, number> = { 1: 12, 2: 15, 3: 16, 4: 17 };
 
 type PackedRecordV1 = [string, string, string, string, string, string, number, string, number, number, string, string];
 type PackedRecordV2 = [...PackedRecordV1, string, string, string];
-type PackedRecord = [...PackedRecordV2, string];
+type PackedRecordV3 = [...PackedRecordV2, string];
+type PackedRecord = [...PackedRecordV3, string];
 
 interface PackedState {
   v: number;
   savedAt: string;
   feeds: Record<string, FeedProgress>;
-  records: (PackedRecord | PackedRecordV2 | PackedRecordV1)[];
+  records: (PackedRecord | PackedRecordV3 | PackedRecordV2 | PackedRecordV1)[];
 }
 
 export interface IngestState {
@@ -41,18 +43,21 @@ export interface IngestState {
 function pack(r: ArticleRecord): PackedRecord {
   return [
     r.url, r.title, r.source, r.country, r.lang, r.time, r.tone, r.image, r.lat, r.lon, r.cellId, r.locationName,
-    r.persons.join(";"), r.orgs.join(";"), r.themes.join(";"), r.video,
+    r.persons.join(";"), r.orgs.join(";"), r.themes.join(";"), r.video, r.locationCountry,
   ];
 }
 
 const list = (s: string | undefined) => (s ? s.split(";") : []);
 
-function unpack(p: PackedRecord | PackedRecordV2 | PackedRecordV1): ArticleRecord {
+function unpack(p: PackedRecord | PackedRecordV3 | PackedRecordV2 | PackedRecordV1): ArticleRecord {
   const [url, title, source, country, lang, time, tone, image, lat, lon, cellId, locationName] = p;
   // Re-check stored videos so URLs accepted by an older, looser rule are cleared.
   const video = p[15] && isYouTubeVideoUrl(p[15]) ? p[15] : "";
+  // Only an ISO alpha-2 code survives; older states have none and get "" (the cell's home
+  // country then resolves itself as new records arrive).
+  const locationCountry = typeof p[16] === "string" && /^[A-Z]{2}$/.test(p[16]) ? p[16] : "";
   // Older states hold raw GDELT names; tidy them on load so no raw name survives.
-  return { url, title, source, country, lang, time, tone, image, lat, lon, cellId, locationName: locationName && cleanPlaceName(locationName), persons: list(p[12]), orgs: list(p[13]), themes: list(p[14]), video };
+  return { url, title, source, country, lang, time, tone, image, lat, lon, cellId, locationName: locationName && cleanPlaceName(locationName), persons: list(p[12]), orgs: list(p[13]), themes: list(p[14]), video, locationCountry };
 }
 
 export function encodeState(state: IngestState, savedAt: string): Buffer {

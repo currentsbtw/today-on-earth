@@ -19,6 +19,8 @@ export interface ArticleRecord {
   cellId: string;
   /** FullName of the primary location; "" when unplaced. */
   locationName: string;
+  /** Country of the primary location (V2Locations CountryCode, FIPS -> ISO 3166-1 alpha-2); "" when unknown or unplaced. */
+  locationCountry: string;
   /** Up to 6 most-mentioned GKG V2Persons, lowercase. */
   persons: string[];
   /** Up to 6 most-mentioned GKG V2Organizations, lowercase. */
@@ -36,7 +38,7 @@ export interface HeatFile {
   newestArticleAt: string;
   /** Complete UTC days of per-cell counts in the baseline, capped at 14. */
   baselineDays: number;
-  totals: { articles: number; outlets: number; countries: number; cells: number; unplaced: number };
+  totals: { articles: number; outlets: number; countries: number; cells: number; unplaced: number; reprints: number };
   cells: HeatCell[];
 }
 
@@ -45,8 +47,12 @@ export interface HeatCell {
   lat: number;
   lon: number;
   n: number;
+  /** Distinct headlines: distinct reprint keys, untitled articles one each. */
+  u: number;
   o: number;
   c: number;
+  /** Outlet countries other than the place's own (`c` when the place's country is unknown). */
+  i: number;
   l: number;
   t: number;
   name: string;
@@ -65,15 +71,21 @@ export interface CellArticle {
   image: string;
   /** YouTube video URL from GKG SocialVideoEmbeds, "" when none. */
   video: string;
+  /** Other articles in the same cell with the same reprint key. */
+  reprints: number;
 }
 
 /** `/data/cells/<id>.json` (docs/DATA-CONTRACT.md). */
 export interface CellFile {
   id: string;
   name: string;
+  /** The place's own country: most common article location country, "" if none. */
+  home: string;
   n: number;
+  u: number;
   o: number;
   c: number;
+  i: number;
   l: number;
   t: number;
   topOutlets: [string, number][];
@@ -90,8 +102,11 @@ export interface CellFile {
 /** A group of a cell's articles about the same thing (docs/DATA-CONTRACT.md "Stories"). */
 export interface Story {
   n: number;
+  u: number;
   o: number;
   c: number;
+  /** As the cell's `i`, over the story's articles, against the cell's `home`. */
+  i: number;
   l: number;
   t: number;
   first: string;

@@ -331,6 +331,17 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+.panel-reach {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.panel-reach[hidden] {
+  display: none;
+}
+
 .panel-state {
   margin: 14px 0 0;
   color: var(--muted);
@@ -836,6 +847,10 @@ a.article-title:visited {
 
 .article-meta > span:first-child {
   color: #a9afb6;
+}
+
+.article-reprints {
+  color: var(--faint);
 }
 
 /* Tone: a tick on a short hairline; neutral grey, no words. */

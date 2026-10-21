@@ -7,6 +7,7 @@ const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as 
 const panel = $<HTMLElement>('panel');
 const title = $<HTMLHeadingElement>('panel-title');
 const why = $<HTMLParagraphElement>('panel-why');
+const reach = $<HTMLParagraphElement>('panel-reach');
 const state = $<HTMLParagraphElement>('panel-state');
 const note = $<HTMLParagraphElement>('panel-note');
 const list = $<HTMLOListElement>('panel-list');
@@ -37,6 +38,29 @@ function countsLine(c: Counts): string {
 /** The counts plus the window: "… · 9 languages · last 24h" */
 function whyLine(c: Counts, windowHours: number): string {
   return `${countsLine(c)} · last ${windowHours}h`;
+}
+
+type Reach = Counts & { u?: number; i?: number };
+
+/** "heard in 19 other countries"; "" when the file has no `i` or no outlet country is known. */
+function heardIn(c: Reach): string {
+  if (c.i === undefined || (c.i === 0 && c.c === 0)) return '';
+  return c.i === 0 ? 'heard in no other country' : `heard in ${plural(c.i, 'other country', 'other countries')}`;
+}
+
+/** "61 distinct · 3 reprints · heard in 19 other countries"; the reprint part only when there are copies. */
+function reachLine(c: Reach): string {
+  const parts: string[] = [];
+  const copies = c.u === undefined ? 0 : c.n - c.u;
+  if (copies > 0) parts.push(`${count(c.u!)} distinct`, plural(copies, 'reprint', 'reprints'));
+  const heard = heardIn(c);
+  if (heard) parts.push(heard);
+  return parts.join(' · ');
+}
+
+function setReach(c: Reach | null) {
+  reach.textContent = c ? reachLine(c) : '';
+  reach.hidden = !reach.textContent;
 }
 
 const el = <K extends keyof HTMLElementTagNameMap>(tag: K, className: string, text?: string) => {
@@ -88,7 +112,10 @@ function storyCard(story: Story, now: number): HTMLElement {
   if (attribution) head.append(el('span', 'story-source', `${text ? ' — ' : ''}${attribution}`));
 
   const meta = el('p', 'story-meta');
-  meta.append(el('span', 'story-counts', countsLine(story)), el('span', '', span(story.first, story.last)), toneMarker(story.t));
+  meta.append(el('span', 'story-counts', countsLine(story)));
+  const heard = heardIn(story);
+  if (heard) meta.append(el('span', '', heard));
+  meta.append(el('span', '', span(story.first, story.last)), toneMarker(story.t));
 
   card.append(head, meta);
 
@@ -302,6 +329,12 @@ function articleItem(a: Article, now: number): HTMLLIElement {
     span.textContent = part;
     meta.append(span);
   }
+  const copies = a.reprints ?? 0;
+  if (copies > 0) {
+    const tag = el('span', 'article-reprints', `+${plural(copies, 'reprint', 'reprints')}`);
+    tag.title = `${plural(copies, 'other article', 'other articles')} here with the same headline`;
+    meta.append(tag);
+  }
   meta.append(toneMarker(a.tone));
   const id = youtubeId(a.video ?? '');
   if (id) {
@@ -402,6 +435,7 @@ export function openLoading(cell: HeatCell, windowHours: number) {
   cellMode();
   title.textContent = cell.name;
   why.textContent = whyLine(cell, windowHours);
+  setReach(cell);
   list.replaceChildren();
   renderCoverage(null);
   renderStories(null, 0);
@@ -413,6 +447,7 @@ export function openLoading(cell: HeatCell, windowHours: number) {
 export function showDetail(detail: CellDetail, windowHours: number) {
   title.textContent = detail.name;
   why.textContent = whyLine(detail, windowHours);
+  setReach(detail);
   const now = Date.now();
   renderCoverage(detail);
   renderVideos(detail);
@@ -429,6 +464,7 @@ export function openMissing(n: number) {
   cellMode();
   title.textContent = plural(n, 'article', 'articles');
   why.textContent = '';
+  setReach(null);
   list.replaceChildren();
   renderCoverage(null);
   renderStories(null, 0);

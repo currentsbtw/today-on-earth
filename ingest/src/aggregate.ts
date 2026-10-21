@@ -1,6 +1,7 @@
 import { cellToLatLng } from "h3-js";
 import { cellStats, compareNewestFirst, round, toCellArticle } from "./stats.ts";
 import type { BaselineView } from "./baseline.ts";
+import { keyCounts, keyOf } from "./reprints.ts";
 import { buildStories } from "./stories.ts";
 import type { ArticleRecord, CellFile, HeatCell, HeatFile } from "./types.ts";
 
@@ -18,6 +19,7 @@ export const MIN_CELL_ARTICLES = 2;
 /**
  * Pick the cell's article list: newest first, de-duplicated by URL, at most 50.
  * When the cell has 10 or more distinct outlets, no outlet contributes more than 5.
+ * At most one article per non-empty reprint key: the newest copy the outlet cap lets in.
  */
 export function selectArticles(records: readonly ArticleRecord[]): ArticleRecord[] {
   const seen = new Set<string>();
@@ -29,15 +31,19 @@ export function selectArticles(records: readonly ArticleRecord[]): ArticleRecord
   }
   // Same definition as the cell's `o`: distinct non-empty source domains.
   const outletCount = new Set(unique.map((r) => r.source).filter(Boolean)).size;
-  if (outletCount < OUTLET_CAP_MIN_OUTLETS) return unique.slice(0, ARTICLES_PER_CELL);
+  const capped = outletCount >= OUTLET_CAP_MIN_OUTLETS;
 
   const perOutlet = new Map<string, number>();
+  const keys = new Set<string>();
   const picked: ArticleRecord[] = [];
   for (const r of unique) {
     if (picked.length >= ARTICLES_PER_CELL) break;
+    const key = keyOf(r);
+    if (key && keys.has(key)) continue;
     const k = perOutlet.get(r.source) ?? 0;
-    if (k >= MAX_PER_OUTLET) continue;
+    if (capped && k >= MAX_PER_OUTLET) continue;
     perOutlet.set(r.source, k + 1);
+    if (key) keys.add(key);
     picked.push(r);
   }
   return picked;
@@ -80,25 +86,35 @@ export function buildSnapshot(
   };
   const heatCells: HeatCell[] = [];
   const cellFiles = new Map<string, CellFile>();
+  let reprints = 0;
   for (const [id, list] of byCell) {
-    if (list.length < MIN_CELL_ARTICLES) continue;
+    if (list.length < MIN_CELL_ARTICLES) continue; // a 1-article cell holds no copies
     const s = cellStats(list);
+    reprints += s.n - s.u; // articles that are copies of another article in the same cell
     const [lat, lon] = cellToLatLng(id);
-    heatCells.push({ id, lat: round(lat, 2), lon: round(lon, 2), n: s.n, o: s.o, c: s.c, l: s.l, t: s.t, name: s.name, b: baseline.b(id) });
+    heatCells.push({ id, lat: round(lat, 2), lon: round(lon, 2), n: s.n, u: s.u, o: s.o, c: s.c, i: s.i, l: s.l, t: s.t, name: s.name, b: baseline.b(id) });
+    const copies = keyCounts(list);
+    const others = (r: ArticleRecord) => {
+      const key = keyOf(r);
+      return key ? copies.get(key)! - 1 : 0;
+    };
     cellFiles.set(id, {
       id,
       name: s.name,
+      home: s.home,
       n: s.n,
+      u: s.u,
       o: s.o,
       c: s.c,
+      i: s.i,
       l: s.l,
       t: s.t,
       topOutlets: s.outlets.slice(0, TOP_LIST_SIZE),
       topCountries: s.countries.slice(0, TOP_LIST_SIZE),
       languages: s.languages.slice(0, TOP_LIST_SIZE),
-      articles: selectArticles(list).map(toCellArticle),
+      articles: selectArticles(list).map((r) => toCellArticle(r, others(r))),
       videos: list.reduce((k, r) => k + (r.video ? 1 : 0), 0),
-      ...timed(() => buildStories(list)),
+      ...timed(() => buildStories(list, s.home)),
     });
   }
   heatCells.sort((a, b) => b.n - a.n || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
@@ -117,7 +133,7 @@ export function buildSnapshot(
     windowHours: opts.windowHours,
     newestArticleAt: newest,
     baselineDays: baseline.baselineDays,
-    totals: { articles: records.length, outlets: outlets.size, countries: countries.size, cells: heatCells.length, unplaced },
+    totals: { articles: records.length, outlets: outlets.size, countries: countries.size, cells: heatCells.length, unplaced, reprints },
     cells: heatCells,
   };
   return { heat, cells: heatCells.map((c) => cellFiles.get(c.id)!), storiesMs };

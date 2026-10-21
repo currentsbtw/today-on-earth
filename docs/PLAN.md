@@ -316,6 +316,33 @@ fallback (77c88a7); phone layout fills portrait height (map.ts); first-visit hin
 explaining the glow (9dc4749); earthquake layer (built, off by default; the review's
 "defer" is moot).
 
+**Status 2026-10-21 ~15:30 UTC:** four of the eight items shipped.
+- Archive: every snapshot now goes to a daily GitHub release (`archive-YYYY-MM-DD`):
+  heat.json.gz per run, cells tarball once a day. First real run confirmed (15:00 UTC:
+  91 KB + 7.8 MB). README "Archive" and the contract describe it.
+- Reprint collapse: per-cell `u` (distinct headlines), `totals.reprints`, `reprints`
+  per article; lists show each headline once with "+N reprints". Heat still uses `n`.
+  The suffix rule strips a trailing outlet name only when it matches the article's own
+  outlet domain or is at most two words (a parenthetical dash clause is kept). On a
+  2-hour window: 2,370 of 25,766 articles were copies. Most copies seen so far are one
+  outlet publishing the same headline under many URLs (index.hr, 53 URLs), not wires.
+- International attention: per-cell `i` and `home` (the place's own country from GKG
+  location country codes), stories carry `i` too; the panel reads "heard in N other
+  countries". State file v4 carries the location country; v3 states still load.
+- Outlet list: layered lookup (hand overrides > GDELT 2018 > ccTLD with a deny list and
+  national second-level forms > a reduced GDELT 2015-2021 mention list). No newer
+  curated GDELT list exists. storm.mg -> TW; the 333 Big News Network portals are
+  forced to "unknown" so they stop inflating country counts (collapsing them to one
+  outlet is still open). Unknown-country share after: 2.3% of articles, 0.8% once
+  the deliberate Big News Network blanks are excluded. `ingest/scripts/unknown-outlets.ts`
+  lists the top unknown domains for growing the overrides.
+Deferred from the review of this work: `i` equals `c` while a cell's home country is
+unknown (sea cells, and carried records during the first 24 h after deploy), so "heard
+in N other countries" can overstate there; reprint key counts are computed twice per
+cell; the panel says "heard in no other country" even when home is unknown.
+Remaining Phase 2b items: aggregator network collapse, state-level placement, story
+grouping, translate link.
+
 ### Phase 3: Rich media and time
 - Embedded video where the platform allows embeds (YouTube etc.).
 - Time scrubber: replay the last 24 hours / 7 days.

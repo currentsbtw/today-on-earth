@@ -10,7 +10,7 @@ const CELL = "832aa8fffffffff";
 function art(p: Partial<ArticleRecord> & { url: string; time: string }): ArticleRecord {
   return {
     title: "", source: "x.com", country: "US", lang: "en", tone: 0, image: "", lat: 38.9, lon: -77,
-    cellId: CELL, locationName: "Washington", persons: [], orgs: [], themes: [], video: "", ...p,
+    cellId: CELL, locationName: "Washington", persons: [], orgs: [], themes: [], video: "", locationCountry: "", ...p,
   };
 }
 const t = (h: number, m = 0) => `2026-10-21T${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:00Z`;
@@ -59,6 +59,26 @@ test("stories: two obvious stories plus noise", () => {
   assert.deepEqual(b.entities, ["john roe", "natural disaster flood"]); // 1 person, so a theme tops up, as words
   assert.equal(b.headline, "Riverton flood forces evacuation of downtown");
   assert.equal(b.articles.length, 4);
+});
+
+test("stories: u, i against the cell's home, one article per reprint key", () => {
+  const tags = { persons: ["jane doe"], orgs: ["acme motors"], locationCountry: "US" };
+  const wire = "Acme recalls million cars over brake defect";
+  const records = [
+    art({ ...tags, url: "https://ap.org/1", time: t(1), source: "ap.org", country: "US", title: wire }),
+    art({ ...tags, url: "https://guardian.co.uk/1", time: t(2), source: "guardian.co.uk", country: "GB", title: `${wire} - The Guardian` }),
+    art({ ...tags, url: "https://abc.net.au/1", time: t(3), source: "abc.net.au", country: "AU", title: `${wire} | ABC News` }),
+    art({ ...tags, url: "https://zeit.de/1", time: t(4), source: "zeit.de", country: "DE", title: "Acme ruft Autos wegen Bremsen zurück" }),
+  ];
+  const [story] = buildStories(records).stories;
+  assert.equal(story.n, 4);
+  assert.equal(story.u, 2);
+  assert.equal(story.c, 4);
+  assert.equal(story.i, 3); // GB, AU, DE; US is the place's own country
+  assert.deepEqual(story.articles.map((a) => [a.url, a.reprints]), [["https://zeit.de/1", 0], ["https://abc.net.au/1", 2]]);
+  // A home passed in by the cell wins over the story's own.
+  assert.equal(buildStories(records, "DE").stories[0].i, 3);
+  assert.equal(buildStories(records, "").stories[0].i, 4);
 });
 
 test("stories: headline prefers a titled article; all untitled gives an empty headline", () => {
@@ -118,8 +138,8 @@ test("title tokens: lowercase, punctuation stripped, short and stop words droppe
   assert.deepEqual(titleTokens(""), []);
 });
 
-test("state v3 stores entity lists and video; v2 and v1 state still load", () => {
-  const rec = { ...fixture[0], video: "https://youtu.be/dQw4w9WgXcQ" };
+test("state v4 stores entity lists, video and location country; v3, v2 and v1 state still load", () => {
+  const rec = { ...fixture[0], video: "https://youtu.be/dQw4w9WgXcQ", locationCountry: "US" };
   const round = decodeState(encodeState({ feeds: {}, records: [rec] }, t(6)));
   assert.deepEqual(round.records[0], rec);
   const v1Fields = [rec.url, rec.title, rec.source, rec.country, rec.lang, rec.time, rec.tone, rec.image, rec.lat, rec.lon, rec.cellId, rec.locationName];
@@ -129,8 +149,12 @@ test("state v3 stores entity lists and video; v2 and v1 state still load", () =>
   assert.equal(old.url, rec.url);
   const v2 = gzipSync(JSON.stringify({ v: 2, savedAt: t(6), feeds: {}, records: [[...v1Fields, "jane doe", "acme motors", ""]] }));
   const mid = decodeState(v2).records[0];
-  assert.deepEqual([mid.persons, mid.orgs, mid.themes, mid.video], [["jane doe"], ["acme motors"], [], ""]);
-  assert.throws(() => decodeState(gzipSync(JSON.stringify({ v: 4, feeds: {}, records: [] }))));
+  assert.deepEqual([mid.persons, mid.orgs, mid.themes, mid.video, mid.locationCountry], [["jane doe"], ["acme motors"], [], "", ""]);
+  // A v3 record (no location country) loads with "" instead of forcing a cold start.
+  const v3 = gzipSync(JSON.stringify({ v: 3, savedAt: t(6), feeds: {}, records: [[...v1Fields, "jane doe", "", "", rec.video]] }));
+  const prev = decodeState(v3).records[0];
+  assert.deepEqual([prev.persons, prev.video, prev.locationCountry], [["jane doe"], rec.video, ""]);
+  assert.throws(() => decodeState(gzipSync(JSON.stringify({ v: 5, feeds: {}, records: [] }))));
   // A raw GDELT place name stored by older code is tidied on load.
   const raw = { ...rec, locationName: "London, London, City Of, United Kingdom" };
   assert.equal(decodeState(encodeState({ feeds: {}, records: [raw] }, t(6))).records[0].locationName, "London, United Kingdom");

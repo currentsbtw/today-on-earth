@@ -30,7 +30,7 @@ test("frame built from this run's cells: [id, lat, lon, n], n >= 2, sorted by n 
   const lagos = latLngToCell(6.45, 3.39, 3);
   const base: ArticleRecord = {
     url: "", title: "", source: "a.com", country: "FR", lang: "fr", time: "2026-10-21T04:00:00Z", tone: 0, image: "",
-    lat: 0, lon: 0, cellId: paris, locationName: "Paris, France", persons: [], orgs: [], themes: [], video: "",
+    lat: 0, lon: 0, cellId: paris, locationName: "Paris, France", persons: [], orgs: [], themes: [], video: "", locationCountry: "",
   };
   const records = [
     ...[1, 2, 3].map((i) => ({ ...base, url: `https://p/${i}` })),
@@ -42,7 +42,8 @@ test("frame built from this run's cells: [id, lat, lon, n], n >= 2, sorted by n 
   const e = buildHistoryEntry(heat);
   assert.equal(e.at, "2026-10-21T04:47:14Z");
   assert.equal(e.windowHours, 6);
-  assert.deepEqual(e.totals, heat.totals);
+  const { reprints: _copies, ...indexTotals } = heat.totals; // the index keeps the original five
+  assert.deepEqual(e.totals, indexTotals);
   assert.deepEqual(toFrame(e), {
     at: "2026-10-21T04:47:14Z",
     cells: heat.cells.map((c) => [c.id, c.lat, c.lon, c.n]),

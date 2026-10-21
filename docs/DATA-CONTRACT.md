@@ -14,14 +14,17 @@ deployed site. In local dev the frontend serves `web/public/data/` at `/data/`.
   "windowHours": 24,                        // rolling window the counts cover
   "newestArticleAt": "2026-10-20T19:15:00Z",
   "totals": { "articles": 183204, "outlets": 9120, "countries": 171, "cells": 6210,
-              "unplaced": 41200 }, // articles whose only locations are country-level; counted here, never binned into a cell
+              "unplaced": 41200,  // articles whose only locations are country-level; counted here, never binned into a cell
+              "reprints": 23100 }, // sum over cells of (n - u): articles that copy another article's headline in the same cell (added 2026-10-21)
   "cells": [
     {
       "id": "832830fffffffff",   // H3 cell index, resolution 3
       "lat": 48.86, "lon": 2.35, // cell centroid, 2 decimals
       "n": 412,                  // articles whose primary location falls in this cell
+      "u": 361,                  // distinct headlines: distinct reprint keys, untitled articles one each (added 2026-10-21)
       "o": 150,                  // distinct outlets (source domains)
       "c": 23,                   // distinct source countries (outlets' countries), 0 if unknown
+      "i": 22,                   // outlet countries other than the place's own country (added 2026-10-21)
       "l": 9,                    // distinct languages
       "t": -2.1,                 // mean tone, 1 decimal (GDELT V2Tone first value)
       "name": "Paris, France"    // most common location full name in the cell, with GDELT artefacts removed
@@ -56,13 +59,67 @@ So that a quiet place lighting up can show, each cell carries its own normal:
   state and history live in the same cache entry, so they are restored or lost
   together (a baseline surviving a lost state would double count).
 
+### Reprints and international attention (added 2026-10-21)
+
+Two measures, computed from what GDELT already gives. Neither changes what glows: heat
+stays the article count `n`, and "Articles: distinct URLs" stays true. `n`, `o`, `c`,
+`l`, `t` are still over every URL in the cell.
+
+**Reprint key** of an article, from its `title` and `source`:
+1. Unicode NFKC normalisation, lowercase, whitespace collapsed and trimmed.
+2. A trailing outlet suffix is removed, once, only when it looks like an outlet name.
+   Candidate: the title ends in ` - X`, ` | X`, ` – X` or ` — X` (hyphen, pipe, en dash
+   or em dash with a space on each side; X contains no further such separator), and what
+   precedes that last separator is at least 20 characters (code points, trailing space
+   trimmed). Then:
+   - `tail` = X decomposed (NFD) with every character that is not a letter or digit
+     (Unicode classes L and N) removed, then a leading `the` removed
+     ("The Star" → `star`, "BBC News" → `bbcnews`, "El País" → `elpais`).
+   - `label` = the `source` domain, lowercased and split on `.`: with 3 or more labels
+     and the second-to-last one of `com co net org gov edu ac or ne go`, the
+     third-to-last label, otherwise the second-to-last (`bbc.co.uk` → `bbc`,
+     `news.ndtv.com` → `ndtv`, `thestar.com` → `thestar`); reduced like `tail`
+     (non-letters/digits removed, leading `the` removed) and kept only if at least
+     3 characters, else empty.
+   - The suffix is removed when (a) `label` is non-empty, `tail` is at least 3
+     characters, and `tail` contains `label` or `label` contains `tail`; or (b) X has
+     at most 2 whitespace-separated words ("Reuters", "AP News"). Otherwise the whole
+     title is kept.
+3. Every Unicode punctuation and symbol character (classes P and S) is deleted;
+   whitespace is collapsed and trimmed again.
+
+An empty key (no title, or punctuation only) matches nothing: such an article is its own
+item. Articles in the same cell with the same non-empty key are reprints of one another.
+
+- `u` (heat cell, cell file, story): distinct non-empty keys plus one per empty-key
+  article, over the cell's (or story's) articles. `1 <= u <= n`.
+- `totals.reprints` = sum over cells of `n - u` (cells with `n` < 2 hold no copies, so
+  dropping them changes nothing). Only the five original totals go into
+  `history/index.json`.
+- `reprints` on every article object (cell `articles` and story `articles`): how many
+  other articles in the same cell share its key (0 for an empty key). Article lists keep
+  at most one article per non-empty key: the newest copy that the per-outlet caps let
+  in. The kept one carries the count.
+
+**International attention.** Each placed article has a `locationCountry` (ingest-internal):
+the CountryCode (FIPS 10-4) of its primary location entry in GKG V2Locations, as ISO
+3166-1 alpha-2, "" when it has no ISO equivalent.
+
+- `home` (cell file only): the most common non-empty `locationCountry` among the cell's
+  articles, ties to the alphabetically first code; "" when none.
+- `i` (heat cell, cell file, story): distinct non-empty outlet countries (`country`)
+  among the articles, other than `home`. When `home` is "", `i` = `c`. A story uses its
+  cell's `home`. Records carried from before this field existed have "" and age out of
+  the window within 24 h.
+
 ## `/data/cells/<id>.json`  (one file per cell, fetched on click)
 
 ```jsonc
 {
   "id": "832830fffffffff",
   "name": "Paris, France",
-  "n": 412, "o": 150, "c": 23, "l": 9, "t": -2.1,
+  "home": "FR",                       // the place's own country, "" if unknown (added 2026-10-21)
+  "n": 412, "u": 361, "o": 150, "c": 23, "i": 22, "l": 9, "t": -2.1,
   "topOutlets":  [["lemonde.fr", 31], ["bbc.co.uk", 12]],  // top 10 by article count
   "topCountries":[["FR", 190], ["GB", 40], ["US", 38]],    // ISO 3166-1 alpha-2 of outlet country, "" allowed
   "languages":   [["fr", 220], ["en", 150], ["de", 12]],   // ISO 639-1 where known
@@ -76,7 +133,8 @@ So that a quiet place lighting up can show, each cell carries its own normal:
       "time": "2026-10-20T18:45:00Z",   // GKG DATE
       "tone": -3.4,
       "image": "https://…",             // GKG SharingImage, "" when none
-      "video": "https://www.youtube.com/watch?v=…"  // first YouTube URL from GKG SocialVideoEmbeds, "" when none (added 2026-10-21)
+      "video": "https://www.youtube.com/watch?v=…", // first YouTube URL from GKG SocialVideoEmbeds, "" when none (added 2026-10-21)
+      "reprints": 12                    // other articles in this cell with the same reprint key, 0 when none (added 2026-10-21)
     }
   ],
   "videos": 7                           // number of the cell's articles (whole window) that carry a video (added 2026-10-21)
@@ -92,7 +150,7 @@ autoplay.
 
 `articles` is the newest 50 in the cell, newest first, de-duplicated by URL. Pick a
 spread of outlets: no outlet contributes more than 5 of the 50 unless the cell has
-fewer than 10 outlets.
+fewer than 10 outlets. At most one article per non-empty reprint key (added 2026-10-21).
 
 ### Stories (added 2026-10-21)
 
@@ -103,14 +161,15 @@ same thing, computed deterministically from what GDELT already tags per article
 ```jsonc
 "stories": [
   {
-    "n": 212, "o": 96, "c": 21, "l": 7, "t": -4.1,   // same meaning as the cell counters, over the story's articles
+    "n": 212, "u": 150, "o": 96, "c": 21, "i": 20, "l": 7, "t": -4.1,   // same meaning as the cell counters, over the story's articles
+                                                                       // (i against the cell's home; u, i added 2026-10-21)
     "first": "2026-10-21T01:15:00Z", "last": "2026-10-21T04:30:00Z",
     "headline": "…",            // the title of the story's medoid article (max token overlap with the rest); may be empty
     "headlineSource": "bbc.co.uk",
     "headlineLang": "en",
     "entities": ["donald trump", "nato", "brussels"],  // up to 5 most shared persons/orgs, lowercase as GDELT spells them;
                                                        // themes only top up when fewer than 2, rendered as words ("climatechange")
-    "articles": [ { …same article object as above… } ] // newest 6, outlet-spread (max 2 per outlet)
+    "articles": [ { …same article object as above… } ] // newest 6, outlet-spread (max 2 per outlet), one per reprint key
   }
 ],
 "unclustered": 140        // articles in the cell that belong to no story with n >= 3
@@ -168,6 +227,17 @@ Frames carry only what the heat layer needs. Target size: under 150 KB per frame
 uncompressed (a full 24h window measured 127 KB, about 36 KB gzipped on the wire).
 Cells with `n` < 2 are dropped, as in `heat.json`. No per-cell detail files exist for
 past frames: `cells/<id>.json` always describes the current snapshot only.
+
+## Archive (GitHub Releases, added 2026-10-21)
+
+Nothing older than 24 h stays on the site, so the Snapshot workflow also uploads every
+successful run to the release tagged `archive-YYYY-MM-DD` (the UTC day of
+`generatedAt`): `heat-<stamp>.json.gz` per run (`<stamp>` = `generatedAt` without
+`-` and `:`), plus `cells-<stamp>.tar.gz` (the whole `cells/` directory) once per day.
+The files are byte-for-byte the `/data/` files of that run, so this contract describes
+them too, as of the version that wrote them. Older archived files may lack fields added
+later (readers treat a missing field as `0` / `""`). Repository variable `ARCHIVE=false`
+turns the step off; a failed upload never fails the snapshot.
 
 ## Carried files: `state.json.gz` and `history.json.gz`  (ingest-internal)
 

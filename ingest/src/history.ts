@@ -13,7 +13,8 @@ export const HISTORY_VERSION = 1;
 
 /** [id, lat, lon, n] */
 export type FrameCell = [string, number, number, number];
-export type Totals = HeatFile["totals"];
+/** The index keeps the original five totals; heat.json's `reprints` is not replayed. */
+export type Totals = Omit<HeatFile["totals"], "reprints">;
 
 /** `/data/history/<file>.json` */
 export interface Frame {
@@ -49,7 +50,7 @@ export function buildHistoryEntry(heat: HeatFile): HistoryEntry {
   return {
     at: heat.generatedAt,
     windowHours: heat.windowHours,
-    totals: { ...heat.totals },
+    totals: { articles: heat.totals.articles, outlets: heat.totals.outlets, countries: heat.totals.countries, cells: heat.totals.cells, unplaced: heat.totals.unplaced },
     cells: heat.cells.map((c) => [c.id, c.lat, c.lon, c.n]),
   };
 }
