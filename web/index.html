@@ -33,6 +33,7 @@
         <button type="button" data-mode="articles" aria-pressed="true">articles</button>
         <button type="button" data-mode="normal" aria-pressed="false">vs. normal</button>
       </div>
+      <button id="signals-button" class="places-button" type="button" aria-controls="panel" aria-expanded="false" hidden>Signals</button>
       <button id="places-button" class="places-button" type="button" aria-controls="panel" aria-expanded="false" hidden>Places</button>
       <a class="about-link" href="./about.html" aria-label="How it works"><span class="about-text">How it works</span><span class="about-glyph" aria-hidden="true">?</span></a>
       <p class="snapshot" id="snapshot"></p>
@@ -67,6 +68,11 @@
           <input id="places-filter" class="places-filter" type="search" placeholder="Filter by name" aria-label="Filter places by name" autocomplete="off" spellcheck="false" />
           <p id="places-count" class="places-count"></p>
           <ol id="places-list" class="places-list"></ol>
+        </div>
+        <!-- Broadcast mode (the Signals button): the daily broadcast's six slots as cards. -->
+        <div id="panel-signals" class="signals">
+          <p id="signals-when" class="panel-why"></p>
+          <ol id="signals-list" class="signals-list"></ol>
         </div>
         <!-- Cell mode. -->
         <p id="panel-why" class="panel-why cell-only"></p>

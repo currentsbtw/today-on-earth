@@ -75,9 +75,67 @@ words in its title. The headline shown for a story is the title of one of its
 articles, chosen because it overlaps most with the others. We never write or edit a
 headline. Articles that fit no group are listed below, unfiltered.
 
+## The daily broadcast
+
+The Signals button opens a daily broadcast: six fixed slots, each filled by one story
+from the last 24 hours under a published rule. A filled slot shows an outlet's own
+headline, verbatim, and the story's coverage numbers. Nothing in it is written or
+summarised by us or by a model. The sentence above each headline is a fixed template
+filled with numbers ("Signal detected over Nairobi: 214 reports from 61 transmitters
+in 19 languages."), where reports are articles and transmitters are outlets.
+
+Every slot needs a story with at least 3 distinct headlines, so one report echoed
+across many sites is never a signal, and the story must have a headline. "Heard
+across the planet" also needs the place's own country to be known. The slots, in
+order:
+
+- **Loudest signal**: the story with the most independent voices: distinct
+  headlines, counting at most one per outlet (so neither syndication networks nor one
+  outlet's many copies win).
+- **Heard across the planet**: the story with the most countries other than the
+  place's own; at least 10 outlets.
+- **Rising**: the place most above its own normal (articles divided by the larger of
+  its normal and 3); its story is that place's story with the most outlets. Needs 3
+  complete days of history; at least 20 articles.
+- **Brightest**: the most positive mean tone among stories with at least 10 outlets,
+  3 countries and 10 articles.
+- **Ordinary life**: the most outlets among stories where at most a quarter of the
+  articles carry conflict, politics, crime or disaster themes; at least 10 outlets
+  and 2 countries.
+- **Faint signal**: the most outlets from a place that is usually quiet (a normal of
+  at most 3 articles a day, including places with no history). Needs 3 complete days
+  of history; at least 5 outlets and 2 countries.
+
+The four theme families, in full, from GDELT's own theme tags. A name ending in `*`
+covers every theme that starts with it.
+
+- **Conflict**: ARMEDCONFLICT, MILITARY, TERROR, WMD, REBELLION, REBELS, SEIGE,
+  BLOCKADE, CEASEFIRE, KILL, WOUND, UNREST_*.
+- **Politics**: ELECTION, LEGISLATION, GENERAL_GOVERNMENT, LEADER, GOV_*,
+  USPEC_POLITICS_GENERAL1, POLITICAL_TURMOIL, RESIGNATION, APPOINTMENT,
+  CONSTITUTIONAL, DEMOCRACY, NEGOTIATIONS, ALLIANCE, SANCTIONS, SOVEREIGNTY.
+- **Crime**: ARREST, TRIAL, SOC_GENERALCRIME, CRIME_*, KIDNAP, RAPE, DRUG_TRADE,
+  ORGANIZED_CRIME, CORRUPTION, CYBER_ATTACK.
+- **Disaster**: NATURAL_DISASTER_*, MANMADE_DISASTER_* (except
+  MANMADE_DISASTER_IMPLIED), DISASTER_*, EVACUATION.
+
+GDELT's CRISISLEX themes are deliberately not used. They are word-list matches, not
+topics, and they tag about a third of all articles, restaurant reviews and earnings
+calls included.
+
+Each story fills at most one slot, taken in the order above. Within a slot, ties go to
+the story with more articles, then the earlier story, then the place; the loudest slot
+first breaks ties by more outlets. An empty slot says why: not enough history yet,
+with the date it can start, or no story met the rule.
+
+The choice of slots and their thresholds is a framing decision, made once and
+published here. The filled slots also close the daily clip, each as a card before the
+final one.
+
 ## What this site does not do
 
-- It does not rank, recommend or summarise.
+- It does not rank, recommend or summarise. The daily broadcast's slots are maxima
+  under the rules above, computed from the numbers alone; nobody picks them.
 - It does not host articles or videos. Links go to the outlet. When an outlet
   embedded a YouTube video, we show its title and outlet as a plain card; nothing is
   requested from YouTube until you press play, and the player is YouTube's

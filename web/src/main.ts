@@ -1,4 +1,5 @@
 import './style.css';
+import { loadBroadcast, type Broadcast, type Slot } from './broadcast';
 import { isCellId, loadCell, loadHeat, type FrameRow, type HeatCell, type Totals } from './data';
 import { count, plural, utcTime } from './format';
 import { createMap, type HeatMode, type MapCell } from './map';
@@ -70,12 +71,14 @@ async function start() {
   let replay: Replay | null = null;
   let frame = { index: 0, live: true };
 
-  // Permalink: #c=<cellId>&t=<frame stamp>, keys at their default are dropped.
+  // Permalink: #c=<cellId>&t=<frame stamp>, keys at their default are dropped. While the
+  // Signals panel is open (no cell selected) the hash starts with a bare "signals".
   const writeHash = () => {
     const params = new URLSearchParams();
     if (selected) params.set('c', selected);
     if (replay && !frame.live) params.set('t', replay.stamp(frame.index));
-    const hash = params.toString();
+    const signals = !selected && panel.isSignals();
+    const hash = [signals ? 'signals' : '', params.toString()].filter(Boolean).join('&');
     const url = location.pathname + location.search + (hash ? `#${hash}` : '');
     if (url !== location.pathname + location.search + location.hash) history.replaceState(null, '', url);
   };
@@ -84,12 +87,17 @@ async function start() {
     panel.setNote(selectedIsLive && !frame.live ? 'Details are for the current snapshot.' : '');
 
   const placesButton = document.getElementById('places-button') as HTMLButtonElement;
+  const signalsButton = document.getElementById('signals-button') as HTMLButtonElement;
   let hintShown = false;
+  let broadcast: Broadcast | null = null; // the daily broadcast, once loaded
+  let wantSignals = false; // #signals asked for before the file arrived
 
   const openCell = async (cell: MapCell) => {
     const mine = ++request;
     map.hideTooltip();
     placesButton.setAttribute('aria-expanded', 'false');
+    signalsButton.setAttribute('aria-expanded', 'false');
+    wantSignals = false;
     if (hintShown) {
       hintShown = false;
       setStatus('');
@@ -124,12 +132,46 @@ async function start() {
     void map.outline(null);
     map.setSheet(0);
     placesButton.setAttribute('aria-expanded', 'false');
+    signalsButton.setAttribute('aria-expanded', 'false');
     writeHash();
   }, (height) => map.setSheet(height));
   initQuakes(document.getElementById('quake-toggle') as HTMLButtonElement, (data) => map.setQuakes(data));
 
   const heat = await heatPromise.catch(() => null);
   if (!heat) return;
+
+  // The daily broadcast: fetched once the snapshot is in, never in the map's way. A missing
+  // file (older deploys) or any failure just leaves the Signals button hidden.
+  const openSignals = () => {
+    if (!broadcast) return;
+    request++;
+    selected = null;
+    selectedIsLive = false;
+    void map.outline(null);
+    map.hideTooltip();
+    panel.openSignals(broadcast, pickSignal, signalsButton);
+    signalsButton.setAttribute('aria-expanded', 'true');
+    placesButton.setAttribute('aria-expanded', 'false');
+    writeHash();
+  };
+  // A slot's cell, from the live snapshot when it is there (the broadcast is built from it).
+  const pickSignal = (slot: Slot) => {
+    if (!slot.cell) return;
+    const { id, lat, lon, name } = slot.cell;
+    void openCell(live.get(id) ?? { id, lat, lon, name, n: slot.story?.n ?? 0 });
+  };
+  signalsButton.addEventListener('click', () => (panel.isSignals() ? panel.close() : openSignals()));
+  loadBroadcast().then(
+    (b) => {
+      if (!b || typeof b !== 'object' || !Array.isArray(b.slots)) return;
+      broadcast = b;
+      signalsButton.hidden = false;
+      if (wantSignals && !selected && !panel.isOpen()) openSignals();
+      wantSignals = false;
+    },
+    () => {},
+  );
+
   liveCells = heat.cells;
   for (const c of liveCells) live.set(c.id, c);
   liveMax = Math.max(1, ...liveCells.map((c) => c.n));
@@ -208,9 +250,10 @@ async function start() {
     selectedIsLive = false;
     void map.outline(null);
     map.hideTooltip();
-    writeHash();
     panel.openPlaces(placeRows(), pickPlace, placesButton);
     placesButton.setAttribute('aria-expanded', 'true');
+    signalsButton.setAttribute('aria-expanded', 'false');
+    writeHash();
   });
   placesButton.hidden = !liveCells.length;
 
@@ -240,6 +283,15 @@ async function start() {
       replay.selectStamp(t);
     }
     const c = params.get('c');
+    if (!c && params.has('signals')) {
+      // Without the broadcast (not loaded yet, or missing), leave the hash and the panel as
+      // they are; the panel opens if the file arrives while nothing else is open.
+      if (panel.isSignals()) return;
+      if (broadcast) return openSignals();
+      wantSignals = true;
+      return;
+    }
+    wantSignals = false;
     if (!c) return panel.close();
     if (!isCellId(c) || c === selected) return;
     const cell = live.get(c);

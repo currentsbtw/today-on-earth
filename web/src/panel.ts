@@ -1,6 +1,7 @@
 // The side panel (bottom sheet on narrow screens) listing every article for one cell.
+import { emptyLine, SLOT_IDS, SLOT_LABELS, signalLine, type Broadcast, type Slot } from './broadcast';
 import type { Article, CellDetail, HeatCell, Story } from './data';
-import { ago, count, host, plural, safeHref, utcTime, youtubeId } from './format';
+import { ago, count, host, plural, safeHref, shortName, utcTime, youtubeId } from './format';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -19,6 +20,8 @@ const placesFilter = $<HTMLInputElement>('places-filter');
 const placesList = $<HTMLOListElement>('places-list');
 const placesCount = $<HTMLParagraphElement>('places-count');
 const handle = $<HTMLButtonElement>('sheet-handle');
+const signalsWhen = $<HTMLParagraphElement>('signals-when');
+const signalsList = $<HTMLOListElement>('signals-list');
 
 let returnFocus: HTMLElement | null = null;
 let onClose: () => void = () => {};
@@ -366,7 +369,7 @@ function show(focus: HTMLElement = title) {
 
 /** Cell mode: the panel shows one place's coverage (the default). */
 function cellMode() {
-  panel.classList.remove('is-places');
+  panel.classList.remove('is-places', 'is-signals');
 }
 
 // Places (list mode) -----------------------------------------------------------
@@ -412,6 +415,7 @@ function renderPlaces() {
 export function openPlaces(rows: PlaceRow[], pick: (id: string) => void, opener: HTMLElement) {
   placeRows = rows;
   pickPlace = pick;
+  panel.classList.remove('is-signals');
   panel.classList.add('is-places');
   title.textContent = 'Places';
   placesFilter.value = '';
@@ -428,6 +432,93 @@ export function updatePlaces(rows: PlaceRow[]) {
 
 export function isPlaces(): boolean {
   return !panel.hidden && panel.classList.contains('is-places');
+}
+
+// Signals (broadcast mode) ---------------------------------------------------
+// The daily broadcast's six slots in their fixed order: the slot label, the fixed frame
+// sentence, the outlet's own headline and the counts. Nothing else is written here.
+
+const dateFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+/** "21 October 2026 · 15:06 UTC", "" when the time does not parse. */
+function broadcastWhen(at: string): string {
+  const d = new Date(at);
+  return Number.isNaN(d.getTime()) ? '' : `${dateFormat.format(d)} · ${utcTime(at)}`;
+}
+
+function signalCard(slot: Slot, pick: (slot: Slot) => void): HTMLLIElement {
+  const li = el('li', 'signal');
+  const id = `signal-${slot.id}`;
+  li.setAttribute('aria-labelledby', `${id}-label`);
+  const label = el('h3', 'signal-label', SLOT_LABELS[slot.id] ?? slot.id);
+  label.id = `${id}-label`;
+  li.append(label);
+
+  const line = signalLine(slot);
+  if (!line || !slot.cell || !slot.story) {
+    li.classList.add('is-empty');
+    li.append(el('p', 'signal-empty', emptyLine(slot) || 'No signal met the rule today.'));
+    return li;
+  }
+  const story = slot.story;
+  li.append(el('p', 'signal-line', line));
+
+  // The outlet's own title, verbatim, linked to its article when the file has the URL.
+  const text = story.headline.trim();
+  const attribution = [story.headlineSource, story.headlineLang].filter(Boolean).join(' · ');
+  if (text || attribution) {
+    const head = el('p', 'story-headline signal-headline');
+    if (text) {
+      const href = safeHref(story.headlineUrl);
+      const words = href ? el('a', 'story-link', text) : el('span', '', text);
+      setLang(words, story.headlineLang);
+      if (words instanceof HTMLAnchorElement && href) {
+        words.href = href;
+        words.target = '_blank';
+        words.rel = 'noopener';
+      }
+      head.append(words);
+    }
+    if (attribution) head.append(el('span', 'story-source', `${text ? ' — ' : ''}${attribution}`));
+    li.append(head);
+  }
+
+  const meta = el('p', 'story-meta');
+  meta.append(el('span', 'story-counts', countsLine(story)));
+  const heard = heardIn(story);
+  if (heard) meta.append(el('span', '', heard));
+  li.append(meta);
+
+  const place = shortName(slot.cell.name) || slot.cell.name;
+  const open = el('button', 'signal-open', `Open ${place}`);
+  open.type = 'button';
+  open.dataset.id = slot.cell.id;
+  open.addEventListener('click', () => pick(slot));
+  li.append(open);
+  return li;
+}
+
+/**
+ * Opens the panel on the daily broadcast. Focus goes to the first card's link or button;
+ * closing returns it to `opener` (the Signals button). `pick` opens a slot's cell.
+ */
+export function openSignals(broadcast: Broadcast, pick: (slot: Slot) => void, opener: HTMLElement) {
+  panel.classList.remove('is-places');
+  panel.classList.add('is-signals');
+  title.textContent = "Today's signals";
+  const when = broadcastWhen(broadcast.generatedAt);
+  signalsWhen.textContent = [when, `last ${broadcast.windowHours || 24}h`].filter(Boolean).join(' · ');
+  // Only well-formed slots with a known id get a card; anything else in the file is skipped.
+  const slots = (Array.isArray(broadcast.slots) ? broadcast.slots : []).filter(
+    (slot): slot is Slot => !!slot && typeof slot === 'object' && SLOT_IDS.includes(slot.id),
+  );
+  signalsList.replaceChildren(...slots.map((slot) => signalCard(slot, pick)));
+  show(signalsList.querySelector<HTMLElement>('a, button') ?? title);
+  returnFocus = opener;
+}
+
+export function isSignals(): boolean {
+  return !panel.hidden && panel.classList.contains('is-signals');
 }
 
 /** Opens the panel for a cell straight away, using the heat.json counts while the detail loads. */

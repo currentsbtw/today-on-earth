@@ -1053,9 +1053,12 @@ body.is-replay .bar {
   color: var(--text);
 }
 
-/* Panel modes: cell parts hide in the Places list, and the list hides for a cell. */
+/* Panel modes: cell parts hide in the Places list and in Signals, and each list hides
+   outside its own mode. */
 .panel.is-places .cell-only,
-.panel:not(.is-places) .places {
+.panel.is-signals .cell-only,
+.panel:not(.is-places) .places,
+.panel:not(.is-signals) .signals {
   display: none;
 }
 
@@ -1143,4 +1146,65 @@ body.is-replay .bar {
 
 .coverage .chip {
   font-variant-numeric: tabular-nums;
+}
+
+/* Signals: the daily broadcast's six slots as cards, in their fixed order. */
+.signals-list {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.signal {
+  margin-top: 10px;
+  padding: 12px 0 10px;
+  border-top: 1px solid var(--line);
+}
+
+.signal-label {
+  margin: 0;
+  color: var(--faint);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.signal-line {
+  margin: 6px 0 0;
+  color: #c9c6c0;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.signal-headline {
+  margin-top: 6px;
+}
+
+.signal-empty {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.signal-open {
+  margin: 8px 0 0;
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: none;
+  color: var(--muted);
+  font: 12px var(--font);
+  cursor: pointer;
+}
+
+.signal-open:hover,
+.signal-open:focus-visible {
+  color: var(--text);
+  border-color: var(--faint);
+}
+
+.signal-open:focus-visible {
+  outline: 1px solid var(--heat);
+  outline-offset: 2px;
 }
