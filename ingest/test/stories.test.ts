@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { isDeniedTheme, parseNames, parseOrgs, parseThemes, titleTokens } from "../src/entities.ts";
 import { decodeState, encodeState } from "../src/state.ts";
-import { buildStories } from "../src/stories.ts";
+import { buildStories, themeWords } from "../src/stories.ts";
 import type { ArticleRecord } from "../src/types.ts";
 import { gzipSync } from "node:zlib";
 
@@ -56,7 +56,7 @@ test("stories: two obvious stories plus noise", () => {
   assert.deepEqual(a.articles.map((x) => x.url), ["https://zeit.de/a5", "https://daily.co.uk/a4", "https://wire.com/a3", "https://wire.com/a2"]);
 
   assert.equal(b.n, 4);
-  assert.deepEqual(b.entities, ["john roe", "natural_disaster_flood"]);
+  assert.deepEqual(b.entities, ["john roe", "natural disaster flood"]); // 1 person, so a theme tops up, as words
   assert.equal(b.headline, "Riverton flood forces evacuation of downtown");
   assert.equal(b.articles.length, 4);
 });
@@ -137,4 +137,22 @@ test("state v3 stores entity lists and video; v2 and v1 state still load", () =>
   // A video stored under the older, looser rule is cleared on load.
   const loose = { ...rec, video: "https://youtube.com/embed/videoseries?list=PL1" };
   assert.equal(decodeState(encodeState({ feeds: {}, records: [loose] }, t(6))).records[0].video, "");
+});
+
+test("displayed entities: persons and orgs only when there are 2+, themes as words otherwise", () => {
+  const story = (who: { persons?: string[]; orgs?: string[]; themes?: string[] }) =>
+    buildStories(
+      [0, 1, 2].map((i) =>
+        art({ url: `https://o${i}.com/e`, time: t(2, i), source: `o${i}.com`, title: `Climate summit opens in Bonn ${i}`, ...who }),
+      ),
+    ).stories[0];
+  const three = story({ persons: ["antonio guterres"], orgs: ["united nations", "unfccc"], themes: ["env_climatechange", "env_coal"] });
+  assert.equal(three.n, 3);
+  assert.deepEqual(three.entities, ["antonio guterres", "unfccc", "united nations"]);
+  const one = story({ orgs: ["unfccc"], themes: ["env_climatechange", "env_coal", "natural_disaster_flood", "wb_678_digital_government"] });
+  assert.equal(one.n, 3);
+  assert.deepEqual(one.entities, ["unfccc", "climatechange", "coal", "natural disaster flood", "678 digital government"]); // ties by theme code
+  assert.equal(themeWords("ECON_INFLATION"), "inflation");
+  assert.equal(themeWords("natural_disaster_flood"), "natural disaster flood");
+  assert.equal(themeWords("whistleblower"), "whistleblower");
 });

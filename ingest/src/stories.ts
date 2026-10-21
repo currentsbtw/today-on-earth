@@ -164,6 +164,32 @@ function merge(clusters: Cluster[]): Item[][] {
   return [...groups.entries()].sort((a, b) => a[0] - b[0]).map(([, g]) => g);
 }
 
+const THEME_FAMILIES = new Set(["env", "econ", "soc", "wb", "tax", "crisislex", "gov", "med", "mil", "sec"]);
+
+/** GKG theme code as lowercase words: "env_climatechange" -> "climatechange", "natural_disaster_flood" -> "natural disaster flood". */
+export function themeWords(theme: string): string {
+  let t = theme.toLowerCase();
+  const us = t.indexOf("_");
+  if (us > 0 && THEME_FAMILIES.has(t.slice(0, us))) t = t.slice(us + 1);
+  return t.replace(/_+/g, " ").trim();
+}
+
+/**
+ * A story's displayed `entities`: up to 5 most shared persons and organisations; only when
+ * that gives fewer than 2 are themes added (as words, most shared first) to reach up to 5.
+ * Display only: grouping still uses persons, organisations and themes alike.
+ */
+export function displayEntities(nameDf: Map<string, number>, themeDf: Map<string, number>): string[] {
+  const out = topKeys(nameDf, STORY_ENTITIES);
+  if (out.length >= 2) return out;
+  for (const theme of topKeys(themeDf, themeDf.size)) {
+    if (out.length >= STORY_ENTITIES) break;
+    const words = themeWords(theme);
+    if (words && !out.includes(words)) out.push(words);
+  }
+  return out;
+}
+
 function toStory(group: Item[]): Story {
   const records = group.map((g) => g.r);
   const s = cellStats(records);
@@ -176,10 +202,12 @@ function toStory(group: Item[]): Story {
 
   // Token / entity document frequencies within the story.
   const tokDf = new Map<string, number>();
-  const entDf = new Map<string, number>();
+  const nameDf = new Map<string, number>(); // persons and organisations
+  const themeDf = new Map<string, number>();
   for (const g of group) {
     for (const t of g.toks) tokDf.set(t, (tokDf.get(t) ?? 0) + 1);
-    for (const e of g.allEnts) entDf.set(e, (entDf.get(e) ?? 0) + 1);
+    for (const e of new Set([...g.r.persons, ...g.r.orgs])) nameDf.set(e, (nameDf.get(e) ?? 0) + 1);
+    for (const e of new Set(g.r.themes)) themeDf.set(e, (themeDf.get(e) ?? 0) + 1);
   }
   // Medoid: max total token overlap with the other members = sum over its tokens of (df - 1).
   // Articles with a title win over untitled ones; ties by earliest time, then URL.
@@ -214,7 +242,7 @@ function toStory(group: Item[]): Story {
     headline: medoid.title,
     headlineSource: medoid.source,
     headlineLang: medoid.lang,
-    entities: topKeys(entDf, STORY_ENTITIES),
+    entities: displayEntities(nameDf, themeDf),
     articles: articles.map(toCellArticle),
   };
 }
