@@ -108,7 +108,8 @@ same thing, computed deterministically from what GDELT already tags per article
     "headline": "…",            // the title of the story's medoid article (max token overlap with the rest); may be empty
     "headlineSource": "bbc.co.uk",
     "headlineLang": "en",
-    "entities": ["donald trump", "nato", "brussels"],  // up to 5 most shared persons/orgs/themes, lowercase, as GDELT spells them
+    "entities": ["donald trump", "nato", "brussels"],  // up to 5 most shared persons/orgs, lowercase as GDELT spells them;
+                                                       // themes only top up when fewer than 2, rendered as words ("climatechange")
     "articles": [ { …same article object as above… } ] // newest 6, outlet-spread (max 2 per outlet)
   }
 ],

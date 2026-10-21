@@ -922,8 +922,9 @@ a.article-title:visited {
     order: 5;
   }
 
-  /* The quake toggle steps aside while the sheet is open. */
-  .stage.panel-open .layer-toggle {
+  /* The quake toggle and the attribution step aside while the sheet is open. */
+  .stage.panel-open .layer-toggle,
+  .stage.panel-open .maplibregl-ctrl-bottom-right {
     display: none;
   }
 
