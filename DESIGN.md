@@ -64,6 +64,11 @@ typography:
     fontWeight: 400
     lineHeight: 1
     letterSpacing: "0.02em"
+  headlinePhone:
+    fontFamily: "Source Sans 3, system-ui, sans-serif"
+    fontSize: "24px"
+    fontWeight: 600
+    lineHeight: 1.1
   displayMid:
     fontFamily: "Source Sans 3, system-ui, sans-serif"
     fontSize: "clamp(28px, 5vw, 44px)"
@@ -79,11 +84,6 @@ typography:
     fontSize: "13px"
     fontWeight: 400
     lineHeight: 1.25
-  placePhone:
-    fontFamily: "Source Sans 3, system-ui, sans-serif"
-    fontSize: "15px"
-    fontWeight: 400
-    lineHeight: 1.3
   figureFoot:
     fontFamily: "Azeret Mono, ui-monospace, monospace"
     fontSize: "15px"
@@ -162,7 +162,17 @@ components:
     backgroundColor: "{colors.white}"
     textColor: "{colors.ink}"
     typography: "{typography.label}"
-    padding: "2px 4px"
+    padding: "1px 4px"
+  tag-outline:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.white}"
+    typography: "{typography.label}"
+    padding: "1px 4px"
+  side-stamp:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.muted}"
+    typography: "{typography.data}"
+    padding: "0 0 10px"
   video-card:
     backgroundColor: "{colors.ink}"
     textColor: "{colors.white}"
@@ -198,7 +208,7 @@ Black, white, and a short ladder of greys for secondary text and strips; chroma 
 
 ### Primary
 - **Ink** (`{colors.ink}`): the ground of every page, panel, band and control. Every text block declares it as a background so the dot grid never crosses a glyph.
-- **White** (`{colors.white}`): the only foreground. Primary text, hairline rules at full strength, the map's dots, selection fills. Active nav items, pressed buttons, the current table row and the LIVE / REPLAY tags invert to black-on-white.
+- **White** (`{colors.white}`): the only foreground. Primary text, hairline rules at full strength, the map's dots, selection fills. Active nav items, pressed buttons, the current table row and the REPLAY tags invert to black-on-white; the LIVE tag in the right column's stamp is the one tag that stays black with a 1px solid white border, so live reads as the rest state and replay as the inverted one.
 
 ### Neutral
 - **Muted** (`{colors.muted}`): readable secondary text (7.0:1 on black): the snapshot line, count labels, recent-frames headers, meta rows, placeholders, attribution, unselected places.
@@ -232,7 +242,7 @@ Black, white, and a short ladder of greys for secondary text and strips; chroma 
 ### Hierarchy
 - **Display** (600, `clamp(40px, 3.9vw, 72px)`, 1.06, -0.012em): the single sentence of totals above the map, max-width 15.5em. `clamp(28px, 5vw, 44px)` between 721 and 1099px; 28px/1.1 on phones. The about page's h1 uses the same voice at `clamp(36px, 5vw, 56px)`.
 - **Headline** (600, 28px, 1.1, -0.01em): the panel title (a place name); 24px on phones. The about page's h2 is 600 24px/1.2.
-- **Title** (400, 16px, 1.35): story headlines in the panel and a signal's fixed sentence (16px/1.4). Article titles are 14px/1.35; place names in the phone Places list 15px/1.3; video titles 13px/1.25. A signal's outlet headline is the one bold line at 600 17px/1.3.
+- **Title** (400, 16px, 1.35): story headlines in the panel and a signal's fixed sentence (16px/1.4). Article titles are 14px/1.35; video titles 13px/1.25. A signal's outlet headline is the one bold line at 600 17px/1.3.
 - **Body** (400, 17px, 1.55): the methodology page's reading text in a 68ch measure. The map page has no body prose.
 - **Label** (500, 11px, 1, 0.1em, uppercase): column heads, nav items, panel section heads, button words, the CLOSE control, foot captions. Signal slot names on the clip use 0.14em.
 - **Data** (400, 11px, 1.3-1.5, 0.02-0.08em, usually uppercase): rank rows, count rows, meta lines, status, attribution, placeholders, the under-map line. Tracking narrows as the string gets longer: 0.02em for domain names and rows, 0.06em for short labels, 0.1em for the shortest.
@@ -248,15 +258,15 @@ Black, white, and a short ladder of greys for secondary text and strips; chroma 
 
 ## Layout
 
-The desktop shell (1100px and up) is a fixed-height CSS grid filling `100dvh`, padded `0 36px 14px`, with a 28px column gap: a 200px left column (ranked places), a fluid centre (the sentence and the map frame) and a right column of 280px (the bar field) that widens to 360px when the panel is open and replaces the field. Rows are a 64px top line (wordmark left, nav centred, clock right), the sentence row, the main row, and the foot. The body does not scroll; the places list and the right column scroll internally with a thin 6px scrollbar and a `--rule` hairline at the scroll edge.
+The desktop shell (1100px and up) is a fixed-height CSS grid filling `100dvh`, padded `0 36px 14px`, with a 28px column gap: a 200px left column (ranked places), a fluid centre (the sentence and the map frame) and a right column `#side` of 280px that widens to 360px while a place is selected. The right column is a flex column: the live stamp row on top (10px below it), then exactly one of two internally scrolling sections, Signals (`#signals-col`, the default, `data-view="signals"`, no hash; `#signals` accepted) or Replay (`#replay-col`, `#replay`; a `#t=` frame stamp implies it), each closed at the scroll edge by a `--rule` hairline, and the observer pinned to the bottom. A selected place hides both sections and the observer and the panel takes the column; CLOSE restores whichever section was open. Rows are a 64px top line (wordmark left, nav centred, clock right), the sentence row, the main row, and the foot. The body does not scroll; the places list and the right column scroll internally with a thin 6px scrollbar and a `--rule` hairline at the scroll edge.
 
 The map frame has a 1px white (0.25 alpha) border and tick marks every 64px on all four edges, drawn outside the frame as 6px-long hairlines at 0.6 alpha. In replay the border turns dashed at 0.5 alpha. The status line sits 10px inside the top-left; the quake toggle 10px inside the bottom-left; MapLibre's attribution is restyled to the mono register in the bottom-right.
 
 The spacing rhythm is small integers: 4px between nav items and chips; 8px between a filter and its list, between video cards, for panel paragraphs; 12-14px between the panel's title and its counts and between stories; 16-24px before a section head (`.panel-section` sits 24px below the previous block); 28px between columns; 36px page margins. The 8px dot grid underlies all of it.
 
-Between 721px and 1099px the shell becomes one scrolling column (brand and clock on the top line, the sentence, the nav, the map at `max(52svh, 100svh - 300px)`, the places list as a three-column grid of the first 18, the bar field, the foot), with 24px margins and the panel fixed to the right edge at `min(400px, 100%)` behind a 1px white left border.
+Between 721px and 1099px the shell becomes one scrolling column with 24px margins: brand and clock on the top line, the sentence, the nav (now four items, PLACES included, pulled 10px into the margin), the map at `max(52svh, 100svh - 300px)`, then `#side` dissolves (`display: contents`) into stacked sections 28px apart, each under its own mono head: SIGNALS, PLACES (the rank rows as a three-column grid of the first 18, the filter and PLACE / ART / OUT / CTY row hidden), REPLAY, the observer, then the foot. The stamp row is hidden here; the clock carries the time. The panel is fixed to the right edge at `min(400px, 100%)` behind a 1px white left border.
 
-At 720px and below margins drop to 16px; the clock date and the wide nav items hide; the sentence is 28px; places render in two columns of 12 (one column at 420px and below); the panel becomes a bottom sheet of 55svh with a 1px white top border, a 36px sticky handle (a 24x2px white bar) and one alternative height, `100svh - 12px`. The map keeps `max(52svh, 100svh - 236px)`.
+At 720px and below margins drop to 16px; the clock date hides and the time drops to 15px; nav items grow to 36px tall; the sentence is 28px; places render in two columns of 12 (one column at 420px and below); the same stacked order (map, Signals, Places, Replay, observer, foot) holds. The bottom sheet serves only a selected place: 55svh with a 1px white top border, a 36px sticky handle (a 24x2px white bar) and one alternative height, `100svh - 12px`; the quake toggle and attribution step aside while it is open. The map keeps `max(52svh, 100svh - 236px)`.
 
 The about page is a single reading column, `68ch + 64px` wide, centred, 24px below the same 64px top line, bounded by 1px white rules top and bottom, padded `40px 32px 56px` (28px 16px 40px on phones). The clip frame scales every measure from `--u` (1% of the shorter side): 7u side margins, a 1px edge rule with 25 ticks of `max(5px, 1.1u)`, the wordmark at 4.2u, the headline at 5u, counts at 3.6u over 2.04u labels.
 
@@ -276,7 +286,7 @@ Every corner is square (`border-radius: 0` is set on buttons, inputs, sliders an
 ### Buttons
 Flat, square, one-step. Two registers, both Azeret Mono 500 11px uppercase 0.1em and at least 28px tall (36px on phones for the nav and the quake toggle).
 - **Shape:** square (0).
-- **Nav item** (text-only): black on black, `0 10px`; hover underlines with a 4px offset; current or expanded inverts to black-on-white (`aria-current` / `aria-expanded`). Used for MAP, PLACES, SIGNALS, REPLAY, METHOD and the about page's BACK link.
+- **Nav item** (text-only): black on black, `0 10px`, 4px apart; hover underlines with a 4px offset; the current item inverts to black-on-white (`aria-current="true"`). The line reads SIGNALS · REPLAY · METHOD on wide screens; PLACES (`.nav-stacked`) joins between SIGNALS and REPLAY only below 1100px, where the sections stack. On wide screens the current item is the section the right column shows, and no item is current while a selected place covers the column; below 1100px an IntersectionObserver (band 30% to 40% down the viewport) marks the item whose section is crossing the top, and a tap scrolls to the section. The about page's BACK link uses the same control.
 - **Outline button:** 1px border at 0.4 alpha (solid white for the signal's OPEN button and the panel note), black fill, `0 10px`; hover lifts the border to solid white (quake toggle, video card, article play) or inverts entirely (play, "more", OPEN); pressed or playing (`aria-pressed="true"`, `.is-playing`) inverts to black-on-white.
 - **Close:** the word plus a 7x7 pixel X, `0 6px`, no border; hover inverts.
 - **Focus:** 1px solid white outline, 2px offset; -1px for rank rows, -3px for the sheet handle.
@@ -295,14 +305,14 @@ A mono 500 11px uppercase 0.1em line with `6px 0` padding and a 1px solid white 
 ### Rank rows (places column)
 A grid `minmax(0,1fr) 30px 28px 22px` with a 4px gap: uppercase name, then three right-aligned figures; a full-width 5px strip of 1px bars below, its length proportional to articles. Rows are muted and hover to white. The selected row grows to 500 13px, turns white, gains 1px white rules top and bottom and an 8px strip of 2px bars; while a selection exists every other row drops to #777 with a faint strip. Below 1100px the rows reflow into a 3/2/1-column grid showing the first 18/12 only.
 
-### Bar field (replay)
-96 bars 1px wide, absolutely positioned across a 120px band; height is a percentage of the day's maximum; bars after the current frame are faint; the current bar is full height. A 500 9px white tag with black text sits 17px above the current bar; muted 9px indices run below. Under it: the range slider, then PLAY (outline button) with the muted time and an inverted LIVE tag, then the trend head and a 44px polyline (`stroke: #fff`, 1px, non-scaling) over a 1px dotted baseline, then the recent-frames table. With fewer than four snapshots the field is static: bars only, no slider, controls or trend.
+### Replay section (bar field)
+Under a column head reading REPLAY with the frame count ("99/99") at the right, then a muted mono unit line ARTICLES PER SNAPSHOT (`.field-unit`, 22px above the band). 96 bars 1px wide, absolutely positioned across a 120px band; height is a percentage of the day's maximum; bars after the current frame are faint; the current bar is full height. A 500 9px white tag with black text sits 17px above the current bar; muted 9px indices run below. Under it: the range slider, then PLAY (outline button) with the muted time and an inverted LIVE tag, then the trend head and a 44px polyline (`stroke: #fff`, 1px, non-scaling) over a 1px dotted baseline, then the recent-frames table. With fewer than four snapshots the field is static: bars only, no slider, controls or trend.
 
 ### Recent-frames table
 Mono 400 11px/16px, a 1px white rule on top; muted 500 uppercase 0.08em headers, muted cells, figures right-aligned, the first two columns left. Rows hover to white; the frame on screen (`.is-on`) inverts to black-on-white at 500.
 
-### Panel (cell detail, Places, Signals)
-A black dot-grid column (360px in the shell; a fixed 400px right drawer or a 55svh bottom sheet below 1100px). A sticky bar with a 1px white rule holds CLOSE at the right. The title is Source Sans 3 600 28px. Counts are definition rows (`4px 0`, mono 11px uppercase 0.06em, muted label left, white 12px value right) separated by `--rule` hairlines. A muted mono line follows ("31 REPRINTS COLLAPSED · LAST 2H"). Coverage lists (outlets, countries, languages) are strip rows: key left, count right, a 1px white strip beneath whose width encodes the count. The panel note is a 1px white-bordered mono tag.
+### Panel (place detail)
+Serves one selected place only; there is no Places or Signals panel mode. A black dot-grid column (360px in the shell, replacing the Signals or Replay section below the stamp; a fixed 400px right drawer between 721 and 1099px; a 55svh bottom sheet on phones). A sticky bar with a 1px white rule holds CLOSE at the right; CLOSE returns the column to the section it was showing. The title is Source Sans 3 600 28px. Counts are definition rows (`4px 0`, mono 11px uppercase 0.06em, muted label left, white 12px value right) separated by `--rule` hairlines. A muted mono line follows ("31 REPRINTS COLLAPSED · LAST 2H"). Coverage lists (outlets, countries, languages) are strip rows: key left, count right, a 1px white strip beneath whose width encodes the count. The panel note is a 1px white-bordered mono tag.
 
 ### Log entries (stories, articles, signals)
 - **Story:** 14px above, a 1px left rule at 0.4 alpha with 12px inset; headline in Source Sans 3 400 16px/1.35 (link, no underline until hover, 1px thickness, 3px offset); muted mono source line; muted mono meta line with the counts in white; chips; nested articles.
@@ -319,9 +329,15 @@ A black dot-grid column (360px in the shell; a fixed 400px right drawer or a 55s
 ### Map marks (coverage dots)
 One flat white circle per place on the `cell-dot` layer, no blur, drawn largest-last by article count. The log-scaled weight `w` (0-1, against a fixed maximum so replay and clip frames share one scale) is quantised into five steps at `MARK_STEPS` 0.2 / 0.4 / 0.6 / 0.8. Each step fixes a radius and an opacity: radii `MARK_RADIUS` 0.6 / 0.85 / 1.25 / 1.9 / 2.6px at zoom 0, multiplied by `MARK_ZOOM_SCALE` (1x at zoom 0, 3.5x at zoom 4, 8x at zoom 9); opacities `MARK_OPACITY` 0.5 / 0.7 / 0.85 / 1 / 1. A black hairline (`circle-stroke`, 0.6px at zoom 0 to 1px at zoom 4) separates neighbours in dense regions. The top radius is held small so a cluster stays a field of separate dots rather than a mass. From `w` 0.4 a place carries a mono 10px uppercase 0.08em white label with a 1.2px black halo (the five largest places are labelled at every zoom). Hit targets are invisible circles 4-30px wide depending on weight and zoom. The under-map legend reads "size = volume, not importance" and the status hint "Open a dot to see who is covering it". Quake rings (opt-in) are hollow white 1px rings at 0.9 opacity, radius by magnitude.
 
+### Live stamp
+The first row of the right column on wide screens (`#side-stamp`, hidden below 1100px): a muted mono 400 11px 0.06em uppercase line, no wrap, 10px below it. It opens with a tag in mono 500 at `1px 4px`: LIVE as an outline tag (1px solid white border, white on black) followed by the snapshot time ("LIVE 14:27 UTC"), or, while a past frame is on screen, REPLAY as an inverted tag followed by the frame time and index ("REPLAY 05:16 UTC · 38/95"). It stays above a selected place's panel, so the column always declares which snapshot the page is showing. The LIVE word inside the replay controls (`.scrub-live`) and the clock's REPLAY word keep the inverted form.
+
+### Signals section
+A column head reading SIGNALS, a muted mono note beneath ("22 OCT 2026 · 14:27 UTC · LAST 24H", `.col-note`, 8px below the rule), then the six signal entries as a list; an empty state is a muted mono line at `8px 0`.
+
 ### Top line and foot
 - **Brand:** 32px pixel globe plus Silkscreen wordmark, 12px gap, on a black block.
-- **Clock:** uppercase date in mono 11px 0.1em, the time at 500 22px, a muted SNAPSHOT line beneath; a REPLAY tag inverts while a past frame is shown.
+- **Clock:** uppercase date in mono 11px 0.1em, the time at 500 22px, a muted SNAPSHOT line beneath; the line swaps to an inverted REPLAY tag while a past frame is shown.
 - **Foot:** a 1px white rule above, 10px padding; totals as mono 500 15px figures over muted 11px uppercase 0.1em captions, 28px apart; source links in muted mono at the right, underlined, white on hover. Two-column grid on phones.
 
 ### Pixel marks

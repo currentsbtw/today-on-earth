@@ -1,55 +1,318 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-22T02:30:00Z",
+  "generatedAt": "2026-10-22T16:00:00Z",
   "title": "Design System: Today On Earth",
   "extensions": {
     "colorMeta": {
-      "ink": {"role": "primary", "displayName": "Ink", "canonical": "#000", "tonalRamp": ["#000000", "#1a1a1a", "#333333", "#4d4d4d", "#666666", "#808080", "#b3b3b3", "#f2f2f2"]},
-      "white": {"role": "primary", "displayName": "White", "canonical": "#fff", "tonalRamp": ["#262626", "#404040", "#595959", "#737373", "#8c8c8c", "#a6a6a6", "#d9d9d9", "#ffffff"]},
-      "muted": {"role": "neutral", "displayName": "Muted", "canonical": "#9a9a9a", "tonalRamp": ["#000000", "#333333", "#5c5c5c", "#777777", "#9a9a9a", "#c4c4c4", "#e6e6e6", "#ffffff"]},
-      "dim-rank": {"role": "neutral", "displayName": "Dim Rank", "canonical": "#777", "tonalRamp": ["#000000", "#333333", "#5c5c5c", "#777777", "#9a9a9a", "#c4c4c4", "#e6e6e6", "#ffffff"]},
-      "faint": {"role": "neutral", "displayName": "Faint", "canonical": "#5c5c5c", "tonalRamp": ["#000000", "#333333", "#5c5c5c", "#777777", "#9a9a9a", "#c4c4c4", "#e6e6e6", "#ffffff"]},
-      "rule": {"role": "neutral", "displayName": "Rule", "canonical": "#333", "tonalRamp": ["#000000", "#333333", "#5c5c5c", "#777777", "#9a9a9a", "#c4c4c4", "#e6e6e6", "#ffffff"]},
-      "visited": {"role": "neutral", "displayName": "Visited", "canonical": "#c4c4c4", "tonalRamp": ["#000000", "#333333", "#5c5c5c", "#777777", "#9a9a9a", "#c4c4c4", "#e6e6e6", "#ffffff"]},
-      "hairline": {"role": "neutral", "displayName": "Hairline", "canonical": "rgba(255, 255, 255, 0.18)", "tonalRamp": ["rgba(255,255,255,0.1)", "rgba(255,255,255,0.18)", "rgba(255,255,255,0.25)", "rgba(255,255,255,0.35)", "rgba(255,255,255,0.4)", "rgba(255,255,255,0.5)", "rgba(255,255,255,0.6)", "rgba(255,255,255,1)"]},
-      "hairline-mid": {"role": "neutral", "displayName": "Hairline Mid", "canonical": "rgba(255, 255, 255, 0.35)", "tonalRamp": ["rgba(255,255,255,0.1)", "rgba(255,255,255,0.18)", "rgba(255,255,255,0.25)", "rgba(255,255,255,0.35)", "rgba(255,255,255,0.4)", "rgba(255,255,255,0.5)", "rgba(255,255,255,0.6)", "rgba(255,255,255,1)"]},
-      "hairline-strong": {"role": "neutral", "displayName": "Hairline Strong", "canonical": "rgba(255, 255, 255, 0.4)", "tonalRamp": ["rgba(255,255,255,0.1)", "rgba(255,255,255,0.18)", "rgba(255,255,255,0.25)", "rgba(255,255,255,0.35)", "rgba(255,255,255,0.4)", "rgba(255,255,255,0.5)", "rgba(255,255,255,0.6)", "rgba(255,255,255,1)"]},
-      "map-ocean": {"role": "neutral", "displayName": "Map Ocean", "canonical": "#000000", "tonalRamp": ["#000000", "#0d0d0d", "#2f2f2f", "#3a3a3a", "#666666", "#8c8c8c", "#cccccc", "#ffffff"]},
-      "map-land": {"role": "neutral", "displayName": "Map Land", "canonical": "#0d0d0d", "tonalRamp": ["#000000", "#0d0d0d", "#2f2f2f", "#3a3a3a", "#666666", "#8c8c8c", "#cccccc", "#ffffff"]},
-      "map-border": {"role": "neutral", "displayName": "Map Border", "canonical": "#2f2f2f", "tonalRamp": ["#000000", "#0d0d0d", "#2f2f2f", "#3a3a3a", "#666666", "#8c8c8c", "#cccccc", "#ffffff"]},
-      "map-admin": {"role": "neutral", "displayName": "Map Admin", "canonical": "#3a3a3a", "tonalRamp": ["#000000", "#0d0d0d", "#2f2f2f", "#3a3a3a", "#666666", "#8c8c8c", "#cccccc", "#ffffff"]},
-      "map-heat": {"role": "primary", "displayName": "Map Heat", "canonical": "#ffffff", "tonalRamp": ["#000000", "#0d0d0d", "#2f2f2f", "#3a3a3a", "rgba(255,255,255,0.5)", "rgba(255,255,255,0.7)", "rgba(255,255,255,0.85)", "#ffffff"]}
+      "ink": {
+        "role": "primary",
+        "displayName": "Ink",
+        "canonical": "#000",
+        "tonalRamp": [
+          "#000000",
+          "#1a1a1a",
+          "#333333",
+          "#4d4d4d",
+          "#666666",
+          "#808080",
+          "#b3b3b3",
+          "#f2f2f2"
+        ]
+      },
+      "white": {
+        "role": "primary",
+        "displayName": "White",
+        "canonical": "#fff",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#8c8c8c",
+          "#a6a6a6",
+          "#d9d9d9",
+          "#ffffff"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted",
+        "canonical": "#9a9a9a",
+        "tonalRamp": [
+          "#000000",
+          "#333333",
+          "#5c5c5c",
+          "#777777",
+          "#9a9a9a",
+          "#c4c4c4",
+          "#e6e6e6",
+          "#ffffff"
+        ]
+      },
+      "dim-rank": {
+        "role": "neutral",
+        "displayName": "Dim Rank",
+        "canonical": "#777",
+        "tonalRamp": [
+          "#000000",
+          "#333333",
+          "#5c5c5c",
+          "#777777",
+          "#9a9a9a",
+          "#c4c4c4",
+          "#e6e6e6",
+          "#ffffff"
+        ]
+      },
+      "faint": {
+        "role": "neutral",
+        "displayName": "Faint",
+        "canonical": "#5c5c5c",
+        "tonalRamp": [
+          "#000000",
+          "#333333",
+          "#5c5c5c",
+          "#777777",
+          "#9a9a9a",
+          "#c4c4c4",
+          "#e6e6e6",
+          "#ffffff"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule",
+        "canonical": "#333",
+        "tonalRamp": [
+          "#000000",
+          "#333333",
+          "#5c5c5c",
+          "#777777",
+          "#9a9a9a",
+          "#c4c4c4",
+          "#e6e6e6",
+          "#ffffff"
+        ]
+      },
+      "visited": {
+        "role": "neutral",
+        "displayName": "Visited",
+        "canonical": "#c4c4c4",
+        "tonalRamp": [
+          "#000000",
+          "#333333",
+          "#5c5c5c",
+          "#777777",
+          "#9a9a9a",
+          "#c4c4c4",
+          "#e6e6e6",
+          "#ffffff"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "rgba(255, 255, 255, 0.18)",
+        "tonalRamp": [
+          "rgba(255,255,255,0.1)",
+          "rgba(255,255,255,0.18)",
+          "rgba(255,255,255,0.25)",
+          "rgba(255,255,255,0.35)",
+          "rgba(255,255,255,0.4)",
+          "rgba(255,255,255,0.5)",
+          "rgba(255,255,255,0.6)",
+          "rgba(255,255,255,1)"
+        ]
+      },
+      "hairline-mid": {
+        "role": "neutral",
+        "displayName": "Hairline Mid",
+        "canonical": "rgba(255, 255, 255, 0.35)",
+        "tonalRamp": [
+          "rgba(255,255,255,0.1)",
+          "rgba(255,255,255,0.18)",
+          "rgba(255,255,255,0.25)",
+          "rgba(255,255,255,0.35)",
+          "rgba(255,255,255,0.4)",
+          "rgba(255,255,255,0.5)",
+          "rgba(255,255,255,0.6)",
+          "rgba(255,255,255,1)"
+        ]
+      },
+      "hairline-strong": {
+        "role": "neutral",
+        "displayName": "Hairline Strong",
+        "canonical": "rgba(255, 255, 255, 0.4)",
+        "tonalRamp": [
+          "rgba(255,255,255,0.1)",
+          "rgba(255,255,255,0.18)",
+          "rgba(255,255,255,0.25)",
+          "rgba(255,255,255,0.35)",
+          "rgba(255,255,255,0.4)",
+          "rgba(255,255,255,0.5)",
+          "rgba(255,255,255,0.6)",
+          "rgba(255,255,255,1)"
+        ]
+      },
+      "map-ocean": {
+        "role": "neutral",
+        "displayName": "Map Ocean",
+        "canonical": "#000000",
+        "tonalRamp": [
+          "#000000",
+          "#0d0d0d",
+          "#2f2f2f",
+          "#3a3a3a",
+          "#666666",
+          "#8c8c8c",
+          "#cccccc",
+          "#ffffff"
+        ]
+      },
+      "map-land": {
+        "role": "neutral",
+        "displayName": "Map Land",
+        "canonical": "#0d0d0d",
+        "tonalRamp": [
+          "#000000",
+          "#0d0d0d",
+          "#2f2f2f",
+          "#3a3a3a",
+          "#666666",
+          "#8c8c8c",
+          "#cccccc",
+          "#ffffff"
+        ]
+      },
+      "map-border": {
+        "role": "neutral",
+        "displayName": "Map Border",
+        "canonical": "#2f2f2f",
+        "tonalRamp": [
+          "#000000",
+          "#0d0d0d",
+          "#2f2f2f",
+          "#3a3a3a",
+          "#666666",
+          "#8c8c8c",
+          "#cccccc",
+          "#ffffff"
+        ]
+      },
+      "map-admin": {
+        "role": "neutral",
+        "displayName": "Map Admin",
+        "canonical": "#3a3a3a",
+        "tonalRamp": [
+          "#000000",
+          "#0d0d0d",
+          "#2f2f2f",
+          "#3a3a3a",
+          "#666666",
+          "#8c8c8c",
+          "#cccccc",
+          "#ffffff"
+        ]
+      },
+      "map-heat": {
+        "role": "primary",
+        "displayName": "Map Heat",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#000000",
+          "#0d0d0d",
+          "#2f2f2f",
+          "#3a3a3a",
+          "rgba(255,255,255,0.5)",
+          "rgba(255,255,255,0.7)",
+          "rgba(255,255,255,0.85)",
+          "#ffffff"
+        ]
+      }
     },
     "typographyMeta": {
-      "display": {"displayName": "Display", "purpose": "The one sentence of totals above the map; the about page h1."},
-      "headline": {"displayName": "Headline", "purpose": "Panel title (place name); about page h2."},
-      "title": {"displayName": "Title", "purpose": "Story headlines, signal sentences, article titles (14px), place names in the phone list (15px)."},
-      "body": {"displayName": "Body", "purpose": "Methodology page reading text in a 68ch measure."},
-      "label": {"displayName": "Label", "purpose": "Column heads, nav items, section heads, button words; mono 500 uppercase 0.1em."},
-      "data": {"displayName": "Data", "purpose": "Rank rows, count rows, meta lines, status, attribution; mono 400, tracking 0.02-0.08em by string length."},
-      "figure": {"displayName": "Figure", "purpose": "The UTC clock (22px); foot totals reuse the face at 500 15px."},
-      "wordmark": {"displayName": "Wordmark", "purpose": "TODAY ON EARTH in Silkscreen beside the 16x16 pixel globe; the only use of the face."}
+      "display": {
+        "displayName": "Display",
+        "purpose": "The one sentence of totals above the map; the about page h1."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Panel title (place name); about page h2."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Story headlines, signal sentences, article titles (14px), video titles (13px)."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Methodology page reading text in a 68ch measure."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Column heads, nav items, section heads, button words; mono 500 uppercase 0.1em."
+      },
+      "data": {
+        "displayName": "Data",
+        "purpose": "Rank rows, count rows, meta lines, status, attribution; mono 400, tracking 0.02-0.08em by string length."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "The UTC clock (22px); foot totals reuse the face at 500 15px."
+      },
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "TODAY ON EARTH in Silkscreen beside the 16x16 pixel globe; the only use of the face."
+      }
     },
     "shadows": [],
     "motion": [
-      {"name": "step", "value": "none", "purpose": "No transition or animation is defined; every state switches in one step."},
-      {"name": "invert-frame", "value": "html.invert { filter: invert(1) } for one painted frame (two requestAnimationFrame calls)", "purpose": "Marks the map returning to live and replay starting; skipped under prefers-reduced-motion."}
+      {
+        "name": "step",
+        "value": "none",
+        "purpose": "No transition or animation is defined; every state switches in one step."
+      },
+      {
+        "name": "invert-frame",
+        "value": "html.invert { filter: invert(1) } for one painted frame (two requestAnimationFrame calls)",
+        "purpose": "Marks the map returning to live and replay starting; skipped under prefers-reduced-motion."
+      }
     ],
     "breakpoints": [
-      {"name": "phone-narrow", "value": "420px"},
-      {"name": "phone", "value": "720px"},
-      {"name": "wide", "value": "1100px"}
+      {
+        "name": "phone-narrow",
+        "value": "420px"
+      },
+      {
+        "name": "phone",
+        "value": "720px"
+      },
+      {
+        "name": "wide",
+        "value": "1100px"
+      }
     ],
-    "grid": {"dot": "8px", "tick": "64px", "topline": "64px", "margin": "36px", "gutter": "28px", "places-col": "200px", "right-col": "280px", "panel": "360px", "drawer": "min(400px, 100%)"}
+    "grid": {
+      "dot": "8px",
+      "tick": "64px",
+      "topline": "64px",
+      "margin": "36px",
+      "gutter": "28px",
+      "places-col": "200px",
+      "right-col": "280px",
+      "panel": "360px",
+      "drawer": "min(400px, 100%)",
+      "side-stamp-gap": "10px",
+      "stacked-section-gap": "28px"
+    }
   },
   "components": [
     {
       "name": "Nav Item",
       "kind": "nav",
       "refersTo": "nav-item",
-      "description": "Text-only mono control in the top line; current or expanded inverts to black-on-white.",
-      "html": "<nav class=\"ds-nav\"><button class=\"ds-nav-item\" aria-current=\"true\">Map</button><button class=\"ds-nav-item\">Places</button><button class=\"ds-nav-item\">Signals</button><button class=\"ds-nav-item\">Replay</button><a class=\"ds-nav-item\" href=\"#\">Method</a></nav>",
-      "css": ".ds-nav { display: flex; gap: 4px; background: var(--bg, #000); } .ds-nav-item { display: inline-flex; align-items: center; min-height: 28px; padding: 0 10px; border: 0; border-radius: 0; background: var(--bg, #000); color: var(--fg, #fff); font: 500 11px/1 var(--mono, 'Azeret Mono', ui-monospace, monospace); letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; cursor: pointer; } .ds-nav-item:hover { text-decoration: underline; text-underline-offset: 4px; } .ds-nav-item[aria-current='true'], .ds-nav-item[aria-expanded='true'] { background: var(--fg, #fff); color: var(--bg, #000); text-decoration: none; } .ds-nav-item:focus-visible { outline: 1px solid var(--fg, #fff); outline-offset: 2px; }"
+      "description": "Text-only mono control in the top line: SIGNALS, REPLAY, METHOD (PLACES only below 1100px); aria-current inverts the item for the section the right column shows, or the section near the top while they stack.",
+      "html": "<nav class=\"ds-nav\"><button class=\"ds-nav-item\" aria-current=\"true\">Signals</button><button class=\"ds-nav-item\">Replay</button><a class=\"ds-nav-item\" href=\"#\">Method</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 4px; background: var(--bg, #000); } .ds-nav-item { display: inline-flex; align-items: center; min-height: 28px; padding: 0 10px; border: 0; border-radius: 0; background: var(--bg, #000); color: var(--fg, #fff); font: 500 11px/1 var(--mono, 'Azeret Mono', ui-monospace, monospace); letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; cursor: pointer; } .ds-nav-item:hover { text-decoration: underline; text-underline-offset: 4px; } .ds-nav-item[aria-current='true'] { background: var(--fg, #fff); color: var(--bg, #000); text-decoration: none; } .ds-nav-item:focus-visible { outline: 1px solid var(--fg, #fff); outline-offset: 2px; }"
     },
     {
       "name": "Outline Button",
@@ -82,6 +345,14 @@
       "description": "The section heading grammar everywhere: mono label over a 1px solid white rule.",
       "html": "<div class=\"ds-col-head\"><span>Outlets</span><span>179</span></div>",
       "css": ".ds-col-head { display: flex; justify-content: space-between; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--fg, #fff); background: var(--bg, #000); color: var(--fg, #fff); font: 500 11px/1 var(--mono, 'Azeret Mono', ui-monospace, monospace); letter-spacing: 0.1em; text-transform: uppercase; }"
+    },
+    {
+      "name": "Live Stamp",
+      "kind": "custom",
+      "refersTo": "side-stamp",
+      "description": "The right column's first row: an outline LIVE tag with the snapshot time, or an inverted REPLAY tag with the frame time and index.",
+      "html": "<p class=\"ds-stamp\"><span class=\"ds-tag-outline\">Live</span> 14:27 UTC</p><p class=\"ds-stamp\"><span class=\"ds-tag-inverted\">Replay</span> 05:16 UTC · 38/95</p>",
+      "css": ".ds-stamp { margin: 0 0 10px; background: var(--bg, #000); color: var(--muted, #9a9a9a); font: 400 11px/1 var(--mono, 'Azeret Mono', ui-monospace, monospace); letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; } .ds-tag-outline { padding: 1px 4px; border: 1px solid var(--fg, #fff); color: var(--fg, #fff); font-weight: 500; } .ds-tag-inverted { padding: 1px 4px; background: var(--fg, #fff); color: var(--bg, #000); font-weight: 500; }"
     },
     {
       "name": "Rank Row",
@@ -144,14 +415,46 @@
       "Pixel marks: the globe, the observer, and every icon are crispEdges SVG on a small integer grid."
     ],
     "rules": [
-      {"name": "The Two-Ink Rule", "body": "Chrome, marks and type use #000 and #fff only. Grey is allowed in exactly two places: the map plate's land and borders, and the text hierarchy's muted steps (#9a9a9a, #777, #5c5c5c, #333). No other grey and no hue may be introduced.", "section": "colors"},
-      {"name": "The Inversion Rule", "body": "Selection, activation and the pressed state are expressed by swapping ink and white (background: #fff; color: #000), never by tint, opacity or a second colour. One painted frame of filter: invert(1) on the root marks a snapshot change (skipped under reduced motion).", "section": "colors"},
-      {"name": "The Faint-Is-Not-Text Rule", "body": "#5c5c5c appears only on strips, bars and baselines. Text drops no lower than #777.", "section": "colors"},
-      {"name": "The Flat-Mark Rule", "body": "A map mark is a solid white circle with a hard edge (circle-blur: 0) and a black hairline around it. Volume is encoded by stepped radius and stepped opacity, never by blur, a heatmap or a glow.", "section": "colors"},
-      {"name": "The Mono-For-Data Rule", "body": "Any number, unit, timestamp, column head, control word or meta line is Azeret Mono. Source Sans 3 is only for a sentence, a title or a headline. A value never appears in the humanist face.", "section": "typography"},
-      {"name": "The One-Size Chrome Rule", "body": "Chrome type is 11px. Emphasis comes from weight (400 to 500), colour (muted to white) or inversion, not from size; the only chrome sizes outside 11px are the 22px clock, the 15px foot totals, the 12px count values and the 9px bar annotations.", "section": "typography"},
-      {"name": "The Uppercase Ledger Rule", "body": "Mono labels are uppercase with letter-spacing between 0.06em and 0.1em. Mono content that must be read verbatim (domain names, names in tooltips) keeps its case and tightens to 0.02-0.03em.", "section": "typography"},
-      {"name": "The No-Shadow Rule", "body": "box-shadow appears in the stylesheets only to cancel MapLibre's focus glow. Focus is a 1px solid white outline offset 2px (inset where a container clips).", "section": "elevation"}
+      {
+        "name": "The Two-Ink Rule",
+        "body": "Chrome, marks and type use #000 and #fff only. Grey is allowed in exactly two places: the map plate's land and borders, and the text hierarchy's muted steps (#9a9a9a, #777, #5c5c5c, #333). No other grey and no hue may be introduced.",
+        "section": "colors"
+      },
+      {
+        "name": "The Inversion Rule",
+        "body": "Selection, activation and the pressed state are expressed by swapping ink and white (background: #fff; color: #000), never by tint, opacity or a second colour. One painted frame of filter: invert(1) on the root marks a snapshot change (skipped under reduced motion).",
+        "section": "colors"
+      },
+      {
+        "name": "The Faint-Is-Not-Text Rule",
+        "body": "#5c5c5c appears only on strips, bars and baselines. Text drops no lower than #777.",
+        "section": "colors"
+      },
+      {
+        "name": "The Flat-Mark Rule",
+        "body": "A map mark is a solid white circle with a hard edge (circle-blur: 0) and a black hairline around it. Volume is encoded by stepped radius and stepped opacity, never by blur, a heatmap or a glow.",
+        "section": "colors"
+      },
+      {
+        "name": "The Mono-For-Data Rule",
+        "body": "Any number, unit, timestamp, column head, control word or meta line is Azeret Mono. Source Sans 3 is only for a sentence, a title or a headline. A value never appears in the humanist face.",
+        "section": "typography"
+      },
+      {
+        "name": "The One-Size Chrome Rule",
+        "body": "Chrome type is 11px. Emphasis comes from weight (400 to 500), colour (muted to white) or inversion, not from size; the only chrome sizes outside 11px are the 22px clock, the 15px foot totals, the 12px count values and the 9px bar annotations.",
+        "section": "typography"
+      },
+      {
+        "name": "The Uppercase Ledger Rule",
+        "body": "Mono labels are uppercase with letter-spacing between 0.06em and 0.1em. Mono content that must be read verbatim (domain names, names in tooltips) keeps its case and tightens to 0.02-0.03em.",
+        "section": "typography"
+      },
+      {
+        "name": "The No-Shadow Rule",
+        "body": "box-shadow appears in the stylesheets only to cancel MapLibre's focus glow. Focus is a 1px solid white outline offset 2px (inset where a container clips).",
+        "section": "elevation"
+      }
     ],
     "dos": [
       "Do set every text block's background to var(--bg) so the dot grid never crosses a glyph.",
