@@ -512,6 +512,21 @@ panel, Signals entries), about page, clip frames and cards. Follow-ups: map labe
 render small in the 1080x1920 clip (fixed pixel size); the amber heat is retired (not
 binding). og.jpg recaptured from the live site in the new look on 2026-10-21 22:05 UTC.
 
+**Status 2026-10-22 (end of the redesign session):** all live on main (last commit 377d191).
+- Map marks: the blurred heat was replaced by one flat white dot per place in five size
+  steps (DESIGN.md "Flat-Mark Rule"); land near-black, coasts hairline. Copy says "dot".
+- Navigation: SIGNALS · REPLAY · METHOD; Signals is the default right-column state, Replay
+  is `#replay` (`#t=` implies it), a selected place overlays the column and CLOSE restores;
+  below 1100px the column becomes sections (Signals, Places, Replay) with jump links.
+- Brand: the mark is a 24-grid one-bit globe with a ringed dot that travels the band once
+  on load (static under reduced motion); the full logo is the inverted pixel lockup, used
+  for the favicon set, og.jpg and the clip end card. Sources in .impeccable/mocks/logo/
+  (gitignored; the shipped SVGs live in index.html, about.html, clip.html, public/).
+- DESIGN.md + .impeccable/design.json are current; PRODUCT.md records product truth.
+Next-session candidates: tune the "ordinary life" theme families on a full day (it picked
+politics stories twice); clip map labels at 1080x1920; remaining Phase 2b items; the
+newsletter; a real-phone check of first paint.
+
 ## Phase 1 build decisions (2026-10-20)
 
 - **GKG is the only feed in phase 1.** It carries URL, source domain, page title,
