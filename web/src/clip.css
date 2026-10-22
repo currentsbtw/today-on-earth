@@ -110,8 +110,9 @@ body {
   width: fit-content;
 }
 
-/* Top: the pixel wordmark and the date. Frames centre it in the reserved top band;
-   portrait frames keep it below the 12% strip a short's platform UI covers. */
+/* Top: the pixel wordmark and the date. Landscape frames centre it in the reserved top band;
+   portrait frames stack it from the bottom of the 12% strip a short's platform UI covers,
+   and the map window starts just under it (clip.ts). */
 .clip-top {
   position: absolute;
   top: 0;
@@ -128,7 +129,8 @@ body {
 
 .clip--portrait .clip-top {
   top: var(--safe-top);
-  height: calc(var(--top-band) - var(--safe-top) - var(--tick));
+  height: auto;
+  justify-content: flex-start;
 }
 
 .clip-wordmark {
@@ -214,12 +216,6 @@ body {
 
 /* Cards (?signal= and ?end=1): text kept between --safe-top and --safe-bottom, the strips a
    9:16 short's platform UI covers, and clear of the right 15% in portrait. */
-.clip--portrait.clip--card .clip-top {
-  top: var(--safe-top);
-  height: auto;
-  justify-content: flex-start;
-}
-
 /* Signal card: the slot as a column header, the fixed sentence, then the outlet's own
    headline (the one bold line). */
 .clip-card {
@@ -234,6 +230,19 @@ body {
 
 .clip--portrait .clip-card {
   right: calc(var(--u) * 15);
+}
+
+/* Flight frames (?signal=&from=&fly=): the card shows only its slot header, as a caption on
+   its black block at --caption-top (where the card will put it, set by clip.ts); the card
+   paints in around it in one step on arrival. */
+.clip-card--caption {
+  top: var(--caption-top);
+  bottom: auto;
+}
+
+.clip-card--caption .clip-line,
+.clip-card--caption .clip-quote {
+  display: none;
 }
 
 /* The slot name is the entry's heading in the table register: a column header over a

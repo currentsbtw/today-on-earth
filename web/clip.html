@@ -9,8 +9,16 @@
   </head>
   <body>
     <!-- Render target for a headless time-lapse renderer. Modes:
-         ?t=<frame stamp>&w=1080&h=1920&dark=1[&max=<n>]  one replay frame
+         ?t=<frame stamp>&w=1080&h=1920&dark=1[&max=<n>]  one replay frame (portrait frames
+                                                           fill the height and centre noon)
          ?signal=<slot id>&w&h[&max=<n>]                  one broadcast slot's card
+         ?signal=<slot id>&from=<ref>&fly=<F>&w&h[&max]   a flight of F stills into that card,
+                                                           from t:<frame stamp> (that frame's
+                                                           camera) or s:<slot id> (that card's);
+                                                           opens on step 0, and
+                                                           window.__clipStep(i), i = 1..F, moves
+                                                           to step i (F is the card), resolving
+                                                           true once drawn
          ?end=1&w&h[&max=<n>]                              the end card
          When the page is drawn, window.__clipReady is true and body has data-ready="1"
          (plus data-error="<reason>" on failure). -->

@@ -1,8 +1,12 @@
 // Daily time-lapse clip: one screenshot per replay frame of the live site's clip.html, then
-// one card per filled broadcast slot (clip.html?signal=<id>) and an end card
-// (clip.html?end=1), encoded to an H.264 mp4 with ffmpeg.
+// one card per filled broadcast slot and an end card (clip.html?end=1), encoded to an H.264
+// mp4 with ffmpeg. Each card is flown into: clip.html?signal=<id>&from=<ref>&fly=<F> is
+// loaded once and stepped in-page (window.__clipStep(i), one screenshot per step i = 1..F,
+// the last step being the card), starting from the last time-lapse frame's camera
+// (from=t:<stamp>) or the previous card's (from=s:<slot>). `--fly 0` cuts to each card
+// (clip.html?signal=<id>) as v1 did.
 //
-//   npm run clip -- --site <base url> --out <dir> --w 1080 --h 1920 --fps 8 --card 3 --end 3 --hold 1
+//   npm run clip -- --site <base url> --out <dir> --w 1080 --h 1920 --fps 8 --card 3 --end 3 --hold 1 --fly 1.5
 //
 // Uses a system browser through playwright-core (no browser download): Chrome on Linux
 // (GitHub's ubuntu runners ship it), Edge on Windows. `--channel` overrides.
@@ -122,10 +126,16 @@ async function main() {
     // the minutes of time-lapse frames keeps them on the snapshot the clip was planned from
     // (a deploy landing mid-clip could otherwise empty a slot or change its numbers).
     if (opts.page === "clip") {
-      const plan = planCards({ timelapse: ats.length, slots, fps: opts.fps, card: opts.card, end: opts.end, hold: opts.hold });
-      log(`clip: ${slots.length} signal card(s) ${slots.length ? `(${slots.join(", ")}) ` : ""}and ${opts.end > 0 ? "an" : "no"} end card, captured first`);
+      const plan = planCards({ timelapse: ats.length, slots, fps: opts.fps, card: opts.card, end: opts.end, hold: opts.hold, fly: opts.fly, lastAt: ats.at(-1) });
+      const flyFrames = plan.steps.find((s) => s.kind === "signal")?.fly ?? 0;
+      log(`clip: ${slots.length} signal card(s) ${slots.length ? `(${slots.join(", ")}) ` : ""}${flyFrames ? `flown into over ${flyFrames} frames each ` : ""}and ${opts.end > 0 ? "an" : "no"} end card, captured first`);
       cardResult = await captureCards(plan.steps, 0, {
-        load: (step) => loadClipPage(page, step.kind === "end" ? endUrl(opts, max) : signalUrl(opts, step.id, max)),
+        load: (step) => loadClipPage(page, step.kind === "end" ? endUrl(opts, max) : signalUrl(opts, step.id, max, step.fly > 0 ? step : null)),
+        // A step resolves true once drawn and rejects on failure (which retries the whole card).
+        step: async (i) => {
+          const done = await page.evaluate((n) => window.__clipStep(n), i);
+          if (done !== true) throw new Error(`flight step ${i} did not finish`);
+        },
         shoot: (n) => page.screenshot({ path: cardPng(n), type: "png" }),
         repeat: (from, to) => copyFile(cardPng(from), cardPng(to)),
         log,

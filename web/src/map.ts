@@ -22,7 +22,7 @@ const MAX_ZOOM = 9;
 // The world box the camera is held inside. Antarctica is not drawn, so stop short of it.
 const LAT_NORTH = 84;
 const LAT_SOUTH = -58;
-const TILE = 512;
+export const TILE = 512;
 
 // The map plate's palette (Datamatics Field): black ocean, near-black land read by its
 // coastlines, white marks. Greys live only here, inside the map. Hardcoded rather than read
@@ -59,13 +59,14 @@ const byStep = (values: number[]): ExpressionSpecification =>
 
 // Labels draw from local fonts (no glyph server); MapLibre waits for the web font to load.
 const LABEL_FONTS = ['Azeret Mono', 'ui-monospace', 'Consolas', 'monospace'];
-const EMPTY: GeoJSON.FeatureCollection = { type: 'FeatureCollection', features: [] };
+export const EMPTY: GeoJSON.FeatureCollection = { type: 'FeatureCollection', features: [] };
 
-const mercX = (lng: number) => (lng + 180) / 360;
-const mercY = (lat: number) =>
+/** Web Mercator in world units (0..1 across the world square). */
+export const mercX = (lng: number) => (lng + 180) / 360;
+export const mercY = (lat: number) =>
   (1 - Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360)) / Math.PI) / 2;
-const lngOf = (x: number) => x * 360 - 180;
-const latOf = (y: number) => (360 / Math.PI) * Math.atan(Math.exp(Math.PI * (1 - 2 * y))) - 90;
+export const lngOf = (x: number) => x * 360 - 180;
+export const latOf = (y: number) => (360 / Math.PI) * Math.atan(Math.exp(Math.PI * (1 - 2 * y))) - 90;
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
 interface Padding {
@@ -130,9 +131,11 @@ export function heatFeatures(cells: MapCell[], maxN: number, mode: HeatMode): Ge
 /**
  * Keeps the whole world box visible at the lowest zoom (contain, not cover) and never lets
  * the camera pan past its edges. MapLibre's default maxBounds behaviour zooms in until the
- * bounds cover the viewport, which would crop the world on load.
+ * bounds cover the viewport, which would crop the world on load. `wrap` (a map that renders
+ * world copies) leaves the longitude free so the camera can pan round the globe; latitude
+ * and zoom are held as before.
  */
-function worldConstrain(container: HTMLElement, padding: () => Partial<Padding>) {
+function worldConstrain(container: HTMLElement, padding: () => Partial<Padding>, wrap = false) {
   const top = mercY(LAT_NORTH);
   const bottom = mercY(LAT_SOUTH);
   return (lngLat: LngLat, zoom: number) => {
@@ -147,8 +150,9 @@ function worldConstrain(container: HTMLElement, padding: () => Partial<Padding>)
     const size = TILE * 2 ** z;
     const axis = (v: number, lo: number, hi: number, half: number) =>
       hi - lo <= 2 * half ? (lo + hi) / 2 : clamp(v, lo + half, hi - half);
-    const x = axis(mercX(lngLat.lng) * size, 0, size, w / 2) / size;
     const y = axis(mercY(lngLat.lat) * size, top * size, bottom * size, h / 2) / size;
+    if (wrap) return { center: new LngLat(lngLat.lng, latOf(y)), zoom: z };
+    const x = axis(mercX(lngLat.lng) * size, 0, size, w / 2) / size;
     return { center: new LngLat(lngOf(x), latOf(y)), zoom: z };
   };
 }
@@ -436,15 +440,29 @@ export interface WorldMap {
   hideTooltip(): void;
 }
 
+/** Zoom at which the world box (LAT_NORTH..LAT_SOUTH) exactly fills a window `height` px tall. */
+export const fillHeightZoom = (height: number) => Math.log2(height / (mercY(LAT_SOUTH) - mercY(LAT_NORTH)) / TILE);
+/** Latitude of the world box's middle in Mercator: the centre of a height-filled view. */
+export const FILL_LAT = latOf((mercY(LAT_NORTH) + mercY(LAT_SOUTH)) / 2);
+/** Zoom at which the whole world box fits inside a w x h window (the clip map's fitted world). */
+export const fitWorldZoom = (w: number, h: number) => Math.log2(Math.min(w, h / (mercY(LAT_SOUTH) - mercY(LAT_NORTH))) / TILE);
+
+export interface ClipCamera {
+  center: [lon: number, lat: number];
+  zoom: number;
+}
+
 /**
  * A non-interactive map for the clip page: same style, world fitted inside `padding`.
  * `view` moves the camera there instead (a signal card zoomed to one cell); the world box
- * still bounds it.
+ * still bounds it. `wrap` renders world copies and frees the longitude (the portrait
+ * time-lapse pans round the globe); latitude and zoom stay bounded.
  */
 export function createClipMap(
   container: HTMLElement,
   padding: Padding,
-  view?: { center: [lon: number, lat: number]; zoom: number },
+  view?: ClipCamera,
+  options: { wrap?: boolean } = {},
 ): Promise<{ map: MapLibreMap; setCells: (cells: MapCell[], maxN: number) => void }> {
   let ref: MapLibreMap | null = null;
   const map = new MapLibreMap({
@@ -454,11 +472,11 @@ export function createClipMap(
     zoom: -2,
     minZoom: -2,
     maxZoom: MAX_ZOOM,
-    renderWorldCopies: false,
+    renderWorldCopies: options.wrap ?? false,
     interactive: false,
     attributionControl: false,
     fadeDuration: 0,
-    transformConstrain: worldConstrain(container, () => (ref ? ref.getPadding() : padding)),
+    transformConstrain: worldConstrain(container, () => (ref ? ref.getPadding() : padding), options.wrap ?? false),
   });
   ref = map;
   map.setPadding(padding);
@@ -661,7 +679,7 @@ export function createMap(
   // no world edge shows); the contain-fit stays the minimum zoom.
   const w = container.clientWidth;
   const h = container.clientHeight;
-  if (h > w && w > 0) map.jumpTo({ center: [15, 20], zoom: Math.log2(h / (mercY(LAT_SOUTH) - mercY(LAT_NORTH)) / TILE) });
+  if (h > w && w > 0) map.jumpTo({ center: [15, 20], zoom: fillHeightZoom(h) });
 
   return new Promise((resolve) =>
     map.once('load', () => {

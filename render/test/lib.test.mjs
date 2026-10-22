@@ -8,6 +8,7 @@ import {
   clipDate,
   endUrl,
   ffmpegArgs,
+  flightFrom,
   frameName,
   frameUrl,
   MAX_BAD_SHARE,
@@ -20,7 +21,7 @@ import {
 
 test("parseArgs: defaults, platform browser channel, validation", () => {
   const o = parseArgs(["--site", "https://currentsbtw.github.io/today-on-earth/", "--out", "out"], "linux");
-  assert.deepEqual(o, { site: "https://currentsbtw.github.io/today-on-earth", out: "out", w: 1080, h: 1920, fps: 8, hold: 2, card: 3, end: 3, channel: "chrome", page: "clip" });
+  assert.deepEqual(o, { site: "https://currentsbtw.github.io/today-on-earth", out: "out", w: 1080, h: 1920, fps: 8, hold: 2, card: 3, end: 3, fly: 1.5, channel: "chrome", page: "clip" });
   assert.equal(parseArgs(["--site=http://localhost:5173", "--out=o", "--w", "1920", "--h", "1080"], "win32").channel, "msedge");
   assert.throws(() => parseArgs(["--out", "o"]), /--site/);
   assert.throws(() => parseArgs(["--site", "ftp://x", "--out", "o"]), /http/);
@@ -30,6 +31,14 @@ test("parseArgs: defaults, platform browser channel, validation", () => {
   const cards = parseArgs(["--site", "http://x", "--out", "o", "--card", "1.5", "--end", "0", "--hold", "0"], "linux");
   assert.deepEqual([cards.card, cards.end, cards.hold], [1.5, 0, 0]);
   assert.throws(() => parseArgs(["--site", "http://x", "--out", "o", "--card", "-1"]), /card/);
+  // --fly: seconds 0..30, and at most 60 flight stills at the chosen fps.
+  assert.equal(parseArgs(["--site", "http://x", "--out", "o", "--fly", "0"], "linux").fly, 0);
+  assert.equal(parseArgs(["--site", "http://x", "--out", "o", "--fly", "2.25"], "linux").fly, 2.25);
+  assert.throws(() => parseArgs(["--site", "http://x", "--out", "o", "--fly", "-0.5"]), /fly/);
+  assert.throws(() => parseArgs(["--site", "http://x", "--out", "o", "--fly", "31"]), /fly/);
+  assert.throws(() => parseArgs(["--site", "http://x", "--out", "o", "--fly", "x"]), /fly/);
+  assert.throws(() => parseArgs(["--site", "http://x", "--out", "o", "--fly", "8", "--fps", "8"]), /at most 60/);
+  assert.equal(parseArgs(["--site", "http://x", "--out", "o", "--fly", "7.5", "--fps", "8"], "linux").fly, 7.5);
 });
 
 test("frame URLs: clip.html with t, w, h; index.html stand-in uses the permalink hash", () => {
@@ -127,7 +136,7 @@ test("planCards: card and end frames at fps x seconds, zero cards, hold on top",
   assert.equal(four.seconds, 27);
   // No filled slots (or no broadcast.json): only the end card.
   const none = planCards({ timelapse: 96, slots: [], fps: 8, card: 3, end: 3, hold: 0 });
-  assert.deepEqual(none.steps, [{ kind: "end", id: "end", frames: 24 }]);
+  assert.deepEqual(none.steps, [{ kind: "end", id: "end", frames: 24, fly: 0, from: "" }]);
   // --card 0 --end 0 and a hold: the old clip, held after the last time-lapse frame.
   const old = planCards({ timelapse: 96, slots: ["loudest"], fps: 8, card: 0, end: 0, hold: 2 });
   assert.deepEqual(old, { steps: [], frames: 96, seconds: 14 });
@@ -165,4 +174,102 @@ test("cardMoves: cards shot first land right after the frames actually written",
   // A bad first frame was skipped: 95 frames, the cards follow on with no gap.
   assert.deepEqual(cardMoves(2, 95), [[1, 96], [2, 97]]);
   assert.deepEqual(cardMoves(0, 96), []);
+});
+
+test("flight URLs: from and fly on the signal URL; without a flight the v1 card URL", () => {
+  const o = parseArgs(["--site", "https://example.test/toe", "--out", "o"], "linux");
+  assert.equal(flightFrom("2026-10-22T14:27:15Z", null), "t:20261022T142715Z");
+  assert.equal(flightFrom("2026-10-22T14:27:15Z", "planet"), "s:planet");
+  assert.equal(
+    signalUrl(o, "loudest", 1401, { from: "t:20261022T142715Z", fly: 12 }),
+    "https://example.test/toe/clip.html?signal=loudest&from=t%3A20261022T142715Z&fly=12&w=1080&h=1920&max=1401",
+  );
+  assert.equal(signalUrl(o, "planet", 0, { from: "s:loudest", fly: 12 }), "https://example.test/toe/clip.html?signal=planet&from=s%3Aloudest&fly=12&w=1080&h=1920");
+  assert.equal(signalUrl(o, "planet", 0, { from: "s:loudest", fly: 0 }), "https://example.test/toe/clip.html?signal=planet&w=1080&h=1920");
+  assert.equal(signalUrl(o, "planet", 0, null), "https://example.test/toe/clip.html?signal=planet&w=1080&h=1920");
+});
+
+test("planCards with flights: fly frames + card frames per signal, chained from the time-lapse then the previous slot", () => {
+  const plan = planCards({ timelapse: 96, slots: ["loudest", "planet", "ordinary"], fps: 8, card: 3, end: 3, hold: 1, fly: 1.5, lastAt: "2026-10-22T14:27:15Z" });
+  assert.deepEqual(plan.steps, [
+    { kind: "signal", id: "loudest", frames: 36, fly: 12, from: "t:20261022T142715Z" },
+    { kind: "signal", id: "planet", frames: 36, fly: 12, from: "s:loudest" },
+    { kind: "signal", id: "ordinary", frames: 36, fly: 12, from: "s:planet" },
+    { kind: "end", id: "end", frames: 24, fly: 0, from: "" },
+  ]);
+  assert.equal(plan.frames, 96 + 3 * 36 + 24);
+  assert.equal(plan.seconds, (96 + 3 * 36 + 24) / 8 + 1);
+  // A short flight is still one still; --fly 0 is the v1 cut.
+  assert.deepEqual(planCards({ timelapse: 1, slots: ["faint"], fps: 8, card: 1, end: 0, hold: 0, fly: 0.01, lastAt: "2026-10-22T14:27:15Z" }).steps, [
+    { kind: "signal", id: "faint", frames: 9, fly: 1, from: "t:20261022T142715Z" },
+  ]);
+  assert.deepEqual(planCards({ timelapse: 1, slots: ["faint"], fps: 8, card: 1, end: 0, hold: 0, fly: 0, lastAt: "2026-10-22T14:27:15Z" }).steps, [
+    { kind: "signal", id: "faint", frames: 8, fly: 0, from: "" },
+  ]);
+  // No cards (--card 0): no flights either.
+  assert.deepEqual(planCards({ timelapse: 1, slots: ["faint"], fps: 8, card: 0, end: 0, hold: 0, fly: 1.5 }).steps, []);
+});
+
+/** captureCards with flights: `fails` maps slot id -> failing attempts (the load of attempt n fails while n <= fails). */
+async function simulateFlights(steps, fails = {}, failStep = {}) {
+  const files = new Map();
+  const loads = [];
+  const tries = new Map();
+  const logs = [];
+  let current = null;
+  const result = await captureCards(steps, 0, {
+    load: async (step) => {
+      const n = (tries.get(step.id) ?? 0) + 1;
+      tries.set(step.id, n);
+      loads.push(`${step.id}${step.fly ? ` from ${step.from} fly ${step.fly}` : ""}`);
+      if (n <= (fails[step.id] ?? 0)) throw new Error(`slot ${step.id} unavailable`);
+      current = { id: step.id, at: 0, fly: step.fly, attempt: n };
+    },
+    step: async (i) => {
+      // A step that fails on the given attempt aborts the flight mid-way.
+      if (failStep[current.id]?.attempt === current.attempt && failStep[current.id].i === i) throw new Error("step timeout");
+      current.at = i;
+    },
+    shoot: async (i) => files.set(i, current.fly ? `${current.id}#${current.at}` : current.id),
+    repeat: async (from, to) => files.set(to, files.get(from)),
+    log: (m) => logs.push(m),
+  });
+  return { result, files: [...files.entries()].sort((a, b) => a[0] - b[0]).map(([, v]) => v), loads, logs };
+}
+
+test("captureCards: a flight is stepped and shot per still, the arrival copied for the card hold", async () => {
+  const steps = planCards({ timelapse: 4, slots: ["loudest", "planet"], fps: 2, card: 1, end: 1, hold: 0, fly: 1.5, lastAt: "2026-10-22T14:27:15Z" }).steps;
+  const { result, files, loads, logs } = await simulateFlights(steps);
+  assert.deepEqual(result, { written: 12, cards: 3, skipped: 0 });
+  assert.deepEqual(files, ["loudest#1", "loudest#2", "loudest#3", "loudest#3", "loudest#3", "planet#1", "planet#2", "planet#3", "planet#3", "planet#3", "end", "end"]);
+  assert.deepEqual(loads, ["loudest from t:20261022T142715Z fly 3", "planet from s:loudest fly 3", "end"]);
+  assert.ok(logs.includes("  card loudest: 3 flight frames from t:20261022T142715Z + 2 card frames"));
+});
+
+test("captureCards: a failed step retries the whole flight; a skipped slot re-chains the next flight", async () => {
+  const steps = planCards({ timelapse: 4, slots: ["loudest", "planet", "ordinary"], fps: 2, card: 0.5, end: 0, hold: 0, fly: 1, lastAt: "2026-10-22T14:27:15Z" }).steps;
+  // loudest fails both attempts (skipped): planet flies from the time-lapse, not from loudest.
+  const one = await simulateFlights(steps, { loudest: 2 });
+  assert.deepEqual(one.result, { written: 6, cards: 2, skipped: 1 });
+  assert.deepEqual(one.loads, [
+    "loudest from t:20261022T142715Z fly 2",
+    "loudest from t:20261022T142715Z fly 2",
+    "planet from t:20261022T142715Z fly 2",
+    "ordinary from s:planet fly 2",
+  ]);
+  assert.deepEqual(one.files, ["planet#1", "planet#2", "planet#2", "ordinary#1", "ordinary#2", "ordinary#2"]);
+  // planet skipped in the middle: ordinary flies from loudest, the last slot rendered.
+  const two = await simulateFlights(steps, { planet: 2 });
+  assert.deepEqual(two.loads.at(-1), "ordinary from s:loudest fly 2");
+  assert.deepEqual(two.result, { written: 6, cards: 2, skipped: 1 });
+  // A step failing mid-flight reloads and redoes the whole flight; the retry's stills replace the first try's.
+  const three = await simulateFlights(steps, {}, { planet: { attempt: 1, i: 2 } });
+  assert.deepEqual(three.loads, [
+    "loudest from t:20261022T142715Z fly 2",
+    "planet from s:loudest fly 2",
+    "planet from s:loudest fly 2",
+    "ordinary from s:planet fly 2",
+  ]);
+  assert.deepEqual(three.result, { written: 9, cards: 3, skipped: 0 });
+  assert.deepEqual(three.files.slice(3, 6), ["planet#1", "planet#2", "planet#2"]);
 });
