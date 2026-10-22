@@ -46,21 +46,29 @@
   --muted: #9a9a9a;
   /* Decorative strips and inactive marks only, never text that must be read. */
   --faint: #5c5c5c;
-  --line: rgba(255, 255, 255, 0.18);
   --rule: #333;
-  --heat: #ffffff;
+  /* One step below muted, only for unselected places while a place is selected (4.7:1). */
+  --dim-rank: #777;
+  /* Visited headline links. */
+  --visited: #c4c4c4;
+
+  /* White hairlines by strength (DESIGN.md "Hairline / Hairline Mid / Hairline Strong"):
+     the dot grid; the scrub track, filter, trend baseline and video card borders; outline
+     buttons, chips and the story's left rule. Hover lifts any of them to solid white. */
+  --hairline: rgba(255, 255, 255, 0.18);
+  --hairline-mid: rgba(255, 255, 255, 0.35);
+  --hairline-strong: rgba(255, 255, 255, 0.4);
+  /* The map frame: its edge, its edge in replay (dashed), and its 64px tick marks. */
+  --frame-line: rgba(255, 255, 255, 0.25);
+  --frame-replay: rgba(255, 255, 255, 0.5);
+  --tick: rgba(255, 255, 255, 0.6);
 
   --mono: 'Azeret Mono', ui-monospace, monospace;
   --hum: 'Source Sans 3', system-ui, sans-serif;
   --pix: 'Silkscreen', monospace;
 
-  /* Older names other files still read, mapped onto the new world. */
-  --surface: #000;
-  --text: var(--fg);
-  --font: var(--hum);
-
   /* The 8px dot grid for margins and panel grounds. */
-  --dots: radial-gradient(circle at 0.5px 0.5px, rgba(255, 255, 255, 0.18) 0.5px, transparent 0.75px) 0 0 / 8px 8px;
+  --dots: radial-gradient(circle at 0.5px 0.5px, var(--hairline) 0.5px, transparent 0.75px) 0 0 / 8px 8px;
 
   --panel-w: 360px;
   color-scheme: dark;

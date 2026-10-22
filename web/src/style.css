@@ -89,7 +89,8 @@ button {
   --right-w: var(--panel-w);
 }
 
-.top {
+.top,
+.main {
   display: contents;
 }
 
@@ -300,7 +301,7 @@ button {
   height: 28px;
   margin: 0 0 8px;
   padding: 0 8px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: 1px solid var(--hairline-mid);
   border-radius: 0;
   background: var(--bg);
   color: var(--fg);
@@ -323,21 +324,27 @@ button {
   -webkit-appearance: none;
 }
 
-.rank-head,
+.rank-head-row,
 .rank-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 36px 36px 26px;
   column-gap: 4px;
 }
 
-/* The head reserves the same scrollbar gutter as the list, so the columns line up. */
+/* The head reserves the same scrollbar gutter as the list, so the columns line up. It
+   holds one head row per grid column of the list; wide screens have one column. */
 .rank-head {
+  display: block;
   letter-spacing: 0.04em;
   overflow-y: hidden;
   scrollbar-gutter: stable;
 }
 
-.rank-head span:not(:first-child) {
+.rank-head-row + .rank-head-row {
+  display: none;
+}
+
+.rank-head-row span:not(:first-child) {
   text-align: right;
 }
 
@@ -410,14 +417,22 @@ button {
   font-weight: 500;
 }
 
+.rank-row.is-selected .rank-name {
+  grid-column: 1 / -1;
+}
+
+.rank-row.is-selected .rank-name + .rank-n {
+  grid-column: 2;
+}
+
 .rank-row.is-selected .rank-strip {
   height: 8px;
   background: repeating-linear-gradient(90deg, var(--fg) 0 2px, transparent 2px 3px);
 }
 
-/* One step down for the rest while a place is selected: #777 still reads at 4.7:1. */
+/* One step down for the rest while a place is selected: --dim-rank still reads at 4.7:1. */
 .has-selection .rank-row:not(.is-selected) {
-  color: #777;
+  color: var(--dim-rank);
 }
 
 .has-selection .rank-row:not(.is-selected):hover {
@@ -470,7 +485,7 @@ button {
   flex: 1;
   min-height: 0;
   margin: 8px 0;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid var(--frame-line);
   background: var(--bg);
 }
 
@@ -485,20 +500,20 @@ button {
 .map-frame::before {
   inset: -8px -1px;
   background:
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0 1px, transparent 1px 64px) left top / 100% 6px no-repeat,
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0 1px, transparent 1px 64px) left bottom / 100% 6px no-repeat;
+    repeating-linear-gradient(90deg, var(--tick) 0 1px, transparent 1px 64px) left top / 100% 6px no-repeat,
+    repeating-linear-gradient(90deg, var(--tick) 0 1px, transparent 1px 64px) left bottom / 100% 6px no-repeat;
 }
 
 .map-frame::after {
   inset: -1px -8px;
   background:
-    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0 1px, transparent 1px 64px) left top / 6px 100% no-repeat,
-    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0 1px, transparent 1px 64px) right top / 6px 100% no-repeat;
+    repeating-linear-gradient(180deg, var(--tick) 0 1px, transparent 1px 64px) left top / 6px 100% no-repeat,
+    repeating-linear-gradient(180deg, var(--tick) 0 1px, transparent 1px 64px) right top / 6px 100% no-repeat;
 }
 
 body.is-replay .map-frame {
   border-style: dashed;
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color: var(--frame-replay);
 }
 
 .map-frame > .map {
@@ -572,7 +587,7 @@ body.is-replay .map-frame {
   gap: 6px;
   height: 28px;
   padding: 0 10px 0 8px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--hairline-strong);
   background: var(--bg);
   color: var(--fg);
   font: 400 11px/1 var(--mono);
@@ -613,7 +628,7 @@ body.is-replay .map-frame {
   border-radius: 0;
   background-color: var(--bg);
   color: var(--muted);
-  font: 400 11px/20px var(--mono);
+  font: 400 11px/24px var(--mono);
   letter-spacing: 0.02em;
 }
 
@@ -634,8 +649,17 @@ body.is-replay .map-frame {
 .map-frame .maplibregl-ctrl-attrib.maplibregl-compact-show .maplibregl-ctrl-attrib-button {
   border-radius: 0;
   background: var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 8' shape-rendering='crispEdges'%3E%3Cpath fill='%23fff' d='M1 0h1v1H1zM0 2h2v5H1V3H0zM0 7h3v1H0z'/%3E%3C/svg%3E") center / 6px 16px no-repeat;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--hairline-strong);
   box-sizing: border-box;
+  /* The size floor (28px); MapLibre draws it at 24. */
+  width: 28px;
+  height: 28px;
+}
+
+/* Room for the 28px toggle: the box is content-box with 2px padding above and below. */
+.map-frame .maplibregl-ctrl.maplibregl-ctrl-attrib.maplibregl-compact {
+  min-height: 24px;
+  padding-right: 28px;
 }
 
 /* MapLibre draws a blue glow on focus; the world uses its own ring. */
@@ -649,8 +673,8 @@ body.is-replay .map-frame {
   outline-offset: 2px;
 }
 
-.map-frame .maplibregl-ctrl-attrib.maplibregl-compact-show {
-  padding: 2px 30px 2px 8px;
+.map-frame .maplibregl-ctrl.maplibregl-ctrl-attrib.maplibregl-compact-show {
+  padding: 2px 34px 2px 8px;
 }
 
 /* Under the map: the selection, the brightness switch and the legend. */
@@ -710,9 +734,10 @@ body.is-replay .map-frame {
 }
 
 .mode button {
-  min-height: 24px;
+  position: relative;
+  min-height: 28px;
   padding: 0 8px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--hairline-strong);
   background: var(--bg);
   color: var(--fg);
   font: inherit;
@@ -763,6 +788,16 @@ body.is-replay .map-frame {
   overflow-y: auto;
   overscroll-behavior: contain;
   border-bottom: 1px solid var(--rule);
+}
+
+/* These columns (and the place panel) clip at their edges on wide screens: a focus ring
+   inside them is drawn inside its control, never cut by the scroll edge. */
+@media (min-width: 1100px) {
+  .col-signals :focus-visible,
+  .col-replay :focus-visible,
+  .panel :focus-visible {
+    outline-offset: -2px;
+  }
 }
 
 .side[data-view='signals'] .col-replay,
@@ -846,6 +881,12 @@ body.is-replay .map-frame {
   background: var(--faint);
 }
 
+/* No count for this frame: a dotted stub of fixed height, so it reads as "no value", never
+   as a small one. Before .is-current, which still wins on the playhead. */
+.bar.is-unknown {
+  background: repeating-linear-gradient(to top, var(--faint) 0 1px, transparent 1px 2px);
+}
+
 .bar.is-current {
   height: 100%;
   background: var(--fg);
@@ -897,20 +938,20 @@ body.is-replay .map-frame {
   appearance: none;
   display: block;
   width: 100%;
-  height: 16px;
-  margin: 6px 0 0;
+  height: 28px;
+  margin: 0;
   background: transparent;
   cursor: pointer;
 }
 
 .scrub-range::-webkit-slider-runnable-track {
   height: 1px;
-  background: rgba(255, 255, 255, 0.35);
+  background: var(--hairline-mid);
 }
 
 .scrub-range::-moz-range-track {
   height: 1px;
-  background: rgba(255, 255, 255, 0.35);
+  background: var(--hairline-mid);
 }
 
 .scrub-range::-webkit-slider-thumb {
@@ -936,16 +977,17 @@ body.is-replay .map-frame {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 .scrub-play {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   height: 28px;
   padding: 0 10px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--hairline-strong);
   background: var(--bg);
   color: var(--fg);
   font: 500 11px/1 var(--mono);
@@ -1011,7 +1053,7 @@ body.is-replay .map-frame {
   width: 100%;
   height: 44px;
   overflow: visible;
-  border-bottom: 1px dotted rgba(255, 255, 255, 0.35);
+  border-bottom: 1px dotted var(--hairline-mid);
 }
 
 .recent {
@@ -1145,6 +1187,7 @@ body.is-replay .map-frame {
 }
 
 .panel-close {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -1306,6 +1349,16 @@ body.is-replay .map-frame {
   white-space: nowrap;
 }
 
+/* Countries and languages: the name in the ledger's uppercase, the ISO code after it muted. */
+.strip-key.is-code {
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.strip-code {
+  color: var(--muted);
+}
+
 .strip-n {
   text-align: right;
 }
@@ -1358,7 +1411,7 @@ body.is-replay .map-frame {
   width: 160px;
   height: 96px;
   padding: 7px 8px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: 1px solid var(--hairline-mid);
   background: var(--bg);
   color: var(--fg);
   text-align: left;
@@ -1411,7 +1464,7 @@ body.is-replay .map-frame {
 .story {
   margin-top: 14px;
   padding: 2px 0 2px 12px;
-  border-left: 1px solid rgba(255, 255, 255, 0.4);
+  border-left: 1px solid var(--hairline-strong);
   background: var(--bg);
 }
 
@@ -1468,7 +1521,7 @@ body.is-replay .map-frame {
 
 .chip {
   padding: 2px 5px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--hairline-strong);
   font: 400 11px/1.2 var(--mono);
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -1492,9 +1545,13 @@ body.is-replay .map-frame {
 
 .story-more,
 .stories-more {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
   margin: 4px 0 0;
-  padding: 4px 8px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 0 8px;
+  border: 1px solid var(--hairline-strong);
   background: var(--bg);
   color: var(--fg);
   font: 400 11px/1 var(--mono);
@@ -1512,7 +1569,6 @@ body.is-replay .map-frame {
 
 /* After the first three story cards; one press reveals the rest and removes it. */
 .stories-more {
-  min-height: 28px;
   margin-top: 14px;
 }
 
@@ -1559,7 +1615,7 @@ a.article-title:hover {
 
 a.article-title:visited,
 .story-link:visited {
-  color: #c4c4c4;
+  color: var(--visited);
 }
 
 .article-meta {
@@ -1598,7 +1654,7 @@ a.article-title:visited,
   height: 20px;
   margin-top: 1px;
   padding: 0;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--hairline-strong);
   background: var(--bg);
   cursor: pointer;
 }
@@ -1729,7 +1785,7 @@ a.article-title:visited,
 .signal-headline {
   margin-top: 4px;
   padding-left: 12px;
-  border-left: 1px solid rgba(255, 255, 255, 0.4);
+  border-left: 1px solid var(--hairline-strong);
   font-size: 17px;
   font-weight: 600;
   line-height: 1.3;
@@ -1760,7 +1816,7 @@ a.article-title:visited,
 .signal-source {
   margin: 0;
   padding: 4px 0 0 12px;
-  border-left: 1px solid rgba(255, 255, 255, 0.4);
+  border-left: 1px solid var(--hairline-strong);
 }
 
 .signal-line {
@@ -1829,6 +1885,8 @@ a.article-title:visited,
 }
 
 .foot-link {
+  display: inline-block;
+  padding-top: 9px;
   color: var(--muted);
   font: 400 11px/1.4 var(--mono);
   letter-spacing: 0.08em;
@@ -1893,12 +1951,21 @@ a.article-title:visited,
     overflow: visible;
   }
 
-  .rank-list li:nth-child(n + 19) {
+  .rank-list:not(.is-filtered) li:nth-child(n + 19) {
     display: none;
   }
 
+  /* One head row over each of the list's columns (the list has no scrollbar here). */
   .rank-head {
-    display: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 20px;
+    overflow: visible;
+    scrollbar-gutter: auto;
+  }
+
+  .rank-head-row + .rank-head-row {
+    display: grid;
   }
 
   .rank-list {
@@ -2044,30 +2111,25 @@ a.article-title:visited,
   }
 
   .col-filter {
-    display: none;
+    height: 36px;
   }
 
-  .rank-list {
+  .rank-list,
+  .rank-head {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 16px;
   }
 
-  .rank-list li:nth-child(n + 13) {
+  .rank-head-row:nth-child(3) {
+    display: none;
+  }
+
+  .rank-list:not(.is-filtered) li:nth-child(n + 13) {
     display: none;
   }
 
   .rank-row.is-selected {
     font-size: 12px;
-  }
-
-  /* MapLibre's attribution stays on one line: its "How it works" link reads "Method". */
-  .map-frame .maplibregl-ctrl-attrib-inner a[href="./about.html"] {
-    font-size: 0;
-  }
-
-  .map-frame .maplibregl-ctrl-attrib-inner a[href="./about.html"]::after {
-    content: "Method";
-    font-size: 11px;
   }
 
   /* Above MapLibre's attribution, which opens expanded (two lines) across a narrow frame. */
@@ -2136,10 +2198,43 @@ a.article-title:visited,
     font-size: 24px;
   }
 
-  .stories-more {
+  /* Phones: controls at 36px, with a 44px hit area drawn by an inset ::after (as on
+     .article-play), so the visible box keeps its size. */
+  .panel-close,
+  .scrub-play,
+  .story-more,
+  .stories-more,
+  .mode button {
     min-height: 36px;
   }
 
+  .scrub-play {
+    height: 36px;
+  }
+
+  /* The range's hit box; its visible track stays the 1px line, centred. */
+  .scrub-range {
+    height: 36px;
+  }
+
+  .panel-close::after,
+  .scrub-play::after,
+  .story-more::after,
+  .stories-more::after,
+  .mode button::after {
+    content: '';
+    position: absolute;
+    inset: -4px 0;
+  }
+
+  /* CLOSE sits right under the sheet handle: its extra 8px go below it, not into the handle. */
+  .panel-close::after {
+    inset: 0 0 -8px;
+  }
+
+  .foot-link {
+    padding-top: 21px;
+  }
 }
 
 /* A focused headline link draws one rectangle, not a ring per wrapped line. */
@@ -2149,7 +2244,12 @@ a.article-title:visited,
 
 /* Narrow phones: one place per row, so every name stays whole. */
 @media (max-width: 420px) {
-  .rank-list {
+  .rank-list,
+  .rank-head {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rank-head-row:nth-child(2) {
+    display: none;
   }
 }

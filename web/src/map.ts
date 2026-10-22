@@ -27,7 +27,7 @@ export const TILE = 512;
 // The map plate's palette (Datamatics Field): black ocean, near-black land read by its
 // coastlines, white marks. Greys live only here, inside the map. Hardcoded rather than read
 // from tokens.css: the style is built before any stylesheet is guaranteed to have applied
-// (the clip page), and MapLibre needs literal colours. MAP_HEAT is the same white as tokens.css --heat.
+// (the clip page), and MapLibre needs literal colours. MAP_HEAT is the same white as tokens.css --fg.
 export const MAP_OCEAN = '#000000';
 export const MAP_LAND = '#0d0d0d';
 /** Country borders, which also draw the coasts: the planet reads by these lines. */
@@ -434,7 +434,7 @@ export interface WorldMap {
   setQuakes(data: GeoJSON.FeatureCollection | null): void;
   /**
    * Phone sheet: keep the map's usable area above it (bottom padding) and, when a point is
-   * given, ease it into the middle of that area. 0 clears the padding.
+   * given, move it to the middle of that area in one step. 0 clears the padding.
    */
   setSheet(height: number, focus?: [lon: number, lat: number]): void;
   hideTooltip(): void;
@@ -506,7 +506,11 @@ export function createMap(
     pitchWithRotate: false,
     touchPitch: false,
     maxPitch: 0,
-    attributionControl: { compact: true, customAttribution: 'Natural Earth · GDELT · USGS · <a href="./about.html">How it works</a>' },
+    // Labels snap in and out with the camera, like every other state (Stepped-Motion rule).
+    fadeDuration: 0,
+    // The canvas is the map's landmark (MapLibre gives it role=region): name it for what it shows.
+    locale: { 'Map.Title': 'World map of news coverage' },
+    attributionControl: { compact: true, customAttribution: 'Natural Earth · GDELT · USGS · <a href="./about.html">Method</a>' },
   });
   mapRef = map;
   map.touchZoomRotate.disableRotation();
@@ -619,12 +623,13 @@ export function createMap(
 
     setSheet(height, focus) {
       const bottom = Math.max(0, Math.round(height));
-      // Resize reports repeat the same height; easing again would cut short a focus ease.
+      // Resize reports repeat the same height; nothing to do then.
       if (!focus && bottom === sheetPadding) return;
       sheetPadding = bottom;
       const padding = { ...NO_PADDING, bottom };
-      if (focus) map.easeTo({ center: focus, padding, duration: 450 });
-      else map.easeTo({ padding, duration: 300 });
+      // One step to the end state, no ease (Stepped-Motion rule).
+      if (focus) map.jumpTo({ center: focus, padding });
+      else map.jumpTo({ padding });
     },
 
     async outline(id) {

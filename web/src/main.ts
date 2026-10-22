@@ -109,8 +109,6 @@ interface PlaceRow {
   id: string;
   /** The place name, or its coordinates when no name is known (replay-only cells). */
   name: string;
-  /** "412 articles · 150 outlets · 23 countries", or just the articles on past frames. */
-  counts: string;
   /** Articles; outlets and outlet countries exist only for the live snapshot. */
   n: number;
   o?: number;
@@ -125,16 +123,34 @@ const colList = $<HTMLOListElement>('places-col-list');
 const colFilter = $<HTMLInputElement>('places-col-filter');
 const colEmpty = $('places-col-empty');
 const colSection = $('places-col');
+/** Every place on screen, largest first: the filter searches all of them, not only the rows shown. */
 let colRows: PlaceRow[] = [];
 let colSelected: string | null = null;
 let colPick: (id: string) => void = () => {};
 
-const fold = (text: string) => text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+const folded = new Map<string, string>();
+const fold = (text: string) => {
+  let f = folded.get(text);
+  if (f === undefined) folded.set(text, (f = text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()));
+  return f;
+};
+
+/** "412 articles · 150 outlets · 23 countries", or just the articles on past frames. */
+const rowCounts = (r: PlaceRow) =>
+  [
+    plural(r.n, 'article', 'articles'),
+    ...(r.o === undefined ? [] : [plural(r.o, 'outlet', 'outlets')]),
+    ...(r.c === undefined ? [] : [plural(r.c, 'country', 'countries')]),
+  ].join(' · ');
 
 function renderCol() {
   const q = fold(colFilter.value.trim());
-  const shown = q ? colRows.filter((r) => fold(r.name).includes(q)) : colRows;
-  const top = Math.max(1, ...colRows.map((r) => r.n));
+  // Unfiltered: the top places. Filtered: the matches among every place, so a place below
+  // the top rows (or below the stacked layouts' 12/18-row cap, lifted while filtering) is
+  // reachable without the map.
+  const shown = (q ? colRows.filter((r) => fold(r.name).includes(q)) : colRows).slice(0, PLACES_MAX);
+  colList.classList.toggle('is-filtered', !!q);
+  const top = Math.max(1, colRows[0]?.n ?? 1);
   const dash = '–';
   colList.replaceChildren(
     ...shown.map((r) => {
@@ -145,7 +161,7 @@ function renderCol() {
       button.dataset.id = r.id;
       button.tabIndex = -1;
       button.title = r.name;
-      button.setAttribute('aria-label', `${r.name}, ${r.counts}`);
+      button.setAttribute('aria-label', `${r.name}, ${rowCounts(r)}`);
       const cells = [shortName(r.name) || r.name, String(r.n), r.o === undefined ? dash : String(r.o), r.c === undefined ? dash : String(r.c)];
       cells.forEach((text, i) => {
         const span = document.createElement('span');
@@ -427,13 +443,10 @@ async function start() {
   const placeRows = (): PlaceRow[] =>
     [...shownCells()]
       .sort((a, b) => b.n - a.n)
-      .slice(0, PLACES_MAX)
       .map((c) => {
         // Outlet and country counts exist only for the live snapshot.
         const now = shownRows ? undefined : live.get(c.id);
-        const parts = [plural(c.n, 'article', 'articles')];
-        if (now) parts.push(plural(now.o, 'outlet', 'outlets'), plural(now.c, 'country', 'countries'));
-        return { id: c.id, name: c.name || coords(c.lat, c.lon), counts: parts.join(' · '), n: c.n, o: now?.o, c: now?.c };
+        return { id: c.id, name: c.name || coords(c.lat, c.lon), n: c.n, o: now?.o, c: now?.c };
       });
   const refreshCol = () => {
     colRows = placeRows();

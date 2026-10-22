@@ -48,12 +48,17 @@
         </div>
       </header>
 
+      <!-- The primary content: the sentence, the map and the columns. display: contents keeps
+           its children on the shell's grid (style.css .main). -->
+      <main class="main">
       <h1 id="totals" class="sentence">Loading the latest snapshot.</h1>
 
       <section id="places-col" class="col col-places" aria-labelledby="places-head" hidden>
         <h2 id="places-head" class="col-head places-head">Places</h2>
         <input id="places-col-filter" class="col-filter" type="search" placeholder="FILTER PLACES" aria-label="Filter places by name" autocomplete="off" spellcheck="false" />
-        <div class="col-head rank-head" aria-hidden="true"><span>Place</span><span>Art</span><span>Out</span><span>Cty</span></div>
+        <!-- One head per grid column of the list: wide screens show the first; the stacked
+             layouts show one over each of their 3/2/1 columns. -->
+        <div class="col-head rank-head" aria-hidden="true"><div class="rank-head-row"><span>Place</span><span>Art</span><span>Out</span><span>Cty</span></div><div class="rank-head-row"><span>Place</span><span>Art</span><span>Out</span><span>Cty</span></div><div class="rank-head-row"><span>Place</span><span>Art</span><span>Out</span><span>Cty</span></div></div>
         <ol id="places-col-list" class="rank-list"></ol>
         <p id="places-col-empty" class="col-empty" hidden></p>
         <dl id="col-totals" class="col-totals"></dl>
@@ -61,7 +66,7 @@
 
       <div class="map-wrap">
         <div class="map-frame" id="map-frame">
-          <div id="map" class="map" aria-label="World map of news coverage"></div>
+          <div id="map" class="map"></div>
           <div id="tooltip" class="tooltip" hidden></div>
           <p id="status" class="status" role="status">loading</p>
           <button id="quake-toggle" class="layer-toggle" type="button" aria-pressed="false" hidden>
@@ -82,15 +87,17 @@
 
       <div id="side" class="side" data-view="signals">
         <p id="side-stamp" class="side-stamp" aria-live="off"></p>
-        <section id="signals-col" class="col col-signals" aria-labelledby="signals-head">
-          <h2 id="signals-head" class="col-head"><span>Signals</span><span id="signals-when" class="col-head-note"></span></h2>
+        <!-- Heads name themselves from their parts with a space between ("Signals last 24h",
+             "Replay 99/99"); the sections take the title word alone. -->
+        <section id="signals-col" class="col col-signals" aria-labelledby="signals-title">
+          <h2 id="signals-head" class="col-head" aria-labelledby="signals-title signals-when"><span id="signals-title">Signals</span><span id="signals-when" class="col-head-note"></span></h2>
           <ol id="signals-list" class="signals-list"></ol>
           <p id="signals-empty" class="col-empty" hidden></p>
         </section>
-        <section id="replay-col" class="col col-replay" aria-labelledby="replay-head">
-          <h2 id="replay-head" class="col-head"><span>Replay</span><span id="field-count"></span></h2>
+        <section id="replay-col" class="col col-replay" aria-labelledby="replay-title">
+          <h2 id="replay-head" class="col-head" aria-labelledby="replay-title field-count"><span id="replay-title">Replay</span><span id="field-count"></span></h2>
           <div id="scrubber" class="field" role="group" aria-label="Replay" hidden>
-            <p class="field-unit" aria-hidden="true">Articles per snapshot</p>
+            <p class="field-unit" aria-hidden="true">New articles per snapshot</p>
             <div class="bars-wrap">
               <div id="bars" class="bars"></div>
               <span id="bar-tag" class="bar-tag" aria-hidden="true"></span>
@@ -108,7 +115,7 @@
             <svg id="trend" class="trend" viewBox="0 0 1000 44" preserveAspectRatio="none" aria-hidden="true"><polyline id="trend-line" fill="none" stroke="#fff" stroke-width="1" vector-effect="non-scaling-stroke" points="" /></svg>
             <table class="recent">
               <caption class="visually-hidden">Recent snapshots</caption>
-              <thead><tr><th scope="col">Fr</th><th scope="col">UTC</th><th scope="col">Art</th><th scope="col">Diff</th></tr></thead>
+              <thead><tr><th scope="col">Fr</th><th scope="col">UTC</th><th scope="col">Art</th><th scope="col">New</th></tr></thead>
               <tbody id="recent"></tbody>
             </table>
           </div>
@@ -141,6 +148,7 @@
           <ol id="panel-list" class="articles"></ol>
         </aside>
       </div>
+      </main>
 
       <footer class="foot">
         <p class="foot-source"><span class="foot-figure">GDELT 2.0</span><span class="foot-caption">Source · no editing</span></p>

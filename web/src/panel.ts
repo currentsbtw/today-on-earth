@@ -2,7 +2,7 @@
 // the Signals entries (the daily broadcast) it shares its log grammar with.
 import { emptyLine, sentenceFacts, SLOT_IDS, SLOT_LABELS, signalLine, type Broadcast, type Slot, type SlotStory } from './broadcast';
 import type { Article, CellDetail, HeatCell, Story } from './data';
-import { ago, count, host, plural, safeHref, shortName, utcTime, youtubeId } from './format';
+import { ago, codeName, count, host, plural, safeHref, shortName, utcTime, youtubeId } from './format';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -331,7 +331,21 @@ function renderStories(detail: CellDetail | null, now: number) {
 
 const MAX_ROWS = 8;
 
-function stripRows(label: string, entries: [string, number][]): HTMLElement {
+/**
+ * A coverage key. Outlets keep their domain verbatim. Countries and languages are ISO codes:
+ * the English name (Intl.DisplayNames) with the code after it in muted mono, set in the
+ * ledger's uppercase like the rest of the row ("GREECE · GR"); the code alone when the
+ * browser has no name for it; "unknown" for an empty key, in the same case as the rest.
+ */
+function stripKey(key: string, codes?: 'region' | 'language'): HTMLElement {
+  if (!codes) return el('span', 'strip-key', key || 'unknown');
+  const name = key ? codeName(key, codes) : '';
+  const node = el('span', 'strip-key is-code', name || key || 'unknown');
+  if (name) node.append(el('span', 'strip-code', ` · ${key}`));
+  return node;
+}
+
+function stripRows(label: string, entries: [string, number][], codes?: 'region' | 'language'): HTMLElement {
   const block = el('div', 'coverage-row');
   const rows = el('ul', 'strips');
   rows.setAttribute('aria-label', label);
@@ -341,7 +355,7 @@ function stripRows(label: string, entries: [string, number][]): HTMLElement {
     const strip = el('span', 'strip');
     strip.style.width = `${Math.max(2, (n / top) * 100)}%`;
     strip.setAttribute('aria-hidden', 'true');
-    li.append(el('span', 'strip-key', key || 'unknown'), el('span', 'strip-n', count(n)), strip);
+    li.append(stripKey(key, codes), el('span', 'strip-n', count(n)), strip);
     rows.append(li);
   }
   block.append(el('h3', 'coverage-label', label), rows);
@@ -351,8 +365,8 @@ function stripRows(label: string, entries: [string, number][]): HTMLElement {
 function renderCoverage(detail: CellDetail | null) {
   const rows: HTMLElement[] = [];
   if (detail?.topOutlets?.length) rows.push(stripRows('Outlets', detail.topOutlets));
-  if (detail?.topCountries?.length) rows.push(stripRows('Outlets based in', detail.topCountries));
-  if (detail?.languages?.length) rows.push(stripRows('Languages', detail.languages));
+  if (detail?.topCountries?.length) rows.push(stripRows('Outlets based in', detail.topCountries, 'region'));
+  if (detail?.languages?.length) rows.push(stripRows('Languages', detail.languages, 'language'));
   coverage.replaceChildren(...rows);
   coverage.hidden = !rows.length;
 }

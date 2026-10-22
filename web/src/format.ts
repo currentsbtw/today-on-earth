@@ -95,3 +95,31 @@ export function youtubeId(url: string): string | null {
 
 /** Permalink / clip stamp of a frame time: "2026-10-21T04:47:14Z" -> "20261021T044714Z" */
 export const stampOf = (at: string) => at.replace(/[-:.]/g, '');
+
+/** English names for ISO codes; null where the browser has no Intl.DisplayNames. */
+const displayNames = (type: 'region' | 'language') => {
+  try {
+    return new Intl.DisplayNames(['en'], { type, fallback: 'none' });
+  } catch {
+    return null;
+  }
+};
+const regionNames = displayNames('region');
+const languageNames = displayNames('language');
+
+/**
+ * The English name of an ISO 3166-1 alpha-2 region ("GR" -> "Greece") or an ISO 639 language
+ * ("el" -> "Greek"); "" when the code is empty, malformed or unknown to the browser, so the
+ * caller shows the code alone.
+ */
+export function codeName(code: string, type: 'region' | 'language'): string {
+  const names = type === 'region' ? regionNames : languageNames;
+  const ok = type === 'region' ? /^[A-Za-z]{2}$/.test(code) : /^[A-Za-z]{2,3}$/.test(code);
+  if (!names || !ok) return '';
+  try {
+    const name = names.of(type === 'region' ? code.toUpperCase() : code.toLowerCase()) ?? '';
+    return name.toLowerCase() === code.toLowerCase() ? '' : name;
+  } catch {
+    return '';
+  }
+}
