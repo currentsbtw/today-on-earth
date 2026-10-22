@@ -110,11 +110,12 @@ button {
   fill: var(--fg);
 }
 
-/* The mark's ring travels once across the band on load, one pixel per step, and rests at
-   columns 12-17; clipped to the band so it slides out from behind the sphere. */
+/* The mark's ring orbits the band continuously, one pixel per step: it slides out from
+   behind the sphere's left edge, crosses the band and passes behind the right edge,
+   then re-enters from the left. Clipped to the band so it is never seen outside it. */
 .globe .ring {
   transform: translateX(12px);
-  animation: mark-ring 1.2s steps(18, end) 1 forwards;
+  animation: mark-ring 2s steps(30, end) infinite;
 }
 
 @keyframes mark-ring {
@@ -123,7 +124,7 @@ button {
   }
 
   to {
-    transform: translateX(12px);
+    transform: translateX(24px);
   }
 }
 

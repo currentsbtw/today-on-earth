@@ -188,7 +188,7 @@ components:
 
 **Creative North Star: "Datamatics Field"**
 
-The product is a measurement, and the surface is built to look like one. The canvas is pure black with an 8px dot grid in its margins; the only light on the page is the data: the map plate carries one flat white dot per place, sized by article volume, and every number, label and control is set in a monospaced face at data density. There is no colour anywhere (the amber heat of the previous world was rejected and does not return), no rounded corner, no shadow, no gradient used as decoration, and no eased motion: a state is either on or off. The mark's ring steps once across its band when a page loads, and the whole frame inverts for one painted frame when the map returns to live or replay starts; nothing else moves.
+The product is a measurement, and the surface is built to look like one. The canvas is pure black with an 8px dot grid in its margins; the only light on the page is the data: the map plate carries one flat white dot per place, sized by article volume, and every number, label and control is set in a monospaced face at data density. There is no colour anywhere (the amber heat of the previous world was rejected and does not return), no rounded corner, no shadow, no gradient used as decoration, and no eased motion: a state is either on or off. The mark's ring steps across its band in a continuous orbit, and the whole frame inverts for one painted frame when the map returns to live or replay starts; nothing else moves.
 
 Two voices share the page. Azeret Mono carries the chrome: the top line, the ranked places column, the bar field, the panel's count rows, the foot totals, the map labels. Source Sans 3 is reserved for what a person reads as prose: the one large sentence above the map, panel titles, story headlines, the methodology page, and a signal's fixed sentence. Silkscreen appears once, as the wordmark beside the 24x24 one-bit globe, whose open band carries a ringed dot. The one-bit pixel observer in the bottom-right corner and the crisp-edged pixel icons (play, pause, close, quake, the attribution "i") are drawn as inline SVG on integer grids, never as icon-font glyphs.
 
@@ -199,7 +199,7 @@ Density is high and the hierarchy is carried by three things only: white versus 
 - Azeret Mono 11px uppercase with 0.06-0.1em tracking for every label, control and figure; Source Sans 3 for every sentence a person reads.
 - 8px dot grid on the body and the panel ground; text sits on solid black blocks so the grid never runs through a glyph.
 - Hairlines (1px, solid white or a white alpha) are the only separators; no cards, no fills.
-- Stepped motion: states switch in one step; the one authored entrance is the mark's ring travelling its band in 18 whole-pixel steps on load, and the only other "animation" is a one-frame full-page inversion.
+- Stepped motion: states switch in one step; the one authored motion is the mark's ring orbiting its band in whole-pixel steps, and the only other "animation" is a one-frame full-page inversion.
 - Pixel marks: the globe (24-grid), the lockup (128-grid), the observer, and every icon are crispEdges SVG on an integer grid, drawn at whole multiples of that grid.
 
 ## Colors
@@ -279,12 +279,12 @@ There are no shadows and no tonal layering. Every surface is flat black; nothing
 
 ## Motion
 
-Almost nothing moves. There is no `transition` anywhere in the build. Two things are animated, and both are stepped: the brand mark's ring on page load, and the one-frame inversion on a snapshot change.
+Almost nothing moves. There is no `transition` anywhere in the build. Two things are animated, and both are stepped: the brand mark's ring orbit, and the one-frame inversion on a snapshot change.
 
-**The load travel.** On every page that carries the mark (the map, the method page) `.globe .ring` runs `animation: mark-ring 1.2s steps(18, end) 1 forwards`, from `translateX(-6px)` to `translateX(12px)` in SVG units: the 6x6 ringed dot starts fully hidden behind the sphere's left edge, steps one grid column per frame (18 columns over 1.2s, about 67ms a step), and rests at columns 12-17 of the open band. A `clipPath` on the band (`M1 8h22v8H1z`) keeps it inside the globe, so it slides out from behind the sphere rather than appearing. It runs once per load and never on interaction. Under `prefers-reduced-motion: reduce` the animation is removed and the ring sits at rest from the first paint. The clip frames use the static mark (ring baked into the path) because the renderer captures stills.
+**The orbit.** On every page that carries the mark (the map, the method page) `.globe .ring` runs `animation: mark-ring 2s steps(30, end) infinite`, from `translateX(-6px)` to `translateX(24px)` in SVG units: the 6x6 ringed dot starts fully hidden behind the sphere's left edge, steps one grid column per frame (30 columns over 2s, about 67ms a step), crosses the open band and passes behind the right edge, then re-enters from the left. A `clipPath` on the band (`M1 8h22v8H1z`) keeps it inside the globe, so it is never seen outside the band and the loop point is hidden (both the first and the last frame are behind the sphere). It runs for as long as the page is open and never reacts to interaction. Under `prefers-reduced-motion: reduce` the animation is removed and the ring sits at rest at columns 12-17 from the first paint. The clip frames use the static mark (ring baked into the path) because the renderer captures stills.
 
 ### Named Rules
-**The One-Entrance Rule.** The mark's ring travel is the only authored entrance in the product. No other element animates in, fades, slides or eases; a new element is simply painted. Any future motion must be `steps()`, whole-pixel, run once, and removed under reduced motion.
+**The One-Motion Rule.** The mark's ring orbit is the only authored motion in the product. No other element animates in, fades, slides or eases; a new element is simply painted. Any future motion must be `steps()`, whole-pixel, and removed under reduced motion.
 
 **The Stepped-Motion Rule.** Motion is a sequence of integer states, never an interpolation: `steps(n, end)` for the ring, one painted frame for the inversion. No easing curve appears in the build.
 
@@ -347,7 +347,7 @@ The first row of the right column on wide screens (`#side-stamp`, hidden below 1
 A column head reading SIGNALS, a muted mono note beneath ("22 OCT 2026 · 14:27 UTC · LAST 24H", `.col-note`, 8px below the rule), then the six signal entries as a list; an empty state is a muted mono line at `8px 0`.
 
 ### Top line and foot
-- **Brand:** 48px pixel globe (the 24-grid at 2x) plus Silkscreen wordmark, 12px gap, on a black block; 24px globe (1x), 10px gap on phones. The ring runs its load travel here (see Motion).
+- **Brand:** 48px pixel globe (the 24-grid at 2x) plus Silkscreen wordmark, 12px gap, on a black block; 24px globe (1x), 10px gap on phones. The ring runs its orbit here (see Motion).
 - **Clock:** uppercase date in mono 11px 0.1em, the time at 500 22px, a muted SNAPSHOT line beneath; the line swaps to an inverted REPLAY tag while a past frame is shown.
 - **Foot:** a 1px white rule above, 10px padding; totals as mono 500 15px figures over muted 11px uppercase 0.1em captions, 28px apart; source links in muted mono at the right, underlined, white on hover. Two-column grid on phones.
 
@@ -379,14 +379,14 @@ A fixed 1080x1920 (or 1920x1080) frame in the same world: black dot-grid bands a
 - **Do** separate repeated entries with a 1px `--rule` hairline and head a section with a 1px solid white rule under a mono 500 11px 0.1em label.
 - **Do** keep controls at least 28px tall (36px on phones) with a 1px border at 0.4 alpha that lifts to solid white on hover.
 - **Do** draw any new icon or mark as crispEdges inline SVG on an integer grid, one colour, and render it at a whole multiple of that grid (24 for the mark, 128 for the lockup).
-- **Do** switch state in one step; if motion is unavoidable, make it a `steps()` change that runs once, and remove it under `prefers-reduced-motion` as the ring travel and the inversion frame are.
+- **Do** switch state in one step; if motion is unavoidable, make it a `steps()` change, and remove it under `prefers-reduced-motion` as the ring orbit and the inversion frame are.
 - **Do** keep greys to the map plate (#0d0d0d, #2f2f2f, #3a3a3a) and the muted text steps (#9a9a9a, #777, #5c5c5c, #333).
 - **Do** draw a map mark as a flat white circle with a black hairline, sized and dimmed by the five fixed steps; a new mark type joins the same stepped scale.
 
 ### Don't:
 - **Don't** introduce any hue, including the former amber heat; the palette is black, white and the listed greys.
 - **Don't** round a corner, add a box-shadow, a tint, an opacity fade or a gradient fill (the only gradients in the build draw 1px marks: the dot grid, strips and tick marks).
-- **Don't** ease or fade a transition; no `transition` is defined anywhere in the build, and the only `animation` is the mark-ring travel, stepped with `steps(18, end)` and run once on load. Don't add a second entrance.
+- **Don't** ease or fade a transition; no `transition` is defined anywhere in the build, and the only `animation` is the mark-ring orbit, stepped with `steps(30, end)` and looped. Don't add a second motion.
 - **Don't** set a figure or a label in Source Sans 3, or a sentence in Azeret Mono.
 - **Don't** use `--faint` (#5c5c5c) for text that must be read; it is for strips, bars and baselines only.
 - **Don't** add a card: content is a log of entries separated by hairlines, never a filled box; the 160x96 video tile is the one bordered container and stays 1px-bordered on black.
