@@ -644,6 +644,51 @@ room". Decisions:
   sentence (articles, places) and that block (places, reprints, not placed, outlets, outlet
   countries).
 
+### Evening run (2026-10-22, started ~20:35 UTC): the rest of the review backlog
+
+The user: "Finish everything. You have my permission to do whatever you want." Scope: the
+replay-content P2, the audit's and the critique's minors, commits and pushes, a deploy
+check and a re-run of the audit. Same limits as the overnight run: no spend, no accounts,
+no editorial voice.
+
+**Replay content (critique P2).** Replay plotted the rolling 24-hour total, which is flat
+once the window is full, so playing the day showed no event. Contract decision: each
+retained frame now also says what was new in its step.
+- `history/index.json` frame entries gain `newest` (that run's `newestArticleAt`) and
+  `added`: the number of window articles (placed and unplaced, the same unit as
+  `totals.articles`) that were not in the previous run's carried window, i.e. what
+  arrived in this step. Absent after a cold start of the state or when there is no previous
+  retained frame, never 0 by assumption. (First written as "GKG time later than the previous
+  frame's newest"; the evening review showed that rule misses the translingual feed, which
+  lags the English one by about an hour under the same watermark, so it was changed to
+  arrival before it shipped.)
+- Frame file rows gain a fifth element: `[id, lat, lon, n, a]`, `a` = that cell's new
+  articles by the same rule; absent (four elements) when unknown. Old frames stay valid.
+- heat.json is unchanged. The carried history state records `newest` per entry; version 2,
+  loads version 1 entries as "unknown".
+- The Replay column plots `added` per frame (bars, 9-frame mean, max), the recent-frames
+  table shows NEW instead of the window delta, and frames without `added` draw as unknown
+  (faint stub, "–"). The stamp, the sentence and the map keep the frame's window, so the
+  Live view and the clip are untouched. Marking the fastest-growing places on the map is
+  parked (parking lot) until the bars prove the data.
+
+**Audit minors** (all): replay prefetch bounded to a window ahead of the playhead; focus
+rings inset inside the scrolling columns; a `<main>` landmark; the places filter stays on
+phones and searches past the 12-row cap; CLOSE, PLAY, show-more, the range, the mode
+buttons and the attribution control brought to the 28/36px floor with 44px hit areas;
+`fadeDuration: 0` on the live map and `jumpTo` for the sheet padding (the Stepped-Motion
+rule); the hairline alphas, `#777` and `#c4c4c4` as tokens and the unused aliases removed;
+the map canvas and the Replay head given proper accessible names; the selected rank row no
+longer truncates its own name.
+
+**Critique minors**: phone rank rows get their column heads once; coverage lists expand
+ISO codes (the code stays in mono); "unknown" keys match the ledger's case; the map
+attribution says METHOD like the nav; the method page gets a section index, one BACK
+control and copy that matches the current layout; the clip end card spaces its totals
+like the time-lapse frame and says "Open a dot at" above the address; GDELT's "?"
+encoding artefacts leave place names. "Moscow, Moskva, Russia" stays: the admin-1 part is
+a transliteration variant, not a duplicate, and no rule can tell it from "Austin, Texas".
+
 ## Phase 1 build decisions (2026-10-20)
 
 - **GKG is the only feed in phase 1.** It carries URL, source domain, page title,
@@ -704,6 +749,10 @@ Follow-ups noticed during the build (not blockers):
 ## Ideas parking lot
 
 (Add any floated ideas here during sessions so nothing is lost.)
+
+- Replay: mark the few places that grew most since the previous frame (the per-cell `a`
+  now in the frames) with a hollow ring in the stepped vocabulary, once the bars have
+  proved the data on a full day.
 
 - Day/night terminator sweeping across the map in the clip, with news lighting up
   behind the sun.
