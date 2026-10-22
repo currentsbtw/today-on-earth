@@ -103,15 +103,20 @@ export function siteUrl(path: string): string {
   return new URL(path, document.baseURI).href;
 }
 
-async function getJson<T>(path: string): Promise<T> {
+async function getJson<T>(path: string, request?: Promise<Response>): Promise<T> {
   // no-cache: revalidate with the server so a new snapshot shows up on reload.
-  const res = await fetch(siteUrl(path), { cache: 'no-cache' });
+  const res = await (request ?? fetch(siteUrl(path), { cache: 'no-cache' }));
   if (!res.ok) throw new Error(`${res.status} ${path}`);
   return (await res.json()) as T;
 }
 
 export function loadHeat(): Promise<Heat> {
-  return getJson<Heat>('data/heat.json');
+  // index.html starts this same request while the page parses (a <link rel=preload> cannot
+  // ask for no-cache, so a reload would show a stale snapshot). The first call takes it over.
+  const page = window as Window & { toeHeat?: Promise<Response> };
+  const early = page.toeHeat;
+  page.toeHeat = undefined;
+  return getJson<Heat>('data/heat.json', early);
 }
 
 /** An H3 index as the ingest job writes it. Anything else never reaches a URL. */

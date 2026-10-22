@@ -23,6 +23,9 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- The snapshot is all the first paint needs: request it while the page parses. Same request as loadHeat() in src/data.ts, which takes it over (no-cache, so a reload revalidates). -->
+    <script>(window.toeHeat = fetch('data/heat.json', { cache: 'no-cache' })).catch(function () {});</script>
+    <link rel="preload" href="/fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/azeret-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
     <title>Today On Earth</title>
   </head>

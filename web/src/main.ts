@@ -2,12 +2,17 @@ import './style.css';
 import { loadBroadcast, type Broadcast, type Slot } from './broadcast';
 import { isCellId, loadCell, loadHeat, type FrameRow, type HeatCell, type Totals } from './data';
 import { count, plural, shortName, utcTime } from './format';
-import { createMap, type HeatMode, type MapCell } from './map';
+import type { HeatMode, MapCell, WorldMap } from './map';
 import * as panel from './panel';
 import { initPresence } from './presence';
 import { readPref, writePref } from './prefs';
 import { initQuakes } from './quakes';
 import { initReplay, type FrameView, type Replay } from './replay';
+
+// The snapshot is fetched first: the sentence and the totals need nothing else. The map
+// module (MapLibre, the largest download) loads beside it and never holds them up.
+const heatPromise = loadHeat();
+const mapModule = import('./map');
 
 /** Relative heat needs this many complete days of per-cell history (see DATA-CONTRACT "Baseline"). */
 const MIN_BASELINE_DAYS = 3;
@@ -277,7 +282,6 @@ for (const [section] of sections) bandObserver.observe(section);
 
 async function start() {
   // The header fills in as soon as the snapshot arrives; the map catches up when ready.
-  const heatPromise = loadHeat();
   heatPromise.then(
     (h) => {
       showTotals(h.totals, h.generatedAt, false);
@@ -363,7 +367,12 @@ async function start() {
     if (Math.abs(window.scrollY - top) > 1) window.scrollTo({ top, behavior: 'instant' });
   };
 
+  /** Set once the map is up; until then a place picked from the list waits for it. */
+  let mapNow: WorldMap | null = null;
+
   const openCell = async (cell: MapCell) => {
+    const map = mapNow ?? (await mapReady.catch(() => null));
+    if (!map) return;
     const mine = ++request;
     map.hideTooltip();
     if (hintShown) {
@@ -397,18 +406,65 @@ async function start() {
     }
   };
 
-  const map = await createMap($('map'), $('tooltip'), openCell);
-  panel.initPanel(() => {
-    request++;
-    selected = null;
-    selectedIsLive = false;
-    void map.outline(null);
-    map.setSheet(0);
-    showSelection();
-    syncNav();
-    writeHash();
-  }, (height) => map.setSheet(sheetPad(height)));
-  initQuakes($<HTMLButtonElement>('quake-toggle'), (data) => map.setQuakes(data));
+  // The map and what hangs off it (the panel, the quake layer), as soon as its module is in.
+  const mapReady = mapModule.then(async ({ createMap }) => {
+    const map = await createMap($('map'), $('tooltip'), openCell);
+    panel.initPanel(() => {
+      request++;
+      selected = null;
+      selectedIsLive = false;
+      void map.outline(null);
+      map.setSheet(0);
+      showSelection();
+      syncNav();
+      writeHash();
+    }, (height) => map.setSheet(sheetPad(height)));
+    initQuakes($<HTMLButtonElement>('quake-toggle'), (data) => map.setQuakes(data));
+    mapNow = map;
+    return map;
+  });
+  // A failure is reported where start() awaits the map, not as an unhandled rejection before.
+  mapReady.catch(() => {});
+
+  // The snapshot's own parts (the places column, the legend) fill in before the map is up.
+  const heat = await heatPromise.catch(() => null);
+  let shownRows: FrameRow[] | null = null; // rows of the frame on screen; null = live
+  // Places: the cells on screen (this frame's, names from live where known) as the ranked
+  // column, the keyboard path to every place.
+  const shownCells = (): MapCell[] =>
+    shownRows ? shownRows.map(([id, lat, lon, n]) => ({ id, lat, lon, n, name: live.get(id)?.name ?? '' })) : liveCells;
+  const coords = (lat: number, lon: number) =>
+    `${Math.abs(lat).toFixed(1)}°${lat >= 0 ? 'N' : 'S'} ${Math.abs(lon).toFixed(1)}°${lon >= 0 ? 'E' : 'W'}`;
+  const placeRows = (): PlaceRow[] =>
+    [...shownCells()]
+      .sort((a, b) => b.n - a.n)
+      .slice(0, PLACES_MAX)
+      .map((c) => {
+        // Outlet and country counts exist only for the live snapshot.
+        const now = shownRows ? undefined : live.get(c.id);
+        const parts = [plural(c.n, 'article', 'articles')];
+        if (now) parts.push(plural(now.o, 'outlet', 'outlets'), plural(now.c, 'country', 'countries'));
+        return { id: c.id, name: c.name || coords(c.lat, c.lon), counts: parts.join(' · '), n: c.n, o: now?.o, c: now?.c };
+      });
+  const refreshCol = () => {
+    colRows = placeRows();
+    renderCol();
+  };
+  if (heat) {
+    liveCells = heat.cells;
+    for (const c of liveCells) live.set(c.id, c);
+    liveMax = Math.max(1, ...liveCells.map((c) => c.n));
+    windowHours = heat.windowHours || 24;
+    $('legend-max').textContent = count(liveMax);
+    colPick = (id: string) => {
+      const cell = shownCells().find((c) => c.id === id);
+      if (cell) void openCell(cell);
+    };
+    refreshCol();
+    colSection.hidden = !liveCells.length;
+  }
+
+  const map = await mapReady;
 
   // Nav: wide screens switch the column (closing a place over it); stacked layouts scroll to
   // the section. Focus stays on the nav item either way.
@@ -426,7 +482,6 @@ async function start() {
       button.focus({ preventScroll: true });
     });
   }
-  const heat = await heatPromise.catch(() => null);
   if (!heat) return;
 
   // The daily broadcast: fetched once the snapshot is in, never in the map's way. A missing
@@ -448,19 +503,12 @@ async function start() {
     panel.renderSignals($('signals-list'), $('signals-when'), broadcast, pickSignal);
   }, noBroadcast);
 
-  liveCells = heat.cells;
-  for (const c of liveCells) live.set(c.id, c);
-  liveMax = Math.max(1, ...liveCells.map((c) => c.n));
-  windowHours = heat.windowHours || 24;
-  $('legend-max').textContent = count(liveMax);
-
   // Brightness mode: absolute article counts, or each place against its own normal. The
   // relative view only exists once the ingest has enough days of per-cell history.
   const modeControl = $('mode');
   const modeNote = $('mode-note');
   const relativeAvailable = (heat.baselineDays ?? 0) >= MIN_BASELINE_DAYS;
   let mode: HeatMode = relativeAvailable && readPref(MODE_PREF) === 'normal' ? 'normal' : 'articles';
-  let shownRows: FrameRow[] | null = null; // rows of the frame on screen; null = live
 
   const redraw = () => {
     if (shownRows) {
@@ -498,34 +546,6 @@ async function start() {
     hintShown = true;
     setStatus(HINT);
   }
-
-  // Places: the cells on screen (this frame's, names from live where known) as the ranked
-  // column, the keyboard path to every place.
-  const shownCells = (): MapCell[] =>
-    shownRows ? shownRows.map(([id, lat, lon, n]) => ({ id, lat, lon, n, name: live.get(id)?.name ?? '' })) : liveCells;
-  const coords = (lat: number, lon: number) =>
-    `${Math.abs(lat).toFixed(1)}°${lat >= 0 ? 'N' : 'S'} ${Math.abs(lon).toFixed(1)}°${lon >= 0 ? 'E' : 'W'}`;
-  const placeRows = (): PlaceRow[] =>
-    [...shownCells()]
-      .sort((a, b) => b.n - a.n)
-      .slice(0, PLACES_MAX)
-      .map((c) => {
-        // Outlet and country counts exist only for the live snapshot.
-        const now = shownRows ? undefined : live.get(c.id);
-        const parts = [plural(c.n, 'article', 'articles')];
-        if (now) parts.push(plural(now.o, 'outlet', 'outlets'), plural(now.c, 'country', 'countries'));
-        return { id: c.id, name: c.name || coords(c.lat, c.lon), counts: parts.join(' · '), n: c.n, o: now?.o, c: now?.c };
-      });
-  colPick = (id: string) => {
-    const cell = shownCells().find((c) => c.id === id);
-    if (cell) void openCell(cell);
-  };
-  const refreshCol = () => {
-    colRows = placeRows();
-    renderCol();
-  };
-  refreshCol();
-  colSection.hidden = !liveCells.length;
 
   const showFrame = (fv: FrameView) => {
     frame = fv;
