@@ -145,13 +145,20 @@ button {
   display: none;
 }
 
+/* PLACES jumps to its section only where the sections stack; on wide screens the column is
+   always beside the map. */
+@media (min-width: 1100px) {
+  .nav-stacked {
+    display: none;
+  }
+}
+
 .nav-item:hover {
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
-.nav-item[aria-current='true'],
-.nav-item[aria-expanded='true'] {
+.nav-item[aria-current='true'] {
   background: var(--fg);
   color: var(--bg);
   text-decoration: none;
@@ -258,8 +265,7 @@ button {
   flex-direction: column;
 }
 
-.col-filter,
-.places-filter {
+.col-filter {
   display: block;
   width: 100%;
   height: 28px;
@@ -275,19 +281,16 @@ button {
   appearance: none;
 }
 
-.col-filter::placeholder,
-.places-filter::placeholder {
+.col-filter::placeholder {
   color: var(--muted);
   opacity: 1;
 }
 
-.col-filter:focus-visible,
-.places-filter:focus-visible {
+.col-filter:focus-visible {
   border-color: var(--fg);
 }
 
-.col-filter::-webkit-search-cancel-button,
-.places-filter::-webkit-search-cancel-button {
+.col-filter::-webkit-search-cancel-button {
   -webkit-appearance: none;
 }
 
@@ -695,14 +698,64 @@ body.is-replay .map-frame {
   color: var(--bg);
 }
 
-/* Replay column: the bar field -------------------------------------------------------- */
+/* Right column: the live stamp, then Signals or Replay; a place covers both ---------- */
 
-.col-replay {
+.side {
   grid-area: right;
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.side-stamp {
+  flex: none;
+  margin: 0 0 10px;
+  color: var(--muted);
+  background: var(--bg);
+  font: 400 11px/1 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.live-tag {
+  padding: 1px 4px;
+  border: 1px solid var(--fg);
+  color: var(--fg);
+  font-weight: 500;
+}
+
+/* Scroll regions, closed by a hairline like the places list. */
+.col-signals,
+.col-replay {
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
+  border-bottom: 1px solid var(--rule);
+}
+
+.side[data-view='signals'] .col-replay,
+.side[data-view='replay'] .col-signals,
+.shell.panel-open .col-signals,
+.shell.panel-open .col-replay,
+.shell.panel-open .observer {
+  display: none;
+}
+
+.col-note {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font: 400 11px/1.4 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* The places section head exists for the stacked layouts; wide screens head the column
+   with the filter and the PLACE / ART / OUT / CTY row. */
+.places-head {
+  display: none;
 }
 
 .field[hidden] {
@@ -729,8 +782,16 @@ body.is-replay .map-frame {
   margin-top: 8px;
 }
 
-.field > .col-head:first-child {
-  margin-bottom: 22px;
+.field {
+  margin-top: 8px;
+}
+
+.field-unit {
+  margin: 0 0 22px;
+  color: var(--muted);
+  font: 400 11px/1 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .bars-wrap {
@@ -980,6 +1041,7 @@ body.is-replay .map-frame {
 }
 
 .observer {
+  flex: none;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -1001,10 +1063,10 @@ body.is-replay .map-frame {
   fill: var(--fg);
 }
 
-/* Panel: cell detail, Signals, the phone Places list --------------------------------- */
+/* Panel: a selected place --------------------------------------------------------- */
 
 .panel {
-  grid-area: right;
+  flex: 1;
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -1013,10 +1075,6 @@ body.is-replay .map-frame {
 }
 
 .panel[hidden] {
-  display: none;
-}
-
-.shell.panel-open .col-replay {
   display: none;
 }
 
@@ -1108,8 +1166,7 @@ body.is-replay .map-frame {
 
 .panel-why,
 .panel-reach,
-.panel-state,
-.places-count {
+.panel-state {
   margin: 8px 0 0;
   color: var(--muted);
   font: 400 11px/1.4 var(--mono);
@@ -1509,61 +1566,11 @@ a.article-title:visited,
   background: var(--fg);
 }
 
-/* Panel modes: cell parts hide in the Places list and in Signals, and each list hides
-   outside its own mode. */
-.panel.is-places .cell-only,
-.panel.is-signals .cell-only,
-.panel:not(.is-places) .places,
-.panel:not(.is-signals) .signals {
-  display: none;
-}
-
-.places-list {
-  margin: 6px 0 0;
-  padding: 0;
-  list-style: none;
-  background: var(--bg);
-}
-
-.place-row {
-  display: grid;
-  gap: 2px;
-  width: 100%;
-  padding: 9px 0;
-  border: 0;
-  border-top: 1px solid var(--rule);
-  background: none;
-  color: var(--fg);
-  text-align: left;
-  cursor: pointer;
-}
-
-.place-name {
-  font: 400 15px/1.3 var(--hum);
-}
-
-.place-row:hover .place-name {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-}
-
-.place-counts {
-  color: var(--muted);
-  font: 400 11px/1.4 var(--mono);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
 /* Signals: the daily broadcast's six slots as log lines, in their fixed order. */
 .signals-list {
-  margin: 6px 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
-}
-
-#signals-when {
-  margin: 0 0 4px;
 }
 
 /* Each slot is an entry in the table register: its name is the heading (mono, rule
@@ -1699,8 +1706,10 @@ a.article-title:visited,
       'sentence sentence'
       'nav nav'
       'map map'
+      'signals signals'
       'places places'
-      'right right'
+      'replay replay'
+      'observer observer'
       'foot foot';
   }
 
@@ -1724,10 +1733,6 @@ a.article-title:visited,
     height: max(52svh, calc(100svh - 300px));
   }
 
-  .col-places {
-    margin-top: 20px;
-  }
-
   .rank-list {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1748,13 +1753,50 @@ a.article-title:visited,
     border-bottom: 0;
   }
 
-  .col-replay {
-    margin-top: 28px;
-    overflow: visible;
+  /* The column dissolves into sections under the map: Signals, Places, Replay. */
+  .side {
+    display: contents;
   }
 
+  .side-stamp {
+    display: none;
+  }
+
+  .col-signals {
+    grid-area: signals;
+  }
+
+  .col-replay {
+    grid-area: replay;
+  }
+
+  .observer {
+    grid-area: observer;
+  }
+
+  .col-signals,
+  .col-replay,
+  .col-places {
+    margin-top: 28px;
+    overflow: visible;
+    border-bottom: 0;
+    scroll-margin-top: 8px;
+  }
+
+  .side[data-view] .col-signals,
+  .side[data-view] .col-replay,
+  .shell.panel-open .col-signals,
   .shell.panel-open .col-replay {
+    display: block;
+  }
+
+  .shell.panel-open .observer {
     display: flex;
+  }
+
+  .places-head {
+    display: flex;
+    margin-bottom: 8px;
   }
 
   .panel {
@@ -1809,10 +1851,6 @@ a.article-title:visited,
     font-size: 15px;
   }
 
-  .nav-wide {
-    display: none;
-  }
-
   .nav {
     margin: 0 0 6px -10px;
   }
@@ -1863,6 +1901,10 @@ a.article-title:visited,
   }
 
   /* Above MapLibre's attribution, which opens expanded (two lines) across a narrow frame. */
+  .signal-open {
+    min-height: 36px;
+  }
+
   .layer-toggle {
     height: 36px;
     bottom: 60px;

@@ -32,10 +32,9 @@
           <span class="wordmark">Today On Earth</span>
         </a>
         <nav class="nav" aria-label="Views">
-          <button id="map-button" class="nav-item nav-wide" type="button" aria-current="true">Map</button>
-          <button id="places-button" class="nav-item" type="button" aria-controls="places-col" aria-expanded="false" hidden>Places</button>
-          <button id="signals-button" class="nav-item" type="button" aria-controls="panel" aria-expanded="false" hidden>Signals</button>
-          <button id="replay-button" class="nav-item nav-wide" type="button" aria-controls="scrubber" hidden>Replay</button>
+          <button id="signals-button" class="nav-item" type="button" aria-controls="signals-col" aria-current="true">Signals</button>
+          <button id="places-button" class="nav-item nav-stacked" type="button" aria-controls="places-col">Places</button>
+          <button id="replay-button" class="nav-item" type="button" aria-controls="replay-col">Replay</button>
           <a class="nav-item" href="./about.html">Method</a>
         </nav>
         <div class="clock">
@@ -46,7 +45,8 @@
 
       <h1 id="totals" class="sentence">Loading the latest snapshot.</h1>
 
-      <section id="places-col" class="col col-places" aria-label="Places by articles" hidden>
+      <section id="places-col" class="col col-places" aria-labelledby="places-head" hidden>
+        <h2 id="places-head" class="col-head places-head">Places</h2>
         <input id="places-col-filter" class="col-filter" type="search" placeholder="FILTER PLACES" aria-label="Filter places by name" autocomplete="off" spellcheck="false" />
         <div class="col-head rank-head" aria-hidden="true"><span>Place</span><span>Art</span><span>Out</span><span>Cty</span></div>
         <ol id="places-col-list" class="rank-list"></ol>
@@ -75,64 +75,61 @@
         </div>
       </div>
 
-      <section id="replay-col" class="col col-replay" aria-label="Replay">
-        <div id="scrubber" class="field" role="group" aria-label="Replay" hidden>
-          <div class="col-head"><span>Articles / snapshot</span><span id="field-count"></span></div>
-          <div class="bars-wrap">
-            <div id="bars" class="bars"></div>
-            <span id="bar-tag" class="bar-tag" aria-hidden="true"></span>
+      <div id="side" class="side" data-view="signals">
+        <p id="side-stamp" class="side-stamp" aria-live="off"></p>
+        <section id="signals-col" class="col col-signals" aria-labelledby="signals-head">
+          <h2 id="signals-head" class="col-head"><span>Signals</span></h2>
+          <p id="signals-when" class="col-note"></p>
+          <ol id="signals-list" class="signals-list"></ol>
+          <p id="signals-empty" class="col-empty" hidden></p>
+        </section>
+        <section id="replay-col" class="col col-replay" aria-labelledby="replay-head">
+          <h2 id="replay-head" class="col-head"><span>Replay</span><span id="field-count"></span></h2>
+          <div id="scrubber" class="field" role="group" aria-label="Replay" hidden>
+            <p class="field-unit" aria-hidden="true">Articles per snapshot</p>
+            <div class="bars-wrap">
+              <div id="bars" class="bars"></div>
+              <span id="bar-tag" class="bar-tag" aria-hidden="true"></span>
+            </div>
+            <div id="bar-idx" class="bar-idx" aria-hidden="true"></div>
+            <input id="scrub-range" class="scrub-range" type="range" min="0" max="0" step="1" value="0" aria-label="Snapshot time" />
+            <div class="field-controls">
+              <button id="scrub-play" class="scrub-play" type="button" aria-label="Play">
+                <span class="play-word" aria-hidden="true">Play</span><svg class="icon-play" viewBox="0 0 4 7" width="4" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h1v7H0zM1 1h1v5H1zM2 2h1v3H2zM3 3h1v1H3z" /></svg>
+                <span class="pause-word" aria-hidden="true">Pause</span><svg class="icon-pause" viewBox="0 0 5 7" width="5" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h2v7H0zM3 0h2v7H3z" /></svg>
+              </button>
+              <p class="scrub-label"><span id="scrub-time"></span><span id="scrub-live" class="scrub-live">live</span></p>
+            </div>
+            <div class="col-head trend-head" aria-hidden="true"><span>Trend · 9-frame mean</span><span id="trend-max"></span></div>
+            <svg id="trend" class="trend" viewBox="0 0 1000 44" preserveAspectRatio="none" aria-hidden="true"><polyline id="trend-line" fill="none" stroke="#fff" stroke-width="1" vector-effect="non-scaling-stroke" points="" /></svg>
+            <table class="recent">
+              <caption class="visually-hidden">Recent snapshots</caption>
+              <thead><tr><th scope="col">Fr</th><th scope="col">UTC</th><th scope="col">Art</th><th scope="col">Diff</th></tr></thead>
+              <tbody id="recent"></tbody>
+            </table>
           </div>
-          <div id="bar-idx" class="bar-idx" aria-hidden="true"></div>
-          <input id="scrub-range" class="scrub-range" type="range" min="0" max="0" step="1" value="0" aria-label="Snapshot time" />
-          <div class="field-controls">
-            <button id="scrub-play" class="scrub-play" type="button" aria-label="Play">
-              <span class="play-word" aria-hidden="true">Play</span><svg class="icon-play" viewBox="0 0 4 7" width="4" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h1v7H0zM1 1h1v5H1zM2 2h1v3H2zM3 3h1v1H3z" /></svg>
-              <span class="pause-word" aria-hidden="true">Pause</span><svg class="icon-pause" viewBox="0 0 5 7" width="5" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h2v7H0zM3 0h2v7H3z" /></svg>
-            </button>
-            <p class="scrub-label"><span id="scrub-time"></span><span id="scrub-live" class="scrub-live">live</span></p>
-          </div>
-          <div class="col-head trend-head" aria-hidden="true"><span>Trend · 9-frame mean</span><span id="trend-max"></span></div>
-          <svg id="trend" class="trend" viewBox="0 0 1000 44" preserveAspectRatio="none" aria-hidden="true"><polyline id="trend-line" fill="none" stroke="#fff" stroke-width="1" vector-effect="non-scaling-stroke" points="" /></svg>
-          <table class="recent">
-            <caption class="visually-hidden">Recent snapshots</caption>
-            <thead><tr><th scope="col">Fr</th><th scope="col">UTC</th><th scope="col">Art</th><th scope="col">Diff</th></tr></thead>
-            <tbody id="recent"></tbody>
-          </table>
-        </div>
-        <p id="replay-empty" class="col-empty" hidden></p>
+          <p id="replay-empty" class="col-empty" hidden></p>
+        </section>
         <div class="observer" aria-hidden="true">
           <span id="observer-label" class="observer-label">Observer</span>
           <svg viewBox="0 0 12 14" width="36" height="42" shape-rendering="crispEdges"><path d="M11 0h1v1H11zM10 1h2v1H10zM3 2h4v1H3zM9 2h2v1H9zM2 3h6v1H2zM9 3h1v1H9zM2 4h2v1H2zM5 4h4v1H5zM2 5h6v1H2zM3 6h4v1H3zM2 7h6v1H2zM1 8h8v1H1zM0 9h1v1H0zM3 9h4v1H3zM9 9h1v1H9zM3 10h4v1H3zM3 11h1v1H3zM6 11h1v1H6zM3 12h1v1H3zM6 12h1v1H6zM2 13h2v1H2zM6 13h2v1H6z" /></svg>
         </div>
-      </section>
-
-      <aside id="panel" class="panel" role="dialog" aria-modal="false" aria-labelledby="panel-title" hidden>
-        <button id="sheet-handle" class="sheet-handle" type="button" aria-label="Expand details" aria-controls="panel" aria-expanded="false"><span aria-hidden="true"></span></button>
-        <div class="panel-bar">
-          <button id="panel-close" class="panel-close" type="button">Close<svg viewBox="0 0 7 7" width="7" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM6 0h1v1H6zM5 1h1v1H5zM4 2h1v1H4zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z" /></svg></button>
-        </div>
-        <h2 id="panel-title" class="panel-title" tabindex="-1"></h2>
-        <!-- List mode (Places on phones): every place on the map as keyboard-reachable rows. -->
-        <div id="panel-places" class="places">
-          <input id="places-filter" class="places-filter" type="search" placeholder="FILTER BY NAME" aria-label="Filter places by name" autocomplete="off" spellcheck="false" />
-          <p id="places-count" class="places-count"></p>
-          <ol id="places-list" class="places-list"></ol>
-        </div>
-        <!-- Broadcast mode (Signals): the daily broadcast's six slots as log lines. -->
-        <div id="panel-signals" class="signals">
-          <p id="signals-when" class="panel-why"></p>
-          <ol id="signals-list" class="signals-list"></ol>
-        </div>
-        <!-- Cell mode. -->
-        <dl id="panel-why" class="counts cell-only"></dl>
-        <p id="panel-reach" class="panel-reach cell-only" hidden></p>
-        <p id="panel-note" class="panel-note cell-only" hidden></p>
-        <div id="panel-coverage" class="coverage cell-only" hidden></div>
-        <section id="panel-videos" class="videos cell-only" hidden></section>
-        <div id="panel-stories" class="stories cell-only" hidden></div>
-        <p id="panel-state" class="panel-state cell-only" hidden></p>
-        <ol id="panel-list" class="articles cell-only"></ol>
-      </aside>
+        <aside id="panel" class="panel" role="dialog" aria-modal="false" aria-labelledby="panel-title" hidden>
+          <button id="sheet-handle" class="sheet-handle" type="button" aria-label="Expand details" aria-controls="panel" aria-expanded="false"><span aria-hidden="true"></span></button>
+          <div class="panel-bar">
+            <button id="panel-close" class="panel-close" type="button">Close<svg viewBox="0 0 7 7" width="7" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM6 0h1v1H6zM5 1h1v1H5zM4 2h1v1H4zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z" /></svg></button>
+          </div>
+          <h2 id="panel-title" class="panel-title" tabindex="-1"></h2>
+          <dl id="panel-why" class="counts"></dl>
+          <p id="panel-reach" class="panel-reach" hidden></p>
+          <p id="panel-note" class="panel-note" hidden></p>
+          <div id="panel-coverage" class="coverage" hidden></div>
+          <section id="panel-videos" class="videos" hidden></section>
+          <div id="panel-stories" class="stories" hidden></div>
+          <p id="panel-state" class="panel-state" hidden></p>
+          <ol id="panel-list" class="articles"></ol>
+        </aside>
+      </div>
 
       <footer class="foot">
         <dl id="foot-totals" class="foot-totals"></dl>

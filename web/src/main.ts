@@ -4,7 +4,6 @@ import { isCellId, loadCell, loadHeat, type FrameRow, type HeatCell, type Totals
 import { count, plural, shortName, utcTime } from './format';
 import { createMap, type HeatMode, type MapCell } from './map';
 import * as panel from './panel';
-import type { PlaceRow } from './panel';
 import { readPref, writePref } from './prefs';
 import { initQuakes } from './quakes';
 import { initReplay, type FrameView, type Replay } from './replay';
@@ -28,8 +27,7 @@ const colTotals = $('col-totals');
 const selLine = $('sel-line');
 const mapFrame = $('map-frame');
 
-/** Phones: the bottom sheet. Wide: the three-column field with the panel in the right column. */
-const phone = window.matchMedia('(max-width: 720px)');
+/** Wide: the three-column field with the place panel over the right column. Below it the page stacks. */
 const wide = window.matchMedia('(min-width: 1100px)');
 
 function setStatus(text: string) {
@@ -102,6 +100,19 @@ function showTotals(t: Totals, at: string, replay: boolean) {
   if (t.reprints !== undefined) col.push(['Reprints collapsed', count(t.reprints)]);
   if (t.unplaced !== undefined) col.push(['Not placed', count(t.unplaced)]);
   dlRows(colTotals, col);
+}
+
+/** One row of the places column. */
+interface PlaceRow {
+  id: string;
+  /** The place name, or its coordinates when no name is known (replay-only cells). */
+  name: string;
+  /** "412 articles · 150 outlets · 23 countries", or just the articles on past frames. */
+  counts: string;
+  /** Articles; outlets and outlet countries exist only for the live snapshot. */
+  n: number;
+  o?: number;
+  c?: number;
 }
 
 // The places column ----------------------------------------------------------------
@@ -212,13 +223,67 @@ colList.addEventListener('keydown', (e) => {
   buttons[next].focus();
 });
 
+// The right column ------------------------------------------------------------------
+// Wide screens: the column shows Signals (the default) or Replay, chosen in the nav; a
+// selected place overlays it, and closing the place brings back what was there. Below
+// 1100px the column is a run of sections under the map (Signals, Places, Replay); the nav
+// items jump to them and the one in view is marked.
+
+type View = 'signals' | 'replay';
+const side = $('side');
+const stamp = $('side-stamp');
+const signalsButton = $<HTMLButtonElement>('signals-button');
+const placesButton = $<HTMLButtonElement>('places-button');
+const replayButton = $<HTMLButtonElement>('replay-button');
+const sections: [HTMLElement, HTMLButtonElement][] = [
+  [$('signals-col'), signalsButton],
+  [$('places-col'), placesButton],
+  [$('replay-col'), replayButton],
+];
+
+/** "LIVE · 14:27 UTC", or "REPLAY · 05:16 UTC · 38/95" while a past frame is on screen. */
+function setStamp(at: string, frameTag = '') {
+  const tag = Object.assign(document.createElement('span'), {
+    className: frameTag ? 'replay-tag' : 'live-tag',
+    textContent: frameTag ? 'replay' : 'live',
+  });
+  stamp.replaceChildren(tag, ` ${utcTime(at)}${frameTag ? ` · ${frameTag}` : ''}`);
+}
+
+/** Which nav item is current while the sections stack: the one crossing a band near the top. */
+const inBand = new Set<HTMLElement>();
+const markStacked = () => {
+  const current = sections.find(([section]) => inBand.has(section))?.[1];
+  for (const [, button] of sections) {
+    if (button === current) button.setAttribute('aria-current', 'true');
+    else button.removeAttribute('aria-current');
+  }
+};
+const bandObserver = new IntersectionObserver(
+  (entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) inBand.add(e.target as HTMLElement);
+      else inBand.delete(e.target as HTMLElement);
+    }
+    if (!wide.matches) markStacked();
+  },
+  { rootMargin: '-30% 0px -60% 0px' },
+);
+for (const [section] of sections) bandObserver.observe(section);
+
 async function start() {
   // The header fills in as soon as the snapshot arrives; the map catches up when ready.
   const heatPromise = loadHeat();
-  heatPromise.then((h) => showTotals(h.totals, h.generatedAt, false), () => {
-    sentence.textContent = 'The news snapshot could not be loaded.';
-    setStatus('Could not load the news snapshot.');
-  });
+  heatPromise.then(
+    (h) => {
+      showTotals(h.totals, h.generatedAt, false);
+      setStamp(h.generatedAt);
+    },
+    () => {
+      sentence.textContent = 'The news snapshot could not be loaded.';
+      setStatus('Could not load the news snapshot.');
+    },
+  );
 
   const live = new Map<string, HeatCell>();
   let liveCells: HeatCell[] = [];
@@ -229,35 +294,42 @@ async function start() {
   let selectedIsLive = false; // whether the panel shows a live detail file
   let replay: Replay | null = null;
   let frame = { index: 0, live: true };
+  let view: View = 'signals';
 
-  // Permalink: #c=<cellId>&t=<frame stamp>, keys at their default are dropped. While the
-  // Signals panel is open (no cell selected) the hash starts with a bare "signals".
+  // Permalink: "replay" while the column shows the replay, then c=<cellId> and t=<frame
+  // stamp>; keys at their default are dropped, so the Signals state with nothing selected
+  // has no hash at all.
   const writeHash = () => {
     const params = new URLSearchParams();
     if (selected) params.set('c', selected);
     if (replay && !frame.live) params.set('t', replay.stamp(frame.index));
-    const signals = !selected && panel.isSignals();
-    const hash = [signals ? 'signals' : '', params.toString()].filter(Boolean).join('&');
+    const hash = [view === 'replay' ? 'replay' : '', params.toString()].filter(Boolean).join('&');
     const url = location.pathname + location.search + (hash ? `#${hash}` : '');
     if (url !== location.pathname + location.search + location.hash) history.replaceState(null, '', url);
   };
 
+  /** Wide screens: the view's nav item is current unless a place covers the column. */
+  const syncNav = () => {
+    if (!wide.matches) return markStacked();
+    for (const [, button] of sections) {
+      const on = !panel.isOpen() && button.getAttribute('aria-controls') === `${view}-col`;
+      if (on) button.setAttribute('aria-current', 'true');
+      else button.removeAttribute('aria-current');
+    }
+  };
+  const setView = (next: View) => {
+    view = next;
+    side.dataset.view = next;
+    syncNav();
+    writeHash();
+  };
+  wide.addEventListener('change', syncNav);
+
   const updateNote = () =>
     panel.setNote(selectedIsLive && !frame.live ? 'Details are for the current snapshot.' : '');
 
-  const mapButton = $<HTMLButtonElement>('map-button');
-  const placesButton = $<HTMLButtonElement>('places-button');
-  const signalsButton = $<HTMLButtonElement>('signals-button');
-  const replayButton = $<HTMLButtonElement>('replay-button');
   let hintShown = false;
   let broadcast: Broadcast | null = null; // the daily broadcast, once loaded
-  let wantSignals = false; // #signals asked for before the file arrived
-
-  /** MAP reads as current while no panel covers the field. */
-  const syncNav = () => {
-    if (panel.isOpen()) mapButton.removeAttribute('aria-current');
-    else mapButton.setAttribute('aria-current', 'true');
-  };
 
   /** The selection under the map and in the places column. */
   const showSelection = () => {
@@ -290,9 +362,6 @@ async function start() {
   const openCell = async (cell: MapCell) => {
     const mine = ++request;
     map.hideTooltip();
-    placesButton.setAttribute('aria-expanded', 'false');
-    signalsButton.setAttribute('aria-expanded', 'false');
-    wantSignals = false;
     if (hintShown) {
       hintShown = false;
       setStatus('');
@@ -331,57 +400,49 @@ async function start() {
     selectedIsLive = false;
     void map.outline(null);
     map.setSheet(0);
-    placesButton.setAttribute('aria-expanded', 'false');
-    signalsButton.setAttribute('aria-expanded', 'false');
     showSelection();
     syncNav();
     writeHash();
   }, (height) => map.setSheet(sheetPad(height)));
   initQuakes($<HTMLButtonElement>('quake-toggle'), (data) => map.setQuakes(data));
 
-  // MAP: back to the bare map, keyboard focus on it.
-  mapButton.addEventListener('click', () => {
-    panel.close();
-    if (phone.matches) mapToTop();
-    document.querySelector<HTMLElement>('#map .maplibregl-canvas')?.focus();
-  });
-
+  // Nav: wide screens switch the column (closing a place over it); stacked layouts scroll to
+  // the section. Focus stays on the nav item either way.
+  for (const [section, button] of sections) {
+    button.addEventListener('click', () => {
+      if (wide.matches) {
+        if (panel.isOpen()) panel.close();
+        const next = button === replayButton ? 'replay' : 'signals';
+        if (next !== view) setView(next);
+        button.focus();
+        return;
+      }
+      if (panel.isOpen()) panel.close();
+      section.scrollIntoView({ block: 'start' });
+      button.focus({ preventScroll: true });
+    });
+  }
   const heat = await heatPromise.catch(() => null);
   if (!heat) return;
 
   // The daily broadcast: fetched once the snapshot is in, never in the map's way. A missing
-  // file (older deploys) or any failure just leaves the Signals button hidden.
-  const openSignals = () => {
-    if (!broadcast) return;
-    request++;
-    selected = null;
-    selectedIsLive = false;
-    void map.outline(null);
-    map.hideTooltip();
-    panel.openSignals(broadcast, pickSignal, signalsButton);
-    signalsButton.setAttribute('aria-expanded', 'true');
-    placesButton.setAttribute('aria-expanded', 'false');
-    showSelection();
-    syncNav();
-    writeHash();
-  };
+  // file (older deploys) or any failure says so in the Signals column.
+  const signalsEmpty = $('signals-empty');
   // A slot's cell, from the live snapshot when it is there (the broadcast is built from it).
   const pickSignal = (slot: Slot) => {
     if (!slot.cell) return;
     const { id, lat, lon, name } = slot.cell;
     void openCell(live.get(id) ?? { id, lat, lon, name, n: slot.story?.n ?? 0 });
   };
-  signalsButton.addEventListener('click', () => (panel.isSignals() ? panel.close() : openSignals()));
-  loadBroadcast().then(
-    (b) => {
-      if (!b || typeof b !== 'object' || !Array.isArray(b.slots)) return;
-      broadcast = b;
-      signalsButton.hidden = false;
-      if (wantSignals && !selected && !panel.isOpen()) openSignals();
-      wantSignals = false;
-    },
-    () => {},
-  );
+  const noBroadcast = () => {
+    signalsEmpty.textContent = 'No broadcast in this snapshot.';
+    signalsEmpty.hidden = false;
+  };
+  loadBroadcast().then((b) => {
+    if (!b || typeof b !== 'object' || !Array.isArray(b.slots)) return noBroadcast();
+    broadcast = b;
+    panel.renderSignals($('signals-list'), $('signals-when'), broadcast, pickSignal);
+  }, noBroadcast);
 
   liveCells = heat.cells;
   for (const c of liveCells) live.set(c.id, c);
@@ -434,8 +495,8 @@ async function start() {
     setStatus(HINT);
   }
 
-  // Places: the cells on screen (this frame's, names from live where known) as a list, the
-  // keyboard path to every place and a list view for anyone who prefers one.
+  // Places: the cells on screen (this frame's, names from live where known) as the ranked
+  // column, the keyboard path to every place.
   const shownCells = (): MapCell[] =>
     shownRows ? shownRows.map(([id, lat, lon, n]) => ({ id, lat, lon, n, name: live.get(id)?.name ?? '' })) : liveCells;
   const coords = (lat: number, lon: number) =>
@@ -451,11 +512,10 @@ async function start() {
         if (now) parts.push(plural(now.o, 'outlet', 'outlets'), plural(now.c, 'country', 'countries'));
         return { id: c.id, name: c.name || coords(c.lat, c.lon), counts: parts.join(' · '), n: c.n, o: now?.o, c: now?.c };
       });
-  const pickPlace = (id: string) => {
+  colPick = (id: string) => {
     const cell = shownCells().find((c) => c.id === id);
     if (cell) void openCell(cell);
   };
-  colPick = pickPlace;
   const refreshCol = () => {
     colRows = placeRows();
     renderCol();
@@ -463,38 +523,20 @@ async function start() {
   refreshCol();
   colSection.hidden = !liveCells.length;
 
-  // PLACES: the column's filter on wide screens; the list sheet on phones.
-  placesButton.addEventListener('click', () => {
-    if (!phone.matches) {
-      if (panel.isOpen()) panel.close();
-      colFilter.focus();
-      colFilter.scrollIntoView({ block: 'nearest' });
-      return;
-    }
-    if (panel.isPlaces()) return panel.close();
-    request++;
-    selected = null;
-    selectedIsLive = false;
-    void map.outline(null);
-    map.hideTooltip();
-    panel.openPlaces(placeRows(), pickPlace, placesButton);
-    placesButton.setAttribute('aria-expanded', 'true');
-    signalsButton.setAttribute('aria-expanded', 'false');
-    showSelection();
-    syncNav();
-    writeHash();
-  });
-  placesButton.hidden = !liveCells.length;
-
-  const showFrame = (view: FrameView) => {
-    frame = view;
+  const showFrame = (fv: FrameView) => {
+    frame = fv;
     // Past frame: live names where the cell still exists, otherwise just counts.
-    shownRows = view.rows;
+    shownRows = fv.rows;
     redraw();
-    if (panel.isPlaces()) panel.updatePlaces(placeRows());
     refreshCol();
-    if (view.live) showTotals(heat.totals, heat.generatedAt, false);
-    else showTotals(view.shown.totals, view.shown.at, true);
+    if (fv.live) {
+      showTotals(heat.totals, heat.generatedAt, false);
+      setStamp(heat.generatedAt);
+    } else {
+      showTotals(fv.shown.totals, fv.shown.at, true);
+      const last = replay ? replay.frames.length - 1 : fv.index;
+      setStamp(fv.shown.at, `${String(fv.index).padStart(2, '0')}/${String(last).padStart(2, '0')}`);
+    }
     updateNote();
     writeHash();
   };
@@ -503,36 +545,19 @@ async function start() {
     showFrame,
   );
 
-  // REPLAY: the field's scrubber; on wide screens an open panel gives the column back first.
-  if (replay) {
-    replayButton.hidden = false;
-    replayButton.addEventListener('click', () => {
-      if (!phone.matches && panel.isOpen()) panel.close();
-      const range = $<HTMLInputElement>('scrub-range');
-      range.focus();
-      range.scrollIntoView({ block: 'nearest' });
-    });
-  }
-
-  // An absent key means its default (live frame, no cell); an unknown value is ignored.
+  // An absent key means its default (Signals, live frame, no cell); an unknown value is
+  // ignored. A frame stamp implies the replay.
   const applyHash = async () => {
     const params = new URLSearchParams(location.hash.slice(1));
     const t = params.get('t');
+    const nextView: View = params.has('replay') || t ? 'replay' : 'signals';
+    if (nextView !== view) setView(nextView);
     if (replay && !t) {
       if (!frame.live) replay.selectLive();
     } else if (replay && t) {
       replay.selectStamp(t);
     }
     const c = params.get('c');
-    if (!c && params.has('signals')) {
-      // Without the broadcast (not loaded yet, or missing), leave the hash and the panel as
-      // they are; the panel opens if the file arrives while nothing else is open.
-      if (panel.isSignals()) return;
-      if (broadcast) return openSignals();
-      wantSignals = true;
-      return;
-    }
-    wantSignals = false;
     if (!c) return panel.close();
     if (!isCellId(c) || c === selected) return;
     const cell = live.get(c);
@@ -546,6 +571,7 @@ async function start() {
       void openCell({ id: row[0], lat: row[1], lon: row[2], n: row[3], name: '' });
     }
   };
+  syncNav();
   void applyHash();
   // Fires when someone edits or pastes a link into this tab; replaceState never triggers it.
   window.addEventListener('hashchange', () => void applyHash());

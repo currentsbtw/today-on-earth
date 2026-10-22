@@ -1,4 +1,5 @@
-// The side panel (bottom sheet on narrow screens) listing every article for one cell.
+// The place panel (bottom sheet on narrow screens) listing every article for one cell, and
+// the Signals entries (the daily broadcast) it shares its log grammar with.
 import { emptyLine, SLOT_IDS, SLOT_LABELS, signalLine, type Broadcast, type Slot } from './broadcast';
 import type { Article, CellDetail, HeatCell, Story } from './data';
 import { ago, count, host, plural, safeHref, shortName, utcTime, youtubeId } from './format';
@@ -16,12 +17,7 @@ const stories = $<HTMLDivElement>('panel-stories');
 const videos = $<HTMLElement>('panel-videos');
 const closeButton = $<HTMLButtonElement>('panel-close');
 const coverage = $<HTMLDivElement>('panel-coverage');
-const placesFilter = $<HTMLInputElement>('places-filter');
-const placesList = $<HTMLOListElement>('places-list');
-const placesCount = $<HTMLParagraphElement>('places-count');
 const handle = $<HTMLButtonElement>('sheet-handle');
-const signalsWhen = $<HTMLParagraphElement>('signals-when');
-const signalsList = $<HTMLOListElement>('signals-list');
 
 let returnFocus: HTMLElement | null = null;
 let onClose: () => void = () => {};
@@ -381,95 +377,13 @@ function articleItem(a: Article, now: number): HTMLLIElement {
   return li;
 }
 
-function show(focus: HTMLElement = title) {
-  if (panel.hidden) {
-    const active = document.activeElement;
-    returnFocus = active instanceof HTMLElement && !panel.contains(active) ? active : null;
-    panel.hidden = false;
-    panel.parentElement!.classList.add('panel-open');
-  }
-  panel.scrollTop = 0;
-  focus.focus();
-}
-
-/** Cell mode: the panel shows one place's coverage (the default). */
-function cellMode() {
-  panel.classList.remove('is-places', 'is-signals');
-}
-
-// Places (list mode) -----------------------------------------------------------
-
-export interface PlaceRow {
-  id: string;
-  /** The place name, or its coordinates when no name is known (replay-only cells). */
-  name: string;
-  /** "412 articles · 150 outlets · 23 countries", or just the articles on past frames. */
-  counts: string;
-  /** Articles; outlets and outlet countries exist only for the live snapshot. */
-  n: number;
-  o?: number;
-  c?: number;
-}
-
-let placeRows: PlaceRow[] = [];
-let pickPlace: (id: string) => void = () => {};
-
-/** Lowercase, no diacritics: "Zürich" matches "zur". */
-const fold = (text: string) => text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
-
-function renderPlaces() {
-  const q = fold(placesFilter.value.trim());
-  const shown = q ? placeRows.filter((r) => fold(r.name).includes(q)) : placeRows;
-  placesList.replaceChildren(
-    ...shown.map((r) => {
-      const li = el('li', 'place');
-      const button = el('button', 'place-row');
-      button.type = 'button';
-      button.dataset.id = r.id;
-      button.append(el('span', 'place-name', r.name), el('span', 'place-counts', r.counts));
-      button.addEventListener('click', () => pickPlace(r.id));
-      li.append(button);
-      return li;
-    }),
-  );
-  placesCount.textContent = q
-    ? `${count(shown.length)} of ${plural(placeRows.length, 'place', 'places')}`
-    : plural(placeRows.length, 'place', 'places');
-}
-
-/**
- * Opens the panel as a filterable list of places. Focus goes to the filter; closing returns
- * it to `opener` (the Places button).
- */
-export function openPlaces(rows: PlaceRow[], pick: (id: string) => void, opener: HTMLElement) {
-  placeRows = rows;
-  pickPlace = pick;
-  panel.classList.remove('is-signals');
-  panel.classList.add('is-places');
-  title.textContent = 'Places';
-  placesFilter.value = '';
-  renderPlaces();
-  show(placesFilter);
-  returnFocus = opener;
-}
-
-/** New rows for an open list (the replay frame changed); the filter text is kept. */
-export function updatePlaces(rows: PlaceRow[]) {
-  placeRows = rows;
-  renderPlaces();
-}
-
-export function isPlaces(): boolean {
-  return !panel.hidden && panel.classList.contains('is-places');
-}
-
-// Signals (broadcast mode) ---------------------------------------------------
+// Signals ----------------------------------------------------------------------
 // The daily broadcast's six slots in their fixed order: the slot label, the fixed frame
 // sentence, the outlet's own headline and the counts. Nothing else is written here.
 
-const dateFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const dateFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 
-/** "21 October 2026 · 15:06 UTC", "" when the time does not parse. */
+/** "21 Oct 2026 · 15:06 UTC", "" when the time does not parse. */
 function broadcastWhen(at: string): string {
   const d = new Date(at);
   return Number.isNaN(d.getTime()) ? '' : `${dateFormat.format(d)} · ${utcTime(at)}`;
@@ -527,32 +441,38 @@ function signalCard(slot: Slot, pick: (slot: Slot) => void): HTMLLIElement {
   return li;
 }
 
+// Showing and hiding ---------------------------------------------------------
+// The panel overlays the right column (wide), a drawer at the right edge (mid widths) or a
+// bottom sheet (phones). Whatever the column showed before comes back on close.
+
+const shell = panel.closest<HTMLElement>('.shell') ?? document.body;
+
+function show(focus: HTMLElement = title) {
+  if (panel.hidden) {
+    const active = document.activeElement;
+    returnFocus = active instanceof HTMLElement && !panel.contains(active) ? active : null;
+    panel.hidden = false;
+    shell.classList.add('panel-open');
+  }
+  panel.scrollTop = 0;
+  focus.focus();
+}
+
 /**
- * Opens the panel on the daily broadcast. Focus goes to the first card's link or button;
- * closing returns it to `opener` (the Signals button). `pick` opens a slot's cell.
+ * Renders the daily broadcast's six slots into `list` (the Signals column) and its time into
+ * `when`. `pick` opens a slot's cell. Only well-formed slots with a known id get an entry.
  */
-export function openSignals(broadcast: Broadcast, pick: (slot: Slot) => void, opener: HTMLElement) {
-  panel.classList.remove('is-places');
-  panel.classList.add('is-signals');
-  title.textContent = "Today's signals";
-  const when = broadcastWhen(broadcast.generatedAt);
-  signalsWhen.textContent = [when, `last ${broadcast.windowHours || 24}h`].filter(Boolean).join(' · ');
-  // Only well-formed slots with a known id get a card; anything else in the file is skipped.
+export function renderSignals(list: HTMLElement, when: HTMLElement, broadcast: Broadcast, pick: (slot: Slot) => void) {
+  const at = broadcastWhen(broadcast.generatedAt);
+  when.textContent = [at, `last ${broadcast.windowHours || 24}h`].filter(Boolean).join(' · ');
   const slots = (Array.isArray(broadcast.slots) ? broadcast.slots : []).filter(
     (slot): slot is Slot => !!slot && typeof slot === 'object' && SLOT_IDS.includes(slot.id),
   );
-  signalsList.replaceChildren(...slots.map((slot) => signalCard(slot, pick)));
-  show(signalsList.querySelector<HTMLElement>('a, button') ?? title);
-  returnFocus = opener;
-}
-
-export function isSignals(): boolean {
-  return !panel.hidden && panel.classList.contains('is-signals');
+  list.replaceChildren(...slots.map((slot) => signalCard(slot, pick)));
 }
 
 /** Opens the panel for a cell straight away, using the heat.json counts while the detail loads. */
 export function openLoading(cell: HeatCell, windowHours: number) {
-  cellMode();
   title.textContent = cell.name;
   setCounts(cell);
   setReach(cell, windowHours);
@@ -581,7 +501,6 @@ export function showDetail(detail: CellDetail, windowHours: number) {
 
 /** A replay cell that is not in the current snapshot: there is no detail file for it. */
 export function openMissing(n: number) {
-  cellMode();
   title.textContent = plural(n, 'article', 'articles');
   setCounts(null);
   setReach(null);
@@ -622,7 +541,7 @@ export function sheetHeight(): number {
 export function close() {
   if (panel.hidden) return;
   panel.hidden = true;
-  panel.parentElement!.classList.remove('panel-open');
+  shell.classList.remove('panel-open');
   setTall(false);
   onClose();
   returnFocus?.focus();
@@ -637,24 +556,10 @@ export function isOpen(): boolean {
 export function initPanel(handleClose: () => void, onSheet: (height: number) => void = () => {}) {
   onClose = handleClose;
   closeButton.addEventListener('click', close);
-  placesFilter.addEventListener('input', renderPlaces);
-  // Enter in the filter opens the first match, so a typed name is one keystroke from its place.
-  placesFilter.addEventListener('keydown', (e) => {
-    if (e.key !== 'Enter') return;
-    const first = placesList.querySelector<HTMLButtonElement>('.place-row');
-    if (first) {
-      e.preventDefault();
-      first.click();
-    }
-  });
   handle.addEventListener('click', () => setTall(!panel.classList.contains('is-tall')));
-  // Expose the panel's height so the scrubber can sit above the bottom sheet on phones, and
-  // report it so the map's padding follows the handle, rotation and viewport changes.
-  const stage = panel.parentElement!;
-  new ResizeObserver(() => {
-    stage.style.setProperty('--sheet-h', `${panel.hidden ? 0 : panel.offsetHeight}px`);
-    onSheet(sheetHeight());
-  }).observe(panel);
+  // Report the sheet's height so the map's padding follows the handle, rotation and
+  // viewport changes.
+  new ResizeObserver(() => onSheet(sheetHeight())).observe(panel);
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !panel.hidden) close();
   });
