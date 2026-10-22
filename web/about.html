@@ -27,12 +27,13 @@
     <main class="doc">
       <h1>How Today On Earth works</h1>
       <nav class="toc" aria-label="On this page">
+        <!-- The two long labels carry data-impeccable-ignore="all-caps-body": mono section labels, DESIGN.md Uppercase Ledger Rule. -->
         <ol>
           <li><a href="#looking-at">What you are looking at</a></li>
           <li><a href="#sources">Where the articles come from</a></li>
-          <li><a href="#placing">How a place is chosen for an article</a></li>
+          <li><a href="#placing" data-impeccable-ignore="all-caps-body">How a place is chosen for an article</a></li>
           <li><a href="#numbers">What the numbers mean</a></li>
-          <li><a href="#brightness">How a place's brightness is decided</a></li>
+          <li><a href="#brightness" data-impeccable-ignore="all-caps-body">How a place's brightness is decided</a></li>
           <li><a href="#stories">Stories</a></li>
           <li><a href="#broadcast">The daily broadcast</a></li>
           <li><a href="#limits">What this site does not do</a></li>
@@ -73,7 +74,7 @@
         <dd>Distinct URLs in the window.</dd>
         <dt>Outlets</dt>
         <dd>Distinct website domains.</dd>
-        <dt>Countries</dt>
+        <dt>Outlet countries</dt>
         <dd>
           The countries those outlets are based in, from GDELT's own list of news domains by country. Unknown
           outlets count as unknown, not as any country.
@@ -232,6 +233,10 @@
         step when it was not in the previous snapshot's window. A snapshot made after a restart, or with no previous
         snapshot in the 24 hours before it, has no count and is drawn as unknown, as are snapshots made before
         22 October 2026.
+      </p>
+      <p>
+        GDELT publishes in 15-minute files, and the translated feed arrives about an hour after the English one, so
+        the number of new articles per step rises and falls with that rhythm.
       </p>
 
       <h2 id="freshness">Freshness</h2>

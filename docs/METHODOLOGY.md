@@ -35,7 +35,7 @@ centre, but it is still a centre, and the label tells you so.
 
 - **Articles**: distinct URLs in the window.
 - **Outlets**: distinct website domains.
-- **Countries**: the countries those outlets are based in, from GDELT's own list of
+- **Outlet countries**: the countries those outlets are based in, from GDELT's own list of
   news domains by country. Unknown outlets count as unknown, not as any country.
 - **Languages**: the language the article was written in, as GDELT recorded it.
 - **Tone**: GDELT's tone score for the article, from negative to positive. We show
@@ -156,6 +156,9 @@ The replay bars show how many articles were new in each step, not the window's t
 An article is new in a step when it was not in the previous snapshot's window. A
 snapshot made after a restart, or with no previous snapshot in the 24 hours before it,
 has no count and is drawn as unknown, as are snapshots made before 22 October 2026.
+
+GDELT publishes in 15-minute files, and the translated feed arrives about an hour after
+the English one, so the number of new articles per step rises and falls with that rhythm.
 
 ## Freshness
 

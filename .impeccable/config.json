@@ -7,17 +7,6 @@
     ],
     "ignoreFiles": [
       ".impeccable/mocks/**"
-    ],
-    "ignoreValues": [
-      {
-        "rule": "all-caps-body",
-        "value": "*",
-        "files": [
-          "web/about.html"
-        ],
-        "createdAt": "2026-10-22T20:39:22.100Z",
-        "reason": "orchestrator: the two hits are the method page's section-index link labels (35-36 chars), mono 11px uppercase per DESIGN.md's Uppercase Ledger Rule for labels; the page's prose is Source Sans"
-      }
     ]
   }
 }

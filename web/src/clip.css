@@ -197,6 +197,11 @@ body {
   text-wrap: pretty;
 }
 
+/* Where the key needs two lines, it breaks between its two sentences. */
+.clip-key span {
+  display: inline-block;
+}
+
 /* Totals along the foot: number over label, four columns. */
 .clip-counts {
   position: absolute;

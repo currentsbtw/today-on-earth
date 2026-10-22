@@ -108,14 +108,17 @@ function setTime(at: string) {
   el('clip-time').replaceChildren(Object.assign(document.createElement('span'), { textContent: date }), Object.assign(document.createElement('b'), { textContent: utcTime(at) }));
 }
 
-/** Totals along the foot: number over label; null clears them. */
-function setCounts(totals: Totals | null) {
+/**
+ * Totals along the foot: number over label; null clears them. The end card names the fourth
+ * one as the map's places column does, OUTLET COUNTRIES.
+ */
+function setCounts(totals: Totals | null, outletCountries = false) {
   const items: [n: number, one: string, many: string][] = totals
     ? [
         [totals.articles, 'article', 'articles'],
         [totals.cells, 'place', 'places'],
         [totals.outlets, 'outlet', 'outlets'],
-        [totals.countries, 'country', 'countries'],
+        [totals.countries, outletCountries ? 'outlet country' : 'country', outletCountries ? 'outlet countries' : 'countries'],
       ]
     : [];
   el('clip-counts').replaceChildren(
@@ -491,7 +494,7 @@ async function renderEnd() {
   const heat = await loadHeat();
   root.classList.add('clip--card', 'clip--end');
   setTime(heat.generatedAt);
-  setCounts(heat.totals);
+  setCounts(heat.totals, true);
   el('clip-end-text').prepend(el('clip-counts'));
   el('clip-end').hidden = false;
   // No map: the lockup takes the centre of the dotted ground.

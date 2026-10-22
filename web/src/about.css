@@ -151,7 +151,8 @@ dl {
   margin: 0 0 16px;
 }
 
-/* The section index: the ledger's mono rows, one link per line, closed by a hairline. */
+/* The section index: the ledger's mono rows, one link per line, closed by a hairline. Each
+   link is a 28px box (36px on phones); the type stays 11px on a 12px line. */
 .toc {
   padding-bottom: 12px;
   border-bottom: 1px solid var(--fg);
@@ -178,7 +179,7 @@ dl {
 .toc a {
   display: block;
   width: fit-content;
-  padding: 6px 0;
+  padding: 8px 0;
   color: var(--muted);
   font: 500 11px/12px var(--mono);
   letter-spacing: 0.08em;
@@ -240,11 +241,18 @@ dd {
 
 .back-foot {
   margin-top: 48px;
-  padding-top: 12px;
+  padding-top: 0;
   border-top: 1px solid var(--fg);
   font: 500 11px/1 var(--mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+/* A 24px box whose extra height is above the words, so they stay 12px under the rule. */
+.back-foot a {
+  display: inline-block;
+  padding-top: 12px;
+  line-height: 12px;
 }
 
 @media (max-width: 720px) {
@@ -274,6 +282,31 @@ dd {
 
   .doc {
     margin: 8px 0 32px;
-    padding: 28px 16px 40px;
+    padding: 28px 16px 28px;
+  }
+
+  /* Phones: two balanced columns of 36px boxes, read down the first column then the
+     second (the DOM order). A long label wraps to a second 12px line inside its box. */
+  .toc ol {
+    columns: 2;
+    column-gap: 16px;
+  }
+
+  .toc li {
+    break-inside: avoid;
+  }
+
+  .toc a {
+    display: flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 6px 0;
+    text-wrap: balance;
+  }
+
+  /* 36px: 12px more below the words; the doc's bottom padding gives the 12px back, so the
+     words keep their place under the rule and above the page's lower edge. */
+  .back-foot a {
+    padding-bottom: 12px;
   }
 }
