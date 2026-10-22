@@ -1,7 +1,7 @@
 import './style.css';
-import { loadBroadcast, type Broadcast, type Slot } from './broadcast';
+import { loadBroadcast, SLOT_IDS, SLOT_LABELS, type Broadcast, type Slot, type SlotId } from './broadcast';
 import { isCellId, loadCell, loadHeat, type FrameRow, type HeatCell, type Totals } from './data';
-import { count, plural, shortName, utcTime } from './format';
+import { count, plural, shortName, utcDayTime, utcTime } from './format';
 import type { HeatMode, MapCell, WorldMap } from './map';
 import * as panel from './panel';
 import { initPresence } from './presence';
@@ -84,7 +84,9 @@ function showTotals(t: Totals, at: string, replay: boolean) {
   const time = utcTime(at);
   document.body.classList.toggle('is-replay', replay);
   if (replay) {
-    snapshot.replaceChildren(Object.assign(document.createElement('span'), { className: 'replay-tag', textContent: 'replay' }), ` ${time}`);
+    // A past frame says its weekday when it is not today's (UTC), like the stamp.
+    const when = utcDayTime(at);
+    snapshot.replaceChildren(Object.assign(document.createElement('span'), { className: 'replay-tag', textContent: 'replay' }), ` ${when ? `${when} UTC` : ''}`);
   } else {
     snapshot.textContent = time ? `snapshot ${time}` : '';
     document.title = `Today On Earth · ${count(t.articles)} articles`;
@@ -135,12 +137,12 @@ const fold = (text: string) => {
   return f;
 };
 
-/** "412 articles · 150 outlets · 23 countries", or just the articles on past frames. */
+/** "412 articles · 150 outlets · 23 outlet countries", or just the articles on past frames. */
 const rowCounts = (r: PlaceRow) =>
   [
     plural(r.n, 'article', 'articles'),
     ...(r.o === undefined ? [] : [plural(r.o, 'outlet', 'outlets')]),
-    ...(r.c === undefined ? [] : [plural(r.c, 'country', 'countries')]),
+    ...(r.c === undefined ? [] : [plural(r.c, 'outlet country', 'outlet countries')]),
   ].join(' · ');
 
 function renderCol() {
@@ -259,13 +261,17 @@ const sections: [HTMLElement, HTMLButtonElement][] = [
   [$('replay-col'), replayButton],
 ];
 
-/** "LIVE · 14:27 UTC", or "REPLAY · 05:16 UTC · 38/95" while a past frame is on screen. */
+/**
+ * "LIVE 14:27 UTC", or "REPLAY 05:16 UTC · 38/95" while a past frame is on screen; a past
+ * frame from another UTC day than today says its weekday ("REPLAY WED 23:00 UTC · 36/99").
+ */
 function setStamp(at: string, frameTag = '') {
   const tag = Object.assign(document.createElement('span'), {
     className: frameTag ? 'replay-tag' : 'live-tag',
     textContent: frameTag ? 'replay' : 'live',
   });
-  stamp.replaceChildren(tag, ` ${utcTime(at)}${frameTag ? ` · ${frameTag}` : ''}`);
+  const when = frameTag ? utcDayTime(at) : utcTime(at).replace(' UTC', '');
+  stamp.replaceChildren(tag, ` ${when ? `${when} UTC` : ''}${frameTag ? ` · ${frameTag}` : ''}`);
 }
 
 /** Which nav item is current while the sections stack: the one crossing a band near the top. */
@@ -312,13 +318,16 @@ async function start() {
   let replay: Replay | null = null;
   let frame = { index: 0, live: true };
   let view: View = 'signals';
+  // The signal the open place came from (`s=` in the permalink): its story leads the panel.
+  let pinSlot: SlotId | null = null;
 
-  // Permalink: "replay" while the column shows the replay, then c=<cellId> and t=<frame
-  // stamp>; keys at their default are dropped, so the Signals state with nothing selected
-  // has no hash at all.
+  // Permalink: "replay" while the column shows the replay, then c=<cellId>, s=<slot id> when
+  // the place was opened from a signal, and t=<frame stamp>; keys at their default are
+  // dropped, so the Signals state with nothing selected has no hash at all.
   const writeHash = () => {
     const params = new URLSearchParams();
     if (selected) params.set('c', selected);
+    if (selected && pinSlot) params.set('s', pinSlot);
     if (replay && !frame.live) params.set('t', replay.stamp(frame.index));
     const hash = [view === 'replay' ? 'replay' : '', params.toString()].filter(Boolean).join('&');
     const url = location.pathname + location.search + (hash ? `#${hash}` : '');
@@ -347,6 +356,16 @@ async function start() {
 
   let hintShown = false;
   let broadcast: Broadcast | null = null; // the daily broadcast, once loaded
+  let broadcastReady: (b: Broadcast | null) => void = () => {};
+  const broadcastLoaded = new Promise<Broadcast | null>((resolve) => (broadcastReady = resolve));
+
+  /** The panel pin for a slot: its label and its story, when the slot names this cell. */
+  const pinFor = async (slotId: SlotId, cellId: string): Promise<panel.StoryPin | null> => {
+    const b = broadcast ?? (await broadcastLoaded);
+    const slot = b?.slots.find((x) => x?.id === slotId);
+    if (!slot?.story || slot.cell?.id !== cellId) return null;
+    return { label: SLOT_LABELS[slotId], headline: slot.story.headline, url: slot.story.headlineUrl };
+  };
 
   /** The selection under the map and in the places column. */
   const showSelection = () => {
@@ -375,10 +394,12 @@ async function start() {
   /** Set once the map is up; until then a place picked from the list waits for it. */
   let mapNow: WorldMap | null = null;
 
-  const openCell = async (cell: MapCell) => {
+  /** Opens a place; `pin` is the signal slot it was opened from, whose story then leads the panel. */
+  const openCell = async (cell: MapCell, pin: SlotId | null = null) => {
     const map = mapNow ?? (await mapReady.catch(() => null));
     if (!map) return;
     const mine = ++request;
+    pinSlot = pin;
     map.hideTooltip();
     if (hintShown) {
       hintShown = false;
@@ -405,7 +426,14 @@ async function start() {
     if (!current) return;
     try {
       const detail = await loadCell(cell.id);
-      if (mine === request && panel.isOpen()) panel.showDetail(detail, windowHours);
+      const storyPin = pin ? await pinFor(pin, cell.id) : null;
+      if (mine === request && panel.isOpen()) {
+        // A signal whose story is not among the place's stories pins nothing and leaves no s=.
+        if (!panel.showDetail(detail, windowHours, storyPin) && pinSlot) {
+          pinSlot = null;
+          writeHash();
+        }
+      }
     } catch {
       if (mine === request && panel.isOpen()) panel.showError();
     }
@@ -417,6 +445,7 @@ async function start() {
     panel.initPanel(() => {
       request++;
       selected = null;
+      pinSlot = null;
       selectedIsLive = false;
       void map.outline(null);
       map.setSheet(0);
@@ -493,17 +522,27 @@ async function start() {
   const pickSignal = (slot: Slot) => {
     if (!slot.cell) return;
     const { id, lat, lon, name } = slot.cell;
-    void openCell(live.get(id) ?? { id, lat, lon, name, n: slot.story?.n ?? 0 });
+    void openCell(live.get(id) ?? { id, lat, lon, name, n: slot.story?.n ?? 0 }, slot.id);
   };
   const noBroadcast = () => {
     signalsEmpty.textContent = 'No broadcast in this snapshot.';
     signalsEmpty.hidden = false;
   };
-  loadBroadcast().then((b) => {
-    if (!b || typeof b !== 'object' || !Array.isArray(b.slots)) return noBroadcast();
-    broadcast = b;
-    panel.renderSignals($('signals-list'), $('signals-when'), broadcast, pickSignal);
-  }, noBroadcast);
+  loadBroadcast().then(
+    (b) => {
+      if (!b || typeof b !== 'object' || !Array.isArray(b.slots)) {
+        broadcastReady(null);
+        return noBroadcast();
+      }
+      broadcast = b;
+      broadcastReady(b);
+      panel.renderSignals($('signals-list'), $('signals-when'), broadcast, pickSignal);
+    },
+    () => {
+      broadcastReady(null);
+      noBroadcast();
+    },
+  );
 
   // Brightness mode: absolute article counts, or each place against its own normal. The
   // relative view only exists once the ingest has enough days of per-cell history.
@@ -585,9 +624,11 @@ async function start() {
     }
     const c = params.get('c');
     if (!c) return panel.close();
-    if (!isCellId(c) || c === selected) return;
+    const sParam = params.get('s');
+    const s = SLOT_IDS.find((id) => id === sParam) ?? null;
+    if (!isCellId(c) || (c === selected && s === pinSlot)) return;
     const cell = live.get(c);
-    if (cell) return void openCell(cell);
+    if (cell) return void openCell(cell, s);
     // A cell that exists only in the selected past frame: open it once that frame's rows
     // arrive (no detail file exists for it), unless the frame changed meanwhile.
     if (!replay || frame.live) return;

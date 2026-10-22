@@ -117,8 +117,12 @@ export function signalLine(slot: Slot): string {
   }
 }
 
-/** A coverage fact a signal entry can state: one of the story's counts, or its reach abroad. */
-export type SignalFact = 'articles' | 'outlets' | 'countries' | 'languages' | 'heardIn';
+/**
+ * A coverage fact a signal entry can state: one of the story's counts, or its reach abroad.
+ * The plain outlet-country count is not one: beside "heard in N other countries" it reads as
+ * a near-duplicate, so an entry states the reach only.
+ */
+export type SignalFact = 'articles' | 'outlets' | 'languages' | 'heardIn';
 
 const SENTENCE_FACTS: Record<SlotId, readonly SignalFact[]> = {
   loudest: ['articles', 'outlets', 'languages'],

@@ -109,9 +109,9 @@
                 <span class="play-word" aria-hidden="true">Play</span><svg class="icon-play" viewBox="0 0 4 7" width="4" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h1v7H0zM1 1h1v5H1zM2 2h1v3H2zM3 3h1v1H3z" /></svg>
                 <span class="pause-word" aria-hidden="true">Pause</span><svg class="icon-pause" viewBox="0 0 5 7" width="5" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h2v7H0zM3 0h2v7H3z" /></svg>
               </button>
-              <p class="scrub-label"><span id="scrub-time"></span><span id="scrub-live" class="scrub-live">live</span></p>
+              <p class="scrub-label"><span id="scrub-time"></span><span id="scrub-new" class="scrub-new"></span><span id="scrub-live" class="scrub-live">live</span></p>
             </div>
-            <div class="col-head trend-head" aria-hidden="true"><span>Trend · 9-frame mean</span><span id="trend-max"></span></div>
+            <div class="col-head trend-head" aria-hidden="true"><span>Trend</span><span id="trend-max">9-frame mean</span></div>
             <svg id="trend" class="trend" viewBox="0 0 1000 44" preserveAspectRatio="none" aria-hidden="true"><polyline id="trend-line" fill="none" stroke="#fff" stroke-width="1" vector-effect="non-scaling-stroke" points="" /></svg>
             <table class="recent">
               <caption class="visually-hidden">Recent snapshots</caption>
@@ -152,7 +152,7 @@
 
       <footer class="foot">
         <p class="foot-source"><span class="foot-figure">GDELT 2.0</span><span class="foot-caption">Source · no editing</span></p>
-        <a class="foot-link" href="./about.html">How it works</a>
+        <a class="foot-link" href="./about.html">Method</a>
       </footer>
     </div>
     <script type="module" src="./src/main.ts"></script>

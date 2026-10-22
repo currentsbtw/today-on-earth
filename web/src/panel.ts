@@ -2,7 +2,7 @@
 // the Signals entries (the daily broadcast) it shares its log grammar with.
 import { emptyLine, sentenceFacts, SLOT_IDS, SLOT_LABELS, signalLine, type Broadcast, type Slot, type SlotStory } from './broadcast';
 import type { Article, CellDetail, HeatCell, Story } from './data';
-import { ago, codeName, count, host, plural, safeHref, shortName, utcTime, youtubeId } from './format';
+import { ago, codeName, count, host, plural, safeHref, shortName, utcSpan, youtubeId } from './format';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -28,12 +28,12 @@ let onClose: () => void = () => {};
 
 type Counts = Pick<HeatCell, 'n' | 'o' | 'c' | 'l'>;
 
-/** "412 articles · 150 outlets · 23 countries · 9 languages" */
+/** "412 articles · 150 outlets · 23 outlet countries · 9 languages" */
 function countsLine(c: Counts): string {
   return [
     plural(c.n, 'article', 'articles'),
     plural(c.o, 'outlet', 'outlets'),
-    plural(c.c, 'country', 'countries'),
+    plural(c.c, 'outlet country', 'outlet countries'),
     plural(c.l, 'language', 'languages'),
   ].join(' · ');
 }
@@ -87,14 +87,15 @@ const el = <K extends keyof HTMLElementTagNameMap>(tag: K, className: string, te
 
 /**
  * The place's counts as a mono table: articles, headlines (reprints collapsed), outlets,
- * countries, languages, and the countries other than its own that covered it.
+ * the countries those outlets are based in, languages, and the countries other than its own
+ * that covered it.
  */
 function setCounts(c: Reach | null) {
   countsHead.hidden = !c;
   if (!c) return void why.replaceChildren();
   const rows: [string, string][] = [['Articles', count(c.n)]];
   if (c.u !== undefined) rows.push(['Headlines', count(c.u)]);
-  rows.push(['Outlets', count(c.o)], ['Countries', count(c.c)], ['Languages', count(c.l)]);
+  rows.push(['Outlets', count(c.o)], ['Outlet countries', count(c.c)], ['Languages', count(c.l)]);
   const heard = heardIn(c);
   if (heard) rows.push(['Heard in', heard.replace(/^heard in /, '')]);
   why.replaceChildren(
@@ -116,19 +117,18 @@ const STORY_PREVIEW = 3;
 const STORIES_SHOWN = 3;
 let storySeq = 0;
 
-/** "01:15–04:30 UTC", or one time when the story's first and last article coincide. */
-function span(first: string, last: string): string {
-  const a = utcTime(first).replace(' UTC', '');
-  const b = utcTime(last);
-  if (!a || !b) return b || utcTime(first);
-  return a === b.replace(' UTC', '') ? b : `${a}–${b}`;
-}
-
-/** One story: the outlet's own headline, its counts, time span, entities and newest articles. */
-function storyCard(story: Story, now: number): HTMLElement {
+/**
+ * One story: the outlet's own headline, its counts, time span, entities and newest articles.
+ * `pin` is the slot label of the signal it was opened from: a mono tag above the headline.
+ */
+function storyCard(story: Story, now: number, pin = ''): HTMLElement {
   const card = el('article', 'story');
   const id = `story-${++storySeq}`;
   card.setAttribute('aria-labelledby', `${id}-h`);
+  if (pin) {
+    card.classList.add('is-pinned');
+    card.append(el('p', 'story-pin', `From signals · ${pin}`));
+  }
 
   const head = el('h4', 'story-headline');
   head.id = `${id}-h`;
@@ -153,7 +153,7 @@ function storyCard(story: Story, now: number): HTMLElement {
   meta.append(el('span', 'story-counts', countsLine(story)));
   const heard = heardIn(story);
   if (heard) meta.append(el('span', '', heard));
-  meta.append(el('span', '', span(story.first, story.last)), toneMarker(story.t));
+  meta.append(el('span', '', utcSpan(story.first, story.last)), toneMarker(story.t));
 
   card.append(head, meta);
 
@@ -175,7 +175,8 @@ function storyCard(story: Story, now: number): HTMLElement {
 
   const extra = story.articles.length - STORY_PREVIEW;
   if (extra > 0) {
-    const more = el('button', 'story-more', `show ${extra} more`);
+    const label = `show ${plural(extra, 'more article', 'more articles')}`;
+    const more = el('button', 'story-more', label);
     more.type = 'button';
     more.setAttribute('aria-expanded', 'false');
     more.setAttribute('aria-controls', items.id);
@@ -183,7 +184,7 @@ function storyCard(story: Story, now: number): HTMLElement {
       const open = more.getAttribute('aria-expanded') !== 'true';
       [...items.children].forEach((li, i) => ((li as HTMLElement).hidden = !open && i >= STORY_PREVIEW));
       more.setAttribute('aria-expanded', String(open));
-      more.textContent = open ? 'show fewer' : `show ${extra} more`;
+      more.textContent = open ? 'show fewer articles' : label;
     });
     card.append(more);
   }
@@ -273,6 +274,13 @@ function playFromRow(clip: Clip) {
   playClip(li);
 }
 
+// A focused card is scrolled fully into the strip: the browser leaves a partly visible one
+// where it is, so a keyboard user could press a card whose title is cut off.
+videos.addEventListener('focusin', (e) => {
+  const card = (e.target as HTMLElement).closest<HTMLElement>('.video');
+  card?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+});
+
 function renderVideos(detail: CellDetail | null) {
   const clips = detail && (detail.videos ?? 0) > 0 ? collectClips(detail) : [];
   if (!clips.length) {
@@ -286,15 +294,38 @@ function renderVideos(detail: CellDetail | null) {
   videos.hidden = false;
 }
 
-/** The stories, when the cell file has them; the flat list keeps its own heading (#panel-list-head). */
-function renderStories(detail: CellDetail | null, now: number) {
-  const groups = detail?.stories ?? [];
+/** The signal a place was opened from: its slot label and its story, which leads the Stories list. */
+export interface StoryPin {
+  label: string;
+  headline: string;
+  url: string;
+}
+
+/** The cell's story a signal named: by the headline's article URL, else by the headline text; -1 when absent. */
+function pinnedIndex(groups: Story[], pin: StoryPin): number {
+  if (pin.url) {
+    const at = groups.findIndex((st) => st.articles.some((a) => a.url === pin.url));
+    if (at >= 0) return at;
+  }
+  const text = pin.headline.trim();
+  return text ? groups.findIndex((st) => st.headline.trim() === text) : -1;
+}
+
+/**
+ * The stories, when the cell file has them; the flat list keeps its own heading
+ * (#panel-list-head). With a pin, the signal's story comes first under a FROM SIGNALS tag and
+ * counts as one of the three shown. Returns whether the pinned story was found.
+ */
+function renderStories(detail: CellDetail | null, now: number, pin: StoryPin | null = null): boolean {
+  let groups = detail?.stories ?? [];
   if (!detail || !groups.length) {
     stories.replaceChildren();
     stories.hidden = true;
-    return;
+    return false;
   }
-  const cards = groups.map((s) => storyCard(s, now));
+  const at = pin ? pinnedIndex(groups, pin) : -1;
+  if (at > 0) groups = [groups[at], ...groups.slice(0, at), ...groups.slice(at + 1)];
+  const cards = groups.map((s, i) => storyCard(s, now, at >= 0 && i === 0 && pin ? pin.label : ''));
   const rest = cards.slice(STORIES_SHOWN);
   const nodes: HTMLElement[] = [el('h3', 'panel-section', 'Stories'), ...cards];
   if (rest.length) {
@@ -322,6 +353,7 @@ function renderStories(detail: CellDetail | null, now: number) {
   }
   stories.replaceChildren(...nodes);
   stories.hidden = false;
+  return at >= 0;
 }
 
 // Coverage -----------------------------------------------------------------
@@ -447,14 +479,20 @@ function articleItem(a: Article, now: number): HTMLLIElement {
 
 // Signals ----------------------------------------------------------------------
 // The daily broadcast's six slots in their fixed order. Each filled entry folds: closed, it
-// is the slot name, the place and the outlet's headline (two lines); open, it adds the fixed
-// sentence, the counts the sentence left out, the outlet and OPEN. Nothing else is written.
+// is the slot name, the place, a pixel plus and the outlet's headline (two lines), and
+// pressing the head or the headline opens it; open, the plus is a minus and the entry adds
+// the READ AT link to the outlet, the fixed sentence, the counts the sentence left out and
+// OPEN. Nothing else is written, and nothing in a closed entry leaves the site.
 
 /** The slot whose entry is open, kept across re-renders; null when every entry is closed. */
 let openSlot: Slot['id'] | null = null;
 
-/** Opens one entry (closing the rest) or, with null, closes them all. One step, no transition. */
-function setOpenSignal(list: HTMLElement, id: Slot['id'] | null) {
+/**
+ * Opens one entry (closing the rest) or, with null, closes them all. One step, no transition.
+ * `reveal` (a press, not a re-render) scrolls the opened entry into view so OPEN is never
+ * left below the column's edge.
+ */
+function setOpenSignal(list: HTMLElement, id: Slot['id'] | null, reveal = false) {
   openSlot = id;
   for (const li of list.querySelectorAll<HTMLLIElement>('.signal')) {
     const toggle = li.querySelector<HTMLButtonElement>('.signal-toggle');
@@ -464,12 +502,18 @@ function setOpenSignal(list: HTMLElement, id: Slot['id'] | null) {
     li.classList.toggle('is-open', open);
     toggle.setAttribute('aria-expanded', String(open));
     body.hidden = !open;
+    if (open && reveal) li.scrollIntoView({ block: 'nearest' });
   }
 }
 
+/** The fold's mark: a 7x7 pixel plus while closed; CSS drops the upright when open (a minus). */
+const FOLD_SVG =
+  '<svg class="signal-mark" viewBox="0 0 7 7" width="7" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 3h7v1H0z"/><path class="signal-mark-v" d="M3 0h1v3H3zM3 4h1v3H3z"/></svg>';
+
 /**
  * A signal entry's meta line: only the counts its sentence did not state, so no number
- * appears twice in one entry; null when the sentence said them all.
+ * appears twice in one entry; null when the sentence said them all. The outlet-country count
+ * is never one of them: the entry states the reach abroad (HEARD IN N OTHER COUNTRIES) only.
  */
 function signalMeta(id: Slot['id'], story: SlotStory): HTMLParagraphElement | null {
   const said = sentenceFacts(id);
@@ -477,7 +521,6 @@ function signalMeta(id: Slot['id'], story: SlotStory): HTMLParagraphElement | nu
     [
       ['articles', plural(story.n, 'article', 'articles')],
       ['outlets', plural(story.o, 'outlet', 'outlets')],
-      ['countries', plural(story.c, 'country', 'countries')],
       ['languages', plural(story.l, 'language', 'languages')],
     ] as const
   )
@@ -510,42 +553,61 @@ function signalCard(slot: Slot, list: HTMLElement, pick: (slot: Slot) => void): 
   const story = slot.story;
   const place = shortName(slot.cell.name) || slot.cell.name;
 
-  // The head row is the fold's control: slot name left, place right, the whole row the hit area.
+  // The head row is the fold's control: slot name left, then the place and the pixel plus
+  // (a minus when open) at the right, the whole row the hit area.
   const toggle = el('button', 'signal-row signal-toggle');
   toggle.type = 'button';
   toggle.id = `${id}-toggle`;
   toggle.setAttribute('aria-expanded', 'false');
   toggle.setAttribute('aria-controls', `${id}-body`);
-  toggle.append(el('span', 'signal-slot', label), el('span', 'signal-place', place));
-  toggle.addEventListener('click', () => setOpenSignal(list, openSlot === slot.id ? null : slot.id));
+  const end = el('span', 'signal-end');
+  end.append(el('span', 'signal-place', place));
+  end.insertAdjacentHTML('beforeend', FOLD_SVG);
+  toggle.append(el('span', 'signal-slot', label), end);
+  toggle.addEventListener('click', () => setOpenSignal(list, openSlot === slot.id ? null : slot.id, true));
   head.append(toggle);
 
-  // The outlet's own title, verbatim, linked to its article when the file has the URL.
+  // The outlet's own title, verbatim. It is not a link: while the entry is closed, pressing
+  // it opens the entry like the head (a pointer target only; the head is the one tab stop),
+  // and the way out to the outlet is the READ AT link inside the open body.
   const text = story.headline.trim();
   const attribution = [story.headlineSource, story.headlineLang].filter(Boolean).join(' · ');
-  if (text) {
+  const href = safeHref(story.headlineUrl);
+  if (text || attribution) {
     const headline = el('p', 'story-headline signal-headline');
-    const href = safeHref(story.headlineUrl);
-    const words = href ? el('a', 'story-link', text) : el('span', '', text);
-    setLang(words, story.headlineLang);
-    if (words instanceof HTMLAnchorElement && href) {
-      words.href = href;
-      words.target = '_blank';
-      words.rel = 'noopener';
+    if (text) {
+      const words = el('span', '', text);
+      setLang(words, story.headlineLang);
+      headline.append(words);
+    } else {
+      // No title to show: the outlet line stands in the headline's place.
+      headline.append(el('span', 'story-source', attribution));
     }
-    headline.append(words);
-    li.append(headline);
-  } else if (attribution) {
-    // No title to show: the outlet line stands in the headline's place.
-    const headline = el('p', 'story-headline signal-headline');
-    headline.append(el('span', 'story-source', attribution));
+    // Focus is left where it is (moving it to the head would draw a ring for a tap); the
+    // next Tab starts from the pressed headline, at READ AT.
+    headline.addEventListener('click', () => {
+      if (openSlot !== slot.id) setOpenSignal(list, slot.id, true);
+    });
     li.append(headline);
   }
 
   const body = el('div', 'signal-body');
   body.id = `${id}-body`;
   body.hidden = true;
-  if (text && attribution) body.append(el('p', 'story-source signal-source', attribution));
+  if (href) {
+    // The outbound link: "READ AT THEGAZETTE.COM", in a new tab; hreflang carries the
+    // article's language (the link's own words are English).
+    const source = el('p', 'signal-source');
+    const read = el('a', 'signal-read', `Read at ${story.headlineSource || host(href)}`);
+    read.href = href;
+    read.target = '_blank';
+    read.rel = 'noopener';
+    if (/^[a-z]{2,3}$/.test(story.headlineLang)) read.hreflang = story.headlineLang;
+    source.append(read);
+    body.append(source);
+  } else if (text && attribution) {
+    body.append(el('p', 'story-source signal-source', attribution));
+  }
   body.append(el('p', 'signal-line', line));
   const meta = signalMeta(slot.id, story);
   if (meta) body.append(meta);
@@ -604,13 +666,14 @@ export function openLoading(cell: HeatCell, windowHours: number) {
   show();
 }
 
-export function showDetail(detail: CellDetail, windowHours: number) {
+/** Fills the panel from the cell's detail file; returns whether `pin`'s story was found and pinned. */
+export function showDetail(detail: CellDetail, windowHours: number, pin: StoryPin | null = null): boolean {
   title.textContent = detail.name;
   setSummary(detail);
   setCounts(detail);
   setReach(detail, windowHours);
   const now = Date.now();
-  renderStories(detail, now);
+  const pinned = renderStories(detail, now, pin);
   renderCoverage(detail);
   renderVideos(detail);
   const shown = detail.articles.length;
@@ -619,6 +682,7 @@ export function showDetail(detail: CellDetail, windowHours: number) {
     shown < detail.n ? `newest ${count(shown)} of ${count(detail.n)}` : '',
   );
   setState(shown ? '' : 'No articles listed for this place.');
+  return pinned;
 }
 
 /** A replay cell that is not in the current snapshot: there is no detail file for it. */

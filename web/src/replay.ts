@@ -3,7 +3,7 @@
 // (heat.json), so it never needs its own fetch. A range input stays as the keyboard and
 // screen-reader scrubber (and what the clip renderer waits for).
 import { frameAdded, loadFrame, loadHistoryIndex, type FrameRow, type HistoryFrame } from './data';
-import { count, stampOf, utcTime } from './format';
+import { count, stampOf, utcDayTime } from './format';
 
 const FPS = 6;
 const PREFETCH_CONCURRENCY = 3;
@@ -60,6 +60,9 @@ const pad = (i: number) => String(i).padStart(2, '0');
 /** A count, or an en dash when unknown. */
 const countOrDash = (n: number | null) => (n === null ? '–' : count(n));
 
+/** A frame's new articles as the playhead states them: "+3,176", or "–" when unknown. */
+const plusOrDash = (n: number | null) => (n === null ? '–' : `+${count(n)}`);
+
 /**
  * The whole frame inverts for one painted frame when replay starts or the map returns to the
  * live snapshot by playback or an explicit jump; never while scrubbing, never under reduced
@@ -110,6 +113,7 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
   const range = $<HTMLInputElement>('scrub-range');
   const play = $<HTMLButtonElement>('scrub-play');
   const label = $<HTMLElement>('scrub-time');
+  const labelNew = document.getElementById('scrub-new');
   const liveTag = $<HTMLElement>('scrub-live');
   const barsEl = $<HTMLElement>('bars');
   const barTag = $<HTMLElement>('bar-tag');
@@ -228,7 +232,9 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
     copy.setAttribute('points', run.join(' '));
     trendLine.after(copy);
   }
-  trendMax.textContent = `${known.length ? count(max) : '–'} max`;
+  // The line is a mean, so the head states the mean's own maximum (rounded), not the bars'.
+  const meanMax = Math.max(...means.filter((m): m is number => m !== null));
+  trendMax.textContent = `9-frame mean · max ${known.length ? count(Math.round(meanMax)) : '–'}`;
 
   // The labels name the new quantity (index.html carries the same text; set here too so
   // the field reads right whichever copy of the markup is served).
@@ -256,18 +262,21 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
       bar.classList.toggle('is-after', i > target);
       bar.classList.toggle('is-current', i === target);
     });
-    barTag.textContent = pad(target);
+    // The playhead states its value (the index is the head's "36/99").
+    barTag.textContent = plusOrDash(added[target]);
     barTag.style.left = pos(target);
     barTag.classList.toggle('is-end', frac(target) > 0.97);
     barTag.classList.toggle('is-start', frac(target) < 0.03);
     fieldCount.textContent = `${pad(target)}/${pad(last)}`;
     // Always the newest frames, ending at live; the frame on screen is inverted when listed.
+    // The time carries its weekday where the day changes: on the first row when it is not
+    // today's (UTC), and on the first row of each new day after it.
     rows.forEach((tr, r) => {
       const i = last - rows.length + 1 + r;
       const cells = tr.children;
       tr.dataset.index = String(i);
       cells[0].textContent = pad(i);
-      cells[1].textContent = utcTime(frames[i].at).replace(' UTC', '');
+      cells[1].textContent = utcDayTime(frames[i].at, r === 0 ? Date.now() : frames[i - 1].at);
       cells[2].textContent = count(articles[i]);
       cells[3].textContent = countOrDash(added[i]);
       tr.classList.toggle('is-on', i === target);
@@ -284,11 +293,15 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
   }
 
   function updateControl() {
-    const time = utcTime(frames[target].at);
+    const day = utcDayTime(frames[target].at);
+    const time = day ? `${day} UTC` : '';
+    const fresh = added[target];
     range.value = String(target);
     label.textContent = time;
+    if (labelNew) labelNew.textContent = `${plusOrDash(fresh)} new`;
     liveTag.hidden = target !== last;
-    range.setAttribute('aria-valuetext', target === last ? `${time}, live` : time);
+    const said = [time, fresh === null ? 'new articles unknown' : `${count(fresh)} new articles`, ...(target === last ? ['live'] : [])];
+    range.setAttribute('aria-valuetext', said.join(', '));
     root.classList.toggle('is-live', target === last);
     updateField();
   }

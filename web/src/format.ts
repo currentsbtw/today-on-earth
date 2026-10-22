@@ -19,6 +19,36 @@ export function utcTime(iso: string): string {
   return `${hh}:${mm} UTC`;
 }
 
+const WEEKDAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+const dayKey = (d: Date) => Math.floor(d.getTime() / 86_400_000);
+const hourMinute = (d: Date) => `${String(d.getUTCHours()).padStart(2, '0')}:${String(d.getUTCMinutes()).padStart(2, '0')}`;
+
+/**
+ * The one rule for times that may cross midnight: "14:30", or "WED 14:30" when the time falls
+ * on a different UTC day than `ref` (an ISO time or epoch ms; default now; null forces the
+ * weekday). No unit; "" for an unreadable time. Story spans, the replay stamps, the PLAY
+ * readout and the recent-frames table all say the day through this.
+ */
+export function utcDayTime(iso: string, ref: string | number | null = Date.now()): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  const r = ref === null ? null : new Date(ref);
+  const same = r !== null && !Number.isNaN(r.getTime()) && dayKey(r) === dayKey(d);
+  return same ? hourMinute(d) : `${WEEKDAYS[d.getUTCDay()]} ${hourMinute(d)}`;
+}
+
+/**
+ * A story's time span: "01:15–04:30 UTC" within one UTC day, "WED 14:30 – THU 14:15 UTC"
+ * across midnight, one time when the first and last article coincide.
+ */
+export function utcSpan(first: string, last: string): string {
+  const a = utcDayTime(first, first);
+  const b = utcDayTime(last, last);
+  if (!a || !b) return a || b ? `${a || b} UTC` : '';
+  if (utcDayTime(last, first) !== b) return `${utcDayTime(first, null)} – ${utcDayTime(last, null)} UTC`;
+  return a === b ? `${b} UTC` : `${a}–${b} UTC`;
+}
+
 /** "just now", "12m ago", "2h ago", "3d ago" */
 export function ago(iso: string, now = Date.now()): string {
   const t = new Date(iso).getTime();

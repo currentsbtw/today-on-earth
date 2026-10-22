@@ -696,6 +696,8 @@ body.is-replay .map-frame {
   padding-right: 8px;
   background: var(--bg);
   font-weight: 500;
+  /* Two balanced lines rather than one word left on the second. */
+  text-wrap: balance;
 }
 
 .legend {
@@ -790,14 +792,18 @@ body.is-replay .map-frame {
   border-bottom: 1px solid var(--rule);
 }
 
-/* These columns (and the place panel) clip at their edges on wide screens: a focus ring
-   inside them is drawn inside its control, never cut by the scroll edge. */
+/* These columns clip at their edges on wide screens, and the place panel scrolls on every
+   width (column, drawer, sheet): a focus ring inside them is drawn inside its control, never
+   cut by the scroll edge. */
 @media (min-width: 1100px) {
   .col-signals :focus-visible,
-  .col-replay :focus-visible,
-  .panel :focus-visible {
+  .col-replay :focus-visible {
     outline-offset: -2px;
   }
+}
+
+.panel :focus-visible {
+  outline-offset: -2px;
 }
 
 .side[data-view='signals'] .col-replay,
@@ -1151,6 +1157,21 @@ body.is-replay .map-frame {
     width: 24px;
     height: 40px;
   }
+
+  /* And the list tightens by 34px (2px above it, 4px under each entry, 2px above each
+     headline), so at 1280x800 the sixth slot's reason ends inside the column. (Qualified
+     selectors: the base rules come later in this file.) */
+  .col-signals .signals-list {
+    margin-top: 4px;
+  }
+
+  .signals-list .signal {
+    padding-bottom: 2px;
+  }
+
+  .signal .signal-headline {
+    margin-top: 2px;
+  }
 }
 
 /* Panel: a selected place --------------------------------------------------------- */
@@ -1160,6 +1181,8 @@ body.is-replay .map-frame {
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
+  /* Focus scrolling keeps a control clear of the sticky CLOSE bar and of the bottom edge. */
+  scroll-padding-block: 33px 4px;
   padding: 0 4px 24px 0;
   background: var(--dots), var(--bg);
 }
@@ -1383,13 +1406,13 @@ body.is-replay .map-frame {
   list-style: none;
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity;
 }
 
+/* No scroll snapping: it pulled the strip back from a card that keyboard focus had scrolled
+   into view. */
 .video {
   flex: none;
   width: 160px;
-  scroll-snap-align: start;
 }
 
 .video.is-playing {
@@ -1437,7 +1460,9 @@ body.is-replay .map-frame {
   fill: var(--fg);
 }
 
+/* Top-aligned in its 1fr row, so the box is exactly two lines and no third shows. */
 .video-title {
+  align-self: start;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -1472,6 +1497,14 @@ body.is-replay .map-frame {
   margin: 0;
   font: 400 16px/1.35 var(--hum);
   overflow-wrap: anywhere;
+}
+
+/* The story a signal named, first in the list: its slot in the label register above it. */
+.story-pin {
+  margin: 0 0 6px;
+  font: 500 11px/1.3 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .story-link {
@@ -1659,11 +1692,12 @@ a.article-title:visited,
   cursor: pointer;
 }
 
-/* The visible square stays small; the hit area extends to 36x36. */
+/* The visible square stays small; the hit area extends to 36x36 (the ::after starts inside
+   the 1px border, so it reaches 9px past the padding box). */
 .article-play::after {
   content: '';
   position: absolute;
-  inset: -8px;
+  inset: -9px;
 }
 
 .article-play:hover {
@@ -1746,6 +1780,14 @@ a.article-title:visited,
   flex: none;
 }
 
+/* The head's right end: the place, then the fold mark. */
+.signal-end {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
 .signal-place {
   min-width: 0;
   overflow: hidden;
@@ -1754,9 +1796,26 @@ a.article-title:visited,
   white-space: nowrap;
 }
 
-.signal-toggle:hover .signal-slot {
+/* The 7x7 pixel plus; open, its upright goes and it reads as a minus. */
+.signal-mark {
+  flex: none;
+  display: block;
+  fill: currentColor;
+}
+
+.signal.is-open .signal-mark-v {
+  display: none;
+}
+
+.signal-toggle:hover .signal-slot,
+.signal:not(.is-open):has(.signal-headline:hover) .signal-slot {
   text-decoration: underline;
   text-underline-offset: 4px;
+}
+
+/* Closed, the headline opens the entry like its head. */
+.signal:not(.is-open) .signal-headline {
+  cursor: pointer;
 }
 
 /* Open: the head inverts like the current nav item. */
@@ -1793,7 +1852,6 @@ a.article-title:visited,
 
 /* Closed, the headline shows two lines; the clamp sits on the link so its focus ring is
    one rectangle. Open, the whole title shows. */
-.signal .signal-headline > a,
 .signal .signal-headline > span:not(.story-source) {
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -1802,7 +1860,6 @@ a.article-title:visited,
   overflow: hidden;
 }
 
-.signal.is-open .signal-headline > a,
 .signal.is-open .signal-headline > span {
   -webkit-line-clamp: none;
   line-clamp: none;
@@ -1812,11 +1869,29 @@ a.article-title:visited,
   display: none;
 }
 
-/* The outlet line continues the headline's rule. */
+/* The outlet line continues the headline's rule; with a URL it is the entry's one way out. */
 .signal-source {
   margin: 0;
   padding: 4px 0 0 12px;
   border-left: 1px solid var(--hairline-strong);
+}
+
+.signal-read {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  color: var(--muted);
+  font: 500 11px/1.3 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+
+.signal-read:hover {
+  color: var(--fg);
 }
 
 .signal-line {
@@ -1904,6 +1979,22 @@ a.article-title:visited,
 @media (max-width: 1099px) {
   body {
     overflow: auto;
+  }
+
+  /* The page scrolls here: focus scrolling leaves room for a ring at the viewport's edges. */
+  html {
+    scroll-padding-block: 4px;
+  }
+
+  /* The brand sits at the viewport's top edge: its ring is drawn inside it, in 3px of
+     padding that the negative margin gives back. */
+  .brand {
+    margin-left: -3px;
+    padding-left: 3px;
+  }
+
+  .brand:focus-visible {
+    outline-offset: -2px;
   }
 
   .shell {
@@ -2134,7 +2225,8 @@ a.article-title:visited,
 
   /* Above MapLibre's attribution, which opens expanded (two lines) across a narrow frame. */
   .signal-row,
-  .signal-open {
+  .signal-open,
+  .signal-read {
     min-height: 36px;
   }
 
@@ -2194,6 +2286,11 @@ a.article-title:visited,
     top: 36px;
   }
 
+  /* Below the sticky handle (36px) and CLOSE bar (37px). */
+  .panel {
+    scroll-padding-block: 77px 4px;
+  }
+
   .panel-title {
     font-size: 24px;
   }
@@ -2224,7 +2321,9 @@ a.article-title:visited,
   .mode button::after {
     content: '';
     position: absolute;
-    inset: -4px 0;
+    /* The ::after is placed against the padding box, inside the 1px border: 5px past it
+       and 1px to each side make the bordered 36px controls a true 44px. */
+    inset: -5px -1px;
   }
 
   /* CLOSE sits right under the sheet handle: its extra 8px go below it, not into the handle. */
