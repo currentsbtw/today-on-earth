@@ -224,7 +224,7 @@ Black, white, and a short ladder of greys for secondary text and strips; chroma 
 ### Named Rules
 **The Two-Ink Rule.** Chrome, marks and type use #000 and #fff only. Grey is allowed in exactly two places: the map plate's land and borders, and the text hierarchy's muted steps (#9a9a9a, #777, #5c5c5c, #333). No other grey and no hue may be introduced.
 
-**The Inversion Rule.** Selection, activation and the pressed state are expressed by swapping ink and white (`background: #fff; color: #000`), never by tint, opacity or a second colour. One painted frame of `filter: invert(1)` on the root marks a snapshot change (skipped under reduced motion).
+**The Inversion Rule.** Selection, activation and the pressed state are expressed by swapping ink and white (`background: #fff; color: #000`), never by tint, opacity or a second colour. One painted frame of `filter: invert(1)` on the root marks a snapshot change: replay starting, or the map returning to live by playback or by an explicit jump (End, the last row, the last bar, a link); never scrubbing, never more than once a second, and skipped under reduced motion.
 
 **The Faint-Is-Not-Text Rule.** #5c5c5c appears only on strips, bars and baselines. Text drops no lower than #777.
 
@@ -279,7 +279,7 @@ There are no shadows and no tonal layering. Every surface is flat black; nothing
 
 ## Motion
 
-Almost nothing moves. There is no `transition` anywhere in the build. Two things are animated, and both are stepped: the brand mark's ring orbit (on the mark and on the observer's head), and the one-frame inversion on a snapshot change.
+Almost nothing moves. There is no `transition` anywhere in the build. Two things are animated, and both are stepped: the brand mark's ring orbit (on the mark and on the observer's head), and the one-frame inversion on a snapshot change (replay starting or the map returning to live, at most once a second).
 
 **The orbit.** It runs in two places, the mark on every page that carries it (the map, the method page) and the observer's head on the map page, under one selector: `.globe .ring, .observer-figure .ring` runs `animation: mark-ring 2s steps(30, end) infinite`, from `translateX(-6px)` to `translateX(24px)` in SVG units: the 6x6 ringed dot starts fully hidden behind the sphere's left edge, steps one grid column per frame (30 columns over 2s, about 67ms a step), crosses the open band and passes behind the right edge, then re-enters from the left. A `clipPath` on the band (`M1 8h22v8H1z`) keeps it inside the globe, so it is never seen outside the band and the loop point is hidden (both the first and the last frame are behind the sphere). It runs for as long as the page is open and never reacts to interaction. Under `prefers-reduced-motion: reduce` the animation is removed and the ring sits at rest at columns 12-17 from the first paint, in both places. The observer's head clips its ring to its own band (`clipPath#observer-band`, the same `M1 8h22v8H1z`), so the two orbits are one motion on the same keyframes and timing. The clip frames use the static mark (ring baked into the path) because the renderer captures stills.
 

@@ -57,12 +57,19 @@ const pad = (i: number) => String(i).padStart(2, '0');
 const signed = (d: number) => (d > 0 ? `+${count(d)}` : d < 0 ? `−${count(-d)}` : '0');
 
 /**
- * The whole frame inverts for one painted frame at the moment the map returns to the live
- * snapshot or replay starts. Never under reduced motion.
+ * The whole frame inverts for one painted frame when replay starts or the map returns to the
+ * live snapshot by playback or an explicit jump; never while scrubbing, never under reduced
+ * motion, and never more than once a second (WCAG 2.3.1): a second call inside that window
+ * is dropped, not queued.
  */
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const INVERT_MIN_GAP_MS = 1000;
+let lastInvert = -Infinity;
 function invertOnce() {
   if (reducedMotion.matches) return;
+  const now = performance.now();
+  if (now - lastInvert < INVERT_MIN_GAP_MS) return;
+  lastInvert = now;
   const root = document.documentElement;
   root.classList.add('invert');
   requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('invert')));
@@ -207,7 +214,7 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
       const i = Number(tr.dataset.index);
       if (Number.isNaN(i) || tooFew) return;
       setPlaying(false);
-      go(i);
+      go(i, { mark: true });
     });
     recent.append(tr);
     return tr;
@@ -255,10 +262,14 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
     updateField();
   }
 
-  function go(i: number) {
+  /**
+   * Moves the playhead. `mark` is for discrete events only (playback, a click, End, a
+   * permalink): continuous input (the range, a drag, arrow keys) never inverts the frame.
+   */
+  function go(i: number, { mark = false }: { mark?: boolean } = {}) {
     const before = target;
     target = Math.max(0, Math.min(last, i));
-    if (target === last && before !== last) invertOnce();
+    if (mark && target === last && before !== last) invertOnce();
     updateControl();
     void fetchFrame(target);
     render();
@@ -278,7 +289,7 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
       const next = target + 1;
       // Wait for the next frame rather than skipping ahead: no stutter, just a pause.
       if (!ready(next) && !failed.has(next)) return void fetchFrame(next);
-      go(next);
+      go(next, { mark: true });
       if (next >= last) setPlaying(false);
     }, 1000 / FPS);
   }
@@ -308,7 +319,7 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
     dragging = true;
     barsEl.setPointerCapture(e.pointerId);
     setPlaying(false);
-    go(indexAt(e.clientX));
+    go(indexAt(e.clientX), { mark: true });
   });
   barsEl.addEventListener('pointermove', (e) => {
     if (dragging && indexAt(e.clientX) !== target) go(indexAt(e.clientX));
@@ -328,6 +339,12 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
     if (e.key === ' ') {
       e.preventDefault();
       setPlaying(!timer);
+    } else if (e.key === 'End') {
+      // The explicit jump to live; handled here so it can mark the change (the native
+      // End would arrive as an input event, indistinguishable from scrubbing).
+      e.preventDefault();
+      setPlaying(false);
+      go(last, { mark: true });
     }
   });
   play.addEventListener('click', () => setPlaying(!timer));
@@ -346,13 +363,13 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
     },
     selectLive() {
       setPlaying(false);
-      go(last);
+      go(last, { mark: true });
     },
     selectStamp(stamp) {
       const i = frames.findIndex((f) => stampOf(f.at) === stamp);
       if (i < 0) return false;
       setPlaying(false);
-      go(i);
+      go(i, { mark: true });
       return true;
     },
   };
