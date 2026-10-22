@@ -1,13 +1,13 @@
 // clip.html: one still frame of the map for a headless time-lapse renderer. No header,
 // panel or controls. Three modes, all drawn at a fixed size and reporting readiness the
 // same way:
-//   ?t=<stamp>       the heat of one replay frame, a wordmark, the frame's date and time, and
-//                    its counts. Landscape frames fit the whole world. Portrait frames fill
+//   ?t=<stamp>       the heat of one replay frame, a wordmark, the frame's date and time, a
+//                    fixed line saying what a dot and its size mean, and its counts. Landscape frames fit the whole world. Portrait frames fill
 //                    the map window's height with the world (about 60% of its width in view)
 //                    and centre the longitude of local noon at the frame's time, so the camera
 //                    turns once westward over the day;
 //   ?signal=<slot>   one broadcast slot: the map at the slot's cell with the live heat, the
-//                    cell's outline, reticle and "NAME · n" tag, the slot label, its fixed
+//                    cell's outline, reticle and name tag, the slot label, its fixed
 //                    sentence and the outlet's own headline. With `from=<ref>&fly=<F>` the
 //                    page is a flight to that card instead: it opens on step 0 (the
 //                    time-lapse layout at the `from` camera, captioned with the slot label)
@@ -127,6 +127,9 @@ function setCounts(totals: Totals | null) {
   );
 }
 
+/** The reading key under the date ("One dot per place…"): time-lapse layouts only. */
+const showKey = (on: boolean) => void (el('clip-key').hidden = !on);
+
 /** Shrink a one-line element's type (its --fit) until it fits its parent's width. */
 function fitWidth(node: HTMLElement) {
   const room = node.parentElement!.clientWidth;
@@ -164,10 +167,16 @@ function textTop() {
 }
 
 /**
- * The time-lapse window. Landscape: the reserved bands. Portrait: from under the top text to
- * the top of the bottom safe strip (the totals sit inside it, on its lower rule).
+ * The time-lapse window. Landscape: the reserved bands, the top one moved down to 2.4u plus a
+ * tick under the reading key when the key would reach it. Portrait: from under the top text
+ * to the top of the bottom safe strip (the totals sit inside it, on its lower rule).
  */
-const timelapseWindow = (): Window => (portrait ? { top: textTop(), bottom: H - safeBottom } : { top: topBand, bottom: H - bottomBand });
+const timelapseWindow = (): Window => {
+  if (portrait) return { top: textTop(), bottom: H - safeBottom };
+  const key = el('clip-key');
+  const top = key.hidden ? topBand : Math.round(key.getBoundingClientRect().bottom + unit * 2.4 + tickLength());
+  return { top: Math.max(topBand, top), bottom: H - bottomBand };
+};
 
 /** Longitude of local noon at `at`: 180 - 15 x the UTC hour as a decimal, in [-180, 180). */
 function noonLon(at: string) {
@@ -211,6 +220,7 @@ async function renderFrame() {
 
   setTime(at);
   setCounts(totals);
+  showKey(true);
   await fontsLaidOut();
   const w = timelapseWindow();
   setEdges(w);
@@ -253,13 +263,12 @@ async function cellOutline(id: string): Promise<GeoJSON.Feature | null> {
 }
 
 /**
- * The live site's callout at the cell's centre: the reticle and the "NAME · n" tag, n from
- * the live heat (only the name when the cell has no live count).
+ * The live site's callout at the cell's centre: the reticle and a tag with the place's name
+ * only. No count: beside the card's sentence the place's total would read as the story's.
  */
 function cellTag(cell: NonNullable<Slot['cell']>, heat: Heat): GeoJSON.Feature {
   const live = heat.cells.find((c) => c.id === cell.id);
-  const name = live?.name || cell.name;
-  const label = live ? (name ? `${shortName(name)} · ${count(live.n)}` : count(live.n)) : shortName(name);
+  const label = shortName(live?.name || cell.name);
   return { type: 'Feature', geometry: { type: 'Point', coordinates: [cell.lon, cell.lat] }, properties: { label } };
 }
 
@@ -304,8 +313,14 @@ async function layoutCard(slot: ReturnType<typeof filledSlot>): Promise<Window &
   el('clip-outlet').textContent = story.headline ? story.headlineSource : '';
   card.classList.remove('clip-card--caption');
   card.hidden = false;
+  // The card's window is measured without the key, which the card layout hides, so a flight's
+  // arrival matches the direct card exactly.
+  const key = el('clip-key');
+  const keyShown = !key.hidden;
+  key.hidden = true;
   await fontsLaidOut();
   const top = textTop();
+  key.hidden = !keyShown;
   const gap = Math.round(unit * 3.6 + tickLength());
   fitCard(card, H - safeBottom - top - gap - Math.round(H * 0.22));
   const header = H - safeBottom - card.offsetHeight;
@@ -374,6 +389,7 @@ async function renderFlight(id: string, fromParam: string, flyParam: string) {
   if (from.kind === 't') ({ at, totals } = await frameInfo(from.stamp, heat, frames, false));
   setTime(at);
   setCounts(totals);
+  showKey(true);
   await fontsLaidOut();
   const timelapse = timelapseWindow();
 
@@ -397,6 +413,7 @@ async function renderFlight(id: string, fromParam: string, flyParam: string) {
     root.classList.remove('clip--card', 'clip--signal');
     setTime(at);
     setCounts(totals);
+    showKey(true);
     setEdges(timelapse);
     cardEl.classList.add('clip-card--caption');
     const counts = el('clip-counts').getBoundingClientRect();
@@ -408,6 +425,7 @@ async function renderFlight(id: string, fromParam: string, flyParam: string) {
     root.classList.add('clip--card', 'clip--signal');
     setTime(broadcast.generatedAt);
     setCounts(null);
+    showKey(false);
     setEdges(card);
     cardEl.classList.remove('clip-card--caption');
   };

@@ -81,11 +81,12 @@ The Signals button opens a daily broadcast: six fixed slots, each filled by one 
 from the last 24 hours under a published rule. A filled slot shows an outlet's own
 headline, verbatim, and the story's coverage numbers. Nothing in it is written or
 summarised by us or by a model. The sentence above each headline is a fixed template
-filled with numbers ("Signal detected over Nairobi: 214 reports from 61 transmitters
-in 19 languages."), where reports are articles and transmitters are outlets.
+filled with the story's own numbers ("One story over Nairobi: 214 articles from 61
+outlets in 19 languages."), so they count that story, not everything written about
+the place.
 
-Every slot needs a story with at least 3 distinct headlines, so one report echoed
-across many sites is never a signal, and the story must have a headline. "Heard
+Every slot needs a story with at least 3 distinct headlines, so one article echoed
+across many sites never fills a slot, and the story must have a headline. "Heard
 across the planet" also needs the place's own country to be known. The slots, in
 order:
 
@@ -97,7 +98,7 @@ order:
 - **Rising**: the place most above its own normal (articles divided by the larger of
   its normal and 3); its story is that place's story with the most outlets. Needs 3
   complete days of history; at least 20 articles.
-- **Brightest**: the most positive mean tone among stories with at least 10 outlets,
+- **Most positive tone**: the most positive mean tone among stories with at least 10 outlets,
   3 countries and 10 articles.
 - **Ordinary life**: the most outlets among stories where at most a quarter of the
   articles carry conflict, politics, crime or disaster themes; at least 10 outlets

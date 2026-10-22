@@ -14,7 +14,7 @@ export const SLOT_LABELS: Record<SlotId, string> = {
   loudest: 'Loudest signal',
   planet: 'Heard across the planet',
   rising: 'Rising',
-  brightest: 'Brightest',
+  brightest: 'Most positive tone',
   ordinary: 'Ordinary life',
   faint: 'Faint signal',
 };
@@ -79,40 +79,67 @@ const tone = (t: number) => (t > 0 ? `+${t.toFixed(1)}` : t.toFixed(1));
 
 /**
  * The frame sentence for a filled slot: the spectator's voice lives here and in the numbers,
- * never in words about the story. "" for an unavailable slot.
+ * never in words about the story. It names its unit (one story, not the place's total) and
+ * counts in the ledger's words: articles, outlets, countries, languages. "" for an
+ * unavailable slot.
  */
 export function signalLine(slot: Slot): string {
   if (!slot.available || !slot.cell || !slot.story) return '';
   const place = shortName(slot.cell.name) || slot.cell.name;
   const s = slot.story;
-  const reports = `${plural(s.n, 'report', 'reports')} from ${plural(s.o, 'transmitter', 'transmitters')}`;
+  const articles = `${plural(s.n, 'article', 'articles')} from ${plural(s.o, 'outlet', 'outlets')}`;
+  const languages = plural(s.l, 'language', 'languages');
   switch (slot.id) {
+    case 'loudest':
+      return `One story over ${place}: ${articles} in ${languages}.`;
     case 'planet':
-      return `Signal over ${place} heard in ${plural(s.i, 'other country', 'other countries')}: ${reports}.`;
+      return `One story over ${place}, heard in ${plural(s.i, 'other country', 'other countries')}: ${articles}.`;
     case 'rising': {
       // The stored ratio divides by max(normal, 3), so it is not "times the usual level"
       // for quiet places: state both numbers instead.
       const usual = Math.round(slot.b ?? 0);
       return usual > 0
-        ? `Signal over ${place}: ${reports}, where ${num(usual)} a day is usual.`
-        : `Signal over ${place}: ${reports}, where none was usual.`;
+        ? `One story over ${place}: ${articles}, where the place usually has ${plural(usual, 'article', 'articles')} a day.`
+        : `One story over ${place}: ${articles}, where the place usually has none.`;
     }
     case 'brightest':
-      return `Brightest signal, over ${place}: ${reports}, tone ${tone(s.t)}.`;
+      return `The most positive story, over ${place}: ${articles}, tone ${tone(s.t)}.`;
     case 'ordinary':
-      return `Ordinary life over ${place}: ${reports} in ${plural(s.l, 'language', 'languages')}.`;
-    case 'faint':
-      return `Faint signal from ${place}: ${reports}, usually ${num(Math.round(slot.b ?? 0))} a day.`;
-    case 'loudest':
-      return `Signal detected over ${place}: ${reports} in ${plural(s.l, 'language', 'languages')}.`;
+      return `One story of ordinary life, over ${place}: ${articles} in ${languages}.`;
+    case 'faint': {
+      const usual = Math.round(slot.b ?? 0);
+      return usual > 0
+        ? `One story from a quiet place, ${place}: ${articles}; the place usually has ${num(usual)} a day.`
+        : `One story from a quiet place, ${place}: ${articles}; the place usually has none.`;
+    }
     default:
       return '';
   }
+}
+
+/** A coverage fact a signal entry can state: one of the story's counts, or its reach abroad. */
+export type SignalFact = 'articles' | 'outlets' | 'countries' | 'languages' | 'heardIn';
+
+const SENTENCE_FACTS: Record<SlotId, readonly SignalFact[]> = {
+  loudest: ['articles', 'outlets', 'languages'],
+  planet: ['articles', 'outlets', 'heardIn'],
+  rising: ['articles', 'outlets'],
+  brightest: ['articles', 'outlets'],
+  ordinary: ['articles', 'outlets', 'languages'],
+  faint: ['articles', 'outlets'],
+};
+
+/**
+ * The facts a slot's sentence (signalLine) already states, so the entry's meta line carries
+ * only the rest and no number appears twice in one entry.
+ */
+export function sentenceFacts(id: SlotId): readonly SignalFact[] {
+  return SENTENCE_FACTS[id] ?? [];
 }
 
 /** Why an empty slot is empty, in the same fixed voice. */
 export function emptyLine(slot: Slot): string {
   if (slot.available) return '';
   if (slot.reason === 'baseline') return slot.availableFrom ? `Needs more days of history; from ${slot.availableFrom}.` : 'Needs more days of history.';
-  return 'No signal met the rule today.';
+  return 'No story met the rule today.';
 }

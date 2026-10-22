@@ -1,6 +1,6 @@
 // The place panel (bottom sheet on narrow screens) listing every article for one cell, and
 // the Signals entries (the daily broadcast) it shares its log grammar with.
-import { emptyLine, SLOT_IDS, SLOT_LABELS, signalLine, type Broadcast, type Slot } from './broadcast';
+import { emptyLine, sentenceFacts, SLOT_IDS, SLOT_LABELS, signalLine, type Broadcast, type Slot, type SlotStory } from './broadcast';
 import type { Article, CellDetail, HeatCell, Story } from './data';
 import { ago, count, host, plural, safeHref, shortName, utcTime, youtubeId } from './format';
 
@@ -443,6 +443,30 @@ function broadcastWhen(at: string): string {
   return Number.isNaN(d.getTime()) ? '' : `${dateFormat.format(d)} · ${utcTime(at)}`;
 }
 
+/**
+ * A signal entry's meta line: only the counts its sentence did not state, so no number
+ * appears twice in one entry; null when the sentence said them all.
+ */
+function signalMeta(id: Slot['id'], story: SlotStory): HTMLParagraphElement | null {
+  const said = sentenceFacts(id);
+  const counts = (
+    [
+      ['articles', plural(story.n, 'article', 'articles')],
+      ['outlets', plural(story.o, 'outlet', 'outlets')],
+      ['countries', plural(story.c, 'country', 'countries')],
+      ['languages', plural(story.l, 'language', 'languages')],
+    ] as const
+  )
+    .filter(([fact]) => !said.includes(fact))
+    .map(([, text]) => text);
+  const heard = said.includes('heardIn') ? '' : heardIn(story);
+  if (!counts.length && !heard) return null;
+  const meta = el('p', 'story-meta');
+  if (counts.length) meta.append(el('span', 'story-counts', counts.join(' · ')));
+  if (heard) meta.append(el('span', '', heard));
+  return meta;
+}
+
 function signalCard(slot: Slot, pick: (slot: Slot) => void): HTMLLIElement {
   const li = el('li', 'signal');
   const id = `signal-${slot.id}`;
@@ -454,7 +478,7 @@ function signalCard(slot: Slot, pick: (slot: Slot) => void): HTMLLIElement {
   const line = signalLine(slot);
   if (!line || !slot.cell || !slot.story) {
     li.classList.add('is-empty');
-    li.append(el('p', 'signal-empty', emptyLine(slot) || 'No signal met the rule today.'));
+    li.append(el('p', 'signal-empty', emptyLine(slot) || 'No story met the rule today.'));
     return li;
   }
   const story = slot.story;
@@ -480,11 +504,8 @@ function signalCard(slot: Slot, pick: (slot: Slot) => void): HTMLLIElement {
     li.append(head);
   }
 
-  const meta = el('p', 'story-meta');
-  meta.append(el('span', 'story-counts', countsLine(story)));
-  const heard = heardIn(story);
-  if (heard) meta.append(el('span', '', heard));
-  li.append(meta);
+  const meta = signalMeta(slot.id, story);
+  if (meta) li.append(meta);
 
   const place = shortName(slot.cell.name) || slot.cell.name;
   const open = el('button', 'signal-open', `Open ${place}`);

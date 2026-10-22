@@ -102,6 +102,7 @@ body {
 /* Text sits on black blocks so the dot grid never runs through a glyph. */
 .clip-wordmark,
 .clip-time,
+.clip-key,
 .clip-count,
 .clip-line,
 .clip-quote,
@@ -125,6 +126,16 @@ body {
   gap: calc(var(--u) * 2);
   pointer-events: none;
   z-index: 2;
+}
+
+/* Landscape: the block grows past the reserved band when the reading key makes it taller
+   (clip.ts then starts the window under the key); the padding only takes effect then, so
+   frames without the key are unchanged. */
+.clip:not(.clip--portrait) .clip-top {
+  box-sizing: border-box;
+  height: auto;
+  min-height: var(--top-band);
+  padding: calc(var(--u) * 2) 0;
 }
 
 .clip--portrait .clip-top {
@@ -172,6 +183,18 @@ body {
   font-size: calc(var(--u) * 3.6);
   font-weight: 500;
   letter-spacing: 0.02em;
+}
+
+/* The reading key under the date: one fixed sentence in the prose voice, time-lapse
+   layouts only (clip.ts shows it). */
+.clip-key {
+  margin: 0;
+  padding-right: calc(var(--u) * 1.2);
+  font-family: var(--c-hum);
+  font-size: calc(var(--u) * 3);
+  font-weight: 400;
+  line-height: 1.3;
+  text-wrap: pretty;
 }
 
 /* Totals along the foot: number over label, four columns. */

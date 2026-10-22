@@ -272,7 +272,7 @@ While `baselineDays` < 3, rising and faint wait instead:
 
 **Rules.** Candidates are every story of every cell in this snapshot (the cell files'
 `stories`), each with its cell. **Every slot requires `u` >= 3**: a story with fewer than
-three distinct headlines is one report echoed, not a signal. **Every slot also requires a
+three distinct headlines is one article echoed, and never fills a slot. **Every slot also requires a
 non-empty `headline`**: a filled slot always carries an outlet's own headline. Each story fills at most one
 slot. Slots are filled in the order listed, so a story taken by "loudest" is no longer a
 candidate for "planet". Ties go to the higher `n`, then the earlier `first`, then the cell

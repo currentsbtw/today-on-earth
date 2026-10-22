@@ -426,7 +426,7 @@ only in the frame and the numbers.
 | Loudest signal | The story with the most articles in the last 24 hours | Count distinct outlets, so reprints don't win |
 | Heard across the planet | The story covered by the most different countries | Countries other than the story's own |
 | Rising | The cell most above its own normal level | Needs 7+ days of baseline; minimum article count |
-| Brightest | The most positive-toned story with real coverage | Minimum outlets and countries, so press releases and puff pieces don't win |
+| Brightest (renamed "Most positive tone" 2026-10-22) | The most positive-toned story with real coverage | Minimum outlets and countries, so press releases and puff pieces don't win |
 | Ordinary life | The most-covered story outside conflict, politics and disaster themes | Theme lists published; sports, science, festivals, weather and food qualify |
 | Faint signal | A story from a usually quiet region that broke through | Region in the lowest coverage band by baseline; minimum outlets |
 
@@ -607,6 +607,23 @@ explorer finds the counts one scroll down. The first headline must sit inside th
 peek on a 390x844 phone. Still open from the critique: the reading key on phone and clip,
 the Signals vocabulary (the user has not yet said whether the radio register stays), replay
 content, chrome repetition.
+
+### Critique follow-up 2: the ledger's words, and the reading key (2026-10-22)
+
+Decided by the user 2026-10-22: the signal sentence drops the radio register. No "Signal
+detected", no "reports from transmitters"; it uses the ledger's words (articles, outlets,
+countries, languages) and names its unit, "One story over Paris: 456 articles from 339
+outlets in 35 languages.", so 456 can no longer be read as Paris's total beside the rank
+list's 3,681. The tone slot is renamed literally, "Most positive tone" (the id `brightest`
+stays in broadcast.json; only the label and sentence change). The signal card's meta line
+carries only what the sentence did not say, so no number appears twice in one entry. The
+clip card's tag names the place without a count. Methodology page, METHODOLOGY.md, the
+contract's prose and the broadcast module change together.
+
+Reading key: the legend note "size = volume, not importance" returns on phones on its own
+line under the legend, and the clip's time-lapse frame carries one fixed Source Sans line
+under the date: "One dot per place in today's news. Size = number of articles." Nothing
+written about the news itself.
 
 ## Phase 1 build decisions (2026-10-20)
 

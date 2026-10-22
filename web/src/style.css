@@ -1930,7 +1930,20 @@ a.article-title:visited,
     height: max(52svh, calc(100svh - 236px));
   }
 
+  /* The reading key stays on phones, on its own line under the bar, without its separator. */
+  .legend {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    justify-content: start;
+    column-gap: 8px;
+    row-gap: 4px;
+  }
+
   .legend-note {
+    grid-column: 1 / -1;
+  }
+
+  .legend-sep {
     display: none;
   }
 
