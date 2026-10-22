@@ -3,14 +3,23 @@
  *   "Washington, Washington, United States"   -> "Washington, United States"
  *   "Paris, France (General), France"         -> "Paris, France"
  *   "London, London, City Of, United Kingdom" -> "London, United Kingdom"
- * Steps, in order: split on ", "; strip a " (General)" suffix and drop bare "(General)"
- * parts; drop "City Of" parts; collapse consecutive duplicates (case-insensitive); drop a
- * middle part equal to the first part; join with ", ". Never returns an empty string: if
- * nothing would be left, the original is returned. Idempotent.
+ *   "Ad Daw?Ah, Ad Daw?Ah, Qatar"            -> "Ad Dawah, Qatar"
+ * Steps, in order: remove the "?" GDELT writes for characters it could not encode, and
+ * where a "?" (or a run of them) sat between two letters, lowercase the uppercase letter
+ * after it ("Daw?Ah" -> "Dawah"); split on ", "; strip a " (General)" suffix and drop bare
+ * "(General)" parts; drop "City Of" parts; collapse consecutive duplicates
+ * (case-insensitive); drop a middle part equal to the first part; join with ", ". Never
+ * returns an empty string: if nothing would be left, the original is returned. Idempotent.
  */
 export function cleanPlaceName(fullName: string): string {
   const parts: string[] = [];
-  for (const raw of fullName.split(", ")) {
+  const unmarked = fullName.includes("?")
+    ? fullName
+        .replace(/(?<=\p{L})\?+(\p{Lu})/gu, (_, next: string) => next.toLowerCase())
+        .replace(/\?/g, "")
+        .replace(/ {2,}/g, " ")
+    : fullName;
+  for (const raw of unmarked.split(", ")) {
     let part = raw.trim().replace(/^,+|,+$/g, "").trim(); // ", " artefacts
     if (part === "(General)") continue;
     if (part.endsWith(" (General)")) part = part.slice(0, -" (General)".length).trim();

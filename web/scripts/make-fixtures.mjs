@@ -287,8 +287,34 @@ for (let k = 0; k < FRAMES; k++) {
     .sort((a, b) => b[3] - a[3]);
   const placed = rows.reduce((sum, r) => sum + r[3], 0);
   const file = `${stamp(atIso)}.json`;
-  writeFileSync(new URL(`history/${file}`, OUT), JSON.stringify({ at: atIso, cells: rows }) + '\n');
-  frames.push({ at: atIso, file, windowHours, totals: last ? heat.totals : totalsFor(placed, rows.length) });
+  // Like heat.json, each frame's newest article is 10 minutes before the frame.
+  const newest = last ? heat.newestArticleAt : iso(new Date(at.getTime() - 10 * 60000));
+  frames.push({ at: atIso, file, windowHours, newest, totals: last ? heat.totals : totalsFor(placed, rows.length), rows });
 }
-writeFileSync(new URL('history/index.json', OUT), JSON.stringify({ frames }, null, 1) + '\n');
+deriveNewArticles(frames);
+for (const { rows, file, ...entry } of frames) {
+  writeFileSync(new URL(`history/${file}`, OUT), JSON.stringify({ at: entry.at, cells: rows }) + '\n');
+}
+writeFileSync(
+  new URL('history/index.json', OUT),
+  JSON.stringify({ frames: frames.map(({ at, file, windowHours, newest, added, totals }) => ({ at, file, windowHours, newest, added, totals })) }, null, 1) + '\n',
+);
+
+/**
+ * DEVELOPMENT DATA ONLY. The real ingest counts `added` and the row element `a` as the window
+ * articles whose URL was not in the previous run's window (docs/DATA-CONTRACT.md "New
+ * articles per step"). These invented frames have no
+ * articles, so the counts are derived from the frames themselves: for each frame after the
+ * first, `a` = max(0, n - the cell's n in the previous frame (0 when absent)) and `added` =
+ * max(0, totals.articles - the previous frame's), raised to at least the sum of `a` so the
+ * contract's sum(a) <= added holds. The first frame has neither (unknown), as after a cold start.
+ */
+function deriveNewArticles(list) {
+  for (let k = 1; k < list.length; k++) {
+    const prevN = new Map(list[k - 1].rows.map((r) => [r[0], r[3]]));
+    list[k].rows = list[k].rows.map((r) => [r[0], r[1], r[2], r[3], Math.max(0, r[3] - (prevN.get(r[0]) ?? 0))]);
+    const sumA = list[k].rows.reduce((s, r) => s + r[4], 0);
+    list[k].added = Math.max(sumA, list[k].totals.articles - list[k - 1].totals.articles);
+  }
+}
 console.log(`wrote ${cells.length} cells, ${totalArticles} placed articles, ${FRAMES} history frames`);

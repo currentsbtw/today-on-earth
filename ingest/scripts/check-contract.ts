@@ -14,6 +14,7 @@ import {
   MIN_STORY_U, ORDINARY_MIN_O, PLANET_MIN_O, RISING_MIN_N, SLOT_ORDER, risingRatio, voices,
 } from "../src/broadcast.ts";
 import { reprintKey } from "../src/reprints.ts";
+import { checkStepFields } from "./history-step-check.ts";
 
 const dir = resolve(process.argv[2] ?? process.env.OUT_DIR ?? join(fileURLToPath(new URL("..", import.meta.url)), "out"));
 const errors: string[] = [];
@@ -288,7 +289,7 @@ if (!existsSync(indexPath)) {
   frames.forEach((f, i) => {
     const w = `history/index.frames[${i}]`;
     if (!isObj(f)) return err(w, "not an object");
-    exactKeys(w, f, ["at", "file", "windowHours", "totals"]);
+    exactKeys(w, f, ["at", "file", "windowHours", "totals"], ["newest", "added"]);
     if (typeof f.at !== "string" || !ISO_UTC.test(f.at)) return err(`${w}.at`, "not ISO 8601 UTC with Z");
     const expectedFile = `${f.at.replace(/[-:]/g, "")}.json`;
     if (f.file !== expectedFile) err(`${w}.file`, `expected ${expectedFile}, got ${JSON.stringify(f.file)}`);
@@ -313,9 +314,11 @@ if (!existsSync(indexPath)) {
     const fcells = Array.isArray(frame.cells) ? (frame.cells as unknown[]) : (err(`${fw}.cells`, "not an array"), []);
     if (isObj(f.totals) && f.totals.cells !== fcells.length) err(fw, `cells.length ${fcells.length} != totals.cells ${String(f.totals.cells)}`);
     const ids = new Set<string>();
+    // `newest`, `added` and the row element `a` (rows have 4 or 5 elements).
+    for (const [where, msg] of checkStepFields(f, fcells)) err(where.startsWith("rows") ? `${fw}.${where.replace("rows", "cells")}` : `${w}.${where}`, msg);
     fcells.forEach((c, j) => {
       const cw = `${fw}.cells[${j}]`;
-      if (!Array.isArray(c) || c.length !== 4) return err(cw, `expected [id, lat, lon, n], got ${JSON.stringify(c)}`);
+      if (!Array.isArray(c) || c.length < 4) return;
       const [id, lat, lon, n] = c as [unknown, unknown, unknown, unknown];
       cellId(`${cw}[0]`, id);
       if (ids.has(id as string)) err(`${cw}[0]`, "duplicate cell id");
@@ -335,6 +338,7 @@ if (!existsSync(indexPath)) {
   if (isObj(last)) {
     if (last.at !== heat.generatedAt) err("history/index last frame", `at ${String(last.at)} != heat.generatedAt ${String(heat.generatedAt)}`);
     if (last.windowHours !== heat.windowHours) err("history/index last frame", "windowHours differs from heat.json");
+    if (last.newest !== heat.newestArticleAt) err("history/index last frame", `newest ${String(last.newest)} != heat.newestArticleAt ${String(heat.newestArticleAt)}`);
     // The index keeps the five original totals; heat.json also has `reprints`.
     const { reprints: _copies, ...indexTotals } = totals;
     if (JSON.stringify(last.totals) !== JSON.stringify(indexTotals)) err("history/index last frame", "totals differ from heat.json");
@@ -347,7 +351,8 @@ if (!existsSync(indexPath)) {
       if (existsSync(lastFile)) {
         const lf = JSON.parse(readFileSync(lastFile, "utf8")) as { cells?: unknown };
         const expected = cells.filter(isObj).map((c) => [c.id, c.lat, c.lon, c.n]);
-        if (JSON.stringify(lf.cells) !== JSON.stringify(expected)) err(`history/${lastFile}`, "current frame's cells differ from heat.json cells");
+        const rows = Array.isArray(lf.cells) ? lf.cells.map((r) => (Array.isArray(r) ? r.slice(0, 4) : r)) : lf.cells;
+        if (JSON.stringify(rows) !== JSON.stringify(expected)) err(`history/${lastFile}`, "current frame's cells differ from heat.json cells");
       }
     }
   }

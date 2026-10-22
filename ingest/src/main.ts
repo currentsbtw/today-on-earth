@@ -24,7 +24,7 @@ import { FEEDS, fileUrl, mapLimit, streamZipLines, type Feed } from "./fetch.ts"
 import { createRecordAssembler, parseGkgLine, type SkipReason } from "./gkg.ts";
 import { advanceBaseline, baselineView, encodeBaseline, loadBaseline, utcDay, type Baseline } from "./baseline.ts";
 import { CarryLoadError, resolveCarrySource } from "./carry.ts";
-import { appendFrame, buildHistoryEntry, buildIndex, encodeHistory, frameFileName, loadHistory, toFrame, type HistoryEntry } from "./history.ts";
+import { appendFrame, arrivedArticles, buildHistoryEntry, buildIndex, encodeHistory, frameFileName, loadHistory, previousFrame, stepArrivals, toFrame, type HistoryEntry } from "./history.ts";
 import { encodeState, loadState, type IngestState } from "./state.ts";
 import type { ArticleRecord } from "./types.ts";
 import { coveredHours, mergeRecords, planSlots, pruneProcessed, type FeedProgress } from "./window.ts";
@@ -140,7 +140,7 @@ async function main(): Promise<number> {
   // Baseline: count each placed article once, when it first enters the state, by its UTC day.
   const today = utcDay(now.toISOString());
   const prevUrls = new Set((prev?.records ?? []).map((r) => r.url));
-  const firstMerged = records.filter((r) => !prevUrls.has(r.url));
+  const firstMerged = arrivedArticles(records, prevUrls);
   const mergedStamps: Record<string, string[]> = {};
   for (const r of ok) (mergedStamps[r.feed.name] ??= []).push(r.stamp);
   const nextBaseline = advanceBaseline({ prev: prevBaseline, stateLoaded: prev !== null, firstMerged, mergedStamps, today, log });
@@ -166,8 +166,12 @@ async function main(): Promise<number> {
   await writeFile(join(carryDir, "state.json.gz"), stateBytes);
 
   // Replay history: append this run's frame, trim, and re-emit every retained frame
-  // (the Pages deploy replaces the whole site each run).
-  const history = appendFrame(prevHistory ?? [], buildHistoryEntry(snapshot.heat));
+  // (the Pages deploy replaces the whole site each run). The frame's arrival counts are the
+  // window articles new to the state this run (`firstMerged`); unknown after a cold start
+  // of the state or without a previous retained frame.
+  const previous = previousFrame(prevHistory ?? [], snapshot.heat.generatedAt);
+  const historyEntry = buildHistoryEntry(snapshot.heat, stepArrivals(firstMerged, prev !== null, previous));
+  const history = appendFrame(prevHistory ?? [], historyEntry);
   const historyDir = join(outDir, "history");
   await rm(historyDir, { recursive: true, force: true });
   await mkdir(historyDir, { recursive: true });
@@ -192,7 +196,7 @@ async function main(): Promise<number> {
       `new records=${ok.reduce((s, r) => s + r.records.length, 0)}; ` +
       `window articles=${t.articles} (unplaced=${t.unplaced}) outlets=${t.outlets} countries=${t.countries} cells=${t.cells}; ` +
       `heat.json=${Buffer.byteLength(heatJson)}B state.json.gz=${stateBytes.length}B; ` +
-      `history frames=${history.length} largest frame=${largestFrame}B history.json.gz=${historyBytes.length}B; ` +
+      `history frames=${history.length} added=${historyEntry.added ?? "unknown"} largest frame=${largestFrame}B history.json.gz=${historyBytes.length}B; ` +
       `baseline days=${Object.keys(nextBaseline.days).length} complete=${baseline.baselineDays} new=${firstMerged.length} baseline.json.gz=${baselineBytes.length}B; ` +
       `${((Date.now() - started) / 1000).toFixed(1)}s`,
   );

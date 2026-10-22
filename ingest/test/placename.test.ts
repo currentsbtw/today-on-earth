@@ -28,3 +28,25 @@ test("cleanPlaceName: tricky cases", () => {
   const once = cleanPlaceName("London, London, City Of, United Kingdom");
   assert.equal(cleanPlaceName(once), once);
 });
+
+test("cleanPlaceName: GDELT's \"?\" encoding artefacts are removed", () => {
+  // Between two letters, the uppercase letter after the "?" is lowercased.
+  assert.equal(cleanPlaceName("Ad Daw?Ah, Ad Daw?Ah, Qatar"), "Ad Dawah, Qatar");
+  // Between two letters but followed by lowercase: only the "?" goes.
+  assert.equal(cleanPlaceName("Sa?o Paulo, Sao Paulo, Brazil"), "Sao Paulo, Brazil");
+  // A run of "?" counts as one gap.
+  assert.equal(cleanPlaceName("Hal??Ab, Syria"), "Halab, Syria");
+  // Not between two letters: the "?" goes, case and the neighbouring words stay.
+  assert.equal(cleanPlaceName("?Ayn Al Asad, Iraq"), "Ayn Al Asad, Iraq");
+  assert.equal(cleanPlaceName("Foo ? Bar, Chad"), "Foo Bar, Chad");
+  assert.equal(cleanPlaceName("Al-?Arish, Egypt"), "Al-Arish, Egypt");
+  // Never empty, and idempotent.
+  assert.equal(cleanPlaceName("?"), "?");
+  assert.equal(cleanPlaceName("??, ?"), "??, ?");
+  for (const name of ["Ad Daw?Ah, Ad Daw?Ah, Qatar", "Hal??Ab, Syria", "?", "Foo ? Bar, Chad"]) {
+    const cleaned = cleanPlaceName(name);
+    assert.equal(cleanPlaceName(cleaned), cleaned);
+  }
+  // A transliteration variant in the admin-1 part is not a duplicate: kept.
+  assert.equal(cleanPlaceName("Moscow, Moskva, Russia"), "Moscow, Moskva, Russia");
+});

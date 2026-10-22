@@ -1,10 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { gzipSync } from "node:zlib";
 import { latLngToCell } from "h3-js";
 import { buildSnapshot } from "../src/aggregate.ts";
 import { CarryLoadError } from "../src/carry.ts";
 import {
   appendFrame,
+  arrivedArticles,
   buildHistoryEntry,
   buildIndex,
   decodeHistory,
@@ -12,6 +14,8 @@ import {
   frameFileName,
   loadHistory,
   MAX_FRAMES,
+  previousFrame,
+  stepArrivals,
   toFrame,
   type HistoryEntry,
 } from "../src/history.ts";
@@ -114,3 +118,110 @@ test("history.json.gz round-trips and follows the state file's fetch rules", asy
   await assert.rejects(loadHistory(src, quiet, respond(new Response("{}"))), CarryLoadError);
 });
 
+
+// ---- arrivals per step: `newest`, `added` and the row element `a` ----
+
+const PARIS = latLngToCell(48.8566, 2.3522, 3);
+const LAGOS = latLngToCell(6.45, 3.39, 3);
+const record = (url: string, time: string, cellId = PARIS): ArticleRecord => ({
+  url, title: "", source: "a.com", country: "FR", lang: "fr", time, tone: 0, image: "",
+  lat: 0, lon: 0, cellId, locationName: "Paris, France", persons: [], orgs: [], themes: [], video: "", locationCountry: "", kinds: "",
+});
+/** The previous run's carried window, and this run's window after merging new files. */
+const previousWindow = (): ArticleRecord[] => [
+  record("https://p/1", "2026-10-21T04:15:00Z"),
+  record("https://p/2", "2026-10-21T04:30:00Z"),
+  record("https://l/1", "2026-10-21T04:15:00Z", LAGOS),
+  record("https://l/2", "2026-10-21T04:30:00Z", LAGOS),
+];
+const thisWindow = (): ArticleRecord[] => [
+  ...previousWindow(),
+  record("https://p/3", "2026-10-21T04:45:00Z"), // new URL: counted
+  // A translingual file arriving late: GKG time older than the window's newest, still counted.
+  record("https://p/late", "2026-10-21T03:30:00Z"),
+  record("https://lonely", "2026-10-21T04:45:00Z", latLngToCell(-33.9, 151.2, 3)), // n = 1: in `added`, no row
+  record("https://unplaced", "2026-10-21T04:45:00Z", ""), // unplaced: in `added`, no `a`
+];
+const urls = (records: readonly ArticleRecord[]) => new Set(records.map((r) => r.url));
+const stepHeat = (records: readonly ArticleRecord[]) => buildSnapshot(records, { now: new Date("2026-10-21T04:47:14Z"), windowHours: 24 }).heat;
+const prevFrame: HistoryEntry = { ...entry("2026-10-21T04:32:00Z"), newest: "2026-10-21T04:30:00Z" };
+
+test("arrivals: a URL in the previous carried window is not counted, a new URL is, whatever its GKG time", () => {
+  const arrived = arrivedArticles(thisWindow(), urls(previousWindow()));
+  assert.deepEqual(arrived.map((r) => r.url), ["https://p/3", "https://p/late", "https://lonely", "https://unplaced"]);
+  assert.deepEqual(arrivedArticles(previousWindow(), urls(previousWindow())), []);
+});
+
+test("added counts arrivals placed and unplaced; `a` counts them per cell, only for cells in the frame", () => {
+  const records = thisWindow();
+  const heat = stepHeat(records);
+  const e = buildHistoryEntry(heat, stepArrivals(arrivedArticles(records, urls(previousWindow())), true, prevFrame));
+  assert.equal(e.newest, "2026-10-21T04:45:00Z"); // still the newest article time
+  assert.equal(e.added, 4);
+  assert.deepEqual(e.cells.map((c) => [c[0], c[3], c[4]]), [[PARIS, 4, 2], [LAGOS, 2, 0]]);
+  assert.ok(e.cells.every((c) => c.length === 5));
+  assert.deepEqual(toFrame(e).cells[0], [PARIS, e.cells[0][1], e.cells[0][2], 4, 2]);
+  // Nothing arrived is 0, not absent.
+  const quiet = buildHistoryEntry(stepHeat(previousWindow()), stepArrivals(arrivedArticles(previousWindow(), urls(previousWindow())), true, prevFrame));
+  assert.equal(quiet.added, 0);
+  assert.ok(quiet.cells.every((c) => c.length === 5 && c[4] === 0));
+});
+
+test("cold start of the state, or no previous frame: `added` and `a` absent, rows keep four elements", () => {
+  const records = thisWindow();
+  const arrived = arrivedArticles(records, new Set()); // a cold start merges everything as new
+  for (const known of [stepArrivals(arrived, false, prevFrame), stepArrivals(arrived, true, null)]) {
+    assert.equal(known, undefined);
+    const e = buildHistoryEntry(stepHeat(records), known);
+    assert.equal(e.newest, "2026-10-21T04:45:00Z");
+    assert.equal("added" in e, false);
+    assert.ok(e.cells.every((c) => c.length === 4));
+  }
+});
+
+test("previousFrame: the newest retained entry before this run; a same-`at` frame is skipped", () => {
+  const h = [
+    entry("2026-10-20T04:00:00Z"), // older than 24h before the run: not retained
+    entry("2026-10-21T04:15:00Z"),
+    entry("2026-10-21T04:30:00Z"), // the frame a rerun at 04:30 replaces
+  ];
+  assert.equal(previousFrame(h, "2026-10-21T04:45:00Z")?.at, "2026-10-21T04:30:00Z");
+  assert.equal(previousFrame(h, "2026-10-21T04:30:00Z")?.at, "2026-10-21T04:15:00Z");
+  assert.equal(previousFrame(h, "2026-10-21T04:15:00Z"), null); // only the >24h one is older
+  assert.equal(previousFrame([], "2026-10-21T04:15:00Z"), null);
+});
+
+test("index entries carry `newest` and `added` only when known", () => {
+  const records = thisWindow();
+  const heat = stepHeat(records);
+  const second = buildHistoryEntry(heat, stepArrivals(arrivedArticles(records, urls(previousWindow())), true, prevFrame));
+  const idx = buildIndex(appendFrame([entry("2026-10-21T03:45:00Z"), prevFrame], second));
+  assert.deepEqual(Object.keys(idx.frames[0]), ["at", "file", "windowHours", "totals"]); // carried from version 1
+  assert.deepEqual(Object.keys(idx.frames[1]), ["at", "file", "windowHours", "newest", "totals"]); // first frame after a cold start
+  assert.deepEqual(idx.frames[2], {
+    at: "2026-10-21T04:47:14Z",
+    file: "20261021T044714Z.json",
+    windowHours: 24,
+    newest: "2026-10-21T04:45:00Z",
+    added: 4,
+    totals: second.totals,
+  });
+});
+
+test("version 1 history loads as unknown: no `newest`, no `added`, four-element rows", () => {
+  const v1 = gzipSync(JSON.stringify({ v: 1, frames: [entry("2026-10-21T04:00:00Z"), { ...entry("2026-10-21T04:15:00Z"), newest: "2026-10-21T04:00:00Z", added: 3, cells: [["832830fffffffff", 48.86, 2.35, 5, 2]] }] }));
+  const decoded = decodeHistory(v1);
+  assert.deepEqual(decoded, [entry("2026-10-21T04:00:00Z"), entry("2026-10-21T04:15:00Z")]);
+  // A version 1 frame is still a previous frame: the first run after the upgrade counts arrivals.
+  const records = thisWindow();
+  const heat = stepHeat(records);
+  const e = buildHistoryEntry(heat, stepArrivals(arrivedArticles(records, urls(previousWindow())), true, previousFrame(decoded, heat.generatedAt)));
+  assert.equal(e.added, 4);
+  // Version 2 round-trips `newest`, `added` and `a`; a version 2 entry with an unusable `added` is unknown.
+  const h = appendFrame(decoded, e);
+  assert.deepEqual(decodeHistory(encodeHistory(h)), h);
+  const [b] = decodeHistory(gzipSync(JSON.stringify({ v: 2, frames: [{ ...e, added: -1 }] })));
+  assert.equal("added" in b, false);
+  assert.ok(b.cells.every((c) => c.length === 4));
+  assert.throws(() => decodeHistory(gzipSync(JSON.stringify({ v: 3, frames: [] }))), /unsupported history version 3/);
+});

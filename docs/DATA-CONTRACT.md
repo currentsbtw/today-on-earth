@@ -29,6 +29,7 @@ deployed site. In local dev the frontend serves `web/public/data/` at `/data/`.
       "t": -2.1,                 // mean tone, 1 decimal (GDELT V2Tone first value)
       "name": "Paris, France"    // most common location full name in the cell, with GDELT artefacts removed
                                  // ("(General)", "City Of", repeated parts): "Washington, Washington, United States" -> "Washington, United States"
+                                 // and the "?" GDELT writes for characters it could not encode: "Ad Daw?Ah" -> "Ad Dawah" (added 2026-10-22)
     }
   ]
 }
@@ -207,11 +208,35 @@ entry is always the current snapshot, i.e. the same moment as `heat.json`.
       "at": "2026-10-21T04:47:14Z",        // == generatedAt of that run
       "file": "20261021T044714Z.json",     // relative to /data/history/
       "windowHours": 6,
+      "newest": "2026-10-21T04:30:00Z",    // == newestArticleAt of that run (added 2026-10-22)
+      "added": 2950,                       // window articles that arrived in this step, see below (added 2026-10-22)
       "totals": { "articles": 39304, "outlets": 5384, "countries": 159, "cells": 1600, "unplaced": 9200 }
     }
   ]
 }
 ```
+
+### New articles per step (added 2026-10-22)
+
+`totals` describe the frame's whole rolling window, which barely moves once the window is
+full. `newest` and `added` say what was new in the step that produced the frame.
+
+- `newest`: that run's `heat.json` `newestArticleAt`, the latest GKG time (DATE) of any
+  article in its window. The last frame's `newest` equals `heat.json`'s `newestArticleAt`.
+  It can be up to about 20 minutes later than `at` (GDELT publishes a 15-minute file
+  before its stamp). It is informational: `added` is not counted from it.
+- `added`: the number of articles in this frame's window, placed and unplaced (the same
+  unit as `totals.articles`), whose URL was **not in the previous run's window** (the
+  window carried in `state.json.gz` from the run before). An article is new in the step in
+  which it first enters the window, whatever its GKG time, so a translingual file that
+  arrives an hour behind the English feed counts in the step it arrives. `0` means
+  nothing arrived; it is never written by assumption. `0 <= added <= totals.articles`.
+- `added` is **absent** (unknown) when the run cold-started its window (no carried state:
+  nothing to compare with), when there is no previous retained frame (the first frame
+  after a cold start of the history, or after a gap of more than 24 hours; "previous
+  retained frame" = the newest frame older than this one that is still within 24 hours of
+  it), and on every frame written before 2026-10-22, which also has no `newest`. Readers
+  draw a missing `added` as unknown, never as 0.
 
 ## `/data/history/<file>.json`  (one compact frame, fetched on demand)
 
@@ -219,7 +244,7 @@ entry is always the current snapshot, i.e. the same moment as `heat.json`.
 {
   "at": "2026-10-21T04:47:14Z",
   "cells": [
-    ["832aa8fffffffff", 38.96, -76.55, 1401]   // [id, lat, lon, n], sorted by n descending
+    ["832aa8fffffffff", 38.96, -76.55, 1401, 37]   // [id, lat, lon, n, a], sorted by n descending
   ]
 }
 ```
@@ -228,6 +253,15 @@ Frames carry only what the heat layer needs. Target size: under 150 KB per frame
 uncompressed (a full 24h window measured 127 KB, about 36 KB gzipped on the wire).
 Cells with `n` < 2 are dropped, as in `heat.json`. No per-cell detail files exist for
 past frames: `cells/<id>.json` always describes the current snapshot only.
+
+`a` (added 2026-10-22): the number of the cell's articles (placed articles whose primary
+location falls in the cell) counted in the index entry's `added`, by the same rule
+(its URL was not in the previous run's window). `0 <= a <= n`,
+and the sum of `a` over a frame is at most `added` (unplaced articles and cells with
+`n` < 2 are in `added` but have no row). Rows have five elements exactly when the index
+entry has `added`, and four (`[id, lat, lon, n]`, `a` unknown) otherwise, so frames
+written before 2026-10-22 stay valid. A cell with new articles but `n` < 2 is not in
+the frame at all.
 
 ## Broadcast (added 2026-10-21): `/data/broadcast.json`  (one small file, written every run)
 
@@ -325,13 +359,17 @@ successful run to the release tagged `archive-YYYY-MM-DD` (the UTC day of
 `-` and `:`), plus `cells-<stamp>.tar.gz` (the whole `cells/` directory) once per day.
 The files are byte-for-byte the `/data/` files of that run, so this contract describes
 them too, as of the version that wrote them. Older archived files may lack fields added
-later (readers treat a missing field as `0` / `""`). Repository variable `ARCHIVE=false`
+later (readers treat a missing field as `0` / `""`, except the history's `newest`, `added`
+and `a`, which are unknown when missing). Repository variable `ARCHIVE=false`
 turns the step off; a failed upload never fails the snapshot.
 
 ## Carried files: `state.json.gz` and `history.json.gz`  (ingest-internal)
 
 Compact per-article records for the rolling window, and the retained frames, so the
 next run can merge new files without refetching. Formats are up to the ingest side.
+`history.json.gz` is version 2 since 2026-10-22: each entry records its `newest`,
+`added` and per-row `a`. Version 1 entries still load, as frames whose `newest`, `added`
+and `a` are unknown; they still count as the previous frame for the next run's `added`.
 They are **not published on the site**: in CI they live in `CARRY_DIR` and travel
 between runs through the GitHub Actions cache (a full 24h state is ~37 MB, far too
 much to fetch from Pages 96 times a day). The ingest job can still read them from an

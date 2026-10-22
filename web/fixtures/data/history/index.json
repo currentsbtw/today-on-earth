@@ -4,6 +4,7 @@
    "at": "2026-10-20T08:00:00Z",
    "file": "20261020T080000Z.json",
    "windowHours": 6,
+   "newest": "2026-10-20T07:50:00Z",
    "totals": {
     "articles": 6570,
     "outlets": 729,
@@ -16,6 +17,8 @@
    "at": "2026-10-20T10:00:00Z",
    "file": "20261020T100000Z.json",
    "windowHours": 8,
+   "newest": "2026-10-20T09:50:00Z",
+   "added": 3060,
    "totals": {
     "articles": 9630,
     "outlets": 883,
@@ -28,6 +31,8 @@
    "at": "2026-10-20T12:00:00Z",
    "file": "20261020T120000Z.json",
    "windowHours": 10,
+   "newest": "2026-10-20T11:50:00Z",
+   "added": 2935,
    "totals": {
     "articles": 12565,
     "outlets": 1009,
@@ -40,6 +45,8 @@
    "at": "2026-10-20T14:00:00Z",
    "file": "20261020T140000Z.json",
    "windowHours": 12,
+   "newest": "2026-10-20T13:50:00Z",
+   "added": 2133,
    "totals": {
     "articles": 14698,
     "outlets": 1091,
@@ -52,6 +59,8 @@
    "at": "2026-10-20T16:00:00Z",
    "file": "20261020T160000Z.json",
    "windowHours": 14,
+   "newest": "2026-10-20T15:50:00Z",
+   "added": 2043,
    "totals": {
     "articles": 16338,
     "outlets": 1150,
@@ -64,6 +73,8 @@
    "at": "2026-10-20T18:00:00Z",
    "file": "20261020T180000Z.json",
    "windowHours": 16,
+   "newest": "2026-10-20T17:50:00Z",
+   "added": 2193,
    "totals": {
     "articles": 18440,
     "outlets": 1222,
@@ -76,6 +87,8 @@
    "at": "2026-10-20T20:00:00Z",
    "file": "20261020T200000Z.json",
    "windowHours": 18,
+   "newest": "2026-10-20T19:50:00Z",
+   "added": 1625,
    "totals": {
     "articles": 19050,
     "outlets": 1242,
@@ -88,6 +101,8 @@
    "at": "2026-10-20T22:00:00Z",
    "file": "20261020T220000Z.json",
    "windowHours": 20,
+   "newest": "2026-10-20T21:50:00Z",
+   "added": 1639,
    "totals": {
     "articles": 20144,
     "outlets": 1277,
@@ -100,6 +115,8 @@
    "at": "2026-10-21T00:00:00Z",
    "file": "20261021T000000Z.json",
    "windowHours": 22,
+   "newest": "2026-10-20T23:50:00Z",
+   "added": 1351,
    "totals": {
     "articles": 20587,
     "outlets": 1291,
@@ -112,6 +129,8 @@
    "at": "2026-10-21T02:00:00Z",
    "file": "20261021T020000Z.json",
    "windowHours": 24,
+   "newest": "2026-10-21T01:50:00Z",
+   "added": 2175,
    "totals": {
     "articles": 22762,
     "outlets": 1358,
@@ -124,6 +143,8 @@
    "at": "2026-10-21T04:00:00Z",
    "file": "20261021T040000Z.json",
    "windowHours": 24,
+   "newest": "2026-10-21T03:50:00Z",
+   "added": 1147,
    "totals": {
     "articles": 23035,
     "outlets": 1366,
@@ -136,6 +157,8 @@
    "at": "2026-10-21T06:00:00Z",
    "file": "20261021T060000Z.json",
    "windowHours": 24,
+   "newest": "2026-10-21T05:50:00Z",
+   "added": 1219,
    "totals": {
     "articles": 23543,
     "outlets": 1381,

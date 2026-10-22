@@ -149,8 +149,13 @@ final one.
 
 ## Replay
 
-The scrubber under the map replays the last 24 hours in 15-minute steps. Each step
+The Replay section (the right column on wide screens, below the map on narrower ones) replays the last 24 hours in 15-minute steps. Each step
 is a snapshot of the same rolling window at that time.
+
+The replay bars show how many articles were new in each step, not the window's total.
+An article is new in a step when it was not in the previous snapshot's window. A
+snapshot made after a restart, or with no previous snapshot in the 24 hours before it,
+has no count and is drawn as unknown, as are snapshots made before 22 October 2026.
 
 ## Freshness
 
