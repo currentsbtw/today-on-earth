@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-22T16:00:00Z",
+  "generatedAt": "2026-10-22T18:00:00Z",
   "title": "Design System: Today On Earth",
   "extensions": {
     "colorMeta": {
@@ -261,7 +261,7 @@
       },
       "wordmark": {
         "displayName": "Wordmark",
-        "purpose": "TODAY ON EARTH in Silkscreen beside the 16x16 pixel globe; the only use of the face."
+        "purpose": "TODAY ON EARTH in Silkscreen beside the 24x24 pixel globe (48px desktop, 24px phones); also the wordmark line on the share image and the clip's top band. The only use of the face."
       }
     },
     "shadows": [],
@@ -269,7 +269,12 @@
       {
         "name": "step",
         "value": "none",
-        "purpose": "No transition or animation is defined; every state switches in one step."
+        "purpose": "No transition is defined; every state switches in one step."
+      },
+      {
+        "name": "mark-ring",
+        "value": ".globe .ring { transform: translateX(12px); animation: mark-ring 1.2s steps(18, end) 1 forwards } @keyframes mark-ring { from { transform: translateX(-6px) } to { transform: translateX(12px) } }",
+        "purpose": "The one authored entrance: the mark's 6x6 ringed dot slides out from behind the sphere and across the open band one grid column per step, resting at columns 12-17; runs once per page load on the map and method pages; removed under prefers-reduced-motion (ring at rest from first paint). Clip frames use the static mark."
       },
       {
         "name": "invert-frame",
@@ -302,7 +307,13 @@
       "panel": "360px",
       "drawer": "min(400px, 100%)",
       "side-stamp-gap": "10px",
-      "stacked-section-gap": "28px"
+      "stacked-section-gap": "28px",
+      "mark": "24px",
+      "mark-desktop": "48px",
+      "mark-phone": "24px",
+      "lockup": "128px",
+      "clip-mark": "24 * max(1, round(min(W,H) / 360))",
+      "clip-lockup": "128 * max(1, round(min(W,H) * 0.45 / 128))"
     }
   },
   "components": [
@@ -398,21 +409,21 @@
       "name": "Brand",
       "kind": "nav",
       "refersTo": "nav-item",
-      "description": "The 16x16 one-bit pixel globe and the Silkscreen wordmark.",
-      "html": "<a class=\"ds-brand\" href=\"#\"><svg class=\"ds-globe\" viewBox=\"0 0 16 16\" width=\"32\" height=\"32\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path d=\"M7 0h2v1H7zM4 1h3v1H4zM9 1h3v1H9zM3 2h1v1H3zM5 2h2v1H5zM9 2h2v1H9zM12 2h1v1h-1zM2 3h1v1H2zM13 3h1v1h-1zM1 4h6v1H1zM9 4h6v1H9zM1 5h1v1H1zM14 5h1v1h-1zM1 6h14v1H1zM0 7h16v2H0zM1 9h14v1H1zM1 10h1v1H1zM14 10h1v1h-1zM1 11h6v1H1zM9 11h6v1H9zM2 12h1v1H2zM13 12h1v1h-1zM3 13h1v1H3zM5 13h2v1H5zM9 13h2v1H9zM12 13h1v1h-1zM4 14h3v1H4zM9 14h3v1H9zM7 15h2v1H7z\"/></svg><span class=\"ds-wordmark\">Today On Earth</span></a>",
-      "css": ".ds-brand { display: inline-flex; align-items: center; gap: 12px; padding: 4px 8px 4px 0; background: var(--bg, #000); color: var(--fg, #fff); text-decoration: none; } .ds-globe { display: block; fill: var(--fg, #fff); } .ds-wordmark { font: 400 16px/1 var(--pix, 'Silkscreen', monospace); letter-spacing: 0.02em; text-transform: uppercase; white-space: nowrap; } .ds-brand:focus-visible { outline: 1px solid var(--fg, #fff); outline-offset: 2px; }"
+      "description": "The 24x24 one-bit globe with the ringed dot in its open band (48px on desktop, 24px on phones, always a whole multiple of 24) and the Silkscreen wordmark. On load the ring steps across the band once (mark-ring, 18 steps over 1.2s) and rests at columns 12-17; under reduced motion it rests from the first paint.",
+      "html": "<a class=\"ds-brand\" href=\"#\"><svg class=\"ds-globe\" viewBox=\"0 0 24 24\" width=\"48\" height=\"48\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path d=\"M10 0h4v1h-4zM7 1h3v1h-3zM14 1h3v1h-3zM5 2h2v1h-2zM17 2h2v1h-2zM4 3h16v1h-16zM3 4h1v1h-1zM9 4h1v1h-1zM14 4h1v1h-1zM20 4h1v1h-1zM2 5h1v1h-1zM8 5h1v1h-1zM15 5h1v1h-1zM21 5h1v1h-1zM2 6h1v1h-1zM8 6h1v1h-1zM15 6h1v1h-1zM21 6h1v1h-1zM1 7h22v1h-22zM1 8h1v1h-1zM22 8h1v1h-1zM1 9h1v1h-1zM22 9h1v1h-1zM0 10h1v1h-1zM23 10h1v1h-1zM0 11h1v1h-1zM23 11h1v1h-1zM0 12h1v1h-1zM23 12h1v1h-1zM0 13h1v1h-1zM23 13h1v1h-1zM1 14h1v1h-1zM22 14h1v1h-1zM1 15h1v1h-1zM22 15h1v1h-1zM1 16h22v1h-22zM2 17h1v1h-1zM8 17h1v1h-1zM15 17h1v1h-1zM21 17h1v1h-1zM2 18h1v1h-1zM8 18h1v1h-1zM15 18h1v1h-1zM21 18h1v1h-1zM3 19h1v1h-1zM9 19h1v1h-1zM14 19h1v1h-1zM20 19h1v1h-1zM4 20h16v1h-16zM5 21h2v1h-2zM17 21h2v1h-2zM7 22h3v1h-3zM14 22h3v1h-3zM10 23h4v1h-4z\"/><clipPath id=\"ds-mark-band\"><path d=\"M1 8h22v8H1z\"/></clipPath><g clip-path=\"url(#ds-mark-band)\"><g class=\"ds-ring\"><path transform=\"translate(0 9)\" d=\"M1 0h4v1h-4zM0 1h1v4h-1zM5 1h1v4h-1zM1 5h4v1h-4zM2 2h2v2h-2z\"/></g></g></svg><span class=\"ds-wordmark\">Today On Earth</span></a>",
+      "css": ".ds-brand { display: inline-flex; align-items: center; gap: 12px; padding: 4px 8px 4px 0; background: var(--bg, #000); color: var(--fg, #fff); text-decoration: none; } .ds-globe { display: block; fill: var(--fg, #fff); } .ds-globe .ds-ring { transform: translateX(12px); animation: ds-mark-ring 1.2s steps(18, end) 1 forwards; } @keyframes ds-mark-ring { from { transform: translateX(-6px); } to { transform: translateX(12px); } } @media (prefers-reduced-motion: reduce) { .ds-globe .ds-ring { animation: none; } } .ds-wordmark { font: 400 16px/1 var(--pix, 'Silkscreen', monospace); letter-spacing: 0.02em; text-transform: uppercase; white-space: nowrap; } .ds-brand:focus-visible { outline: 1px solid var(--fg, #fff); outline-offset: 2px; }"
     }
   ],
   "narrative": {
     "northStar": "Datamatics Field",
-    "overview": "The product is a measurement, and the surface is built to look like one. The canvas is pure black with an 8px dot grid in its margins; the only light on the page is the data: the map plate carries one flat white dot per place, sized by article volume, and every number, label and control is set in a monospaced face at data density. There is no colour anywhere (the amber heat of the previous world was rejected and does not return), no rounded corner, no shadow, no gradient used as decoration, and no eased motion: a state is either on or off, and the whole frame inverts for one painted frame when the map returns to live or replay starts.\n\nTwo voices share the page. Azeret Mono carries the chrome: the top line, the ranked places column, the bar field, the panel's count rows, the foot totals, the map labels. Source Sans 3 is reserved for what a person reads as prose: the one large sentence above the map, panel titles, story headlines, the methodology page, and a signal's fixed sentence. Silkscreen appears once, as the wordmark beside the 16x16 one-bit globe. The one-bit pixel observer in the bottom-right corner and the crisp-edged pixel icons (play, pause, close, quake, the attribution \"i\") are drawn as inline SVG on integer grids, never as icon-font glyphs.\n\nDensity is high and the hierarchy is carried by three things only: white versus grey text, a 1px rule versus none, and a few fixed type sizes. Depth is never implied; a surface is either black or inverted to white.",
+    "overview": "The product is a measurement, and the surface is built to look like one. The canvas is pure black with an 8px dot grid in its margins; the only light on the page is the data: the map plate carries one flat white dot per place, sized by article volume, and every number, label and control is set in a monospaced face at data density. There is no colour anywhere (the amber heat of the previous world was rejected and does not return), no rounded corner, no shadow, no gradient used as decoration, and no eased motion: a state is either on or off. The mark's ring steps once across its band when a page loads, and the whole frame inverts for one painted frame when the map returns to live or replay starts; nothing else moves.\n\nTwo voices share the page. Azeret Mono carries the chrome: the top line, the ranked places column, the bar field, the panel's count rows, the foot totals, the map labels. Source Sans 3 is reserved for what a person reads as prose: the one large sentence above the map, panel titles, story headlines, the methodology page, and a signal's fixed sentence. Silkscreen appears once, as the wordmark beside the 24x24 one-bit globe, whose open band carries a ringed dot. The one-bit pixel observer in the bottom-right corner and the crisp-edged pixel icons (play, pause, close, quake, the attribution \"i\") are drawn as inline SVG on integer grids, never as icon-font glyphs.\n\nDensity is high and the hierarchy is carried by three things only: white versus grey text, a 1px rule versus none, and a few fixed type sizes. Depth is never implied; a surface is either black or inverted to white.",
     "keyCharacteristics": [
       "Chrome, marks and type in #000 and #fff; greys only inside the map plate and the muted text steps.",
       "Azeret Mono 11px uppercase with 0.06-0.1em tracking for every label, control and figure; Source Sans 3 for every sentence a person reads.",
       "8px dot grid on the body and the panel ground; text sits on solid black blocks so the grid never runs through a glyph.",
       "Hairlines (1px, solid white or a white alpha) are the only separators; no cards, no fills.",
-      "Stepped motion: states switch in one step; the only \"animation\" is a one-frame full-page inversion.",
-      "Pixel marks: the globe, the observer, and every icon are crispEdges SVG on a small integer grid."
+      "Stepped motion: states switch in one step; the one authored entrance is the mark's ring travelling its band in 18 whole-pixel steps on load, and the only other \"animation\" is a one-frame full-page inversion.",
+      "Pixel marks: the globe (24-grid), the lockup (128-grid), the observer, and every icon are crispEdges SVG on an integer grid, drawn at whole multiples of that grid."
     ],
     "rules": [
       {
@@ -454,6 +465,16 @@
         "name": "The No-Shadow Rule",
         "body": "box-shadow appears in the stylesheets only to cancel MapLibre's focus glow. Focus is a 1px solid white outline offset 2px (inset where a container clips).",
         "section": "elevation"
+      },
+      {
+        "name": "The One-Entrance Rule",
+        "body": "The mark's ring travel is the only authored entrance in the product. No other element animates in, fades, slides or eases; a new element is simply painted. Any future motion must be steps(), whole-pixel, run once, and removed under reduced motion.",
+        "section": "motion"
+      },
+      {
+        "name": "The Stepped-Motion Rule",
+        "body": "Motion is a sequence of integer states, never an interpolation: steps(n, end) for the ring, one painted frame for the inversion. No easing curve appears in the build.",
+        "section": "motion"
       }
     ],
     "dos": [
@@ -462,19 +483,19 @@
       "Do put every number, timestamp, column head and control word in Azeret Mono at 11px, uppercase, 0.06-0.1em tracking; keep tabular-nums on.",
       "Do separate repeated entries with a 1px --rule hairline and head a section with a 1px solid white rule under a mono 500 11px 0.1em label.",
       "Do keep controls at least 28px tall (36px on phones) with a 1px border at 0.4 alpha that lifts to solid white on hover.",
-      "Do draw any new icon or mark as crispEdges inline SVG on an integer grid, one colour.",
-      "Do switch state in one step; if motion is unavoidable, make it a stepped change, and honour prefers-reduced-motion for the inversion frame.",
+      "Do draw any new icon or mark as crispEdges inline SVG on an integer grid, one colour, and render it at a whole multiple of that grid (24 for the mark, 128 for the lockup).",
+      "Do switch state in one step; if motion is unavoidable, make it a steps() change that runs once, and remove it under prefers-reduced-motion as the ring travel and the inversion frame are.",
       "Do keep greys to the map plate (#0d0d0d, #2f2f2f, #3a3a3a) and the muted text steps (#9a9a9a, #777, #5c5c5c, #333).",
       "Do draw a map mark as a flat white circle with a black hairline, sized and dimmed by the five fixed steps; a new mark type joins the same stepped scale."
     ],
     "donts": [
       "Don't introduce any hue, including the former amber heat; the palette is black, white and the listed greys.",
       "Don't round a corner, add a box-shadow, a tint, an opacity fade or a gradient fill (the only gradients in the build draw 1px marks: the dot grid, strips and tick marks).",
-      "Don't ease or fade a transition; no transition or animation is defined anywhere in the build.",
+      "Don't ease or fade a transition; no transition is defined anywhere in the build, and the only animation is the mark-ring travel, stepped with steps(18, end) and run once on load. Don't add a second entrance.",
       "Don't set a figure or a label in Source Sans 3, or a sentence in Azeret Mono.",
       "Don't use --faint (#5c5c5c) for text that must be read; it is for strips, bars and baselines only.",
       "Don't add a card: content is a log of entries separated by hairlines, never a filled box; the 160x96 video tile is the one bordered container and stays 1px-bordered on black.",
-      "Don't use icon fonts, glyph icons or raster icons; the only icons are the pixel SVGs on integer grids.",
+      "Don't use icon fonts, glyph icons or raster icons; the only icons are the pixel SVGs on integer grids, and the only rasters are the PNG favicons and the share image, both rendered from the lockup. Don't draw the mark at 32px, 40px or any other non-multiple of 24.",
       "Don't blur, soften or halo a map mark: circle-blur is 0, there is no heatmap layer and no glow layer; the only halo on the map is the 1-2px black text halo that keeps labels legible.",
       "Don't let the map's chrome compete with the dots: overlays are small black or white blocks at the frame's inside corners, nothing larger."
     ]

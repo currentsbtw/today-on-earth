@@ -188,9 +188,9 @@ components:
 
 **Creative North Star: "Datamatics Field"**
 
-The product is a measurement, and the surface is built to look like one. The canvas is pure black with an 8px dot grid in its margins; the only light on the page is the data: the map plate carries one flat white dot per place, sized by article volume, and every number, label and control is set in a monospaced face at data density. There is no colour anywhere (the amber heat of the previous world was rejected and does not return), no rounded corner, no shadow, no gradient used as decoration, and no eased motion: a state is either on or off, and the whole frame inverts for one painted frame when the map returns to live or replay starts.
+The product is a measurement, and the surface is built to look like one. The canvas is pure black with an 8px dot grid in its margins; the only light on the page is the data: the map plate carries one flat white dot per place, sized by article volume, and every number, label and control is set in a monospaced face at data density. There is no colour anywhere (the amber heat of the previous world was rejected and does not return), no rounded corner, no shadow, no gradient used as decoration, and no eased motion: a state is either on or off. The mark's ring steps once across its band when a page loads, and the whole frame inverts for one painted frame when the map returns to live or replay starts; nothing else moves.
 
-Two voices share the page. Azeret Mono carries the chrome: the top line, the ranked places column, the bar field, the panel's count rows, the foot totals, the map labels. Source Sans 3 is reserved for what a person reads as prose: the one large sentence above the map, panel titles, story headlines, the methodology page, and a signal's fixed sentence. Silkscreen appears once, as the wordmark beside the 16x16 one-bit globe. The one-bit pixel observer in the bottom-right corner and the crisp-edged pixel icons (play, pause, close, quake, the attribution "i") are drawn as inline SVG on integer grids, never as icon-font glyphs.
+Two voices share the page. Azeret Mono carries the chrome: the top line, the ranked places column, the bar field, the panel's count rows, the foot totals, the map labels. Source Sans 3 is reserved for what a person reads as prose: the one large sentence above the map, panel titles, story headlines, the methodology page, and a signal's fixed sentence. Silkscreen appears once, as the wordmark beside the 24x24 one-bit globe, whose open band carries a ringed dot. The one-bit pixel observer in the bottom-right corner and the crisp-edged pixel icons (play, pause, close, quake, the attribution "i") are drawn as inline SVG on integer grids, never as icon-font glyphs.
 
 Density is high and the hierarchy is carried by three things only: white versus grey text, a 1px rule versus none, and a few fixed type sizes. Depth is never implied; a surface is either black or inverted to white.
 
@@ -199,8 +199,8 @@ Density is high and the hierarchy is carried by three things only: white versus 
 - Azeret Mono 11px uppercase with 0.06-0.1em tracking for every label, control and figure; Source Sans 3 for every sentence a person reads.
 - 8px dot grid on the body and the panel ground; text sits on solid black blocks so the grid never runs through a glyph.
 - Hairlines (1px, solid white or a white alpha) are the only separators; no cards, no fills.
-- Stepped motion: states switch in one step; the only "animation" is a one-frame full-page inversion.
-- Pixel marks: the globe, the observer, and every icon are crispEdges SVG on a small integer grid.
+- Stepped motion: states switch in one step; the one authored entrance is the mark's ring travelling its band in 18 whole-pixel steps on load, and the only other "animation" is a one-frame full-page inversion.
+- Pixel marks: the globe (24-grid), the lockup (128-grid), the observer, and every icon are crispEdges SVG on an integer grid, drawn at whole multiples of that grid.
 
 ## Colors
 
@@ -247,7 +247,7 @@ Black, white, and a short ladder of greys for secondary text and strips; chroma 
 - **Label** (500, 11px, 1, 0.1em, uppercase): column heads, nav items, panel section heads, button words, the CLOSE control, foot captions. Signal slot names on the clip use 0.14em.
 - **Data** (400, 11px, 1.3-1.5, 0.02-0.08em, usually uppercase): rank rows, count rows, meta lines, status, attribution, placeholders, the under-map line. Tracking narrows as the string gets longer: 0.02em for domain names and rows, 0.06em for short labels, 0.1em for the shortest.
 - **Figure** (500, 22px, 1, 0.02em): the UTC clock. Foot totals use the same face at 500 15px; the panel's count values at 12px; bar tags and frame indices at 9px.
-- **Wordmark** (Silkscreen 400, 16px, 1, 0.02em, uppercase): TODAY ON EARTH beside the 32px globe; 13px with a 24px globe on phones.
+- **Wordmark** (Silkscreen 400, 16px, 1, 0.02em, uppercase): TODAY ON EARTH 12px right of the 48px globe (the 24-grid at 2x); 13px with a 10px gap and a 24px globe (1x) on phones. The share image sets the same face as a wordmark line above the sentence.
 
 ### Named Rules
 **The Mono-For-Data Rule.** Any number, unit, timestamp, column head, control word or meta line is Azeret Mono. Source Sans 3 is only for a sentence, a title or a headline. A value never appears in the humanist face.
@@ -277,9 +277,20 @@ There are no shadows and no tonal layering. Every surface is flat black; nothing
 ### Named Rules
 **The No-Shadow Rule.** `box-shadow` appears in the stylesheets only to cancel MapLibre's focus glow. Focus is a 1px solid white outline offset 2px (inset where a container clips).
 
+## Motion
+
+Almost nothing moves. There is no `transition` anywhere in the build. Two things are animated, and both are stepped: the brand mark's ring on page load, and the one-frame inversion on a snapshot change.
+
+**The load travel.** On every page that carries the mark (the map, the method page) `.globe .ring` runs `animation: mark-ring 1.2s steps(18, end) 1 forwards`, from `translateX(-6px)` to `translateX(12px)` in SVG units: the 6x6 ringed dot starts fully hidden behind the sphere's left edge, steps one grid column per frame (18 columns over 1.2s, about 67ms a step), and rests at columns 12-17 of the open band. A `clipPath` on the band (`M1 8h22v8H1z`) keeps it inside the globe, so it slides out from behind the sphere rather than appearing. It runs once per load and never on interaction. Under `prefers-reduced-motion: reduce` the animation is removed and the ring sits at rest from the first paint. The clip frames use the static mark (ring baked into the path) because the renderer captures stills.
+
+### Named Rules
+**The One-Entrance Rule.** The mark's ring travel is the only authored entrance in the product. No other element animates in, fades, slides or eases; a new element is simply painted. Any future motion must be `steps()`, whole-pixel, run once, and removed under reduced motion.
+
+**The Stepped-Motion Rule.** Motion is a sequence of integer states, never an interpolation: `steps(n, end)` for the ring, one painted frame for the inversion. No easing curve appears in the build.
+
 ## Shapes
 
-Every corner is square (`border-radius: 0` is set on buttons, inputs, sliders and MapLibre's attribution button to cancel user-agent rounding). Borders are 1px hairlines in white or white alpha; they are the only outline a control has. Strips are repeated 1px bars (`repeating-linear-gradient`, 1px on / 2px off; 2px on / 1px off when selected). The slider thumb is a 7x11px white rectangle on a 1px track. Bullets on the about page are 10x1px white dashes. On the map every mark is a circle: the coverage dots (five fixed radii), the hollow quake rings, the 3px selected-cell reticle; the selected cell itself is its H3 hexagon as a 1px white outline over a 0.06 white fill. Icons and marks are drawn on integer grids with `shape-rendering: crispEdges`: the globe on 16x16, the observer on 12x14, play on 4x7, pause on 5x7, close on 7x7, quakes on 12x12, the attribution "i" on 3x8.
+Every corner is square (`border-radius: 0` is set on buttons, inputs, sliders and MapLibre's attribution button to cancel user-agent rounding). Borders are 1px hairlines in white or white alpha; they are the only outline a control has. Strips are repeated 1px bars (`repeating-linear-gradient`, 1px on / 2px off; 2px on / 1px off when selected). The slider thumb is a 7x11px white rectangle on a 1px track. Bullets on the about page are 10x1px white dashes. On the map every mark is a circle: the coverage dots (five fixed radii), the hollow quake rings, the 3px selected-cell reticle; the selected cell itself is its H3 hexagon as a 1px white outline over a 0.06 white fill. Icons and marks are drawn on integer grids with `shape-rendering: crispEdges`: the globe on 24x24 (its ringed dot on 6x6 inside the band, the lockup on 128x128), the observer on 12x14, play on 4x7, pause on 5x7, close on 7x7, quakes on 12x12, the attribution "i" on 3x8.
 
 ## Components
 
@@ -336,15 +347,28 @@ The first row of the right column on wide screens (`#side-stamp`, hidden below 1
 A column head reading SIGNALS, a muted mono note beneath ("22 OCT 2026 · 14:27 UTC · LAST 24H", `.col-note`, 8px below the rule), then the six signal entries as a list; an empty state is a muted mono line at `8px 0`.
 
 ### Top line and foot
-- **Brand:** 32px pixel globe plus Silkscreen wordmark, 12px gap, on a black block.
+- **Brand:** 48px pixel globe (the 24-grid at 2x) plus Silkscreen wordmark, 12px gap, on a black block; 24px globe (1x), 10px gap on phones. The ring runs its load travel here (see Motion).
 - **Clock:** uppercase date in mono 11px 0.1em, the time at 500 22px, a muted SNAPSHOT line beneath; the line swaps to an inverted REPLAY tag while a past frame is shown.
 - **Foot:** a 1px white rule above, 10px padding; totals as mono 500 15px figures over muted 11px uppercase 0.1em captions, 28px apart; source links in muted mono at the right, underlined, white on hover. Two-column grid on phones.
 
 ### Pixel marks
-The globe (16x16), the observer (12x14, rendered 36x42 at the bottom-right of the right column and 9.6u x 11.2u on the clip end card) and every icon are inline SVG with `shape-rendering: crispEdges`, filled with `currentColor` or white. New marks follow the same grammar: an integer grid no larger than 16 on a side, one colour, no strokes, no anti-aliasing.
+The globe (24x24), the lockup (128x128), the observer (12x14, rendered 36x42 at the bottom-right of the right column and as a 7.2u x 8.4u block with 0.6u padding on the clip end card) and every icon are inline SVG with `shape-rendering: crispEdges`, filled with `currentColor` or white. Every mark is drawn at a whole multiple of its grid so each source pixel is the same size on screen (the clip snaps the mark and lockup to whole device pixels for the same reason). New marks follow the same grammar: an integer grid (16 or smaller for an icon), one colour, no strokes, no anti-aliasing.
+
+### Brand mark and lockup
+Two forms of one drawing, both one-bit.
+- **The mark** (`.globe`, source `.impeccable/mocks/logo/lit-24-ring.svg`): a 24x24 globe outline with two meridians and an open equatorial band (rows 8-15 are empty inside the outline), and a 6x6 ringed dot (`M1 0h4v1h-4zM0 1h1v4h-1zM5 1h1v4h-1zM1 5h4v1h-4zM2 2h2v2h-2z`: a 1px ring around a 2x2 dot) resting at columns 12-17, rows 9-14 of the band. In the page it is a `<path>` for the globe, a `clipPath#mark-band` (`M1 8h22v8H1z`), and `<g class="ring">` holding the dot at `translate(0 9)` with `translateX(12px)` applied by CSS; the clip and the mocks use a single static path with the ring baked in. Drawn at 48px on desktop and 24px on phones, always a whole multiple of 24. It is the only mark that moves (see Motion).
+- **The lockup** (source `lockup-128-inverted.svg`): the inverted form for icons and share surfaces. A white disc on black, meridians and parallels drawn in black inside it, and the name across the band in 5x7 pixel caps on two lines, "TODAY ON" over "EARTH", on a 128 grid. Drawn at whole multiples of 128: 128 (favicon.svg), 180 (apple-touch-icon, the one non-multiple, a platform size), 256 and 512 on the clip end card, 384 on the share image. It always sits on a solid black block so the dot grid never shows through the disc's gaps.
+- **Rule:** the mark is the in-page sign, the lockup is the standalone sign. Neither is ever recoloured, outlined, shadowed, rotated or scaled to a non-integer multiple.
+
+### Icons and share assets
+- **Favicons:** `favicon.svg` is the 128 lockup file verbatim (black rect, white path, crispEdges); `favicon-32.png` and `apple-touch-icon.png` (180) are rasters of the same drawing. No other icon sizes.
+- **Share image** (`og.jpg`, 1200x630): black with the dot grid; the lockup at 384px (3x) on a black block at the left; at the right a Silkscreen wordmark line TODAY ON EARTH over a 1px white rule, the sentence "A map of where the world's news is pointing right now." in Source Sans 3 600, and the site address in muted Azeret Mono beneath. `og:image:alt` describes the mark and the sentence. The same image serves `twitter:image` (summary_large_image).
 
 ### Clip frame
-A fixed 1080x1920 (or 1920x1080) frame in the same world: black dot-grid bands above and below a map window, each edge a 1px white rule with 25 ticks pointing into the band; the wordmark and date on black blocks in the top band; four totals along the foot (number over label); signal cards and the end card kept inside the platform safe areas, the observer beside the totals and the site address.
+A fixed 1080x1920 (or 1920x1080) frame in the same world: black dot-grid bands above and below a map window, each edge a 1px white rule with 25 ticks pointing into the band; the static 24-grid mark and the Silkscreen wordmark (4.2u) with the date on black blocks in the top band; four totals along the foot (number over label); signal cards kept inside the platform safe areas. The mark is drawn at `24 x max(1, round(shorter side / 360))` px (48 on a 540-wide frame, 72 at 1080) and snapped to whole device pixels.
+
+### Clip end card
+`?end=1`: the whole frame is the dotted ground with no map, no edge rules and no top wordmark; only the date line stays at the top. The inverted lockup takes the centre at `128 x max(1, round(0.45 x shorter side / 128))` px (256 at 540 wide, 512 at 1080), on a black block, nudged to a whole pixel. The site address sits 4u below it in Azeret Mono at 3u, 0.01em, fitted to the frame width (it is set at weight 700, which the 400-500 face synthesizes; 700 is not a system weight). The foot, above the bottom safe area (18% of the height; portrait adds 15u of right padding for platform UI), holds the observer small on a black block and the four totals as number over label. Nothing animates in the clip; every frame is a still.
 
 ## Do's and Don'ts
 
@@ -354,18 +378,18 @@ A fixed 1080x1920 (or 1920x1080) frame in the same world: black dot-grid bands a
 - **Do** put every number, timestamp, column head and control word in Azeret Mono at 11px, uppercase, 0.06-0.1em tracking; keep `tabular-nums` on.
 - **Do** separate repeated entries with a 1px `--rule` hairline and head a section with a 1px solid white rule under a mono 500 11px 0.1em label.
 - **Do** keep controls at least 28px tall (36px on phones) with a 1px border at 0.4 alpha that lifts to solid white on hover.
-- **Do** draw any new icon or mark as crispEdges inline SVG on an integer grid, one colour.
-- **Do** switch state in one step; if motion is unavoidable, make it a stepped change, and honour `prefers-reduced-motion` for the inversion frame.
+- **Do** draw any new icon or mark as crispEdges inline SVG on an integer grid, one colour, and render it at a whole multiple of that grid (24 for the mark, 128 for the lockup).
+- **Do** switch state in one step; if motion is unavoidable, make it a `steps()` change that runs once, and remove it under `prefers-reduced-motion` as the ring travel and the inversion frame are.
 - **Do** keep greys to the map plate (#0d0d0d, #2f2f2f, #3a3a3a) and the muted text steps (#9a9a9a, #777, #5c5c5c, #333).
 - **Do** draw a map mark as a flat white circle with a black hairline, sized and dimmed by the five fixed steps; a new mark type joins the same stepped scale.
 
 ### Don't:
 - **Don't** introduce any hue, including the former amber heat; the palette is black, white and the listed greys.
 - **Don't** round a corner, add a box-shadow, a tint, an opacity fade or a gradient fill (the only gradients in the build draw 1px marks: the dot grid, strips and tick marks).
-- **Don't** ease or fade a transition; no `transition` or `animation` is defined anywhere in the build.
+- **Don't** ease or fade a transition; no `transition` is defined anywhere in the build, and the only `animation` is the mark-ring travel, stepped with `steps(18, end)` and run once on load. Don't add a second entrance.
 - **Don't** set a figure or a label in Source Sans 3, or a sentence in Azeret Mono.
 - **Don't** use `--faint` (#5c5c5c) for text that must be read; it is for strips, bars and baselines only.
 - **Don't** add a card: content is a log of entries separated by hairlines, never a filled box; the 160x96 video tile is the one bordered container and stays 1px-bordered on black.
-- **Don't** use icon fonts, glyph icons or raster icons; the only icons are the pixel SVGs on integer grids.
+- **Don't** use icon fonts, glyph icons or raster icons; the only icons are the pixel SVGs on integer grids, and the only rasters are the PNG favicons and the share image, both rendered from the lockup. Don't draw the mark at 32px, 40px or any other non-multiple of 24.
 - **Don't** blur, soften or halo a map mark: `circle-blur` is 0, there is no heatmap layer and no glow layer; the only halo on the map is the 1-2px black text halo that keeps labels legible.
 - **Don't** let the map's chrome compete with the dots: overlays are small black or white blocks at the frame's inside corners, nothing larger.
