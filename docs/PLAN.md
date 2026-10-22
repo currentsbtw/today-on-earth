@@ -689,6 +689,30 @@ like the time-lapse frame and says "Open a dot at" above the address; GDELT's "?
 encoding artefacts leave place names. "Moscow, Moskva, Russia" stays: the admin-1 part is
 a transliteration variant, not a duplicate, and no rule can tell it from "Austin, Texas".
 
+### Evening run, round 2 (2026-10-22 ~21:20 UTC): what the re-runs found
+
+Re-run audit 17/20 (from 14), re-run critique 30/40 (from 28); archives in .impeccable/critique/.
+Decisions for the closing round:
+- Signals: the head row shows a 7x7 pixel plus (minus when open) at its right so it reads as
+  a control; the closed headline opens the entry instead of leaving the site; the outbound
+  link moves into the open body as "READ AT <outlet>"; opening scrolls the entry into view.
+- Times crossing midnight carry the weekday ("WED 14:30 – THU 14:15 UTC"; the replay stamp
+  and the recent-frames table say the day where it changes).
+- "Countries" is one thing: the panel row and the clip end card say OUTLET COUNTRIES; a
+  signal's meta line keeps HEARD IN N OTHER COUNTRIES and drops the bare count.
+- The replay playhead states its value: the bar tag reads "+3,176" and the PLAY readout
+  "+3,176 NEW"; the trend's max is labelled as the mean's. Rings for the places that grew
+  stay parked.
+- OPEN from a signal pins that signal's story first in the panel, tagged with the slot name,
+  carried in the permalink as `s=<slot>`.
+- Small: "SHOW 3 MORE ARTICLES"; the foot link reads METHOD; the clip key says "the last 24
+  hours"; video-strip focus no longer fights scroll-snap; hit areas reach a true 44px; the
+  method index rows and the back link meet the floor; the detector waiver for the method
+  page becomes two inline ignores instead of a file-wide one.
+- Left as they are, on purpose: the bare OBSERVERS label until the Worker is deployed; the
+  phone map's starting view; CLOSE at the top of the sheet; comparing two places;
+  "Moscow, Moskva".
+
 ## Phase 1 build decisions (2026-10-20)
 
 - **GKG is the only feed in phase 1.** It carries URL, source domain, page title,
