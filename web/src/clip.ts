@@ -5,7 +5,7 @@
 //                    wordmark, the frame's date and time, and its counts;
 //   ?signal=<slot>   one broadcast slot: the map zoomed to the slot's cell with the live
 //                    heat, the slot label, its fixed sentence and the outlet's own headline;
-//   ?end=1           the live snapshot's world with the counts and the site address.
+//   ?end=1           the logo lockup, the site address and the live snapshot's totals.
 // Nothing animates. The look (Datamatics Field) lives in clip.css: black text bands with the
 // dot grid above and below a tick-edged map window.
 import './clip.css';
@@ -45,6 +45,12 @@ root.classList.toggle('clip--portrait', portrait);
 root.style.setProperty('--dot', `${Math.max(8, Math.round(unit * 1.48))}px`);
 for (const ticks of document.querySelectorAll('.clip-ticks')) ticks.replaceChildren(...Array.from({ length: 25 }, () => document.createElement('i')));
 
+// The marks draw at whole multiples of their pixel grids so every pixel is the same size:
+// the 24-grid mark at 2x on a 540 px frame and 3x at 1080; the 128-grid lockup at ~45% of
+// the frame's shorter side.
+root.style.setProperty('--mark', `${24 * Math.max(1, Math.round(Math.min(W, H) / 360))}px`);
+root.style.setProperty('--lockup', `${128 * Math.max(1, Math.round((Math.min(W, H) * 0.45) / 128))}px`);
+
 /** Where the map window starts and ends (px from the top); the bands and edges follow. */
 function setEdges(top: number, bottom: number) {
   root.style.setProperty('--edge-top', `${Math.round(top)}px`);
@@ -58,10 +64,22 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: '2-
 const el = (id: string) => document.getElementById(id)!;
 
 let marked = false;
+/** Put the pixel mark on whole device pixels (a fractional offset blurs its pixel rows). */
+function snapMark() {
+  const mark = el('clip-mark');
+  const r = mark.getBoundingClientRect();
+  if (!r.width) return;
+  const wordmark = mark.parentElement!;
+  wordmark.style.position = 'relative';
+  wordmark.style.left = `${Math.round(r.left) - r.left}px`;
+  wordmark.style.top = `${Math.round(r.top) - r.top}px`;
+}
+
 function markReady(error?: string) {
   // First outcome wins: a late timeout must not flag a frame that already finished.
   if (marked) return;
   marked = true;
+  snapMark();
   if (error) document.body.dataset.error = error;
   (window as unknown as { __clipReady: boolean }).__clipReady = true;
   document.body.dataset.ready = '1';
@@ -235,26 +253,16 @@ async function renderEnd() {
   root.classList.add('clip--card', 'clip--end');
   setTime(heat.generatedAt);
   setCounts(heat.totals);
-  const end = el('clip-end');
   el('clip-end-text').prepend(el('clip-counts'));
-  end.hidden = false;
+  el('clip-end').hidden = false;
+  // No map: the lockup takes the centre of the dotted ground.
   await document.fonts.ready;
   fitWidth(el('clip-cta'));
-  // The bottom band starts above the totals; the world keeps the time-lapse's framing (the
-  // band only covers it where the totals need the room).
-  const endTop = end.getBoundingClientRect().top;
-  setEdges(topBand, Math.min(H - bottomBand, endTop - unit * 3.6 - tickLength()));
-
-  // Same framing as the last frame of the time-lapse: the live snapshot's whole world.
-  const { map, setCells } = await createClipMap(el('clip-map'), {
-    top: topBand,
-    bottom: bottomBand,
-    left: 0,
-    right: 0,
-  });
-  setCells(heat.cells, heatMax(heat));
-  await idle(map);
-  await document.fonts.ready;
+  // Flex centring can land the lockup on a half pixel, which blurs its pixel rows; the block
+  // centres its content, so padding it by twice the remainder moves the lockup down by it.
+  const lockupTop = el('clip-lockup').getBoundingClientRect().top;
+  const nudge = Math.ceil(lockupTop) - lockupTop;
+  if (nudge > 0.001) document.querySelector<HTMLElement>('.clip-lockup-block')!.style.paddingTop = `${2 * nudge}px`;
   markReady();
 }
 

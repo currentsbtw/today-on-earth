@@ -110,6 +110,29 @@ button {
   fill: var(--fg);
 }
 
+/* The mark's ring travels once across the band on load, one pixel per step, and rests at
+   columns 12-17; clipped to the band so it slides out from behind the sphere. */
+.globe .ring {
+  transform: translateX(12px);
+  animation: mark-ring 1.2s steps(18, end) 1 forwards;
+}
+
+@keyframes mark-ring {
+  from {
+    transform: translateX(-6px);
+  }
+
+  to {
+    transform: translateX(12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .globe .ring {
+    animation: none;
+  }
+}
+
 .wordmark {
   font: 400 16px/1 var(--pix);
   letter-spacing: 0.02em;

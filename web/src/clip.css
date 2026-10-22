@@ -146,10 +146,11 @@ body {
   white-space: nowrap;
 }
 
-.clip-globe {
+/* The 24-grid mark at a whole multiple of 24 px (--mark, set by clip.ts) so pixels stay even. */
+.clip-mark {
   display: block;
-  width: calc(var(--u) * 7.2);
-  height: calc(var(--u) * 7.2);
+  width: var(--mark);
+  height: var(--mark);
   flex: none;
 }
 
@@ -231,8 +232,7 @@ body {
   z-index: 2;
 }
 
-.clip--portrait .clip-card,
-.clip--portrait .clip-end {
+.clip--portrait .clip-card {
   right: calc(var(--u) * 15);
 }
 
@@ -297,24 +297,66 @@ body {
   overflow-wrap: anywhere;
 }
 
-/* End card: the observer beside the totals and the site address, above the bottom strip. */
+/* End card: no map. The whole frame is the dotted ground; the date stays at the top, the
+   inverted lockup takes the centre with the site address under it, and the observer and the
+   totals sit above the bottom strip. */
+.clip--end .clip-band-top {
+  height: 100%;
+}
+
+.clip--end .clip-edge,
+.clip--end .clip-wordmark {
+  display: none;
+}
+
 .clip-end {
   position: absolute;
-  left: var(--m);
-  right: var(--m);
+  top: var(--top-band);
   bottom: var(--safe-bottom);
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.clip-lockup-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--u) * 4);
+  padding: 0 var(--m);
+}
+
+/* A whole multiple of the 128 grid (--lockup, set by clip.ts); the black block keeps the dot
+   grid out of the disc's gaps. */
+.clip-lockup {
+  display: block;
+  flex: none;
+  width: var(--lockup);
+  height: var(--lockup);
+  background: var(--k);
+}
+
+.clip-end-foot {
   display: flex;
   align-items: flex-end;
   gap: calc(var(--u) * 3.6);
-  pointer-events: none;
-  z-index: 2;
+  padding: 0 var(--m);
+}
+
+.clip--portrait .clip-end-foot {
+  padding-right: calc(var(--u) * 15);
 }
 
 .clip-observer {
   display: block;
   flex: none;
-  width: calc(var(--u) * 9.6);
-  height: calc(var(--u) * 11.2);
+  width: calc(var(--u) * 7.2);
+  height: calc(var(--u) * 8.4);
   padding: calc(var(--u) * 0.6);
   background: var(--k);
 }
@@ -322,9 +364,6 @@ body {
 .clip-end-text {
   flex: 1;
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--u) * 3);
 }
 
 .clip-end .clip-counts {
@@ -333,11 +372,12 @@ body {
 
 .clip-cta {
   --fit: 1;
+  max-width: 100%;
   margin: 0;
-  padding-right: calc(var(--u) * 1);
+  padding: 0 calc(var(--u) * 1);
   font-size: calc(var(--u) * 3 * var(--fit));
-  font-weight: 500;
-  line-height: 1;
+  font-weight: 700;
+  line-height: 1.4;
   letter-spacing: 0.01em;
   white-space: nowrap;
 }
