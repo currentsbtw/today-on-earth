@@ -595,6 +595,19 @@ newsletter; a real-phone check of first paint.
 - Status: built and verified locally; the Worker is not deployed yet (needs the owner's
   Cloudflare account). The replay frame number moved off the label to the Replay head.
 
+### Critique follow-up 1: the panel leads with the stories (2026-10-22)
+
+From the 2026-10-22 critique (28/40, archived): on a phone a tapped place showed six count
+rows and five outlet domains before any headline, so the clip visitor with under a minute
+closed the sheet before reading one. Decision: the panel order becomes title, one summary
+line (the under-map selection line: articles · outlets · heard in N other countries), the
+stories, then the receipts (count rows, reprints line, coverage lists), videos, and the flat
+article list last. The same order on every width, so the panel is one thing and the desktop
+explorer finds the counts one scroll down. The first headline must sit inside the 55svh
+peek on a 390x844 phone. Still open from the critique: the reading key on phone and clip,
+the Signals vocabulary (the user has not yet said whether the radio register stays), replay
+content, chrome repetition.
+
 ## Phase 1 build decisions (2026-10-20)
 
 - **GKG is the only feed in phase 1.** It carries URL, source domain, page title,

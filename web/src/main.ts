@@ -345,12 +345,8 @@ async function start() {
     markCol();
     const cell = selected ? live.get(selected) : undefined;
     if (!cell) return void (selLine.textContent = '');
-    const parts = [shortName(cell.name) || cell.name, plural(cell.n, 'article', 'articles')];
-    if (cell.u !== undefined) parts.push(plural(cell.u, 'headline', 'headlines'));
-    if (cell.i !== undefined && cell.c > 0) {
-      parts.push(cell.i === 0 ? 'heard in no other country' : `heard in ${plural(cell.i, 'other country', 'other countries')}`);
-    }
-    selLine.textContent = parts.join(' · ');
+    // The same counts as the panel's summary line, after the place name.
+    selLine.textContent = `${shortName(cell.name) || cell.name} · ${panel.summaryLine(cell)}`;
   };
 
   /**

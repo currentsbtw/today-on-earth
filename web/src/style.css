@@ -1164,10 +1164,23 @@ body.is-replay .map-frame {
   outline: none;
 }
 
+/* The summary line: the under-map selection line's counts, in its register (mono, white). */
+.panel-summary {
+  margin: 0;
+  font: 500 11px/1.4 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .counts {
   margin: 0;
   background: var(--bg);
   border-top: 1px solid var(--rule);
+}
+
+/* Under its section head the head's white rule is the table's top edge. */
+.panel-section + .counts {
+  border-top: 0;
 }
 
 .count-row {
@@ -1191,9 +1204,9 @@ body.is-replay .map-frame {
   text-align: right;
 }
 
-.panel-why,
 .panel-reach,
-.panel-state {
+.panel-state,
+.panel-list-note {
   margin: 8px 0 0;
   color: var(--muted);
   font: 400 11px/1.4 var(--mono);
@@ -1201,9 +1214,12 @@ body.is-replay .map-frame {
   text-transform: uppercase;
 }
 
+.panel-summary[hidden],
 .panel-reach[hidden],
 .panel-state[hidden],
-.panel-note[hidden] {
+.panel-list-note[hidden],
+.panel-note[hidden],
+.panel-section[hidden] {
   display: none;
 }
 
@@ -1453,7 +1469,8 @@ body.is-replay .map-frame {
   display: none;
 }
 
-.story-more {
+.story-more,
+.stories-more {
   margin: 4px 0 0;
   padding: 4px 8px;
   border: 1px solid rgba(255, 255, 255, 0.4);
@@ -1465,10 +1482,21 @@ body.is-replay .map-frame {
   cursor: pointer;
 }
 
-.story-more:hover {
+.story-more:hover,
+.stories-more:hover {
   border-color: var(--fg);
   background: var(--fg);
   color: var(--bg);
+}
+
+/* After the first three story cards; one press reveals the rest and removes it. */
+.stories-more {
+  min-height: 28px;
+  margin-top: 14px;
+}
+
+.story[hidden] {
+  display: none;
 }
 
 .stories-rest {
@@ -1996,6 +2024,10 @@ a.article-title:visited,
 
   .panel-title {
     font-size: 24px;
+  }
+
+  .stories-more {
+    min-height: 36px;
   }
 
   .foot-totals {

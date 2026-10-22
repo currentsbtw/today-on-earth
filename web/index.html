@@ -126,13 +126,19 @@
             <button id="panel-close" class="panel-close" type="button">Close<svg viewBox="0 0 7 7" width="7" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM6 0h1v1H6zM5 1h1v1H5zM4 2h1v1H4zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z" /></svg></button>
           </div>
           <h2 id="panel-title" class="panel-title" tabindex="-1"></h2>
+          <!-- Order: the place, one counts line, the stories, then the receipts (count rows,
+               reach, coverage lists), videos, and the flat list last. Same on every width. -->
+          <p id="panel-summary" class="panel-summary" hidden></p>
+          <p id="panel-note" class="panel-note" hidden></p>
+          <p id="panel-state" class="panel-state" hidden></p>
+          <div id="panel-stories" class="stories" hidden></div>
+          <h3 id="panel-counts-head" class="panel-section" hidden>Counts</h3>
           <dl id="panel-why" class="counts"></dl>
           <p id="panel-reach" class="panel-reach" hidden></p>
-          <p id="panel-note" class="panel-note" hidden></p>
           <div id="panel-coverage" class="coverage" hidden></div>
           <section id="panel-videos" class="videos" hidden></section>
-          <div id="panel-stories" class="stories" hidden></div>
-          <p id="panel-state" class="panel-state" hidden></p>
+          <h3 id="panel-list-head" class="panel-section" hidden>All articles</h3>
+          <p id="panel-list-note" class="panel-list-note" hidden></p>
           <ol id="panel-list" class="articles"></ol>
         </aside>
       </div>

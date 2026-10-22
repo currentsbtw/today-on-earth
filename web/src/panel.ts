@@ -8,11 +8,15 @@ const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as 
 
 const panel = $<HTMLElement>('panel');
 const title = $<HTMLHeadingElement>('panel-title');
+const summary = $<HTMLParagraphElement>('panel-summary');
+const countsHead = $<HTMLHeadingElement>('panel-counts-head');
 const why = $<HTMLDListElement>('panel-why');
 const reach = $<HTMLParagraphElement>('panel-reach');
 const state = $<HTMLParagraphElement>('panel-state');
 const note = $<HTMLParagraphElement>('panel-note');
 const list = $<HTMLOListElement>('panel-list');
+const listHead = $<HTMLHeadingElement>('panel-list-head');
+const listNote = $<HTMLParagraphElement>('panel-list-note');
 const stories = $<HTMLDivElement>('panel-stories');
 const videos = $<HTMLElement>('panel-videos');
 const closeButton = $<HTMLButtonElement>('panel-close');
@@ -51,6 +55,24 @@ function reachLine(c: Reach, windowHours: number): string {
   return parts.join(' · ');
 }
 
+/**
+ * "5,424 articles · 1,443 headlines · heard in 105 other countries": the selection line under
+ * the map (after the place name) and the panel's summary line under the title. One template,
+ * so the two can never drift.
+ */
+export function summaryLine(c: Reach): string {
+  const parts = [plural(c.n, 'article', 'articles')];
+  if (c.u !== undefined) parts.push(plural(c.u, 'headline', 'headlines'));
+  const heard = heardIn(c);
+  if (heard) parts.push(heard);
+  return parts.join(' · ');
+}
+
+function setSummary(c: Reach | null) {
+  summary.textContent = c ? summaryLine(c) : '';
+  summary.hidden = !summary.textContent;
+}
+
 function setReach(c: Reach | null, windowHours = 24) {
   reach.textContent = c ? reachLine(c, windowHours) : '';
   reach.hidden = !reach.textContent;
@@ -68,6 +90,7 @@ const el = <K extends keyof HTMLElementTagNameMap>(tag: K, className: string, te
  * countries, languages, and the countries other than its own that covered it.
  */
 function setCounts(c: Reach | null) {
+  countsHead.hidden = !c;
   if (!c) return void why.replaceChildren();
   const rows: [string, string][] = [['Articles', count(c.n)]];
   if (c.u !== undefined) rows.push(['Headlines', count(c.u)]);
@@ -89,6 +112,8 @@ function setLang(node: HTMLElement, lang: string) {
 }
 
 const STORY_PREVIEW = 3;
+/** Story cards shown before "show N more stories", so the receipts stay a short scroll away. */
+const STORIES_SHOWN = 3;
 let storySeq = 0;
 
 /** "01:15–04:30 UTC", or one time when the story's first and last article coincide. */
@@ -261,7 +286,7 @@ function renderVideos(detail: CellDetail | null) {
   videos.hidden = false;
 }
 
-/** Stories first (when the cell file has them), then the "All articles" heading for the flat list. */
+/** The stories, when the cell file has them; the flat list keeps its own heading (#panel-list-head). */
 function renderStories(detail: CellDetail | null, now: number) {
   const groups = detail?.stories ?? [];
   if (!detail || !groups.length) {
@@ -269,11 +294,32 @@ function renderStories(detail: CellDetail | null, now: number) {
     stories.hidden = true;
     return;
   }
-  const nodes: HTMLElement[] = [el('h3', 'panel-section', 'Stories'), ...groups.map((s) => storyCard(s, now))];
+  const cards = groups.map((s) => storyCard(s, now));
+  const rest = cards.slice(STORIES_SHOWN);
+  const nodes: HTMLElement[] = [el('h3', 'panel-section', 'Stories'), ...cards];
+  if (rest.length) {
+    for (const card of rest) card.hidden = true;
+    const more = el('button', 'stories-more', `show ${rest.length} more ${rest.length === 1 ? 'story' : 'stories'}`);
+    more.type = 'button';
+    more.setAttribute('aria-controls', stories.id);
+    // One step: the rest appear in place and the button goes. Focus moves to the first
+    // revealed story (its headline link, else its heading) so it is not lost with the button.
+    more.addEventListener('click', () => {
+      for (const card of rest) card.hidden = false;
+      const first = rest[0];
+      let target = first.querySelector<HTMLElement>('.story-link');
+      if (!target) {
+        target = first.querySelector<HTMLElement>('.story-headline') ?? first;
+        target.tabIndex = -1;
+      }
+      more.remove();
+      target.focus();
+    });
+    nodes.push(more);
+  }
   if (detail.unclustered && detail.unclustered > 0) {
     nodes.push(el('p', 'stories-rest', `${plural(detail.unclustered, 'more article', 'more articles')} not grouped`));
   }
-  nodes.push(el('h3', 'panel-section', 'All articles'));
   stories.replaceChildren(...nodes);
   stories.hidden = false;
 }
@@ -314,6 +360,14 @@ function renderCoverage(detail: CellDetail | null) {
 function setState(text: string) {
   state.textContent = text;
   state.hidden = !text;
+}
+
+/** The flat "All articles" list, its heading only when it has rows, and its one caption line. */
+function setList(items: HTMLLIElement[], caption = '') {
+  list.replaceChildren(...items);
+  listHead.hidden = !items.length;
+  listNote.textContent = items.length ? caption : '';
+  listNote.hidden = !listNote.textContent;
 }
 
 /** Tone as a tick on a short neutral scale (-10 to +10). No words. */
@@ -474,9 +528,10 @@ export function renderSignals(list: HTMLElement, when: HTMLElement, broadcast: B
 /** Opens the panel for a cell straight away, using the heat.json counts while the detail loads. */
 export function openLoading(cell: HeatCell, windowHours: number) {
   title.textContent = cell.name;
+  setSummary(cell);
   setCounts(cell);
   setReach(cell, windowHours);
-  list.replaceChildren();
+  setList([]);
   renderCoverage(null);
   renderStories(null, 0);
   renderVideos(null);
@@ -486,25 +541,28 @@ export function openLoading(cell: HeatCell, windowHours: number) {
 
 export function showDetail(detail: CellDetail, windowHours: number) {
   title.textContent = detail.name;
+  setSummary(detail);
   setCounts(detail);
   setReach(detail, windowHours);
   const now = Date.now();
+  renderStories(detail, now);
   renderCoverage(detail);
   renderVideos(detail);
-  renderStories(detail, now);
-  list.replaceChildren(...detail.articles.map((a) => articleItem(a, now)));
   const shown = detail.articles.length;
-  if (!shown) setState('No articles listed for this place.');
-  else if (shown < detail.n) setState(`newest ${count(shown)} of ${count(detail.n)}`);
-  else setState('');
+  setList(
+    detail.articles.map((a) => articleItem(a, now)),
+    shown < detail.n ? `newest ${count(shown)} of ${count(detail.n)}` : '',
+  );
+  setState(shown ? '' : 'No articles listed for this place.');
 }
 
 /** A replay cell that is not in the current snapshot: there is no detail file for it. */
 export function openMissing(n: number) {
   title.textContent = plural(n, 'article', 'articles');
+  setSummary(null);
   setCounts(null);
   setReach(null);
-  list.replaceChildren();
+  setList([]);
   renderCoverage(null);
   renderStories(null, 0);
   renderVideos(null);
@@ -512,14 +570,14 @@ export function openMissing(n: number) {
   show();
 }
 
-/** One quiet line under the counts, e.g. while replaying a past frame. */
+/** One quiet tag under the summary line, e.g. while replaying a past frame. */
 export function setNote(text: string) {
   note.textContent = text;
   note.hidden = !text;
 }
 
 export function showError() {
-  list.replaceChildren();
+  setList([]);
   renderCoverage(null);
   renderStories(null, 0);
   renderVideos(null);
