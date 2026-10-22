@@ -102,8 +102,7 @@ a:focus-visible {
   background: var(--bg);
 }
 
-.nav-item,
-.back {
+.nav-item {
   display: inline-flex;
   align-items: center;
   min-height: 28px;
@@ -116,21 +115,9 @@ a:focus-visible {
   text-transform: uppercase;
 }
 
-.nav-item:hover,
-.back:hover {
+.nav-item:hover {
   text-decoration: underline;
   text-underline-offset: 4px;
-}
-
-.nav-item[aria-current='page'] {
-  background: var(--fg);
-  color: var(--bg);
-  text-decoration: none;
-}
-
-.back {
-  justify-self: end;
-  margin-right: -10px;
 }
 
 .doc {
@@ -152,6 +139,7 @@ h1 {
 
 h2 {
   margin: 48px 0 12px;
+  scroll-margin-top: 24px;
   font: 600 24px/1.2 var(--hum);
   letter-spacing: -0.005em;
   text-wrap: balance;
@@ -161,6 +149,51 @@ p,
 ul,
 dl {
   margin: 0 0 16px;
+}
+
+/* The section index: the ledger's mono rows, one link per line, closed by a hairline. */
+.toc {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--fg);
+}
+
+.toc ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.toc li {
+  padding: 0;
+}
+
+.toc li::before {
+  content: none;
+}
+
+.toc li + li {
+  margin-top: 0;
+}
+
+.toc a {
+  display: block;
+  width: fit-content;
+  padding: 6px 0;
+  color: var(--muted);
+  font: 500 11px/12px var(--mono);
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.toc a:hover {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.toc a:focus-visible {
+  color: var(--fg);
 }
 
 ul {
@@ -222,7 +255,12 @@ dd {
   }
 
   .nav {
-    display: none;
+    justify-self: end;
+    margin-right: -10px;
+  }
+
+  .nav-item {
+    min-height: 36px;
   }
 
   .globe {
@@ -232,10 +270,6 @@ dd {
 
   .wordmark {
     font-size: 13px;
-  }
-
-  .back {
-    min-height: 44px;
   }
 
   .doc {

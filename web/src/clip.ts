@@ -130,9 +130,21 @@ function setCounts(totals: Totals | null) {
 /** The reading key under the date ("One dot per place…"): time-lapse layouts only. */
 const showKey = (on: boolean) => void (el('clip-key').hidden = !on);
 
-/** Shrink a one-line element's type (its --fit) until it fits its parent's width. */
+/**
+ * Shrink a one-line element's type (its --fit) until it fits its parent's width. When the
+ * parent lays its children out in a row (the landscape end card's "Open a dot at" line beside
+ * the address), the siblings and the gaps take their share of that width first.
+ */
 function fitWidth(node: HTMLElement) {
-  const room = node.parentElement!.clientWidth;
+  const parent = node.parentElement!;
+  const style = getComputedStyle(parent);
+  let room = parent.clientWidth;
+  if (style.display.endsWith('flex') && style.flexDirection.startsWith('row')) {
+    const gap = parseFloat(style.columnGap) || 0;
+    for (const sibling of parent.children) {
+      if (sibling !== node) room -= sibling.getBoundingClientRect().width + gap;
+    }
+  }
   for (let step = 0; step <= 10; step++) {
     node.style.setProperty('--fit', String(1 - step * 0.05));
     if (node.scrollWidth <= room) return;

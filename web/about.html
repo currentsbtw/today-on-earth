@@ -22,21 +22,35 @@
       </a>
       <nav class="nav" aria-label="Views">
         <a class="nav-item" href="./">Map</a>
-        <a class="nav-item" href="./about.html" aria-current="page">Method</a>
       </nav>
-      <a class="back" href="./">Back to the map</a>
     </header>
     <main class="doc">
       <h1>How Today On Earth works</h1>
+      <nav class="toc" aria-label="On this page">
+        <ol>
+          <li><a href="#looking-at">What you are looking at</a></li>
+          <li><a href="#sources">Where the articles come from</a></li>
+          <li><a href="#placing">How a place is chosen for an article</a></li>
+          <li><a href="#numbers">What the numbers mean</a></li>
+          <li><a href="#brightness">How a place's brightness is decided</a></li>
+          <li><a href="#stories">Stories</a></li>
+          <li><a href="#broadcast">The daily broadcast</a></li>
+          <li><a href="#limits">What this site does not do</a></li>
+          <li><a href="#replay">Replay</a></li>
+          <li><a href="#freshness">Freshness</a></li>
+          <li><a href="#earthquakes">Earthquakes</a></li>
+          <li><a href="#attribution">Data, code, attribution</a></li>
+        </ol>
+      </nav>
 
-      <h2>What you are looking at</h2>
+      <h2 id="looking-at">What you are looking at</h2>
       <p>
         A map of where the world's news is pointing right now. Each dot is a place that articles published in the
         last 24 hours are about. A bigger dot means more articles. That is all it means. It is not a map of what
         matters, and it is not a map of what happened; it is a map of coverage.
       </p>
 
-      <h2>Where the articles come from</h2>
+      <h2 id="sources">Where the articles come from</h2>
       <p>
         Every article comes from the GDELT Project, an open dataset that monitors news websites around the world in
         more than 100 languages and publishes what it found every 15 minutes. We read two of its feeds: the English
@@ -44,7 +58,7 @@
         If GDELT saw it, it is here.
       </p>
 
-      <h2>How a place is chosen for an article</h2>
+      <h2 id="placing">How a place is chosen for an article</h2>
       <p>
         GDELT lists the places each article mentions. We take the first place that is more specific than a whole
         country: a city, a region, a landmark. Articles that only mention countries are counted in the totals but
@@ -53,7 +67,7 @@
       </p>
       <p>Places are grouped into hexagonal cells about 100 km across, so "Paris" and its suburbs are one dot.</p>
 
-      <h2>What the numbers mean</h2>
+      <h2 id="numbers">What the numbers mean</h2>
       <dl>
         <dt>Articles</dt>
         <dd>Distinct URLs in the window.</dd>
@@ -85,7 +99,7 @@
         </dd>
       </dl>
 
-      <h2>How "hot" is decided</h2>
+      <h2 id="brightness">How a place's brightness is decided</h2>
       <p>
         A dot's size is the article count on a logarithmic scale, in five steps; the two smallest steps are drawn
         grey, the rest white. Nothing about the articles' content feeds into it: not what they say, not which outlets wrote them,
@@ -101,7 +115,7 @@
         brightness and no ratio; a place with no history at all counts as new, with a normal of zero.
       </p>
 
-      <h2>Stories</h2>
+      <h2 id="stories">Stories</h2>
       <p>
         Inside a place, articles are grouped into stories using only what GDELT already tagged for each article:
         the people, organisations and themes it mentions, plus the words in its title. The headline shown for a
@@ -109,13 +123,14 @@
         or edit a headline. Articles that fit no group are listed below, unfiltered.
       </p>
 
-      <h2>The daily broadcast</h2>
+      <h2 id="broadcast">The daily broadcast</h2>
       <p>
-        The Signals button opens a daily broadcast: six fixed slots, each filled by one story from the last 24 hours
-        under a published rule. A filled slot shows an outlet's own headline, verbatim, and the story's coverage
-        numbers. Nothing in it is written or summarised by us or by a model. The sentence above each headline is a
-        fixed template filled with the story's own numbers ("One story over Nairobi: 214 articles from 61 outlets
-        in 19 languages."), so they count that story, not everything written about the place.
+        The Signals section (the right column on wide screens, the first section below the map on narrower ones) is a
+        daily broadcast: six fixed slots, each filled by one story from the last 24 hours under a published rule. A
+        filled slot shows an outlet's own headline, verbatim, and the story's coverage numbers. Nothing in it is
+        written or summarised by us or by a model. The sentence under each headline is a fixed template filled
+        with the story's own numbers ("One story over Nairobi: 214 articles from 61 outlets in 19 languages."), so they
+        count that story, not everything written about the place.
       </p>
       <p>
         Every slot needs a story with at least 3 distinct headlines, so one article echoed across many sites never
@@ -181,7 +196,7 @@
         slots also close the daily clip, each as a card before the final one.
       </p>
 
-      <h2>What this site does not do</h2>
+      <h2 id="limits">What this site does not do</h2>
       <ul>
         <li>
           It does not rank, recommend or summarise. The daily broadcast's slots are maxima under the rules above,
@@ -206,26 +221,33 @@
         <li>It has no editor and no feed. What you see is the same for everyone.</li>
       </ul>
 
-      <h2>Replay</h2>
+      <h2 id="replay">Replay</h2>
       <p>
-        The scrubber under the map replays the last 24 hours in 15-minute steps. Each step is a snapshot of the
-        same rolling window at that time.
+        The Replay section (the right column on wide screens, opened by REPLAY in the top line; below the map on
+        narrower ones) replays the last 24 hours in 15-minute steps. Each step is a snapshot of the same rolling window
+        at that time.
+      </p>
+      <p>
+        The replay bars show how many articles were new in each step, not the window's total. An article is new in a
+        step when it was not in the previous snapshot's window. A snapshot made after a restart, or with no previous
+        snapshot in the 24 hours before it, has no count and is drawn as unknown, as are snapshots made before
+        22 October 2026.
       </p>
 
-      <h2>Freshness</h2>
+      <h2 id="freshness">Freshness</h2>
       <p>
-        A new snapshot is built every 15 minutes. The header shows the time of the one you are looking at, in UTC.
-        Right after a restart the window is shorter and the header says so.
+        A new snapshot is built every 15 minutes. The top line shows the time of the one you are looking at, in UTC.
+        Right after a restart the window is shorter, and an open place's coverage line says how many hours it covers.
       </p>
 
-      <h2>Earthquakes</h2>
+      <h2 id="earthquakes">Earthquakes</h2>
       <p>
         An optional layer draws earthquakes of magnitude 2.5 and above from the last 24 hours, straight from the
         United States Geological Survey's public feed. It is off by default, and nothing is requested from USGS until
-        you turn it on. Rings are sized by magnitude; they are not part of the news heat and never affect it.
+        you turn it on. Rings are sized by magnitude; they are not part of the coverage dots and never affect them.
       </p>
 
-      <h2>Data, code, attribution</h2>
+      <h2 id="attribution">Data, code, attribution</h2>
       <p>
         The site is open source. Map outlines are from
         <a href="https://www.naturalearthdata.com/" rel="noopener">Natural Earth</a> (public domain). News data is

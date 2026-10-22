@@ -404,6 +404,42 @@ body {
   position: static;
 }
 
+/* Portrait end card: the observer and the platform UI's right strip leave the totals about
+   two thirds of the frame, too narrow for four figures in a row, so they stand as two rows
+   of two, each figure at the left of its half. */
+.clip--portrait .clip-end .clip-counts {
+  grid-template-columns: 1fr 1fr;
+  row-gap: calc(var(--u) * 2.4);
+}
+
+/* The address reads as an instruction: one fixed line over it, in the count labels' register. */
+.clip-cta-block {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--u) * 1);
+}
+
+/* Landscape has no height to spare under the lockup, so the line leads the address on its
+   own row instead of standing over it. */
+.clip:not(.clip--portrait) .clip-cta-block {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--u) * 1.6);
+}
+
+.clip-cta-lead {
+  margin: 0;
+  padding: 0 calc(var(--u) * 1);
+  background: var(--k);
+  font-size: calc(var(--u) * 2.04);
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
 .clip-cta {
   --fit: 1;
   max-width: 100%;
