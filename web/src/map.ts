@@ -24,21 +24,38 @@ const LAT_NORTH = 84;
 const LAT_SOUTH = -58;
 const TILE = 512;
 
-// The map plate's palette (Datamatics Field): black ocean, grey land, white heat. Greys
-// live only here, inside the map. Hardcoded rather than read from tokens.css: the style is
-// built before any stylesheet is guaranteed to have applied (the clip page), and MapLibre
-// needs literal colours. MAP_HEAT is the same white as tokens.css --heat.
+// The map plate's palette (Datamatics Field): black ocean, near-black land read by its
+// coastlines, white marks. Greys live only here, inside the map. Hardcoded rather than read
+// from tokens.css: the style is built before any stylesheet is guaranteed to have applied
+// (the clip page), and MapLibre needs literal colours. MAP_HEAT is the same white as tokens.css --heat.
 export const MAP_OCEAN = '#000000';
-export const MAP_LAND = '#222222';
-/** Country borders, which also draw the coasts, so unlit land still separates from the ocean. */
-export const MAP_BORDER = '#383838';
-export const MAP_ADMIN = '#404040';
+export const MAP_LAND = '#0d0d0d';
+/** Country borders, which also draw the coasts: the planet reads by these lines. */
+export const MAP_BORDER = '#2f2f2f';
+/** Admin-1 lines (zoomed in): thinner than borders, so a step lighter to stay visible. */
+export const MAP_ADMIN = '#3a3a3a';
 export const MAP_HEAT = '#ffffff';
 /** Base labels (cities, countries): white at reduced alpha over a black halo. */
 export const MAP_LABEL = 'rgba(255,255,255,0.8)';
 export const MAP_LABEL_MINOR = 'rgba(255,255,255,0.56)';
-/** White at alpha `a`, for the heat ramp. */
-const heatAt = (a: number) => `rgba(255,255,255,${a})`;
+
+/**
+ * The coverage marks: one flat white circle per place, quantised into five steps of the
+ * log weight `w` (heatWeight, against a fixed maxN, so replay frames and clip frames share
+ * one scale; in "vs. normal" mode `w` is the ratio weight and the steps read it the same).
+ * MARK_STEPS are the lower bounds of steps 2-5. Radii are screen px at zoom 0 and grow
+ * with zoom by MARK_ZOOM_SCALE; the faint steps are white at reduced opacity (grey). The
+ * top radius is held small so neighbouring cells in dense regions stay separate dots.
+ */
+export const MARK_STEPS = [0.2, 0.4, 0.6, 0.8];
+export const MARK_RADIUS = [0.6, 0.85, 1.25, 1.9, 2.6];
+export const MARK_OPACITY = [0.5, 0.7, 0.85, 1, 1];
+/** [zoom, radius multiplier]: 1x at zoom 0, 3.5x at zoom 4, 8x at zoom 9. */
+export const MARK_ZOOM_SCALE: [number, number][] = [[0, 1], [4, 3.5], [9, 8]];
+
+/** A per-step value: ['step', w, v1, 0.2, v2, ...]. */
+const byStep = (values: number[]): ExpressionSpecification =>
+  ['step', ['get', 'w'], values[0], ...MARK_STEPS.flatMap((t, i) => [t, values[i + 1]])] as ExpressionSpecification;
 
 // Labels draw from local fonts (no glyph server); MapLibre waits for the web font to load.
 const LABEL_FONTS = ['Azeret Mono', 'ui-monospace', 'Consolas', 'monospace'];
@@ -258,59 +275,21 @@ export function style(): StyleSpecification {
         },
       },
       {
-        id: 'heat',
-        type: 'heatmap',
-        source: 'heat',
-        maxzoom: 6,
-        paint: {
-          // Squaring the log weight keeps the mid-pack dim so only real peaks reach white.
-          'heatmap-weight': ['^', ['get', 'w'], 2],
-          'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 0, 0.9, 3, 1.4, 5, 2.2],
-          'heatmap-radius': ['interpolate', ['exponential', 1.5], ['zoom'], 0, 8, 2, 15, 4, 30, 6, 56],
-          'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 3.5, 0.95, 5.5, 0],
-          // White on black: alpha carries the density. The low stops lift faint places off
-          // the grey land; full white is held back for the top of the scale.
-          'heatmap-color': [
-            'interpolate', ['linear'], ['heatmap-density'],
-            0, heatAt(0),
-            0.02, heatAt(0.26),
-            0.1, heatAt(0.46),
-            0.25, heatAt(0.64),
-            0.5, heatAt(0.82),
-            0.75, heatAt(0.94),
-            1, MAP_HEAT,
-          ],
-        },
-      },
-      {
-        id: 'cell-glow',
-        type: 'circle',
-        source: 'heat',
-        minzoom: 3.5,
-        paint: {
-          'circle-radius': ['interpolate', ['linear'], ['zoom'],
-            4, ['+', 5, ['*', ['get', 'w'], 16]],
-            9, ['+', 10, ['*', ['get', 'w'], 48]]],
-          'circle-color': MAP_HEAT,
-          'circle-blur': 1,
-          'circle-opacity': ['interpolate', ['linear'], ['zoom'], 3.5, 0, 4.5, 0.2],
-        },
-      },
-      {
+        // The coverage marks: crisp, unblurred, stepped. The largest places draw last, and a
+        // black hairline keeps neighbours in dense regions apart instead of fusing.
         id: 'cell-dot',
         type: 'circle',
         source: 'heat',
-        minzoom: 3.5,
         layout: { 'circle-sort-key': ['get', 'n'] },
         paint: {
+          // Zoom must be the outermost input of a zoom-dependent expression.
           'circle-radius': ['interpolate', ['linear'], ['zoom'],
-            4, ['+', 1.5, ['*', ['get', 'w'], 6]],
-            9, ['+', 3, ['*', ['get', 'w'], 20]]],
+            ...MARK_ZOOM_SCALE.flatMap(([z, k]) => [z, byStep(MARK_RADIUS.map((r) => r * k))])] as ExpressionSpecification,
           'circle-color': MAP_HEAT,
-          // Size carries the weight; faint places stay a little dimmer so peaks stand out.
-          'circle-opacity': ['interpolate', ['linear'], ['zoom'],
-            3.5, 0,
-            4.5, ['interpolate', ['linear'], ['get', 'w'], 0, 0.55, 0.5, 0.85, 1, 1]],
+          'circle-blur': 0,
+          'circle-opacity': byStep(MARK_OPACITY),
+          'circle-stroke-color': MAP_OCEAN,
+          'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], 0, 0.6, 4, 1],
         },
       },
       {

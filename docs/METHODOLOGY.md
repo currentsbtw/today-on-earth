@@ -5,8 +5,8 @@ true of the running system; update it when the system changes.
 
 ## What you are looking at
 
-A map of where the world's news is pointing right now. Each glow is a place that
-articles published in the last 24 hours are about. Brighter means more articles.
+A map of where the world's news is pointing right now. Each dot is a place that
+articles published in the last 24 hours are about. A bigger dot means more articles.
 That is all it means. It is not a map of what matters, and it is not a map of what
 happened; it is a map of coverage.
 
@@ -27,8 +27,8 @@ country's centre is not where anything happened. The header tells you how many
 articles were left unplaced for this reason.
 
 Places are grouped into hexagonal cells about 100 km across, so "Paris" and its
-suburbs glow together. When an article's most specific place is a state or region
-("Texas"), it glows at that region's centre; that is less wrong than a country's
+suburbs are one dot. When an article's most specific place is a state or region
+("Texas"), its dot sits at that region's centre; that is less wrong than a country's
 centre, but it is still a centre, and the label tells you so.
 
 ## What the numbers mean
@@ -52,16 +52,16 @@ centre, but it is still a centre, and the label tells you so.
 
 ## How "hot" is decided
 
-Brightness is the article count on a logarithmic scale, squared so that only the
-busiest places reach white. Nothing about the articles' content feeds into it: not
+A dot's size is the article count on a logarithmic scale, in five steps; the two
+smallest steps are drawn grey, the rest white. Nothing about the articles' content feeds into it: not
 what they say, not which outlets wrote them, not what we think. Places with heavy
-media presence (Washington, London) will usually be bright; that is a fact about
+media presence (Washington, London) will usually be big; that is a fact about
 coverage, and we show it rather than correct it.
 
 A second view, "vs. normal", appears once at least three complete days of history
 exist. It compares each place's current count with the median of its own daily
 counts over the last seven days, so a quiet place lighting up stands out and a
-place that is always busy does not. The brightness is log2((articles + 1) /
+place that is always busy does not. The dot size is log2((articles + 1) /
 (normal + 1)) scaled so that eight times normal is full brightness; the floor for
 "normal" is 3 articles so that tiny places do not explode. Places that are not in
 the current snapshot are shown with the ordinary brightness and no ratio; a place
@@ -140,7 +140,7 @@ final one.
   embedded a YouTube video, we show its title and outlet as a plain card; nothing is
   requested from YouTube until you press play, and the player is YouTube's
   privacy-enhanced one.
-- It does not know what is true. A place can glow because of a rumour.
+- It does not know what is true. A place can light up because of a rumour.
 - It does not see everything. GDELT misses outlets, geocodes wrongly sometimes,
   and sees more of the English-language web than any other. Dark areas mean no
   coverage was found, which is not the same as nothing happening.

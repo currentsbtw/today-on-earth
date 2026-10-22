@@ -14,7 +14,7 @@ const MIN_BASELINE_DAYS = 3;
 const MODE_PREF = 'toe.heatMode';
 /** Set once someone has opened a place; until then a one-line hint says how. */
 const SEEN_PREF = 'toe.seenCell';
-const HINT = 'Open a glow to see who is covering it';
+const HINT = 'Open a dot to see who is covering it';
 /** How many places the Places list and the places column show. */
 const PLACES_MAX = 100;
 
