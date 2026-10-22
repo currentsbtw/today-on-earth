@@ -1,6 +1,6 @@
 ---
 name: Today On Earth
-description: A world map that glows white where the news is pointing, recorded as a pure black-and-white data field.
+description: A world map with one flat white dot for every place the news is pointing at, recorded as a pure black-and-white data field.
 colors:
   ink: "#000"
   white: "#fff"
@@ -13,9 +13,9 @@ colors:
   hairline-mid: "rgba(255, 255, 255, 0.35)"
   hairline-strong: "rgba(255, 255, 255, 0.4)"
   map-ocean: "#000000"
-  map-land: "#222222"
-  map-border: "#383838"
-  map-admin: "#404040"
+  map-land: "#0d0d0d"
+  map-border: "#2f2f2f"
+  map-admin: "#3a3a3a"
   map-heat: "#ffffff"
 typography:
   display:
@@ -178,7 +178,7 @@ components:
 
 **Creative North Star: "Datamatics Field"**
 
-The product is a measurement, and the surface is built to look like one. The canvas is pure black with an 8px dot grid in its margins; the only light on the page is the data: the map plate glows white where article volume is high, and every number, label and control is set in a monospaced face at data density. There is no colour anywhere (the amber heat of the previous world was rejected and does not return), no rounded corner, no shadow, no gradient used as decoration, and no eased motion: a state is either on or off, and the whole frame inverts for one painted frame when the map returns to live or replay starts.
+The product is a measurement, and the surface is built to look like one. The canvas is pure black with an 8px dot grid in its margins; the only light on the page is the data: the map plate carries one flat white dot per place, sized by article volume, and every number, label and control is set in a monospaced face at data density. There is no colour anywhere (the amber heat of the previous world was rejected and does not return), no rounded corner, no shadow, no gradient used as decoration, and no eased motion: a state is either on or off, and the whole frame inverts for one painted frame when the map returns to live or replay starts.
 
 Two voices share the page. Azeret Mono carries the chrome: the top line, the ranked places column, the bar field, the panel's count rows, the foot totals, the map labels. Source Sans 3 is reserved for what a person reads as prose: the one large sentence above the map, panel titles, story headlines, the methodology page, and a signal's fixed sentence. Silkscreen appears once, as the wordmark beside the 16x16 one-bit globe. The one-bit pixel observer in the bottom-right corner and the crisp-edged pixel icons (play, pause, close, quake, the attribution "i") are drawn as inline SVG on integer grids, never as icon-font glyphs.
 
@@ -198,7 +198,7 @@ Black, white, and a short ladder of greys for secondary text and strips; chroma 
 
 ### Primary
 - **Ink** (`{colors.ink}`): the ground of every page, panel, band and control. Every text block declares it as a background so the dot grid never crosses a glyph.
-- **White** (`{colors.white}`): the only foreground. Primary text, hairline rules at full strength, the map's heat, selection fills. Active nav items, pressed buttons, the current table row and the LIVE / REPLAY tags invert to black-on-white.
+- **White** (`{colors.white}`): the only foreground. Primary text, hairline rules at full strength, the map's dots, selection fills. Active nav items, pressed buttons, the current table row and the LIVE / REPLAY tags invert to black-on-white.
 
 ### Neutral
 - **Muted** (`{colors.muted}`): readable secondary text (7.0:1 on black): the snapshot line, count labels, recent-frames headers, meta rows, placeholders, attribution, unselected places.
@@ -209,7 +209,7 @@ Black, white, and a short ladder of greys for secondary text and strips; chroma 
 - **Hairline / Hairline Mid / Hairline Strong** (white at 0.18, 0.35, 0.4 alpha): the dot grid; the scrub track and filter borders (0.35); outline-button and chip borders and the story's left rule (0.4). The map frame edge is white at 0.25 and its ticks at 0.6. Hover lifts a 0.4 border to solid white.
 
 ### Map plate
-- **Map Ocean**, **Map Land**, **Map Border**, **Map Admin**, **Map Heat** (`{colors.map-ocean}`, `{colors.map-land}`, `{colors.map-border}`, `{colors.map-admin}`, `{colors.map-heat}`): the only place greys are used as fills. Heat is white at stepped alpha; the mid-pack stays dim so only real peaks reach full white. Base labels are white at 0.8 / 0.56 alpha over a black halo. These constants live in `web/src/map.ts` because MapLibre needs literal colours before any stylesheet applies.
+- **Map Ocean**, **Map Land**, **Map Border**, **Map Admin**, **Map Heat** (`{colors.map-ocean}`, `{colors.map-land}`, `{colors.map-border}`, `{colors.map-admin}`, `{colors.map-heat}`): the only place greys are used as fills. Land is near-black (#0d0d0d) and reads by its coastlines, which are drawn by the same #2f2f2f line as the country borders; admin-1 lines (zoom 3.5 and up) are one step lighter so a thinner line stays visible. Map Heat is the white of every mark: the coverage dots (full white, with the two smallest steps at 0.5 and 0.7 opacity so they read as grey), the quake rings, the selected cell's outline, reticle and tag. Base labels are white at 0.8 / 0.56 alpha over a black halo. These constants live in `web/src/map.ts` because MapLibre needs literal colours before any stylesheet applies.
 
 ### Named Rules
 **The Two-Ink Rule.** Chrome, marks and type use #000 and #fff only. Grey is allowed in exactly two places: the map plate's land and borders, and the text hierarchy's muted steps (#9a9a9a, #777, #5c5c5c, #333). No other grey and no hue may be introduced.
@@ -217,6 +217,8 @@ Black, white, and a short ladder of greys for secondary text and strips; chroma 
 **The Inversion Rule.** Selection, activation and the pressed state are expressed by swapping ink and white (`background: #fff; color: #000`), never by tint, opacity or a second colour. One painted frame of `filter: invert(1)` on the root marks a snapshot change (skipped under reduced motion).
 
 **The Faint-Is-Not-Text Rule.** #5c5c5c appears only on strips, bars and baselines. Text drops no lower than #777.
+
+**The Flat-Mark Rule.** A map mark is a solid white circle with a hard edge (`circle-blur: 0`) and a black hairline around it. Volume is encoded by stepped radius and stepped opacity, never by blur, a heatmap or a glow.
 
 ## Typography
 
@@ -267,7 +269,7 @@ There are no shadows and no tonal layering. Every surface is flat black; nothing
 
 ## Shapes
 
-Every corner is square (`border-radius: 0` is set on buttons, inputs, sliders and MapLibre's attribution button to cancel user-agent rounding). Borders are 1px hairlines in white or white alpha; they are the only outline a control has. Strips are repeated 1px bars (`repeating-linear-gradient`, 1px on / 2px off; 2px on / 1px off when selected). The slider thumb is a 7x11px white rectangle on a 1px track. Bullets on the about page are 10x1px white dashes. Icons and marks are drawn on integer grids with `shape-rendering: crispEdges`: the globe on 16x16, the observer on 12x14, play on 4x7, pause on 5x7, close on 7x7, quakes on 12x12, the attribution "i" on 3x8.
+Every corner is square (`border-radius: 0` is set on buttons, inputs, sliders and MapLibre's attribution button to cancel user-agent rounding). Borders are 1px hairlines in white or white alpha; they are the only outline a control has. Strips are repeated 1px bars (`repeating-linear-gradient`, 1px on / 2px off; 2px on / 1px off when selected). The slider thumb is a 7x11px white rectangle on a 1px track. Bullets on the about page are 10x1px white dashes. On the map every mark is a circle: the coverage dots (five fixed radii), the hollow quake rings, the 3px selected-cell reticle; the selected cell itself is its H3 hexagon as a 1px white outline over a 0.06 white fill. Icons and marks are drawn on integer grids with `shape-rendering: crispEdges`: the globe on 16x16, the observer on 12x14, play on 4x7, pause on 5x7, close on 7x7, quakes on 12x12, the attribution "i" on 3x8.
 
 ## Components
 
@@ -314,6 +316,9 @@ A black dot-grid column (360px in the shell; a fixed 400px right drawer or a 55s
 - **Tooltip:** white block, black text, `4px 6px`, mono 400 11px 0.03em, max-width 260px, the name in 500 uppercase.
 - **Status:** black block at the top-left of the frame, `3px 6px`, mono 400 11px uppercase 0.08em.
 
+### Map marks (coverage dots)
+One flat white circle per place on the `cell-dot` layer, no blur, drawn largest-last by article count. The log-scaled weight `w` (0-1, against a fixed maximum so replay and clip frames share one scale) is quantised into five steps at `MARK_STEPS` 0.2 / 0.4 / 0.6 / 0.8. Each step fixes a radius and an opacity: radii `MARK_RADIUS` 0.6 / 0.85 / 1.25 / 1.9 / 2.6px at zoom 0, multiplied by `MARK_ZOOM_SCALE` (1x at zoom 0, 3.5x at zoom 4, 8x at zoom 9); opacities `MARK_OPACITY` 0.5 / 0.7 / 0.85 / 1 / 1. A black hairline (`circle-stroke`, 0.6px at zoom 0 to 1px at zoom 4) separates neighbours in dense regions. The top radius is held small so a cluster stays a field of separate dots rather than a mass. From `w` 0.4 a place carries a mono 10px uppercase 0.08em white label with a 1.2px black halo (the five largest places are labelled at every zoom). Hit targets are invisible circles 4-30px wide depending on weight and zoom. The under-map legend reads "size = volume, not importance" and the status hint "Open a dot to see who is covering it". Quake rings (opt-in) are hollow white 1px rings at 0.9 opacity, radius by magnitude.
+
 ### Top line and foot
 - **Brand:** 32px pixel globe plus Silkscreen wordmark, 12px gap, on a black block.
 - **Clock:** uppercase date in mono 11px 0.1em, the time at 500 22px, a muted SNAPSHOT line beneath; a REPLAY tag inverts while a past frame is shown.
@@ -335,7 +340,8 @@ A fixed 1080x1920 (or 1920x1080) frame in the same world: black dot-grid bands a
 - **Do** keep controls at least 28px tall (36px on phones) with a 1px border at 0.4 alpha that lifts to solid white on hover.
 - **Do** draw any new icon or mark as crispEdges inline SVG on an integer grid, one colour.
 - **Do** switch state in one step; if motion is unavoidable, make it a stepped change, and honour `prefers-reduced-motion` for the inversion frame.
-- **Do** keep greys to the map plate (#222, #383838, #404040) and the muted text steps (#9a9a9a, #777, #5c5c5c, #333).
+- **Do** keep greys to the map plate (#0d0d0d, #2f2f2f, #3a3a3a) and the muted text steps (#9a9a9a, #777, #5c5c5c, #333).
+- **Do** draw a map mark as a flat white circle with a black hairline, sized and dimmed by the five fixed steps; a new mark type joins the same stepped scale.
 
 ### Don't:
 - **Don't** introduce any hue, including the former amber heat; the palette is black, white and the listed greys.
@@ -345,4 +351,5 @@ A fixed 1080x1920 (or 1920x1080) frame in the same world: black dot-grid bands a
 - **Don't** use `--faint` (#5c5c5c) for text that must be read; it is for strips, bars and baselines only.
 - **Don't** add a card: content is a log of entries separated by hairlines, never a filled box; the 160x96 video tile is the one bordered container and stays 1px-bordered on black.
 - **Don't** use icon fonts, glyph icons or raster icons; the only icons are the pixel SVGs on integer grids.
-- **Don't** let the map's chrome compete with the glow: overlays are small black or white blocks at the frame's inside corners, nothing larger.
+- **Don't** blur, soften or halo a map mark: `circle-blur` is 0, there is no heatmap layer and no glow layer; the only halo on the map is the 1-2px black text halo that keeps labels legible.
+- **Don't** let the map's chrome compete with the dots: overlays are small black or white blocks at the frame's inside corners, nothing larger.
