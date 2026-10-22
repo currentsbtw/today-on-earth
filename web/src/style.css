@@ -112,8 +112,10 @@ button {
 
 /* The mark's ring orbits the band continuously, one pixel per step: it slides out from
    behind the sphere's left edge, crosses the band and passes behind the right edge,
-   then re-enters from the left. Clipped to the band so it is never seen outside it. */
-.globe .ring {
+   then re-enters from the left. Clipped to the band so it is never seen outside it.
+   The observer's head is the same mark, so its ring orbits too: the observer scanning. */
+.globe .ring,
+.observer-figure .ring {
   transform: translateX(12px);
   animation: mark-ring 2s steps(30, end) infinite;
 }
@@ -129,7 +131,8 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .globe .ring {
+  .globe .ring,
+  .observer-figure .ring {
     animation: none;
   }
 }
@@ -1861,6 +1864,12 @@ a.article-title:visited,
   .globe {
     width: 24px;
     height: 24px;
+  }
+
+  /* The observer at 1x on phones, like the mark beside the wordmark. */
+  .observer-figure {
+    width: 24px;
+    height: 40px;
   }
 
   .wordmark {

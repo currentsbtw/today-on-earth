@@ -1,0 +1,19 @@
+# The observers count for Today On Earth (see README.md). One Durable Object instance holds
+# the whole site's count in memory; nothing is stored or logged.
+name = "today-on-earth-presence"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+workers_dev = true
+
+[[durable_objects.bindings]]
+name = "PRESENCE"
+class_name = "PresenceCounter"
+
+# SQLite-backed class: the only kind the Workers Free plan allows. Its storage is never used.
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["PresenceCounter"]
+
+# No request logs or traces are kept (see README "Privacy").
+[observability]
+enabled = false

@@ -361,12 +361,14 @@ body {
   padding-right: calc(var(--u) * 15);
 }
 
+/* The 24x40 observer at the mark's multiple (--mark is 24 px times it, set by clip.ts), so
+   48x80 on a 540 px frame and 72x120 at 1080; the black block pads it by two of its pixels. */
 .clip-observer {
   display: block;
   flex: none;
-  width: calc(var(--u) * 7.2);
-  height: calc(var(--u) * 8.4);
-  padding: calc(var(--u) * 0.6);
+  width: var(--mark);
+  height: calc(var(--mark) * 40 / 24);
+  padding: calc(var(--mark) / 12);
   background: var(--k);
 }
 

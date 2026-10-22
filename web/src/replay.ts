@@ -107,7 +107,6 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
   const trendLine = $<SVGPolylineElement>('trend-line');
   const trendMax = $<HTMLElement>('trend-max');
   const recent = $<HTMLTableSectionElement>('recent');
-  const observer = document.getElementById('observer-label');
 
   const last = frames.length - 1;
   // Labels say the span the frames actually cover, not a fixed 24 hours.
@@ -224,7 +223,6 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
     barTag.classList.toggle('is-end', frac(target) > 0.97);
     barTag.classList.toggle('is-start', frac(target) < 0.03);
     fieldCount.textContent = `${pad(target)}/${pad(last)}`;
-    if (observer) observer.textContent = `Observer · ${pad(target)}`;
     // Always the newest frames, ending at live; the frame on screen is inverted when listed.
     rows.forEach((tr, r) => {
       const i = last - rows.length + 1 + r;

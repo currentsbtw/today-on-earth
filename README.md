@@ -19,3 +19,8 @@ Every day at 00:20 UTC (after the 00:15 snapshot) the `Clip` workflow turns the 
 ## Archive
 
 The site and the carried state only hold the last 24 hours, so every successful snapshot is also archived to GitHub Releases, one release per UTC day tagged `archive-YYYY-MM-DD` (the day of the snapshot's `generatedAt`, not marked latest). Each run uploads `heat-<stamp>.json.gz` (the run's `heat.json`, gzipped; `<stamp>` is `generatedAt` without `-` and `:`, for example `heat-20261021T144514Z.json.gz`), about 96 a day. The first run of each UTC day also uploads `cells-<stamp>.tar.gz`, the whole `cells/` directory of that run. Download with `gh release download archive-2026-10-21` or from the Releases page. The step needs the `build` job's `contents: write` permission, and a failed upload never fails the snapshot. Set the repository variable `ARCHIVE` to `false` to turn it off.
+
+## Observers count
+
+`presence/` is an optional Cloudflare Worker with one Durable Object that counts the browser tabs on the site in the last 75 seconds, for the "Observers · N" label (setup, API and privacy in `presence/README.md`); the site reads its URL from the repository variable `PRESENCE_URL` at build time and shows plain "Observers" without it.
+The `Presence` workflow (`.github/workflows/presence.yml`) tests and deploys it on manual runs and on pushes to `main` that touch `presence/`, and skips the deploy until the secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` exist.

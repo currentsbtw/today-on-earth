@@ -1,0 +1,21 @@
+{
+  "name": "today-on-earth-presence",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cloudflare Worker + Durable Object that counts the browsers on the site in the last 75 seconds",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "test": "node --test \"test/*.test.mjs\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261022.1",
+    "typescript": "^7.0.2",
+    "wrangler": "^4.152.0"
+  }
+}

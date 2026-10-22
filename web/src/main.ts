@@ -4,6 +4,7 @@ import { isCellId, loadCell, loadHeat, type FrameRow, type HeatCell, type Totals
 import { count, plural, shortName, utcTime } from './format';
 import { createMap, type HeatMode, type MapCell } from './map';
 import * as panel from './panel';
+import { initPresence } from './presence';
 import { readPref, writePref } from './prefs';
 import { initQuakes } from './quakes';
 import { initReplay, type FrameView, type Replay } from './replay';
@@ -53,6 +54,9 @@ window.setTimeout(() => {
   tick();
   window.setInterval(tick, 1000);
 }, 1000 - (Date.now() % 1000));
+
+// The observers count under the right column (off unless VITE_PRESENCE_URL is set at build time).
+initPresence(document.getElementById('observer-label'));
 
 /** <div><dt>label</dt><dd>value</dd></div> rows for a description list. */
 function dlRows(target: HTMLElement, rows: [label: string, value: string][]) {

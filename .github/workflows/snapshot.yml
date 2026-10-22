@@ -127,6 +127,10 @@ jobs:
 
       - name: Build site
         working-directory: web
+        env:
+          # Optional: the presence Worker's URL (presence/README.md) for the "Observers · N"
+          # count. An unset repository variable is an empty string, which leaves the count off.
+          VITE_PRESENCE_URL: ${{ vars.PRESENCE_URL }}
         run: |
           npm ci
           npm run build
