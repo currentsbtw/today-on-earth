@@ -33,6 +33,8 @@ body {
   height: 100%;
   margin: 0;
   background: var(--bg);
+  /* No blue tap flash on phones: the only tap feedback is the control's own inversion (Two-Ink Rule). */
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -771,12 +773,11 @@ body.is-replay .map-frame {
   display: none;
 }
 
-.col-note {
-  margin: 8px 0 0;
+/* A muted note at the right of a column head (the Signals window). */
+.col-head-note {
   color: var(--muted);
-  font: 400 11px/1.4 var(--mono);
+  font-weight: 400;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
 
 /* The places section head exists for the stacked layouts; wide screens head the column
@@ -1088,6 +1089,26 @@ body.is-replay .map-frame {
   display: block;
   margin-right: 12px;
   fill: var(--fg);
+}
+
+@media (min-width: 1100px) {
+  /* The section heads sit the stamp's 10px below it (no heading margins). */
+  .col-signals > .col-head,
+  .col-replay > .col-head {
+    margin: 0;
+  }
+}
+
+/* Short wide screens: the observer steps down to 1x so the six signals stay in view. */
+@media (min-width: 1100px) and (max-height: 879px) {
+  .observer {
+    padding-top: 12px;
+  }
+
+  .observer-figure {
+    width: 24px;
+    height: 40px;
+  }
 }
 
 /* Panel: a selected place --------------------------------------------------------- */
@@ -1623,25 +1644,123 @@ a.article-title:visited,
 
 /* Signals: the daily broadcast's six slots as log lines, in their fixed order. */
 .signals-list {
-  margin: 0;
+  margin: 6px 0 0;
   padding: 0;
   list-style: none;
 }
 
-/* Each slot is an entry in the table register: its name is the heading (mono, rule
-   under it), the fixed sentence is body text, the outlet headline is the one bold line. */
+/* Each slot folds. Closed: the head row (slot name, place) over the outlet's headline,
+   clamped to two lines. Open: the head inverts and the sentence, the counts, the outlet
+   and OPEN follow. One step, no transition. */
 .signal {
-  padding: 18px 0 4px;
+  padding: 0 0 6px;
   background: var(--bg);
 }
 
-.signal-label {
+.signal-head {
   margin: 0;
-  padding: 6px 0;
+  font: inherit;
+}
+
+/* The head row: a section head in the table register, the whole row one hit area. */
+.signal-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 28px;
+  margin: 0;
+  padding: 0 6px;
+  border: 0;
   border-bottom: 1px solid var(--fg);
-  font: 500 11px/1 var(--mono);
+  background: var(--bg);
+  color: var(--fg);
+  font: 500 11px/1.2 var(--mono);
   letter-spacing: 0.1em;
+  text-align: left;
   text-transform: uppercase;
+}
+
+.signal-toggle {
+  cursor: pointer;
+}
+
+.signal-slot {
+  flex: none;
+}
+
+.signal-place {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.signal-toggle:hover .signal-slot {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Open: the head inverts like the current nav item. */
+.signal.is-open .signal-toggle {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+.signal.is-open .signal-place {
+  color: var(--bg);
+}
+
+.signal.is-open .signal-toggle:hover .signal-slot {
+  text-decoration: none;
+}
+
+/* The column clips at its edges, so the ring sits inside the row (black on the open head). */
+.signal-toggle:focus-visible {
+  outline-offset: -3px;
+}
+
+.signal.is-open .signal-toggle:focus-visible {
+  outline-color: var(--bg);
+}
+
+.signal-headline {
+  margin-top: 4px;
+  padding-left: 12px;
+  border-left: 1px solid rgba(255, 255, 255, 0.4);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Closed, the headline shows two lines; the clamp sits on the link so its focus ring is
+   one rectangle. Open, the whole title shows. */
+.signal .signal-headline > a,
+.signal .signal-headline > span:not(.story-source) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.signal.is-open .signal-headline > a,
+.signal.is-open .signal-headline > span {
+  -webkit-line-clamp: none;
+  line-clamp: none;
+}
+
+.signal-body[hidden] {
+  display: none;
+}
+
+/* The outlet line continues the headline's rule. */
+.signal-source {
+  margin: 0;
+  padding: 4px 0 0 12px;
+  border-left: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .signal-line {
@@ -1650,17 +1769,8 @@ a.article-title:visited,
   font-variant-numeric: tabular-nums;
 }
 
-.signal-headline {
-  margin-top: 8px;
-  padding-left: 12px;
-  border-left: 1px solid rgba(255, 255, 255, 0.4);
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.3;
-}
-
 .signal-empty {
-  margin: 8px 0 0;
+  margin: 4px 0 0 6px;
   color: var(--muted);
   font: 400 11px/1.4 var(--mono);
   letter-spacing: 0.06em;
@@ -1685,7 +1795,7 @@ a.article-title:visited,
   color: var(--bg);
 }
 
-/* Foot: totals in mono across the bottom ------------------------------------------------ */
+/* Foot: the source at the left, the method link at the right -------------------------- */
 
 .foot {
   grid-area: foot;
@@ -1699,25 +1809,18 @@ a.article-title:visited,
   background: var(--bg);
 }
 
-.foot-totals {
+.foot-source {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px 28px;
-  margin: 0;
-}
-
-.foot-totals div {
-  display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   gap: 5px;
+  margin: 0;
 }
 
-.foot-totals dd {
-  margin: 0;
+.foot-figure {
   font: 500 15px/1 var(--mono);
 }
 
-.foot-totals dt {
+.foot-caption {
   color: var(--muted);
   font: 400 11px/1 var(--mono);
   letter-spacing: 0.1em;
@@ -1725,21 +1828,16 @@ a.article-title:visited,
   white-space: nowrap;
 }
 
-.foot-links {
-  margin: 0;
+.foot-link {
   color: var(--muted);
   font: 400 11px/1.4 var(--mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  text-underline-offset: 3px;
   white-space: nowrap;
 }
 
-.foot-links a {
-  color: var(--muted);
-  text-underline-offset: 3px;
-}
-
-.foot-links a:hover {
+.foot-link:hover {
   color: var(--fg);
 }
 
@@ -1866,8 +1964,6 @@ a.article-title:visited,
   }
 
   .foot {
-    flex-direction: column;
-    align-items: flex-start;
     margin-top: 28px;
   }
 }
@@ -1975,6 +2071,7 @@ a.article-title:visited,
   }
 
   /* Above MapLibre's attribution, which opens expanded (two lines) across a narrow frame. */
+  .signal-row,
   .signal-open {
     min-height: 36px;
   }
@@ -2043,20 +2140,9 @@ a.article-title:visited,
     min-height: 36px;
   }
 
-  .foot-totals {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px 16px;
-    width: 100%;
-  }
-
-  .foot-links {
-    white-space: normal;
-  }
 }
 
 /* A focused headline link draws one rectangle, not a ring per wrapped line. */
-.signal-headline a,
 .story-headline a {
   display: inline-block;
 }

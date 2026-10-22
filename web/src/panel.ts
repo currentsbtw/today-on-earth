@@ -432,15 +432,25 @@ function articleItem(a: Article, now: number): HTMLLIElement {
 }
 
 // Signals ----------------------------------------------------------------------
-// The daily broadcast's six slots in their fixed order: the slot label, the fixed frame
-// sentence, the outlet's own headline and the counts. Nothing else is written here.
+// The daily broadcast's six slots in their fixed order. Each filled entry folds: closed, it
+// is the slot name, the place and the outlet's headline (two lines); open, it adds the fixed
+// sentence, the counts the sentence left out, the outlet and OPEN. Nothing else is written.
 
-const dateFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+/** The slot whose entry is open, kept across re-renders; null when every entry is closed. */
+let openSlot: Slot['id'] | null = null;
 
-/** "21 Oct 2026 · 15:06 UTC", "" when the time does not parse. */
-function broadcastWhen(at: string): string {
-  const d = new Date(at);
-  return Number.isNaN(d.getTime()) ? '' : `${dateFormat.format(d)} · ${utcTime(at)}`;
+/** Opens one entry (closing the rest) or, with null, closes them all. One step, no transition. */
+function setOpenSignal(list: HTMLElement, id: Slot['id'] | null) {
+  openSlot = id;
+  for (const li of list.querySelectorAll<HTMLLIElement>('.signal')) {
+    const toggle = li.querySelector<HTMLButtonElement>('.signal-toggle');
+    const body = li.querySelector<HTMLElement>('.signal-body');
+    if (!toggle || !body) continue;
+    const open = li.dataset.slot === id;
+    li.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    body.hidden = !open;
+  }
 }
 
 /**
@@ -467,52 +477,70 @@ function signalMeta(id: Slot['id'], story: SlotStory): HTMLParagraphElement | nu
   return meta;
 }
 
-function signalCard(slot: Slot, pick: (slot: Slot) => void): HTMLLIElement {
+function signalCard(slot: Slot, list: HTMLElement, pick: (slot: Slot) => void): HTMLLIElement {
   const li = el('li', 'signal');
+  li.dataset.slot = slot.id;
   const id = `signal-${slot.id}`;
-  li.setAttribute('aria-labelledby', `${id}-label`);
-  const label = el('h3', 'signal-label', SLOT_LABELS[slot.id] ?? slot.id);
-  label.id = `${id}-label`;
-  li.append(label);
+  const label = SLOT_LABELS[slot.id] ?? slot.id;
+  const head = el('h3', 'signal-head');
+  li.append(head);
 
   const line = signalLine(slot);
   if (!line || !slot.cell || !slot.story) {
+    // An empty slot does not fold: its name and the one-line reason, always shown.
     li.classList.add('is-empty');
+    head.append(el('span', 'signal-row', label));
     li.append(el('p', 'signal-empty', emptyLine(slot) || 'No story met the rule today.'));
     return li;
   }
   const story = slot.story;
-  li.append(el('p', 'signal-line', line));
+  const place = shortName(slot.cell.name) || slot.cell.name;
+
+  // The head row is the fold's control: slot name left, place right, the whole row the hit area.
+  const toggle = el('button', 'signal-row signal-toggle');
+  toggle.type = 'button';
+  toggle.id = `${id}-toggle`;
+  toggle.setAttribute('aria-expanded', 'false');
+  toggle.setAttribute('aria-controls', `${id}-body`);
+  toggle.append(el('span', 'signal-slot', label), el('span', 'signal-place', place));
+  toggle.addEventListener('click', () => setOpenSignal(list, openSlot === slot.id ? null : slot.id));
+  head.append(toggle);
 
   // The outlet's own title, verbatim, linked to its article when the file has the URL.
   const text = story.headline.trim();
   const attribution = [story.headlineSource, story.headlineLang].filter(Boolean).join(' · ');
-  if (text || attribution) {
-    const head = el('p', 'story-headline signal-headline');
-    if (text) {
-      const href = safeHref(story.headlineUrl);
-      const words = href ? el('a', 'story-link', text) : el('span', '', text);
-      setLang(words, story.headlineLang);
-      if (words instanceof HTMLAnchorElement && href) {
-        words.href = href;
-        words.target = '_blank';
-        words.rel = 'noopener';
-      }
-      head.append(words);
+  if (text) {
+    const headline = el('p', 'story-headline signal-headline');
+    const href = safeHref(story.headlineUrl);
+    const words = href ? el('a', 'story-link', text) : el('span', '', text);
+    setLang(words, story.headlineLang);
+    if (words instanceof HTMLAnchorElement && href) {
+      words.href = href;
+      words.target = '_blank';
+      words.rel = 'noopener';
     }
-    if (attribution) head.append(el('span', 'story-source', `${text ? ' — ' : ''}${attribution}`));
-    li.append(head);
+    headline.append(words);
+    li.append(headline);
+  } else if (attribution) {
+    // No title to show: the outlet line stands in the headline's place.
+    const headline = el('p', 'story-headline signal-headline');
+    headline.append(el('span', 'story-source', attribution));
+    li.append(headline);
   }
 
+  const body = el('div', 'signal-body');
+  body.id = `${id}-body`;
+  body.hidden = true;
+  if (text && attribution) body.append(el('p', 'story-source signal-source', attribution));
+  body.append(el('p', 'signal-line', line));
   const meta = signalMeta(slot.id, story);
-  if (meta) li.append(meta);
-
-  const place = shortName(slot.cell.name) || slot.cell.name;
+  if (meta) body.append(meta);
   const open = el('button', 'signal-open', `Open ${place}`);
   open.type = 'button';
   open.dataset.id = slot.cell.id;
   open.addEventListener('click', () => pick(slot));
-  li.append(open);
+  body.append(open);
+  li.append(body);
   return li;
 }
 
@@ -534,16 +562,18 @@ function show(focus: HTMLElement = title) {
 }
 
 /**
- * Renders the daily broadcast's six slots into `list` (the Signals column) and its time into
- * `when`. `pick` opens a slot's cell. Only well-formed slots with a known id get an entry.
+ * Renders the daily broadcast's six slots into `list` (the Signals column) and its window
+ * into `when` ("last 24h"; the snapshot time is the clock's and the stamp's). `pick` opens
+ * a slot's cell. Only well-formed slots with a known id get an entry. Every entry starts
+ * closed; an entry that was open before a re-render stays open.
  */
 export function renderSignals(list: HTMLElement, when: HTMLElement, broadcast: Broadcast, pick: (slot: Slot) => void) {
-  const at = broadcastWhen(broadcast.generatedAt);
-  when.textContent = [at, `last ${broadcast.windowHours || 24}h`].filter(Boolean).join(' · ');
+  when.textContent = `last ${broadcast.windowHours || 24}h`;
   const slots = (Array.isArray(broadcast.slots) ? broadcast.slots : []).filter(
     (slot): slot is Slot => !!slot && typeof slot === 'object' && SLOT_IDS.includes(slot.id),
   );
-  list.replaceChildren(...slots.map((slot) => signalCard(slot, pick)));
+  list.replaceChildren(...slots.map((slot) => signalCard(slot, list, pick)));
+  setOpenSignal(list, openSlot);
 }
 
 /** Opens the panel for a cell straight away, using the heat.json counts while the detail loads. */

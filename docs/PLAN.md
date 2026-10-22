@@ -625,6 +625,25 @@ line under the legend, and the clip's time-lapse frame carries one fixed Source 
 under the date: "One dot per place in today's news. Size = number of articles." Nothing
 written about the news itself.
 
+### Critique follow-up 3: chrome says things once; the six signals fit (2026-10-22)
+
+From the critique's P2 "Chrome repeats itself while the daily broadcast gets one slot of
+room". Decisions:
+- Signal entries fold. Collapsed: a head row (slot name left, place name right, mono) and
+  the outlet's headline clamped to two lines. Pressing the head opens the entry in place,
+  inverting the head like the current nav item, to show the fixed sentence, the meta line,
+  the outlet and OPEN; one entry open at a time, none open by default; stepped, no
+  transition. Target: all six heads and headlines visible without scrolling at 1440x900
+  and 1280x800. The same component on every width.
+- The snapshot time appears twice: the clock's SNAPSHOT line and the LIVE/REPLAY stamp
+  (which doubles as replay status). The signals note becomes "LAST 24H"; the foot loses
+  its snapshot cell.
+- The foot is cut to the source line ("GDELT 2.0 · source · no editing") and the HOW IT
+  WORKS link; the map corner keeps the attribution. Outlets and outlet countries move into
+  the left column's totals block so no figure leaves the page; the totals stay in the
+  sentence (articles, places) and that block (places, reprints, not placed, outlets, outlet
+  countries).
+
 ## Phase 1 build decisions (2026-10-20)
 
 - **GKG is the only feed in phase 1.** It carries URL, source domain, page title,

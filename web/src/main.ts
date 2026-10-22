@@ -28,7 +28,6 @@ const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as 
 const status = $('status');
 const sentence = $('totals');
 const snapshot = $('snapshot');
-const footTotals = $('foot-totals');
 const colTotals = $('col-totals');
 const selLine = $('sel-line');
 const mapFrame = $('map-frame');
@@ -78,7 +77,7 @@ function dlRows(target: HTMLElement, rows: [label: string, value: string][]) {
   );
 }
 
-/** The sentence, the stamp, the foot line and the column totals for the live snapshot or a replay frame. */
+/** The sentence, the clock's snapshot line and the column totals for the live snapshot or a replay frame. */
 function showTotals(t: Totals, at: string, replay: boolean) {
   const verb = replay ? 'were' : 'are';
   sentence.textContent = `${plural(t.articles, 'article', 'articles')} ${verb} pointing at ${plural(t.cells, 'place', 'places')}.`;
@@ -92,23 +91,17 @@ function showTotals(t: Totals, at: string, replay: boolean) {
   }
   snapshot.title = at;
 
-  const stamp = time.replace(' UTC', 'Z');
-  const foot: [string, string][] = [['Articles', count(t.articles)]];
-  if (t.reprints !== undefined) foot.push(['Reprints', count(t.reprints)]);
-  foot.push(['Outlets', count(t.outlets)], ['Outlet countries', count(t.countries)], ['Places', count(t.cells)]);
-  // Articles that only name a country have no place on the map. Saying so is part of
-  // showing the coverage gap rather than hiding it.
-  if (t.unplaced !== undefined) foot.push(['Not placed', count(t.unplaced)]);
-  foot.push([replay ? 'Replay frame' : 'Snapshot', stamp], ['Source · no editing', 'GDELT 2.0']);
-  dlRows(footTotals, foot);
-  footTotals.title = t.unplaced
-    ? `${count(t.unplaced)} articles mention only a country, so they are counted but not drawn anywhere.`
-    : '';
-
+  // Every figure is printed once: articles and places in the sentence, the rest here (the
+  // foot carries only the source). Articles that only name a country have no place on the
+  // map; saying so is part of showing the coverage gap rather than hiding it.
   const col: [string, string][] = [['Places with articles', count(t.cells)]];
   if (t.reprints !== undefined) col.push(['Reprints collapsed', count(t.reprints)]);
   if (t.unplaced !== undefined) col.push(['Not placed', count(t.unplaced)]);
+  col.push(['Outlets', count(t.outlets)], ['Outlet countries', count(t.countries)]);
   dlRows(colTotals, col);
+  colTotals.title = t.unplaced
+    ? `${count(t.unplaced)} articles mention only a country, so they are counted but not drawn anywhere.`
+    : '';
 }
 
 /** One row of the places column. */
