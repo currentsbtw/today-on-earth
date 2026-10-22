@@ -1,12 +1,16 @@
-// The replay: the frames in history/index.json drawn as a field of 1px bars (articles per
-// snapshot), a trend line and a table of recent frames. The last frame is the live snapshot
+// The replay: the frames in history/index.json drawn as a field of 1px bars (new articles
+// per snapshot, `added`), a trend line and a table of recent frames. The last frame is the live snapshot
 // (heat.json), so it never needs its own fetch. A range input stays as the keyboard and
 // screen-reader scrubber (and what the clip renderer waits for).
-import { loadFrame, loadHistoryIndex, type FrameRow, type HistoryFrame } from './data';
+import { frameAdded, loadFrame, loadHistoryIndex, type FrameRow, type HistoryFrame } from './data';
 import { count, stampOf, utcTime } from './format';
 
 const FPS = 6;
 const PREFETCH_CONCURRENCY = 3;
+/** Frames kept fetched ahead of the playhead while playing (2 s at FPS). */
+const PREFETCH_AHEAD = 12;
+/** Height of a frame whose new-article count is unknown: a fixed dotted stub (.is-unknown), not data. */
+const UNKNOWN_BAR = '4px';
 const MIN_FRAMES = 4;
 /** Frames on each side of the centre in the trend line's mean (9-frame window). */
 const TREND_HALF = 4;
@@ -53,8 +57,8 @@ const $ = <T extends Element>(id: string) => document.getElementById(id) as unkn
 /** Two-digit frame index: 00 … 95. */
 const pad = (i: number) => String(i).padStart(2, '0');
 
-/** "+11", "−45" (a true minus sign), "0". */
-const signed = (d: number) => (d > 0 ? `+${count(d)}` : d < 0 ? `−${count(-d)}` : '0');
+/** A count, or an en dash when unknown. */
+const countOrDash = (n: number | null) => (n === null ? '–' : count(n));
 
 /**
  * The whole frame inverts for one painted frame when replay starts or the map returns to the
@@ -124,8 +128,7 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
   const failed = new Set<number>();
   let target = last;
   let timer = 0;
-  let prefetchCursor = last;
-  let prefetching = false;
+  let prefetchActive = 0;
 
   const ready = (i: number) => i === last || cache.has(i);
 
@@ -164,17 +167,21 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
   }
 
   // The field ------------------------------------------------------------------
+  // Bars, trend and table plot what was new in each step (`added`); the window total stays
+  // in the table's ART column, the stamp and the sentence. Unknown frames never count.
   const articles = frames.map((f) => f.totals?.articles ?? 0);
-  const max = Math.max(1, ...articles);
+  const added = frames.map(frameAdded);
+  const known = added.filter((a): a is number => a !== null);
+  const max = Math.max(1, ...known);
   const slots = tooFew ? 95 : Math.max(1, last);
   const frac = (i: number) => i / slots;
   const pos = (i: number) => `${frac(i) * 100}%`;
 
-  const bars = articles.map((n, i) => {
+  const bars = added.map((n, i) => {
     const bar = document.createElement('span');
-    bar.className = 'bar';
+    bar.className = n === null ? 'bar is-unknown' : 'bar';
     bar.style.left = pos(i);
-    bar.style.setProperty('--h', `${Math.max(2, (n / max) * 100)}%`);
+    bar.style.setProperty('--h', n === null ? UNKNOWN_BAR : `${Math.max(2, (n / max) * 100)}%`);
     return bar;
   });
   barsEl.replaceChildren(...bars);
@@ -192,19 +199,43 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
   }
   idx.replaceChildren(...labels);
 
-  // Trend: a 9-frame centred mean, as one polyline in a 1000 x 44 box.
-  const means = articles.map((_, i) => {
-    const a = Math.max(0, i - TREND_HALF);
-    const b = Math.min(last, i + TREND_HALF);
+  // Trend: a 9-frame centred mean of the known counts, in a 1000 x 44 box. A frame with no
+  // known count in its window has no point, and the line breaks there: the first run is
+  // #trend-line itself, any later run a copy of it.
+  const means = added.map((_, i) => {
     let sum = 0;
-    for (let j = a; j <= b; j++) sum += articles[j];
-    return sum / (b - a + 1);
+    let n = 0;
+    for (let j = Math.max(0, i - TREND_HALF); j <= Math.min(last, i + TREND_HALF); j++) {
+      const v = added[j];
+      if (v === null) continue;
+      sum += v;
+      n++;
+    }
+    return n ? sum / n : null;
   });
-  trendLine.setAttribute(
-    'points',
-    means.map((m, i) => `${(frac(i) * 1000).toFixed(1)},${(43 - (m / max) * 41).toFixed(1)}`).join(' '),
-  );
-  trendMax.textContent = `${count(max)} max`;
+  const runs: string[][] = [];
+  means.forEach((m, i) => {
+    if (m === null) return;
+    if (i === 0 || means[i - 1] === null) runs.push([]);
+    runs[runs.length - 1].push(`${(frac(i) * 1000).toFixed(1)},${(43 - (m / max) * 41).toFixed(1)}`);
+  });
+  trendLine.parentElement?.querySelectorAll('.trend-run').forEach((el) => el.remove());
+  trendLine.setAttribute('points', runs[0]?.join(' ') ?? '');
+  for (const run of runs.slice(1)) {
+    const copy = trendLine.cloneNode() as SVGPolylineElement;
+    copy.removeAttribute('id');
+    copy.classList.add('trend-run');
+    copy.setAttribute('points', run.join(' '));
+    trendLine.after(copy);
+  }
+  trendMax.textContent = `${known.length ? count(max) : '–'} max`;
+
+  // The labels name the new quantity (index.html carries the same text; set here too so
+  // the field reads right whichever copy of the markup is served).
+  const unit = barsEl.closest('.field')?.querySelector('.field-unit');
+  if (unit) unit.textContent = 'New articles per snapshot';
+  const newHead = recent.closest('table')?.querySelector('thead th:last-child');
+  if (newHead) newHead.textContent = 'New';
 
   // Recent frames: the newest few, each a click away (the last one returns to live).
   const rows = Array.from({ length: Math.min(RECENT_ROWS, frames.length) }, () => {
@@ -238,7 +269,7 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
       cells[0].textContent = pad(i);
       cells[1].textContent = utcTime(frames[i].at).replace(' UTC', '');
       cells[2].textContent = count(articles[i]);
-      cells[3].textContent = i > 0 ? signed(articles[i] - articles[i - 1]) : '';
+      cells[3].textContent = countOrDash(added[i]);
       tr.classList.toggle('is-on', i === target);
       tr.title = i === last ? 'live snapshot' : '';
     });
@@ -283,30 +314,42 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
     root.classList.toggle('is-playing', on);
     if (!on) return;
     invertOnce();
+    // A new play gives frames that failed another try.
+    failed.clear();
     if (target === last) go(0);
-    prefetchFrom(target);
     timer = window.setInterval(() => {
       const next = target + 1;
       // Wait for the next frame rather than skipping ahead: no stutter, just a pause.
-      if (!ready(next) && !failed.has(next)) return void fetchFrame(next);
+      if (!ready(next) && !failed.has(next)) {
+        void fetchFrame(next);
+        return prefetchAhead();
+      }
       go(next, { mark: true });
       if (next >= last) setPlaying(false);
+      else prefetchAhead();
     }, 1000 / FPS);
+    prefetchAhead();
   }
 
-  // One pool of workers sharing one cursor, however often play is pressed. A new play
-  // moves the cursor back to the playhead and gives frames that failed another try.
-  function prefetchFrom(start: number) {
-    failed.clear();
-    prefetchCursor = start;
-    if (prefetching) return;
-    prefetching = true;
-    const worker = async () => {
-      while (prefetchCursor < last) await fetchFrame(prefetchCursor++);
-    };
-    void Promise.all(Array.from({ length: PREFETCH_CONCURRENCY }, worker)).finally(() => {
-      prefetching = false;
-    });
+  // While playing, keep the PREFETCH_AHEAD frames after the playhead fetched, at most
+  // PREFETCH_CONCURRENCY at a time. Called on play, on every step and whenever one of its
+  // fetches settles; it starts nothing once playback stops (fetches in flight just finish).
+  function prefetchAhead() {
+    while (timer && prefetchActive < PREFETCH_CONCURRENCY) {
+      let i = -1;
+      for (let j = target + 1; j <= Math.min(last - 1, target + PREFETCH_AHEAD); j++) {
+        if (!ready(j) && !failed.has(j) && !loading.has(j)) {
+          i = j;
+          break;
+        }
+      }
+      if (i < 0) return;
+      prefetchActive++;
+      void fetchFrame(i).finally(() => {
+        prefetchActive--;
+        prefetchAhead();
+      });
+    }
   }
 
   // Pointer scrubbing on the bars: a press or a drag picks the nearest frame.

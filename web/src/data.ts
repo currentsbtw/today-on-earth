@@ -133,10 +133,26 @@ export interface HistoryFrame {
   file: string;
   windowHours: number;
   totals: Totals;
+  /** That run's newestArticleAt. Absent in frames from before it was recorded. */
+  newest?: string;
+  /**
+   * Window articles (placed and unplaced, the unit of totals.articles) new since the previous
+   * retained frame. Absent when unknown (the first frame after a cold start, older frames).
+   */
+  added?: number;
 }
 
-/** [id, lat, lon, n], sorted by n descending. */
-export type FrameRow = [string, number, number, number];
+/**
+ * [id, lat, lon, n] or [id, lat, lon, n, a], sorted by n descending; `a` is the cell's new
+ * articles in the step, absent when unknown.
+ */
+export type FrameRow = [id: string, lat: number, lon: number, n: number, a?: number];
+
+/** A frame's new-article count, or null when unknown (absent or not a usable number). */
+export function frameAdded(frame: HistoryFrame): number | null {
+  const a = frame.added;
+  return typeof a === 'number' && Number.isFinite(a) && a >= 0 ? a : null;
+}
 
 export async function loadHistoryIndex(): Promise<HistoryFrame[]> {
   const index = await getJson<{ frames?: HistoryFrame[] }>('data/history/index.json');
