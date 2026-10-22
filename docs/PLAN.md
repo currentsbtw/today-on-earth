@@ -473,9 +473,7 @@ Open: the newsletter; the clip's cards are static (fly-to zooms are the clip v2 
 The clip pipeline exists: `render/` + `clip.yml` render a 1080x1920 daily mp4 to the
 GitHub release `clips`. What remains:
 
-- [ ] **Clip v2.** The portrait layout reserves ~25% top and ~20% bottom for text, so
-      the 2:1 world sits as a short band. Fill the frame with fly-to zooms and
-      per-signal callouts driven by the broadcast slots.
+- [ ] **Clip v2.** In progress 2026-10-22; decisions below under "Clip v2".
 - [ ] **Captions first.** Burned-in captions, no synthetic narration for now:
       platform rules on labelling AI voices are still moving, and captions carry the
       numbers on their own. Revisit narration (Piper, numbers and outlet headlines
@@ -494,6 +492,65 @@ GitHub release `clips`. What remains:
 - [ ] **Stale-map alert** so a GDELT or scheduler failure is known within an hour.
 - [ ] **Analytics and checkpoints.** Free, privacy-friendly analytics; checkpoints at
       3 and 6 months.
+
+### Clip v2 (started 2026-10-22)
+
+Why: the v1 portrait clip is a 2:1 world band in the middle of a 9:16 frame (about 29% of
+the height), the signal cards are stills that cut in from nowhere, and the time-lapse has
+no caption beyond the clock. Decisions, made before building:
+
+1. **The portrait time-lapse fills the frame.** The map window runs from just under the
+   top text (wordmark, date, clock) to the top of the bottom safe strip, with the totals
+   inside the plate on its lower rule as in v1. The world fills the window's height (the
+   same height-fill the live site uses on phones), so about 60% of the globe's width is
+   in view at once, and the camera pans west over the 24 hours following local noon: the
+   centre longitude of a frame at time T (UTC) is 180 - 15 x hours(T), so the place under
+   the midday sun is always in the middle of the frame. One full turn per clip. Landscape
+   frames keep the fitted world and do not pan.
+2. **Fly-to per signal, stepped.** After the last time-lapse frame, each filled slot gets
+   a flight of 12 frames (1.5 s at 8 fps) from the previous camera (the last time-lapse
+   frame, or the previous slot's cell) to its cell at the card zoom, along a van
+   Wijk-style path (zoom out, travel, zoom in) sampled at fixed steps. During the flight
+   the frame keeps the time-lapse layout and shows only the slot label as a caption; on
+   arrival the card layout (band, sentence, headline, outlet) paints in one step. The
+   first flight frame is the last time-lapse frame's view plus the caption, so the cut is
+   invisible. No return to the world between slots; the end card follows the last slot.
+3. **Callout on arrival.** The cell's hexagon outline (v1) plus the live site's reticle
+   and "NAME · n" tag at the cell's centre, so the card points at a named place.
+4. **Captions are the card.** No narration. The time-lapse carries the clock and the
+   totals; the flight carries the slot label; the card carries the fixed sentence (the
+   numbers) and the outlet's own headline. Nothing new is written.
+5. **Renderer.** Flights are driven in-page (one load per slot, then a step function the
+   renderer calls per frame and screenshots) rather than one page load per frame, so a
+   six-slot clip adds about 72 frames without adding minutes. Cards and flights are still
+   shot before the time-lapse frames, pinned to the snapshot the clip was planned from.
+   New `--fly <seconds>` option, default 1.5; 0 restores v1 cuts.
+
+Length: 64 time-lapse frames (8 s) + up to 6 x (1.5 s flight + 3 s card) + 3 s end + 1 s
+hold, about 39 s at most.
+
+**Status 2026-10-22 (built, not committed, not yet run in CI).** clip.ts: portrait `?t=`
+frames fill the window's height and pan with local noon (createClipMap got a `wrap` option:
+world copies on, longitude free; the live map is untouched); `?signal=<id>&from=<ref>&fly=<F>`
+opens on step 0 and `window.__clipStep(i)` steps a flyTo path ported from MapLibre 6
+(web/src/flight.ts, rho 1.42, default easing, sampled at fixed steps); the arrival offsets the
+camera instead of repadding; the callout (hexagon, reticle, "NAME · n" tag) is on every
+card. Renderer: `--fly` (default 1.5, 0 = v1 cuts, at most 60 stills), planCards carries
+`fly` and `from`, captureCards steps and shoots each flight, retries a failed flight whole and
+re-chains the next flight past a skipped card; clip.yml passes `--fly 1.5`. Verified locally
+on the 100-frame fixture history: 540x960 and 960x540 renders (100 + 4 x (12 + 24) + 24 =
+268 frames each, none bad or skipped), the first flight's step 0 differs from the last
+time-lapse frame in 0 pixels of the plate outside the caption, and a chained flight's step 0
+differs from the previous card only by that card's callout. Decided differently: (a) portrait
+window tops no longer take the 25% reserved band as a floor (the v1 card rule had it, which
+would have kept the window where v1 put it), so the card and the time-lapse share their top
+edge and only the bottom moves on arrival; (b) the caption sits exactly where the card will
+put its header (it stays put when the card paints in), which for a tall card is mid-frame
+rather than at the bottom of the plate, and moves up only to clear the totals; (c) the
+renderer shoots steps 1..F, so the first output flight frame is already one step in; step 0
+is the page's load state; (d) the direct `--fly 0` card also gets the callout. Open: an
+encoded mp4 has not been watched (no local ffmpeg); the tag is a fixed 11px label, small at
+1080x1920 (the existing label-size follow-up).
 
 ## Visual redesign: Datamatics Field (shipped 2026-10-21)
 
@@ -518,14 +575,25 @@ binding). og.jpg recaptured from the live site in the new look on 2026-10-21 22:
 - Navigation: SIGNALS · REPLAY · METHOD; Signals is the default right-column state, Replay
   is `#replay` (`#t=` implies it), a selected place overlays the column and CLOSE restores;
   below 1100px the column becomes sections (Signals, Places, Replay) with jump links.
-- Brand: the mark is a 24-grid one-bit globe with a ringed dot that travels the band once
-  on load (static under reduced motion); the full logo is the inverted pixel lockup, used
+- Brand: the mark is a 24-grid one-bit globe with a ringed dot that orbits the band
+  continuously since 2026-10-22 (static under reduced motion); the full logo is the inverted pixel lockup, used
   for the favicon set, og.jpg and the clip end card. Sources in .impeccable/mocks/logo/
   (gitignored; the shipped SVGs live in index.html, about.html, clip.html, public/).
 - DESIGN.md + .impeccable/design.json are current; PRODUCT.md records product truth.
 Next-session candidates: tune the "ordinary life" theme families on a full day (it picked
 politics stories twice); clip map labels at 1080x1920; remaining Phase 2b items; the
 newsletter; a real-phone check of first paint.
+
+### Observer and the observers count (2026-10-22)
+- The observer was redrawn as a 24x40 one-bit figure whose head is the mark itself (its ring
+  orbits there too); 48x80 on desktop, 24x40 on phones, static on the clip end card at the
+  mark's multiple. DESIGN.md updated.
+- Its label is now a live count, "Observers · N", from an optional Cloudflare Worker in
+  presence/ (Workers Free plan, memory-only, a random per-tab id, a 75 s window); plain
+  "Observers" when it is off or unreachable. Wired through the repo variable PRESENCE_URL
+  (build) and the secrets CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID (deploy workflow).
+- Status: built and verified locally; the Worker is not deployed yet (needs the owner's
+  Cloudflare account). The replay frame number moved off the label to the Replay head.
 
 ## Phase 1 build decisions (2026-10-20)
 
