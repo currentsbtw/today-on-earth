@@ -1,6 +1,7 @@
 // prebuild: static place pages with their Atom feeds, the places index, the broadcast page and
-// its feed, and the sitemap, from the snapshot in public/data (heat.json + cells/<id>.json +
-// broadcast.json, docs/DATA-CONTRACT.md). No JavaScript in the output; one inline sheet in
+// its feed, the sitemap and 404.html, from the snapshot in public/data (heat.json +
+// cells/<id>.json + broadcast.json, docs/DATA-CONTRACT.md). No JavaScript in the output but
+// 404.html's redirect; one inline sheet in
 // the about page's reading-column register (DESIGN.md "Place page"). Deterministic for the
 // same data. Usage: node scripts/build-places.mjs [--data <dir>] [--out <dir>] (defaults:
 // public/data and public). Each place page gets its share image, place/<id>.png
@@ -363,9 +364,10 @@ h3 a:hover,.art a:hover{text-decoration:underline;text-decoration-style:solid}
 /**
  * The document around `body`: head, brand line (MAP to the map), the column, the foot.
  * `feed`: { href, title } for the page's Atom feed; `css`: rules only this page needs;
- * `image`: { url, alt } for the share image (the site's og.jpg, without alt, by default).
+ * `image`: { url, alt } for the share image (the site's og.jpg, without alt, by default);
+ * `noindex`: keeps the page out of search results.
  */
-function page({ root, title, description, canonical, body, feed = null, css = '', image = { url: `${SITE}og.jpg`, alt: '' } }) {
+function page({ root, title, description, canonical, body, feed = null, css = '', image = { url: `${SITE}og.jpg`, alt: '' }, noindex = false }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -375,7 +377,7 @@ function page({ root, title, description, canonical, body, feed = null, css = ''
 <meta name="theme-color" content="#000000">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-<link rel="canonical" href="${esc(canonical)}">
+${noindex ? '<meta name="robots" content="noindex">\n' : ''}<link rel="canonical" href="${esc(canonical)}">
 ${feed ? `<link rel="alternate" type="application/atom+xml" href="${esc(feed.href)}" title="${esc(feed.title)}">\n` : ''}<meta property="og:type" content="website">
 <meta property="og:site_name" content="Today On Earth">
 <meta property="og:title" content="${esc(title)}">
@@ -552,6 +554,36 @@ function indexPage(listed, paged, heat) {
       '<a class="act" href="./">Open the map</a>',
       '<h2>Places</h2>',
       `<ol class="places">\n${items.join('\n')}\n</ol>`,
+    ].join('\n'),
+  });
+}
+
+// Not here ----------------------------------------------------------------------------
+
+/**
+ * 404.html: GitHub Pages serves it for any missing path under the project, at that address,
+ * so every link and asset is absolute under the project path. Place pages, feeds and share
+ * images follow the live window, so a shared place link goes missing once the place drops
+ * under PAGE_MIN; the page's one script sends such an address to the map with the cell
+ * selected (the map then says the place is not in the last 24 hours). Any other address
+ * shows the page.
+ */
+function notFoundPage() {
+  const root = new URL(SITE).pathname;
+  // ^/today-on-earth/place/<id>(.html|.xml|.png)?$, as a regex literal's source.
+  const place = `^${root.replace(/[.*+?^${}()|[\]\\/]/g, (c) => `\\${c}`)}place\\/([0-9a-f]{15})(?:\\.html|\\.xml|\\.png)?$`;
+  return page({
+    root,
+    title: 'Not here · Today On Earth',
+    description: 'Nothing is at this address on Today On Earth.',
+    canonical: SITE,
+    noindex: true,
+    body: [
+      // The only script in the generated pages: the redirect has to run at the missing address.
+      `<script>var m=/${place}/.exec(location.pathname);if(m)location.replace(${JSON.stringify(`${root}#c=`)}+m[1]);</script>`,
+      '<h1>Not here</h1>',
+      '<p class="lede">Nothing is at this address.</p>',
+      `<div class="acts"><a class="act" href="${root}">Open the map</a><a class="act" href="${root}places.html">Places</a></div>`,
     ].join('\n'),
   });
 }
@@ -774,6 +806,8 @@ const broadcastHtml = broadcastPage(broadcast, heat, paged);
 const broadcastXml = broadcastFeed(broadcast, heat, paged);
 await writeFile(join(outDir, 'broadcast.html'), broadcastHtml);
 await writeFile(join(outDir, 'broadcast.xml'), broadcastXml);
+// Not in the sitemap: the page is noindex and has no address of its own.
+await writeFile(join(outDir, '404.html'), notFoundPage());
 const filledSlots = broadcast ? slotsOf(broadcast).filter((s) => filled(s) && signalLine(s)).length : 0;
 
 const urls = ['', 'about.html', 'places.html', 'broadcast.html', ...pagedInOrder.map((c) => `place/${c.id}.html`)];

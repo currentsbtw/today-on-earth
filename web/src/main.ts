@@ -573,7 +573,25 @@ async function start() {
   const updateNote = () =>
     panel.setNote(selectedIsLive && !frame.live ? 'Details are for the current snapshot.' : '');
 
-  let hintShown = false;
+  let hintShown = false; // the status shows a line that opening a place clears
+  // A linked place that is not in the live snapshot (a missing place page's 404 sends its id
+  // here) says so once the map has settled its status, never over "drawing the map".
+  let statusSettled = false;
+  let notLive = false;
+  const sayNotLive = () => {
+    notLive = true;
+    if (!statusSettled) return;
+    hintShown = true;
+    setStatus('That place is not in the last 24 hours of news.');
+  };
+  const dropNotLive = () => {
+    if (!notLive) return;
+    notLive = false;
+    if (hintShown) {
+      hintShown = false;
+      setStatus('');
+    }
+  };
   let broadcast: Broadcast | null = null; // the daily broadcast, once loaded
   let broadcastReady: (b: Broadcast | null) => void = () => {};
   const broadcastLoaded = new Promise<Broadcast | null>((resolve) => (broadcastReady = resolve));
@@ -620,6 +638,7 @@ async function start() {
     const mine = ++request;
     pinSlot = pin;
     map.hideTooltip();
+    notLive = false;
     if (hintShown) {
       hintShown = false;
       setStatus('');
@@ -806,7 +825,9 @@ async function start() {
   }
   setMode(mode);
   const settleStatus = () => {
+    statusSettled = true;
     setStatus(liveCells.length ? '' : 'No coverage in this snapshot.');
+    if (notLive && liveCells.length) return sayNotLive();
     if (liveCells.length && readPref(SEEN_PREF) !== '1' && !panel.isOpen()) {
       hintShown = true;
       setStatus(HINT);
@@ -955,15 +976,19 @@ async function start() {
       replay.selectStamp(t);
     }
     const c = params.get('c');
-    if (!c) return panel.close();
+    if (!c) {
+      dropNotLive();
+      return panel.close();
+    }
     const sParam = params.get('s');
     const s = SLOT_IDS.find((id) => id === sParam) ?? null;
-    if (!isCellId(c) || (c === selected && s === pinSlot)) return;
+    if (!isCellId(c)) return;
+    if (c === selected && s === pinSlot) return dropNotLive();
     const cell = live.get(c);
     if (cell) return void openCell(cell, s);
     // A cell that exists only in the selected past frame: open it once that frame's rows
     // arrive (no detail file exists for it), unless the frame changed meanwhile.
-    if (!replay || frame.live) return;
+    if (!replay || frame.live) return sayNotLive();
     const index = frame.index;
     const row = (await replay.rows(index))?.find((r) => r[0] === c);
     if (row && frame.index === index && selected !== c) {

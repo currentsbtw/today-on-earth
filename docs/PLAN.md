@@ -1174,9 +1174,9 @@ preview fetch of a place page (open one in a card validator), and the next Clip 
 
 Known and not fixed: place pages and share images are rebuilt from the live window every
 15 minutes, so a caption or share link posted for a place 404s once that place drops under
-10 articles in the last 24 hours (often within a day). A follow-up: a `404.html` that sends
-`place/<id>` to the map with the cell selected, or pages kept for the cells of recent
-broadcasts.
+10 articles in the last 24 hours (often within a day). Status: fixed 2026-10-23
+by a generated `404.html` that sends a missing `place/<id>` address to the map with the cell
+selected, where the status line says the place is not in the last 24 hours of news.
 
 ## Visual redesign: Datamatics Field (shipped 2026-10-21)
 
