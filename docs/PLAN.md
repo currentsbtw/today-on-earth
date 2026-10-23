@@ -1037,7 +1037,11 @@ carry both in full names. The ingest drops the unknown-country entry from `topCo
 its length equals `c`. Wording corrected before the commit: a normal of 0 is a median, so
 it reads "usually no articles on most days", not "not seen in the last 7 days". The NORMAL
 row was verified on a fixture with baselineDays 3 only; live data reaches 3 complete days
-on 2026-10-25.
+on 2026-10-25. Live after the deploy (run 40021777456): the 24 h window's largest news
+countries US 39,114, CN 13,704, IT 11,744, GB 11,728, IN 11,072, RU 10,950, DE 10,766, ES
+8,895, TR 8,163, GR 7,112, BR 5,752, UA 5,607; Washington's panel: silent none for the place,
+per story "ES", "GR · BR", "CN · IT · RU · DE · ES · TR · GR · BR · UA"; Kiev's page: "Silent
+among the 12 largest news countries: Spain."
 
 Builders: the ingest (stats, aggregate, types, contract, checker, tests); the web (panel,
 place pages, format, methodology and about). The clip and the broadcast are untouched.
