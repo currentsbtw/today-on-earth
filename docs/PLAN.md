@@ -1087,7 +1087,9 @@ BROADCAST AT currentsbtw.github.io/today-on-earth/broadcast (Pages serves `x.htm
 `/about` returns 200). broadcast.ts cannot be imported by Node (extensionless imports), so the
 generator carries a copy of the slot labels, the fixed sentences and the empty-slot reasons
 with a keep-in-step comment; the broadcast page also shows the story counts its sentence
-leaves out, as the Signals entry does. Not verified: a feed reader subscribing (only the XML).
+leaves out, as the Signals entry does. Not verified: a feed reader subscribing (only the XML). Live after the deploy (run
+40027149373): `/broadcast` and `/broadcast.html` 200 (12.7 KB), `broadcast.xml` 200 with one
+entry for 2026-10-23, Paris's feed 200 with 30 entries, both well-formed.
 
 Not in this stage: a dated broadcast archive (the ingest keeps only the current
 broadcast.json; the daily archive release holds heat.json, not broadcast.json), the email
