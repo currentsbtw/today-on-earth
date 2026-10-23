@@ -558,7 +558,7 @@ encoded mp4 has not been watched (no local ffmpeg); the tag is a fixed 11px labe
 
 Hardening 2026-10-23, from the runs of 2026-10-22/23. (1) The "Install ffmpeg" step's apt
 install took 22 min 36 s in run 39877953928 against the 30-minute job timeout (the render
-took under 4 minutes). clip.yml now installs a pinned static build (ffmpeg 6.1.1 with
+took under 4 minutes). clip.yml now installs a pinned static build (ffmpeg 7.0.2 with
 libx264, `ffmpeg-linux-x64.gz` from the ffmpeg-static npm package's GitHub release b6.1.1,
 sha256-checked), cached across runs with actions/cache; apt is only the fallback. (2) A
 snapshot deploy landing while the cards are shot (about 40 s) drops the oldest frame from

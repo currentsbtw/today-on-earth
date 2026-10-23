@@ -43,7 +43,7 @@ jobs:
           cache-dependency-path: render/package-lock.json
 
       # ffmpeg is not on the ubuntu-24.04 runner image; Chrome is. A pinned static build
-      # (ffmpeg 6.1.1 with libx264, from the ffmpeg-static npm package's GitHub release,
+      # (ffmpeg 7.0.2 with libx264, release b6.1.1 of the ffmpeg-static npm package on GitHub,
       # checksum-checked) is cached across runs; apt, which once took 22 minutes, is only the
       # fallback when that build cannot be fetched or run.
       - name: Restore ffmpeg
