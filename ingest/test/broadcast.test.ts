@@ -13,7 +13,7 @@ const T = (h: number) => `2026-10-21T${String(h).padStart(2, "0")}:00:00Z`;
 
 function story(name: string, p: Partial<Story>): Story {
   return {
-    n: 10, u: Math.min(p.n ?? 10, 10), o: 5, c: 1, i: 0, l: 1, t: 0, first: T(1), last: T(2),
+    n: 10, u: Math.min(p.n ?? 10, 10), o: 5, c: 1, i: 0, l: 1, t: 0, countries: [["US", 10]], first: T(1), last: T(2),
     headline: name, headlineSource: "x.com", headlineLang: "en", headlineUrl: `https://x.com/${name}`, entities: [], articles: [], ...p,
   };
 }
@@ -39,7 +39,7 @@ function run(specs: CellSpec[], baselineDays = 5, since = "2026-10-01"): Broadca
   for (const s of specs) for (const [st, tagged] of s.stories) storyTagged.set(st, tagged);
   const heat: HeatFile = {
     generatedAt: NOW, windowHours: 24, newestArticleAt: NOW, baselineDays,
-    totals: { articles: 0, outlets: 0, countries: 0, cells: specs.length, unplaced: 0, reprints: 0 }, cells: heatCells,
+    totals: { articles: 0, outlets: 0, countries: 0, cells: specs.length, unplaced: 0, reprints: 0 }, topOutletCountries: [], cells: heatCells,
   };
   return buildBroadcast({ heat, cells, storyTagged, baselineSince: since });
 }
@@ -236,6 +236,7 @@ test("broadcast: a failure is isolated; the file still has six 'none' slots", ()
   const heat: HeatFile = {
     generatedAt: NOW, windowHours: 24, newestArticleAt: NOW, baselineDays: 5,
     totals: { articles: 0, outlets: 0, countries: 0, cells: 1, unplaced: 0, reprints: 0 },
+    topOutletCountries: [],
     cells: [{ id: "a", lat: 0, lon: 0, n: 5, u: 5, o: 1, c: 1, i: 0, l: 1, t: 0, name: "A", b: 0 }],
   };
   const broken = [{ id: "a", stories: null }] as unknown as CellFile[];

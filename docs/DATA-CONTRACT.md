@@ -19,6 +19,9 @@ deployed site. In local dev the frontend serves `web/public/data/` at `/data/`.
               "unplaced": 41200,  // article units with no primary location: only country-level locations, or every
                                   // city and region skipped as outlet boilerplate; counted here, never binned (changed 2026-10-23)
               "reprints": 23100 }, // sum over cells of (n - u): articles that copy another outlet's headline in the same cell (added 2026-10-21)
+  "topOutletCountries": [["US", 52000], ["GB", 18100], ["IN", 12400]], // the 20 outlet countries with the most article units in the
+                                  // window, placed and unplaced (the unit of totals.articles), by units desc then code, "" excluded;
+                                  // the "largest news countries", see Coverage gaps (added 2026-10-23)
   "cells": [
     {
       "id": "832830fffffffff",   // H3 cell index, resolution 3
@@ -138,6 +141,14 @@ the CountryCode (FIPS 10-4) of its primary location (see Rules) in GKG V2Locatio
   cell's `home`. Records carried from before this field existed have "" and age out of
   the window within 24 h.
 
+**Coverage gaps (added 2026-10-23).** The site states which of the largest news countries
+stayed silent on a place or a story: the first 12 of heat.json's `topOutletCountries` that
+have no entry in the cell's `topCountries` or the story's `countries` (the place's own
+`home` is never listed as silent). Both lists therefore name every outlet country, not a
+top few. `topOutletCountries` counts each article unit once, for the outlet country of its
+earliest copy (as `c`), over the same partition as `totals.articles` (each cell's units,
+kept or dropped, plus the unplaced units), so no entry exceeds `totals.articles`.
+
 ## `/data/cells/<id>.json`  (one file per cell, fetched on click)
 
 ```jsonc
@@ -148,7 +159,9 @@ the CountryCode (FIPS 10-4) of its primary location (see Rules) in GKG V2Locatio
   "n": 412, "u": 361, "o": 150, "c": 23, "i": 22, "l": 9, "t": -2.1,
   "topOutlets":  [["lemonde.fr", 31], ["bbc.co.uk", 12]],  // top 10 by article units; a listed network is one entry,
                                                            // named by the network (changed 2026-10-23)
-  "topCountries":[["FR", 190], ["GB", 40], ["US", 38]],    // ISO 3166-1 alpha-2 of outlet country, "" allowed
+  "topCountries":[["FR", 190], ["GB", 40], ["US", 38]],    // every outlet country (ISO 3166-1 alpha-2) with its article units,
+                                                           // by units desc then code; no cap and no "": length == c; for the
+                                                           // site's "silent among the largest news countries" line (changed 2026-10-23)
   "languages":   [["fr", 220], ["en", 150], ["de", 12]],   // ISO 639-1 where known
   "articles": [
     {
@@ -193,6 +206,10 @@ same thing, computed deterministically from what GDELT already tags per article
   {
     "n": 212, "u": 150, "o": 96, "c": 21, "i": 20, "l": 7, "t": -4.1,   // same meaning as the cell counters, over the story's articles
                                                                        // (i against the cell's home; u, i added 2026-10-21)
+    "countries": [["GB", 60], ["US", 41], ["FR", 30]],  // every outlet country of the story with its article units (second-pass
+                                                        // units included), by units desc then code, no "": length == c, and i ==
+                                                        // the entries other than the cell's home; for the site's "silent among
+                                                        // the largest news countries" line (added 2026-10-23)
     "first": "2026-10-21T01:15:00Z", "last": "2026-10-21T04:30:00Z",
     "headline": "…",            // the shown title (as `title` below) of the story's medoid article (max token overlap
                                 // with the rest); may be empty
@@ -483,8 +500,8 @@ failure fails the run; that path is unused in production.
   only. A country centroid is not where anything happened, so it must never glow. (Cell
   `name` for the rare non-country location whose name is a demonym is left as GDELT
   gives it.)
-- `image` is always present, `""` when missing. `topCountries` and `languages` are
-  capped at 10 entries like `topOutlets`. `totals.articles` counts every article in
+- `image` is always present, `""` when missing. `languages` is capped at 10 entries like
+  `topOutlets`; `topCountries` is not capped and holds no `""` (changed 2026-10-23). `totals.articles` counts every article in
   the window including those in dropped n < 2 cells; `totals.cells` = `cells.length`.
 - Articles with no parseable location at all (no V2Locations entry with usable
   coordinates) are dropped before counting: they appear in neither `totals.articles`

@@ -265,3 +265,19 @@ test("displayed entities: persons and orgs only when there are 2+, themes as wor
   assert.equal(themeWords("natural_disaster_flood"), "natural disaster flood");
   assert.equal(themeWords("whistleblower"), "whistleblower");
 });
+
+test("stories: countries lists every outlet country of the story, attached units included; c and i follow it", () => {
+  const tags = { persons: ["ann lee"], orgs: ["harbor authority"] };
+  const records = [
+    art({ url: "https://loose.jp/1", time: t(1), source: "loose.jp", country: "JP", title: "Harbor bridge collapse" }), // attached
+    art({ ...tags, url: "https://o1.com/1", time: t(2), source: "o1.com", country: "US", title: "Harbor bridge collapse injures workers" }),
+    art({ ...tags, url: "https://o2.co.uk/1", time: t(3), source: "o2.co.uk", country: "GB", title: "Harbor bridge collapse halts traffic" }),
+    art({ ...tags, url: "https://o3.co.uk/1", time: t(4), source: "o3.co.uk", country: "GB", title: "Harbor bridge collapse inquiry opens" }),
+    art({ ...tags, url: "https://o4.net/1", time: t(5), source: "o4.net", country: "", title: "Harbor bridge collapse: divers search river" }),
+  ];
+  const [story] = buildStories(records, undefined, "US").stories;
+  assert.equal(story.n, 5);
+  assert.deepEqual(story.countries, [["GB", 2], ["JP", 1], ["US", 1]]); // "" left out; tie by code
+  assert.equal(story.c, story.countries.length);
+  assert.equal(story.i, story.countries.filter(([cc]) => cc !== "US").length);
+});

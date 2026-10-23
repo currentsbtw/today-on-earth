@@ -1,5 +1,5 @@
 import { cellToLatLng } from "h3-js";
-import { articleUnits, cellStats, compareNewestFirst, round, toCellArticle } from "./stats.ts";
+import { cellStats, compareNewestFirst, knownCountries, representative, round, sortCounts, toCellArticle } from "./stats.ts";
 import type { BaselineView } from "./baseline.ts";
 import { outletOf } from "./domains.ts";
 import { createKeyer, keyCounts, unitsOf, type Keyer } from "./reprints.ts";
@@ -13,6 +13,8 @@ export const MAX_PER_OUTLET = 5;
 /** The per-outlet cap applies only when a cell has at least this many distinct outlets. */
 export const OUTLET_CAP_MIN_OUTLETS = 10;
 export const TOP_LIST_SIZE = 10;
+/** heat.json's topOutletCountries: the window's largest news countries by article units. */
+export const TOP_OUTLET_COUNTRIES = 20;
 /** Cells with fewer articles than this are dropped (contract: "n < 2 may be dropped"). */
 export const MIN_CELL_ARTICLES = 2;
 
@@ -71,7 +73,8 @@ export interface Snapshot {
  * Build heat.json and the per-cell files from the (already windowed, URL-unique) records.
  * Counts are article units (stats.ts articleUnits): an outlet's copies of one headline are
  * one article. `totals.articles` sums the units of every cell (kept or dropped) and of the
- * unplaced records, so the cells' `n` plus `unplaced` never exceed it.
+ * unplaced records, so the cells' `n` plus `unplaced` never exceed it. `topOutletCountries`
+ * splits the same units by the outlet country of each unit's earliest copy.
  */
 export function buildSnapshot(
   records: readonly ArticleRecord[],
@@ -101,17 +104,26 @@ export function buildSnapshot(
   const heatCells: HeatCell[] = [];
   const cellFiles = new Map<string, CellFile>();
   let reprints = 0;
-  const unplaced = articleUnits(unplacedRecords, keyer);
+  // Article units per outlet country over the window, partitioned as totals.articles is.
+  const countryUnits = new Map<string, number>();
+  const addCountry = (cc: string, units: number) => {
+    if (cc) countryUnits.set(cc, (countryUnits.get(cc) ?? 0) + units);
+  };
+  const unplacedUnits = unitsOf(unplacedRecords, keyer, outletOf).map(representative);
+  for (const r of unplacedUnits) addCountry(r.country, 1);
+  const unplaced = unplacedUnits.length;
   let articles = unplaced;
   const storyTagged = new Map<Story, number>();
   const storyNames = new Map<Story, number>();
   for (const [id, list] of byCell) {
     if (list.length < MIN_CELL_ARTICLES) {
       articles += list.length; // a 1-article cell holds no copies
+      for (const r of list) addCountry(r.country, 1);
       continue;
     }
     const s = cellStats(list, keyer);
     articles += s.n;
+    for (const [cc, units] of s.countries) addCountry(cc, units);
     if (s.n < MIN_CELL_ARTICLES) continue; // one outlet's copies of one headline: one article
     reprints += s.n - s.u; // articles that are copies of another outlet's article in the same cell
     const [lat, lon] = cellToLatLng(id);
@@ -138,7 +150,7 @@ export function buildSnapshot(
       l: s.l,
       t: s.t,
       topOutlets: s.outlets.slice(0, TOP_LIST_SIZE),
-      topCountries: s.countries.slice(0, TOP_LIST_SIZE),
+      topCountries: knownCountries(s.countries),
       languages: s.languages.slice(0, TOP_LIST_SIZE),
       articles: selectArticles(list, keyer).map((r) => toCellArticle(r, keyer, others(r))),
       videos: unitsOf(list, keyer, outletOf).reduce((k, unit) => k + (unit.some((r) => r.video) ? 1 : 0), 0),
@@ -163,6 +175,7 @@ export function buildSnapshot(
     newestArticleAt: newest,
     baselineDays: baseline.baselineDays,
     totals: { articles, outlets: outlets.size, countries: countries.size, cells: heatCells.length, unplaced, reprints },
+    topOutletCountries: sortCounts(countryUnits).slice(0, TOP_OUTLET_COUNTRIES),
     cells: heatCells,
   };
   return { heat, cells: heatCells.map((c) => cellFiles.get(c.id)!), storiesMs, storyTagged, storyNames };

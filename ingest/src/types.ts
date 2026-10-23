@@ -72,6 +72,11 @@ export interface HeatFile {
   /** Complete UTC days of per-cell counts in the baseline, capped at 14. */
   baselineDays: number;
   totals: { articles: number; outlets: number; countries: number; cells: number; unplaced: number; reprints: number };
+  /**
+   * The 20 outlet countries with the most article units in the window (placed and unplaced,
+   * the unit of totals.articles), by units desc then code; "" excluded.
+   */
+  topOutletCountries: [string, number][];
   cells: HeatCell[];
 }
 
@@ -122,6 +127,7 @@ export interface CellFile {
   l: number;
   t: number;
   topOutlets: [string, number][];
+  /** Every known outlet country with its article units, by units desc then code; length == c. */
   topCountries: [string, number][];
   languages: [string, number][];
   articles: CellArticle[];
@@ -142,6 +148,8 @@ export interface Story {
   i: number;
   l: number;
   t: number;
+  /** Every known outlet country of the story with its article units, by units desc then code; length == c. */
+  countries: [string, number][];
   first: string;
   last: string;
   headline: string;

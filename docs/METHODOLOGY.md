@@ -72,6 +72,18 @@ country's centre, but it is still a centre, and the label tells you so.
 - **Heard in N other countries**: the countries of the outlets covering a place, not
   counting the place's own country (the country GDELT most often gives for the
   place's articles). Outlets with an unknown country are not counted.
+- **Largest news countries**: the 20 outlet countries with the most articles in the
+  window, counted over every place. The site names the first 12.
+- **Silent**: a country among the 12 largest news countries with no article from an
+  outlet based there in the window, for that place or that story. Silent means that and
+  nothing more. The place's own country is never listed as silent for the place or its
+  stories.
+- **Normal**: the median of the place's daily article counts over the last 7 complete
+  UTC days (fewer while less history exists), shown once 3 complete days exist, with
+  today's ratio: "usually about 37 articles a day · today ×2.4". The ratio is
+  (articles + 1) / (normal + 1), with a floor of 3 for the normal, as in "vs. normal"
+  below. A normal of 0 (no articles on more than half of those days) is shown as
+  "usually no articles on most days".
 
 ## How "hot" is decided
 

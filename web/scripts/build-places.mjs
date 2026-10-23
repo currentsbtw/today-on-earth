@@ -7,8 +7,9 @@ import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-// The site's own display rules (Node 24 strips the types; format.ts imports nothing).
-import { codeName, count, host, plural, safeHref, utcDayTime } from '../src/format.ts';
+// The site's own display rules (Node 24 strips the types; format.ts and projection.ts import nothing).
+import { codeName, count, host, LARGEST_SHOWN, normalLine, plural, safeHref, silentAmong, utcDayTime } from '../src/format.ts';
+import { relativeRatio } from '../src/projection.ts';
 
 const SITE = 'https://currentsbtw.github.io/today-on-earth/';
 const PAGE_MIN = 10; // a cell gets a page at 10+ articles
@@ -54,6 +55,41 @@ function countsSentence(d) {
 }
 
 const hours = (h) => plural(h, 'hour', 'hours');
+
+// Coverage gaps (docs/METHODOLOGY.md "What the numbers mean"): which of the largest news
+// countries had no outlet in the coverage, and the place's normal. Left out when the
+// snapshot does not carry the fields.
+
+/** heat.json's topOutletCountries, well-formed entries only; [] in older snapshots. */
+const largestOf = (heat) => arr(heat.topOutletCountries).filter((e) => Array.isArray(e) && typeof e[0] === 'string' && e[0]);
+/** The countries of a coverage list, or null when the file has no such list. */
+const codesOf = (pairs) => (Array.isArray(pairs) ? pairs.filter((p) => Array.isArray(p)).map(([k]) => str(k)) : null);
+const nameOf = (cc) => codeName(cc, 'region') || cc;
+
+/** "Silent among the 12 largest news countries: China, Japan, India." or the "none" sentence; "" when unknown. */
+function silentSentence(covered, largest, home) {
+  if (!largest.length || !covered) return '';
+  const k = Math.min(LARGEST_SHOWN, largest.length);
+  const silent = silentAmong(covered, largest, home, k);
+  return silent.length
+    ? `Silent among the ${k} largest news countries: ${silent.map(nameOf).join(', ')}.`
+    : `None of the ${k} largest news countries stayed silent.`;
+}
+
+/** A story's "silent: China · Japan" (names in full), or the "none" line; "" when unknown. */
+function silentNames(covered, largest, home) {
+  if (!largest.length || !covered) return '';
+  const k = Math.min(LARGEST_SHOWN, largest.length);
+  const silent = silentAmong(covered, largest, home, k);
+  return silent.length ? `silent: ${silent.map(nameOf).join(' · ')}` : `silent: none of the ${k} largest news countries`;
+}
+
+/** "Usually about 37 articles a day; today ×2.4." or "Usually no articles on most days."; "" below 3 baseline days. */
+function normalSentence(b, n, baselineDays) {
+  if (!Number.isFinite(b)) return '';
+  const line = normalLine(b, n, num(baselineDays), relativeRatio);
+  return line ? `${line[0].toUpperCase()}${line.slice(1).replace(' · ', '; ')}.` : '';
+}
 
 // Chrome ------------------------------------------------------------------------------
 
@@ -108,6 +144,8 @@ h3 a,.art a{text-decoration:none}
 h3 a:hover,.art a:hover{text-decoration:underline;text-decoration-style:solid}
 .credit{margin:2px 0 0;color:var(--muted);font-size:11px;font-weight:500;line-height:1.4;letter-spacing:.08em}
 .counts{margin:2px 0 0;font-size:11px;line-height:1.4;letter-spacing:.06em}
+.gap{margin:0 0 8px}
+.silent{margin:2px 0 0;color:var(--muted);font:400 11px/1.4 var(--mono);letter-spacing:.06em;text-transform:uppercase}
 .tags{margin-top:4px;color:var(--muted);font-size:11px;line-height:1.4;letter-spacing:.04em}
 .tags li{display:inline}
 .tags li+li::before{content:' · '}
@@ -181,7 +219,7 @@ function titleLink(text, url, lang) {
   return `<a href="${esc(href)}" target="_blank" rel="noopener"${hl}${l}>${esc(text)}</a>`;
 }
 
-function storyItem(s, home) {
+function storyItem(s, home, largest) {
   const text = str(s.headline).trim();
   const source = str(s.headlineSource);
   const parts = [];
@@ -191,11 +229,13 @@ function storyItem(s, home) {
   const heard = heardIn(num(s.i), num(s.c), home);
   if (heard) parts.push(heard);
   const entities = arr(s.entities).filter((e) => typeof e === 'string' && e.trim());
+  const silent = silentNames(codesOf(s.countries), largest, home);
   return (
     '<li class="story">' +
     (text ? `<h3>${titleLink(text, s.headlineUrl, s.headlineLang)}</h3>` : '') +
     (source ? `<p class="credit">${esc(source)}</p>` : '') +
     (parts.length ? `<p class="counts">${esc(parts.join(' · '))}</p>` : '') +
+    (silent ? `<p class="silent">${esc(silent)}</p>` : '') +
     (entities.length ? `<ul class="tags">${entities.map((e) => `<li>${esc(e)}</li>`).join('')}</ul>` : '') +
     '</li>'
   );
@@ -228,7 +268,8 @@ function articleItem(a, at) {
   return `<li class="art">${title ? titleLink(title, a.url, a.lang) : titleLink(host(str(a.url)), a.url, '')}<p class="meta">${meta.join(' · ')}</p></li>`;
 }
 
-function placePage(cell, heat) {
+/** `live`: the place's heat.json row (its n and baseline b). */
+function placePage(cell, heat, live) {
   const d = {
     name: str(cell.name) || cell.id,
     home: str(cell.home),
@@ -239,6 +280,8 @@ function placePage(cell, heat) {
     l: num(cell.l),
   };
   const win = num(heat.windowHours) || 24;
+  const largest = largestOf(heat);
+  const gapLines = [silentSentence(codesOf(cell.topCountries), largest, d.home), normalSentence(live?.b, num(live?.n), heat.baselineDays)].filter(Boolean);
   const stories = arr(cell.stories).filter((s) => s && typeof s === 'object');
   const lead = stories.find((s) => str(s.headline).trim());
   const counts = `${plural(d.n, 'article', 'articles')} from ${plural(d.o, 'outlet', 'outlets')}`;
@@ -248,7 +291,7 @@ function placePage(cell, heat) {
     description += ` Largest story: “${h.length > 160 ? `${h.slice(0, 159)}…` : h}”${str(lead.headlineSource) ? ` (${lead.headlineSource})` : ''}.`;
   }
   const sections = [];
-  if (stories.length) sections.push(`<h2>Stories</h2>\n<ol>${stories.map((s) => storyItem(s, d.home)).join('\n')}</ol>`);
+  if (stories.length) sections.push(`<h2>Stories</h2>\n<ol>${stories.map((s) => storyItem(s, d.home, largest)).join('\n')}</ol>`);
   const outlets = rows(cell.topOutlets);
   if (outlets) sections.push(`<h2>Outlets</h2>\n${outlets}`);
   const countries = rows(cell.topCountries, 'region');
@@ -266,6 +309,7 @@ function placePage(cell, heat) {
     body: [
       `<h1>${esc(d.name)}</h1>`,
       `<p class="lede">${esc(countsSentence(d))}</p>`,
+      ...gapLines.map((line) => `<p class="gap">${esc(line)}</p>`),
       stamp(heat.generatedAt),
       `<a class="act" href="../#c=${esc(cell.id)}">Open on the map</a>`,
       ...sections,
@@ -347,7 +391,7 @@ const written = await pool(candidates, CONCURRENCY, async (c) => {
     missing++;
     return null;
   }
-  const html = placePage({ ...cell, id: c.id }, heat);
+  const html = placePage({ ...cell, id: c.id }, heat, c);
   const bytes = Buffer.byteLength(html);
   if (bytes > largest.bytes) largest = { bytes, id: c.id };
   await writeFile(join(placeDir, `${c.id}.html`), html);

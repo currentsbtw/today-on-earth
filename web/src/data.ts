@@ -36,6 +36,11 @@ export interface Heat {
   baselineDays?: number;
   totals: Totals;
   cells: HeatCell[];
+  /**
+   * The 20 outlet countries with the most article units in the window, largest first: the
+   * "largest news countries". Absent in older files: no silent lines are shown.
+   */
+  topOutletCountries?: [string, number][];
 }
 
 export interface Article {
@@ -68,6 +73,7 @@ export interface CellDetail {
   l: number;
   t: number;
   topOutlets: [string, number][];
+  /** Every outlet country with its article units (capped at 10 in older files), by units. */
   topCountries: [string, number][];
   languages: [string, number][];
   articles: Article[];
@@ -94,6 +100,8 @@ export interface Story {
   headlineSource: string;
   headlineLang: string;
   entities: string[];
+  /** Every outlet country of the story with its units, by units then code. Absent in older files. */
+  countries?: [string, number][];
   /** Newest 6, at most 2 per outlet. */
   articles: Article[];
 }

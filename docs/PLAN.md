@@ -999,6 +999,52 @@ data.ts, style.css, the places-index link). Verification: a local production bui
 fixture data with the pages and sitemap counted and one page read in the browser, the
 search exercised end to end on the dev server, then a live check after the deploy.
 
+## Coverage gaps: the signature measure (decided 2026-10-23, shipped the same day)
+
+Why: "heard in N other countries" says how far a story travelled; nothing says who stayed
+silent, and nothing in words says whether a place is quiet or merely quieter than its own
+normal. Both come from data the ingest already has: outlet countries per article, and the
+per-cell baseline `b`.
+
+Decisions:
+1. **Who covered it, in full.** The cell file's `topCountries` loses its cap of 10 (every
+   outlet country with its article units; the panel still shows its top 8), and each story
+   gains `countries: [[cc, units], ...]`, every outlet country of the story, sorted by units
+   then code. heat.json gains `topOutletCountries: [[cc, units], ...]`, the 20 outlet
+   countries with the most article units in the window: the "largest news countries".
+2. **Silent among the largest news countries.** The site states, for a place and for each
+   story, which of the 12 largest news countries (the first 12 of `topOutletCountries`) have
+   no outlet in its coverage: "SILENT · CN · JP · IN" in the chrome register with the
+   country names on the title and in full on the place page; "silent: none of the 12
+   largest news countries" when all twelve covered it. The place's own country is never
+   listed as silent for that place (its home outlets are the place's own voice, not a gap).
+   Fixed words, no judgment: silent means no article from an outlet based there in the
+   window, nothing more.
+3. **Quiet or quieter than usual, in words.** When `baselineDays` is at least 3 and a place
+   has `b` > 0: the panel head and the place page state "usually about <b> articles a day ·
+   today ×<ratio>" with relativeRatio's floor of 3; with `b` = 0 and history available:
+   "usually no articles on most days" (b is a median, so 0 means no articles on more
+   than half of the days). Below 3 baseline days nothing is said. The map's
+   "vs. normal" brightness mode already encodes the ratio; this is its sentence.
+4. **The methodology and the method page** define the largest news countries (by article
+   units in the window), silent, and the normal, in the fixed voice.
+
+**Status 2026-10-23 ~20:40 UTC: shipped.** Real 2 h run: largest news countries US 4,436,
+GB 794, IT 707, IN 685, DE 556, CA 537, RU 478, ES 450, BR 447, GR 416, MX 375, TR 372 ...;
+Paris's 55 outlet countries all listed (+2.3% file size); the panel shows SILENT and, from
+3 baseline days (2026-10-25), NORMAL; story cards carry "silent: IT · CA · BR"; place pages
+carry both in full names. The ingest drops the unknown-country entry from `topCountries` so
+its length equals `c`. Wording corrected before the commit: a normal of 0 is a median, so
+it reads "usually no articles on most days", not "not seen in the last 7 days". The NORMAL
+row was verified on a fixture with baselineDays 3 only; live data reaches 3 complete days
+on 2026-10-25.
+
+Builders: the ingest (stats, aggregate, types, contract, checker, tests); the web (panel,
+place pages, format, methodology and about). The clip and the broadcast are untouched.
+Verification: ingest tests and checker on a real run; the panel and a place page on the
+dev server against a real snapshot with the new fields; the baseline words on a fixture
+with `baselineDays` 3 (live data reaches 3 complete days on 2026-10-25).
+
 ## Visual redesign: Datamatics Field (shipped 2026-10-21)
 
 The web app's visual world was replaced on 2026-10-21 through the Impeccable workflow:

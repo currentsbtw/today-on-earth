@@ -16,12 +16,20 @@ export function compareNewestFirst(a: ArticleRecord, b: ArticleRecord): number {
   return a.url < b.url ? -1 : a.url > b.url ? 1 : 0;
 }
 
+/** Map entries sorted by count desc then key asc. */
+export function sortCounts(m: ReadonlyMap<string, number>): [string, number][] {
+  return [...m.entries()].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0));
+}
+
 /** Count occurrences, sorted by count desc then key asc. */
 export function countSorted(values: Iterable<string>): [string, number][] {
   const m = new Map<string, number>();
   for (const v of values) m.set(v, (m.get(v) ?? 0) + 1);
-  return [...m.entries()].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0));
+  return sortCounts(m);
 }
+
+/** Every known (non-empty) outlet country with its article units, in countSorted order: `c` entries. */
+export const knownCountries = (countries: readonly [string, number][]): [string, number][] => countries.filter(([k]) => k !== "");
 
 /**
  * `reprints`: how many other articles in the same cell (other outlets: an outlet's copies of
@@ -96,7 +104,7 @@ export function cellStats(records: readonly ArticleRecord[], keyer: Keyer, home 
   const languages = countSorted(units.map((r) => r.lang));
   const names = countSorted(records.map((r) => r.locationName).filter(Boolean));
   const toneSum = records.reduce((s, r) => s + r.tone, 0);
-  const c = countries.filter(([k]) => k !== "").length;
+  const c = knownCountries(countries).length;
   return {
     n: units.length,
     u: distinctCount(records, keyer),

@@ -701,6 +701,7 @@ async function start() {
     renderCol();
   };
   if (heat) {
+    panel.setSnapshot(heat);
     liveCells = heat.cells;
     for (const c of liveCells) live.set(c.id, c);
     liveMax = maxOf(liveCells);

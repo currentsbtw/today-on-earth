@@ -1448,6 +1448,39 @@ body.is-replay .map-frame {
   text-transform: uppercase;
 }
 
+/* Coverage gaps under the summary line: SILENT and NORMAL as label-value rows, muted label,
+   white value; a country code carries its name as the abbreviation's title. */
+.panel-gaps {
+  margin: 8px 0 0;
+}
+
+.gap-row {
+  display: grid;
+  grid-template-columns: 8ch minmax(0, 1fr);
+  column-gap: 8px;
+  padding: 2px 0;
+  font: 400 11px/1.4 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.gap-row dt {
+  color: var(--muted);
+}
+
+.gap-row dd {
+  margin: 0;
+}
+
+.code-abbr {
+  text-decoration: none;
+}
+
+.code-abbr[title] {
+  cursor: help;
+}
+
+.panel-gaps[hidden],
 .panel-summary[hidden],
 .panel-reach[hidden],
 .panel-state[hidden],

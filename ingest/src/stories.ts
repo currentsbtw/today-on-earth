@@ -1,7 +1,7 @@
 import { outletOf } from "./domains.ts";
 import { titleTokens } from "./entities.ts";
 import { createKeyer, keyCounts, unitsOf, type Keyer } from "./reprints.ts";
-import { cellStats, compareNewestFirst, homeCountry, representative, toCellArticle } from "./stats.ts";
+import { cellStats, compareNewestFirst, homeCountry, knownCountries, representative, toCellArticle } from "./stats.ts";
 import type { ArticleRecord, Story } from "./types.ts";
 
 /**
@@ -271,6 +271,7 @@ function toStory(core: Item[], attached: Item[], home: string, copies: Map<strin
     i: s.i,
     l: s.l,
     t: s.t,
+    countries: knownCountries(s.countries),
     first,
     last,
     headline: keyer.shownTitle(medoid),

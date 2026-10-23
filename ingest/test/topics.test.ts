@@ -8,7 +8,7 @@ const NOW = "2026-10-23T12:00:00Z";
 
 function story(n: number, entities: string[]): Story {
   return {
-    n, u: n, o: n, c: 1, i: 0, l: 1, t: 0, first: NOW, last: NOW,
+    n, u: n, o: n, c: 1, i: 0, l: 1, t: 0, countries: [["US", n]], first: NOW, last: NOW,
     headline: "", headlineSource: "", headlineLang: "", headlineUrl: "", entities, articles: [],
   };
 }

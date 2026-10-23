@@ -108,7 +108,8 @@ test("buildSnapshot: cell stats, sorting, drop n<2, totals", () => {
   const pc = cells[0];
   assert.equal(pc.id, PARIS);
   assert.deepEqual(pc.topOutlets, [["lemonde.fr", 2], ["bbc.co.uk", 1], ["mystery.net", 1]]);
-  assert.deepEqual(pc.topCountries, [["FR", 2], ["", 1], ["GB", 1]]);
+  assert.deepEqual(pc.topCountries, [["FR", 2], ["GB", 1]]); // "" is not a country: c entries
+  assert.deepEqual(heat.topOutletCountries, [["FR", 2], ["NG", 2], ["AU", 1], ["GB", 1]]);
   assert.deepEqual(pc.languages, [["en", 2], ["fr", 2]]);
   assert.equal(pc.articles.length, 4);
 });
@@ -402,4 +403,58 @@ test("networks: two Big News Network portals are one outlet; articles keep their
   // The same headline on two portals is one article of one outlet.
   const same = buildSnapshot([records[0], { ...records[0], url: "https://asiabulletin.com/x", source: "asiabulletin.com" }, records[2]], { now: new Date("2026-10-20T13:00:00Z"), windowHours: 24 });
   assert.equal(same.heat.cells[0].n, 2);
+});
+
+test("topCountries lists every outlet country of the cell, by units then code; topOutlets stays at 10", () => {
+  const codes = ["AR", "BR", "CA", "DE", "ES", "FR", "GB", "IN", "JP", "MX", "NG", "US"];
+  const records: ArticleRecord[] = [];
+  // Country k has 12 - k articles from its own outlet, except BR, which ties AR at 12.
+  codes.forEach((cc, k) => {
+    const count = cc === "BR" ? 12 : 12 - k;
+    for (let j = 0; j < count; j++) records.push(rec({ source: `o${cc}.com`, country: cc, title: `${cc} story ${j}` }));
+  });
+  records.push(rec({ source: "mystery.net", country: "", title: "No country" }));
+  const { cells } = buildSnapshot(records, { now: new Date("2026-10-20T13:00:00Z"), windowHours: 24 });
+  const [cell] = cells;
+  assert.equal(cell.c, 12);
+  assert.equal(cell.topCountries.length, cell.c);
+  assert.deepEqual(cell.topCountries.slice(0, 3), [["AR", 12], ["BR", 12], ["CA", 10]]); // tie by code
+  assert.deepEqual(cell.topCountries.at(-1), ["US", 1]);
+  assert.equal(cell.topOutlets.length, 10);
+});
+
+test("topOutletCountries: placed and unplaced units, a network is one outlet, countries as given", () => {
+  const unplaced = { cellId: "", lat: 0, lon: 0, locationName: "" };
+  const wire = "Wire story about the trade talks in Tokyo";
+  const records = [
+    // Paris: two Big News Network portals. One headline on both is one unit, from the earliest
+    // copy's country (JP); another headline on the second portal counts for its own country.
+    rec({ source: "japanherald.com", country: "JP", title: wire, time: at(9, 0) }),
+    rec({ source: "asiabulletin.com", country: "SG", title: wire, time: at(9, 5) }),
+    rec({ source: "asiabulletin.com", country: "SG", title: "Another wire story about the yen today" }),
+    rec({ source: "lemonde.fr", country: "FR", title: "Paris budget vote" }),
+    // Unplaced: an outlet's copies of one headline are one unit; "" is not a country.
+    rec({ ...unplaced, source: "lefigaro.fr", country: "FR", title: "National strike" }),
+    rec({ ...unplaced, source: "lefigaro.fr", country: "FR", title: "National strike" }),
+    rec({ ...unplaced, source: "lefigaro.fr", country: "FR", title: "Senate reform" }),
+    rec({ ...unplaced, source: "bbc.co.uk", country: "GB", title: "Election night" }),
+    rec({ ...unplaced, source: "mystery.net", country: "", title: "Unknown" }),
+    // A one-article cell is dropped from the map but still counted.
+    rec({ cellId: latLngToCell(-33.9, 151.2, 3), source: "smh.com.au", country: "AU", locationName: "Sydney" }),
+  ];
+  const { heat } = buildSnapshot(records, { now: new Date("2026-10-20T13:00:00Z"), windowHours: 24 });
+  assert.deepEqual(heat.topOutletCountries, [["FR", 3], ["AU", 1], ["GB", 1], ["JP", 1], ["SG", 1]]);
+  // The same unit as totals.articles: the countries plus the one unknown add up to it.
+  assert.equal(heat.topOutletCountries.reduce((s, [, n]) => s + n, 0) + 1, heat.totals.articles);
+
+  // At most 20: of 22 countries, the two with the fewest units are left out.
+  const many: ArticleRecord[] = [];
+  for (let k = 0; k < 22; k++) {
+    const cc = String.fromCharCode(65 + k) + "X";
+    for (let j = 0; j <= k; j++) many.push(rec({ ...unplaced, source: `${cc}.com`, country: cc, title: `${cc} ${j}` }));
+  }
+  const top = buildSnapshot(many, { now: new Date("2026-10-20T13:00:00Z"), windowHours: 24 }).heat.topOutletCountries;
+  assert.equal(top.length, 20);
+  assert.deepEqual(top[0], ["VX", 22]);
+  assert.deepEqual(top.at(-1), ["CX", 3]);
 });

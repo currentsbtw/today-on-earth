@@ -1,7 +1,7 @@
 {
  "generatedAt": "2026-10-21T06:00:00Z",
  "windowHours": 24,
- "baselineDays": 5,
+ "baselineDays": 3,
  "newestArticleAt": "2026-10-21T05:50:00Z",
  "totals": {
   "articles": 23543,
@@ -21,7 +21,7 @@
    "l": 14,
    "t": -0.3,
    "name": "Washington, District of Columbia, United States",
-   "b": 1960.1
+   "b": 780
   },
   {
    "id": "831e63fffffffff",
@@ -33,7 +33,7 @@
    "l": 15,
    "t": -1.3,
    "name": "Kyiv, Kyyiv, Misto, Ukraine",
-   "b": 1615.1
+   "b": 40
   },
   {
    "id": "832db6fffffffff",
@@ -45,7 +45,7 @@
    "l": 16,
    "t": -1.3,
    "name": "Gaza, Israel (general), Israel",
-   "b": 1765.6
+   "b": 0
   },
   {
    "id": "83194afffffffff",
@@ -371,5 +371,87 @@
    "name": "Nuuk, Kommuneqarfik Sermersooq, Greenland",
    "b": 2.5
   }
+ ],
+ "topOutletCountries": [
+  [
+   "US",
+   1378
+  ],
+  [
+   "GB",
+   1291
+  ],
+  [
+   "UA",
+   1132
+  ],
+  [
+   "ZA",
+   968
+  ],
+  [
+   "CN",
+   922
+  ],
+  [
+   "IL",
+   913
+  ],
+  [
+   "AU",
+   790
+  ],
+  [
+   "FR",
+   761
+  ],
+  [
+   "IN",
+   732
+  ],
+  [
+   "DE",
+   714
+  ],
+  [
+   "AE",
+   691
+  ],
+  [
+   "KR",
+   684
+  ],
+  [
+   "JP",
+   655
+  ],
+  [
+   "CA",
+   645
+  ],
+  [
+   "BR",
+   609
+  ],
+  [
+   "AR",
+   602
+  ],
+  [
+   "RU",
+   601
+  ],
+  [
+   "NG",
+   548
+  ],
+  [
+   "IT",
+   507
+  ],
+  [
+   "IR",
+   480
+  ]
  ]
 }

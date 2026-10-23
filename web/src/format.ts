@@ -153,3 +153,43 @@ export function codeName(code: string, type: 'region' | 'language'): string {
     return '';
   }
 }
+
+/** How many of the largest news countries the site names (heat.json's topOutletCountries). */
+export const LARGEST_SHOWN = 12;
+
+/**
+ * The silent ones: the codes among the first `k` of `largest` (heat.json's topOutletCountries,
+ * largest first) that are not in `covered` (the outlet countries of a place or a story) and
+ * are not `home` (the place's own country, never a gap). In `largest`'s order.
+ */
+export function silentAmong(covered: Iterable<string>, largest: [string, number][], home: string, k = LARGEST_SHOWN): string[] {
+  const seen = new Set<string>();
+  for (const cc of covered) seen.add(cc.toUpperCase());
+  const own = home.toUpperCase();
+  return largest
+    .slice(0, k)
+    .map(([cc]) => cc.toUpperCase())
+    .filter((cc) => cc && cc !== own && !seen.has(cc));
+}
+
+/**
+ * "silent: none of the 12 largest news countries" for an empty list, else "silent:" (the
+ * caller sets the codes after it, with their names). `k`: how many largest countries were
+ * looked at, fewer than 12 when the snapshot lists fewer.
+ */
+export function silentLine(codes: string[], k = LARGEST_SHOWN): string {
+  return codes.length ? 'silent:' : `silent: none of the ${k} largest news countries`;
+}
+
+/**
+ * The place's normal in words: "usually about 37 articles a day · today ×2.4", where `ratio`
+ * is projection.ts's relativeRatio(n, b) (floor 3; passed in so this file stays import-free
+ * for scripts/build-places.mjs); "usually no articles on most days" when `b` is 0; "" below 3
+ * baseline days.
+ */
+export function normalLine(b: number, n: number, baselineDays: number, ratio: (n: number, b: number) => number): string {
+  if (!(baselineDays >= 3) || !Number.isFinite(b) || b < 0) return '';
+  if (b === 0) return 'usually no articles on most days';
+  const usual = Math.round(b);
+  return `usually about ${plural(usual, 'article', 'articles')} a day · today ×${ratio(n, b).toFixed(1)}`;
+}

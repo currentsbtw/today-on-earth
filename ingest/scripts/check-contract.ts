@@ -56,6 +56,20 @@ function pairs(where: string, v: unknown, max: number, keyCheck: (k: string) => 
     if (i > 0 && Array.isArray(v[i - 1]) && v[i - 1][1] < p[1]) err(where, "not sorted by count desc");
   });
 }
+/** Country lists: [ISO alpha-2, units], sorted by units desc then code, no "" (added 2026-10-23). */
+const ISO2 = /^[A-Z]{2}$/;
+function countryPairs(where: string, v: unknown, max: number) {
+  pairs(where, v, max, (k) => ISO2.test(k));
+  if (!Array.isArray(v)) return;
+  const codes = new Set<unknown>();
+  v.forEach((p, i) => {
+    if (!Array.isArray(p)) return;
+    if (codes.has(p[0])) err(`${where}[${i}]`, `duplicate code ${JSON.stringify(p[0])}`);
+    codes.add(p[0]);
+    const q = v[i - 1];
+    if (i > 0 && Array.isArray(q) && q[1] === p[1] && !(q[0] < p[0])) err(where, `tie not ordered by code at ${i}`);
+  });
+}
 
 const heatPath = join(dir, "heat.json");
 if (!existsSync(heatPath)) {
@@ -66,7 +80,7 @@ const heatBytes = readFileSync(heatPath);
 const heat = JSON.parse(heatBytes.toString("utf8")) as Record<string, unknown>;
 
 // ---- heat.json ----
-exactKeys("heat", heat, ["generatedAt", "windowHours", "newestArticleAt", "baselineDays", "totals", "cells"]);
+exactKeys("heat", heat, ["generatedAt", "windowHours", "newestArticleAt", "baselineDays", "totals", "topOutletCountries", "cells"]);
 if (typeof heat.generatedAt !== "string" || !ISO_UTC.test(heat.generatedAt)) err("heat.generatedAt", "not ISO 8601 UTC with Z");
 if (typeof heat.newestArticleAt !== "string" || !ISO_UTC.test(heat.newestArticleAt)) err("heat.newestArticleAt", "not ISO 8601 UTC with Z");
 int("heat.windowHours", heat.windowHours, 1);
@@ -75,6 +89,12 @@ if (typeof heat.baselineDays === "number" && heat.baselineDays > 14) err("heat.b
 const totals = isObj(heat.totals) ? heat.totals : (err("heat.totals", "not an object"), {});
 exactKeys("heat.totals", totals, ["articles", "outlets", "countries", "cells", "unplaced", "reprints"]);
 for (const k of ["articles", "outlets", "countries", "cells", "unplaced", "reprints"]) int(`heat.totals.${k}`, totals[k]);
+countryPairs("heat.topOutletCountries", heat.topOutletCountries, 20);
+if (Array.isArray(heat.topOutletCountries) && typeof totals.articles === "number") {
+  (heat.topOutletCountries as unknown[]).forEach((p, i) => {
+    if (Array.isArray(p) && typeof p[1] === "number" && p[1] > (totals.articles as number)) err(`heat.topOutletCountries[${i}]`, `${p[1]} units > totals.articles ${totals.articles}`);
+  });
+}
 const cells = Array.isArray(heat.cells) ? (heat.cells as unknown[]) : (err("heat.cells", "not an array"), []);
 if (totals.cells !== cells.length) err("heat.totals.cells", `${String(totals.cells)} != cells.length ${cells.length}`);
 const seenIds = new Set<string>();
@@ -162,7 +182,7 @@ function checkStories(w: string, cell: Record<string, unknown>) {
     const sw = `${w}.stories[${i}]`;
     if (!isObj(s)) return err(sw, "not an object");
     storiesChecked++;
-    exactKeys(sw, s, ["n", "u", "o", "c", "i", "l", "t", "first", "last", "headline", "headlineSource", "headlineLang", "headlineUrl", "entities", "articles"]);
+    exactKeys(sw, s, ["n", "u", "o", "c", "i", "l", "t", "countries", "first", "last", "headline", "headlineSource", "headlineLang", "headlineUrl", "entities", "articles"]);
     int(`${sw}.n`, s.n, 3);
     int(`${sw}.u`, s.u, 1);
     int(`${sw}.o`, s.o);
@@ -170,6 +190,13 @@ function checkStories(w: string, cell: Record<string, unknown>) {
     int(`${sw}.i`, s.i);
     if (typeof s.u === "number" && typeof s.n === "number" && s.u > s.n) err(sw, "u > n");
     if (typeof s.i === "number" && typeof s.c === "number" && s.i > s.c) err(sw, "i > c");
+    countryPairs(`${sw}.countries`, s.countries, Infinity);
+    if (Array.isArray(s.countries)) {
+      const cs = s.countries as unknown[][];
+      if (cs.length !== s.c) err(`${sw}.countries`, `length ${cs.length} != c ${String(s.c)}`);
+      const abroad = cell.home === "" ? cs.length : cs.filter((p) => Array.isArray(p) && p[0] !== cell.home).length;
+      if (abroad !== s.i) err(`${sw}.i`, `${String(s.i)} != countries other than home (${abroad})`);
+    }
     int(`${sw}.l`, s.l);
     num(`${sw}.t`, s.t, 1);
     if (typeof s.n === "number") sum += s.n;
@@ -244,7 +271,8 @@ for (const f of files) {
   const h = heatById.get(id);
   if (h) for (const k of ["name", "n", "u", "o", "c", "i", "l", "t"]) if (h[k] !== cell[k]) err(`${w}.${k}`, `differs from heat.json (${String(h[k])} vs ${String(cell[k])})`);
   pairs(`${w}.topOutlets`, cell.topOutlets, 10, (k) => k.length > 0);
-  pairs(`${w}.topCountries`, cell.topCountries, 10, (k) => k === "" || /^[A-Z]{2}$/.test(k));
+  countryPairs(`${w}.topCountries`, cell.topCountries, Infinity);
+  if (Array.isArray(cell.topCountries) && cell.topCountries.length !== cell.c) err(`${w}.topCountries`, `length ${cell.topCountries.length} != c ${String(cell.c)}`);
   pairs(`${w}.languages`, cell.languages, 10, (k) => /^[a-z]{2,3}$/.test(k) || k === "");
   const arts = Array.isArray(cell.articles) ? (cell.articles as unknown[]) : (err(`${w}.articles`, "not an array"), []);
   if (arts.length > 50) err(`${w}.articles`, `${arts.length} > 50`);

@@ -1,8 +1,9 @@
 // The place panel (bottom sheet on narrow screens) listing every article for one cell, and
 // the Signals entries (the daily broadcast) it shares its log grammar with.
 import { emptyLine, sentenceFacts, SLOT_IDS, SLOT_LABELS, signalLine, type Broadcast, type Slot, type SlotStory } from './broadcast';
-import type { Article, CellDetail, HeatCell, Story } from './data';
-import { ago, codeName, count, host, plural, safeHref, shortName, utcSpan, youtubeId } from './format';
+import type { Article, CellDetail, Heat, HeatCell, Story } from './data';
+import { ago, codeName, count, host, LARGEST_SHOWN, normalLine, plural, safeHref, shortName, silentAmong, silentLine, utcSpan, youtubeId } from './format';
+import { relativeRatio } from './projection';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -85,6 +86,78 @@ const el = <K extends keyof HTMLElementTagNameMap>(tag: K, className: string, te
   return node;
 };
 
+// Coverage gaps ----------------------------------------------------------------
+// Under the summary line: SILENT, the largest news countries with no outlet in the place's
+// coverage, and NORMAL, the place's usual daily count against today's. Both read the live
+// snapshot (setSnapshot); a file without the fields shows neither row.
+
+/** heat.json's topOutletCountries (largest first), its baselineDays and each live cell's `b`. */
+let largest: [string, number][] = [];
+let baselineDays = 0;
+const baselines = new Map<string, number>();
+
+/** The live snapshot's facts the gap rows need; call once heat.json is in. */
+export function setSnapshot(heat: Heat) {
+  const top = Array.isArray(heat.topOutletCountries) ? heat.topOutletCountries : [];
+  largest = top.filter((e): e is [string, number] => Array.isArray(e) && typeof e[0] === 'string' && e[0] !== '');
+  baselineDays = typeof heat.baselineDays === 'number' ? heat.baselineDays : 0;
+  baselines.clear();
+  for (const c of heat.cells) if (typeof c.b === 'number') baselines.set(c.id, c.b);
+}
+
+/** How many largest news countries a silent list looks at: 12, fewer when the file lists fewer. */
+const largestShown = () => Math.min(LARGEST_SHOWN, largest.length);
+
+/** "CN · JP · IN" as abbreviations whose title is the country's name. */
+function codeList(codes: string[]): Node[] {
+  const nodes: Node[] = [];
+  codes.forEach((cc, i) => {
+    if (i) nodes.push(document.createTextNode(' · '));
+    const abbr = el('abbr', 'code-abbr', cc);
+    const name = codeName(cc, 'region');
+    if (name) abbr.title = name;
+    nodes.push(abbr);
+  });
+  return nodes;
+}
+
+/** Silent codes for a coverage list, or null when the snapshot or the file cannot say. */
+function silentFor(countries: [string, number][] | undefined, home: string | undefined): string[] | null {
+  if (!largest.length || !Array.isArray(countries)) return null;
+  return silentAmong(countries.map(([cc]) => String(cc)), largest, home ?? '', largestShown());
+}
+
+const gaps = el('dl', 'panel-gaps');
+gaps.hidden = true;
+note.after(gaps);
+
+function gapRow(label: string, value: string | Node[]): HTMLElement {
+  const row = el('div', 'gap-row');
+  const dd = el('dd', '');
+  if (typeof value === 'string') dd.textContent = value;
+  else dd.append(...value);
+  row.append(el('dt', '', label), dd);
+  return row;
+}
+
+/**
+ * The SILENT and NORMAL rows: `detail` (the cell file) for SILENT, `cell` (n and the place's
+ * id, whose `b` setSnapshot kept) for NORMAL. Either row is left out when it cannot be said.
+ */
+function setGaps(cell: { id: string; n: number } | null, detail: CellDetail | null = null) {
+  const rows: HTMLElement[] = [];
+  const silent = detail ? silentFor(detail.topCountries, detail.home) : null;
+  if (silent) {
+    const k = largestShown();
+    rows.push(gapRow('Silent', silent.length ? codeList(silent) : silentLine([], k).replace(/^silent: /, '')));
+  }
+  const b = cell ? baselines.get(cell.id) : undefined;
+  const normal = cell && b !== undefined ? normalLine(b, cell.n, baselineDays, relativeRatio) : '';
+  if (normal) rows.push(gapRow('Normal', normal));
+  gaps.replaceChildren(...rows);
+  gaps.hidden = !rows.length;
+}
+
 /** Places with this many articles have a static page (scripts/build-places.mjs, PAGE_MIN). */
 const PAGE_MIN = 10;
 // PAGE: the open place's static page, in the sticky bar left of CLOSE and in its register
@@ -140,7 +213,7 @@ let storySeq = 0;
  * One story: the outlet's own headline, its counts, time span, entities and newest articles.
  * `pin` is the slot label of the signal it was opened from: a mono tag above the headline.
  */
-function storyCard(story: Story, now: number, pin = ''): HTMLElement {
+function storyCard(story: Story, now: number, pin = '', home = ''): HTMLElement {
   const card = el('article', 'story');
   const id = `story-${++storySeq}`;
   card.setAttribute('aria-labelledby', `${id}-h`);
@@ -172,6 +245,12 @@ function storyCard(story: Story, now: number, pin = ''): HTMLElement {
   meta.append(el('span', 'story-counts', countsLine(story)));
   const heard = heardIn(story);
   if (heard) meta.append(el('span', '', heard));
+  const silent = silentFor(story.countries, home);
+  if (silent) {
+    const line = el('span', 'story-silent', silentLine(silent, largestShown()));
+    if (silent.length) line.append(' ', ...codeList(silent));
+    meta.append(line);
+  }
   meta.append(el('span', '', utcSpan(story.first, story.last)), toneMarker(story.t));
 
   card.append(head, meta);
@@ -344,7 +423,7 @@ function renderStories(detail: CellDetail | null, now: number, pin: StoryPin | n
   }
   const at = pin ? pinnedIndex(groups, pin) : -1;
   if (at > 0) groups = [groups[at], ...groups.slice(0, at), ...groups.slice(at + 1)];
-  const cards = groups.map((s, i) => storyCard(s, now, at >= 0 && i === 0 && pin ? pin.label : ''));
+  const cards = groups.map((s, i) => storyCard(s, now, at >= 0 && i === 0 && pin ? pin.label : '', detail.home));
   const rest = cards.slice(STORIES_SHOWN);
   const nodes: HTMLElement[] = [el('h3', 'panel-section', 'Stories'), ...cards];
   if (rest.length) {
@@ -676,6 +755,7 @@ export function openLoading(cell: HeatCell, windowHours: number) {
   title.textContent = cell.name;
   setPage(cell);
   setSummary(cell);
+  setGaps(cell);
   setCounts(cell);
   setReach(cell, windowHours);
   setList([]);
@@ -691,6 +771,7 @@ export function showDetail(detail: CellDetail, windowHours: number, pin: StoryPi
   title.textContent = detail.name;
   setPage(detail);
   setSummary(detail);
+  setGaps(detail, detail);
   setCounts(detail);
   setReach(detail, windowHours);
   const now = Date.now();
@@ -711,6 +792,7 @@ export function openMissing(n: number) {
   title.textContent = plural(n, 'article', 'articles');
   setPage(null);
   setSummary(null);
+  setGaps(null);
   setCounts(null);
   setReach(null);
   setList([]);
