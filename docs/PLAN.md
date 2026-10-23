@@ -930,7 +930,9 @@ and main.ts starts both downloads, plus the countries outline, the moment the sn
 in. Map-ready time is bandwidth-bound on this profile (about 613 KB at about 200 KB/s);
 getting it earlier means sending fewer bytes, which is a later item. Desktop map-ready is
 unchanged within 70 ms. The pure projection helpers moved to web/src/projection.ts so the
-pre-paint ships in main.js without MapLibre.
+pre-paint ships in main.js without MapLibre. Live after the deploy (run 40008434611,
+phone profile, three runs): heat.json in 1.50-1.55 s, dots 1.64-1.70 s, map chunk and worker
+start together at 1.55 s, the map's first frame with the dots 4.74-4.82 s.
 
 Targets on the phone profile against a local production build served the same way: dots
 visible within 0.3 s of heat.json arriving (about 2.3 s), the map ready at least 1.5 s
