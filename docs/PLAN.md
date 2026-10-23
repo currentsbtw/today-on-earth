@@ -570,6 +570,50 @@ render/src/lib.mjs), so the time-lapse starts at the oldest frame still deployed
 bad. Frames added by that deploy are not taken: the flights already start from the last
 planned frame.
 
+### Clip v3 (ideas 2026-10-23, not decided)
+
+Owner's verdict on the first watched v2 clip (clip-2026-10-22.mp4): not good enough. The
+frame rate is low, a first-time viewer has no idea what they are looking at, and the cards
+go by too fast to read. Owner's ideas: approach it as a premier content creator would;
+background music; clips; show an area on the map, then a zoom animation with all of the
+news in that area displayed.
+
+Diagnosis (orchestrator, same day):
+- 8 fps reads as stutter on every pan and flight; short-form video is 30 fps.
+- No hook. The clip opens on a world of dots with a clock; nothing says what a dot is or
+  why to keep watching. The first two seconds have to say what this is.
+- Cards hold 3 s for a sentence plus a headline (~25 words): under half the time a reader
+  needs (about 4 words/s, plus a second to settle). Four to six cards in a row with the
+  same layout is a list, not a story.
+- Silent. On TikTok, Reels and Shorts a silent clip is dead on arrival.
+- Each signal shows one headline. The data has more: every cell file carries up to 50
+  outlet-spread articles, topOutlets and topCountries, and each story has 6 articles.
+
+Proposed shape (one in-page timeline, 30 fps, 30-40 s):
+1. Hook (0-2 s): open already zoomed on the loudest cell, dots pulsing, one large caption
+   with the day's total ("271,630 articles in 24 hours. Here's where.") or the loudest
+   story's place.
+2. Context (2-9 s): pull back to the world; the 24-hour time-lapse plays with dots tweened
+   between snapshots (not stepped), the noon pan as in v2; a two-line legend caption.
+3. Three places, not six (9-33 s, ~8 s each): fly in (1.5 s); the slot label and the lead
+   headline paint large and stay at least 4 s; under it the area's other coverage stacks
+   in one line at a time (outlet · headline, 3-4 lines from the cell's article list), which
+   is the owner's "all the news in that area" idea. The callout tag is sized for 1080x1920.
+4. End card (3 s): the site address and totals, as now.
+Music: a licensed-for-commercial-use track burned in for Shorts (YouTube Audio Library or
+CC0; one ffmpeg flag); for TikTok and Reels consider posting with the platform's own
+sound instead, which the platforms favour and which avoids Content ID. Small CC0 sound
+effects on fly-ins and dot bursts. Narration stays deferred (see Captions first).
+Clips/imagery: outlet footage stays out (rights rules above). Public-domain imagery
+(NASA, Sentinel with attribution) as a backdrop behind a place's headlines is a later
+stage, not v3.
+Renderer: the whole clip becomes one page timeline stepped by `window.__clipStep(i)` (the
+v2 flight mechanism generalised), so 30 fps is ~1,000 screenshots without page loads
+(about 3-5 min in CI, against ~4 min today for 262 frames with loads). Alternative if
+stepping is too slow: Playwright video recording of the in-page animation.
+Stages: (1) timeline + 30 fps + hook + readable captions + music; (2) the per-area
+coverage stack; (3) imagery and narration, after the rights check.
+
 ## Visual redesign: Datamatics Field (shipped 2026-10-21)
 
 The web app's visual world was replaced on 2026-10-21 through the Impeccable workflow:
