@@ -15,14 +15,43 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import { siteUrl, type HeatCell } from './data';
 import { ago, count, placeKey, safeHref, shortName } from './format';
+import {
+  constrainCamera,
+  hasBaseline,
+  heatWeight,
+  MARK_OPACITY,
+  MARK_RADIUS,
+  MARK_STEPS,
+  MARK_STROKE,
+  MARK_ZOOM_SCALE,
+  MAP_START,
+  MAX_ZOOM,
+  relativeRatio,
+  startCamera,
+  type HeatMode,
+} from './projection';
+
+// The projection, camera and mark helpers live in projection.ts (no MapLibre there, so the
+// pre-paint can use them before this chunk arrives); the clip page imports them from here.
+export {
+  FILL_LAT,
+  fillHeightZoom,
+  fitWorldZoom,
+  heatWeight,
+  latOf,
+  lngOf,
+  MARK_OPACITY,
+  MARK_RADIUS,
+  MARK_STEPS,
+  MARK_ZOOM_SCALE,
+  mercX,
+  mercY,
+  relativeRatio,
+  TILE,
+  type HeatMode,
+} from './projection';
 
 setWorkerUrl(workerUrl);
-
-const MAX_ZOOM = 9;
-// The world box the camera is held inside. Antarctica is not drawn, so stop short of it.
-const LAT_NORTH = 84;
-const LAT_SOUTH = -58;
-export const TILE = 512;
 
 // The map plate's palette (Datamatics Field): black ocean, near-black land read by its
 // coastlines, white marks. Greys live only here, inside the map. Hardcoded rather than read
@@ -39,20 +68,6 @@ export const MAP_HEAT = '#ffffff';
 export const MAP_LABEL = 'rgba(255,255,255,0.8)';
 export const MAP_LABEL_MINOR = 'rgba(255,255,255,0.56)';
 
-/**
- * The coverage marks: one flat white circle per place, quantised into five steps of the
- * log weight `w` (heatWeight, against a fixed maxN, so replay frames and clip frames share
- * one scale; in "vs. normal" mode `w` is the ratio weight and the steps read it the same).
- * MARK_STEPS are the lower bounds of steps 2-5. Radii are screen px at zoom 0 and grow
- * with zoom by MARK_ZOOM_SCALE; the faint steps are white at reduced opacity (grey). The
- * top radius is held small so neighbouring cells in dense regions stay separate dots.
- */
-export const MARK_STEPS = [0.2, 0.4, 0.6, 0.8];
-export const MARK_RADIUS = [0.6, 0.85, 1.25, 1.9, 2.6];
-export const MARK_OPACITY = [0.5, 0.7, 0.85, 1, 1];
-/** [zoom, radius multiplier]: 1x at zoom 0, 3.5x at zoom 4, 8x at zoom 9. */
-export const MARK_ZOOM_SCALE: [number, number][] = [[0, 1], [4, 3.5], [9, 8]];
-
 /** A per-step value: ['step', w, v1, 0.2, v2, ...]. */
 const byStep = (values: number[]): ExpressionSpecification =>
   ['step', ['get', 'w'], values[0], ...MARK_STEPS.flatMap((t, i) => [t, values[i + 1]])] as ExpressionSpecification;
@@ -60,14 +75,6 @@ const byStep = (values: number[]): ExpressionSpecification =>
 // Labels draw from local fonts (no glyph server); MapLibre waits for the web font to load.
 const LABEL_FONTS = ['Azeret Mono', 'ui-monospace', 'Consolas', 'monospace'];
 export const EMPTY: GeoJSON.FeatureCollection = { type: 'FeatureCollection', features: [] };
-
-/** Web Mercator in world units (0..1 across the world square). */
-export const mercX = (lng: number) => (lng + 180) / 360;
-export const mercY = (lat: number) =>
-  (1 - Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360)) / Math.PI) / 2;
-export const lngOf = (x: number) => x * 360 - 180;
-export const latOf = (y: number) => (360 / Math.PI) * Math.atan(Math.exp(Math.PI * (1 - 2 * y))) - 90;
-const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
 interface Padding {
   top: number;
@@ -77,34 +84,9 @@ interface Padding {
 }
 const NO_PADDING: Padding = { top: 0, bottom: 0, left: 0, right: 0 };
 
-export type HeatMode = 'articles' | 'normal';
-
-/** Below this baseline a place counts as quiet, so a handful of articles cannot read as a surge. */
-const BASELINE_FLOOR = 3;
-
-/** How many times its normal a place is covered: (n + 1) / (max(b, floor) + 1). */
-export const relativeRatio = (n: number, b: number) => (n + 1) / (Math.max(b, BASELINE_FLOOR) + 1);
-
-/**
- * Brightness 0..1. "articles": log of n against the live snapshot's largest n.
- * "normal": log2 of the ratio to the place's own normal over 3, so 8x normal is full
- * brightness and anything at or below normal is dark.
- */
-export function heatWeight(c: Pick<MapCell, 'n' | 'b'>, maxN: number, mode: HeatMode): number {
-  // Without a live baseline (a replay-only cell) there is nothing to compare against, so
-  // the cell keeps its absolute weight and shows no ratio (DATA-CONTRACT "Baseline").
-  if (mode === 'normal' && hasBaseline(c)) return clamp(Math.log2(relativeRatio(c.n, c.b!)) / 3, 0, 1);
-  return Math.min(1, Math.log1p(c.n) / Math.log1p(Math.max(1, maxN)));
-}
-
 /** "×2.4 normal" */
 export const ratioLabel = (c: Pick<MapCell, 'n' | 'b'>) =>
   hasBaseline(c) ? `×${relativeRatio(c.n, c.b!).toFixed(1)} normal` : '';
-
-/** Live cells carry `b`; replay-only cells do not. */
-function hasBaseline(c: Pick<MapCell, 'b'>): boolean {
-  return typeof c.b === 'number';
-}
 
 /** Point features for the heat source, shared by the map page and the clip page. */
 /** The largest places by article count are named even at world zoom. */
@@ -136,8 +118,6 @@ export function heatFeatures(cells: MapCell[], maxN: number, mode: HeatMode): Ge
  * and zoom are held as before.
  */
 function worldConstrain(container: HTMLElement, padding: () => Partial<Padding>, wrap = false) {
-  const top = mercY(LAT_NORTH);
-  const bottom = mercY(LAT_SOUTH);
   return (lngLat: LngLat, zoom: number) => {
     // With map padding (the phone sheet, or a clip page's reserved bands), MapLibre's
     // center is the middle of the unpadded area, so fit the world into that area.
@@ -145,15 +125,9 @@ function worldConstrain(container: HTMLElement, padding: () => Partial<Padding>,
     const w = container.clientWidth - (pad.left ?? 0) - (pad.right ?? 0);
     const h = container.clientHeight - (pad.top ?? 0) - (pad.bottom ?? 0);
     if (w <= 0 || h <= 0) return { center: lngLat, zoom };
-    const fitZoom = Math.log2(Math.min(w, h / (bottom - top)) / TILE);
-    const z = clamp(zoom, fitZoom, MAX_ZOOM);
-    const size = TILE * 2 ** z;
-    const axis = (v: number, lo: number, hi: number, half: number) =>
-      hi - lo <= 2 * half ? (lo + hi) / 2 : clamp(v, lo + half, hi - half);
-    const y = axis(mercY(lngLat.lat) * size, top * size, bottom * size, h / 2) / size;
-    if (wrap) return { center: new LngLat(lngLat.lng, latOf(y)), zoom: z };
-    const x = axis(mercX(lngLat.lng) * size, 0, size, w / 2) / size;
-    return { center: new LngLat(lngOf(x), latOf(y)), zoom: z };
+    // The arithmetic is shared with the pre-paint's initialCamera (projection.ts).
+    const c = constrainCamera(lngLat.lng, lngLat.lat, zoom, w, h, wrap);
+    return { center: new LngLat(c.center[0], c.center[1]), zoom: c.zoom };
   };
 }
 
@@ -293,7 +267,7 @@ export function style(): StyleSpecification {
           'circle-blur': 0,
           'circle-opacity': byStep(MARK_OPACITY),
           'circle-stroke-color': MAP_OCEAN,
-          'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], 0, 0.6, 4, 1],
+          'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], ...MARK_STROKE.flat()] as ExpressionSpecification,
         },
       },
       {
@@ -438,14 +412,12 @@ export interface WorldMap {
    */
   setSheet(height: number, focus?: [lon: number, lat: number]): void;
   hideTooltip(): void;
+  /**
+   * Resolves after the first frame the map has drawn with the cells of its first setCells
+   * on screen (the heat source loaded, then a render): the moment the pre-paint can go.
+   */
+  whenDrawn(): Promise<void>;
 }
-
-/** Zoom at which the world box (LAT_NORTH..LAT_SOUTH) exactly fills a window `height` px tall. */
-export const fillHeightZoom = (height: number) => Math.log2(height / (mercY(LAT_SOUTH) - mercY(LAT_NORTH)) / TILE);
-/** Latitude of the world box's middle in Mercator: the centre of a height-filled view. */
-export const FILL_LAT = latOf((mercY(LAT_NORTH) + mercY(LAT_SOUTH)) / 2);
-/** Zoom at which the whole world box fits inside a w x h window (the clip map's fitted world). */
-export const fitWorldZoom = (w: number, h: number) => Math.log2(Math.min(w, h / (mercY(LAT_SOUTH) - mercY(LAT_NORTH))) / TILE);
 
 export interface ClipCamera {
   center: [lon: number, lat: number];
@@ -499,8 +471,8 @@ export function createMap(
   const map = new MapLibreMap({
     container,
     style: style(),
-    center: [10, 20],
-    zoom: -2,
+    center: MAP_START.center,
+    zoom: MAP_START.zoom,
     minZoom: -2,
     maxZoom: MAX_ZOOM,
     renderWorldCopies: false,
@@ -536,6 +508,19 @@ export function createMap(
   };
   let heatMode: HeatMode = 'articles';
   let sheetPadding = 0; // bottom padding last asked for by setSheet
+
+  // whenDrawn: after the first setCells, the first render that ends with the heat source
+  // loaded (its worker update done and its tiles in) has the dots on screen. The render
+  // event fires at the end of the frame's draw, so those tiles were in that frame.
+  let cellsGiven = false;
+  let drawnResolve: () => void = () => {};
+  const drawn = new Promise<void>((resolve) => (drawnResolve = resolve));
+  const checkDrawn = () => {
+    if (!cellsGiven || !map.isSourceLoaded('heat')) return;
+    map.off('render', checkDrawn);
+    drawnResolve();
+  };
+  map.on('render', checkDrawn);
 
   const span = (text: string, className = '') => Object.assign(document.createElement('span'), { textContent: text, className });
 
@@ -617,7 +602,10 @@ export function createMap(
       for (const [layer, tier] of Object.entries(PLACE_TIERS)) map.setFilter(layer, ['all', tier, notNews]);
       map.setFilter('place-dot', notNews);
       drawTag();
+      cellsGiven = true;
     },
+
+    whenDrawn: () => drawn,
 
     hideTooltip,
 
@@ -684,11 +672,10 @@ export function createMap(
     }
   };
 
-  // Portrait screens: start with the world filling the height (the width then overflows, so
-  // no world edge shows); the contain-fit stays the minimum zoom.
-  const w = container.clientWidth;
-  const h = container.clientHeight;
-  if (h > w && w > 0) map.jumpTo({ center: [15, 20], zoom: fillHeightZoom(h) });
+  // Portrait screens start with the world filling the height (startCamera, projection.ts);
+  // the pre-paint projects with the same camera after the constraint (initialCamera).
+  const start = startCamera(container.clientWidth, container.clientHeight);
+  if (start !== MAP_START) map.jumpTo(start);
 
   return new Promise((resolve) =>
     map.once('load', () => {

@@ -521,6 +521,14 @@ body.is-replay .map-frame {
   inset: 0;
 }
 
+/* The snapshot's dots before the map is up (src/prepaint.ts); sized in px by the script. */
+.map-frame > .prepaint {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
 .map-frame .maplibregl-canvas:focus-visible {
   outline: 1px solid var(--fg);
   outline-offset: -2px;

@@ -886,6 +886,58 @@ in parallel; docs (METHODOLOGY, DATA-CONTRACT, README) follow once both land. Ve
 the ingest tests, then a local cold-start run on the measured window compared before and
 after on Paris's outlets, New Jersey's n, Taipei's o and the grouped share.
 
+## First paint (decided 2026-10-23, shipped the same day)
+
+Measured on the live site (d771181) with Playwright and Edge, resource timings from the page:
+- Desktop, real GPU, fast link: every asset is in by 1.8 s (map chunk 289 KB gz, worker 149 KB,
+  heat.json 120 KB); the map canvas exists at 1.1 s and the status clears at 1.6 s. The
+  "~20 s cold load" in PRODUCT.md was measured in the Claude browser pane, which runs as a
+  background page where MapLibre's animation frames pause; it is not what visitors see.
+- Phone profile (iPhone 13 Pro Max emulation, slow 4G at 1.6 Mbps / 150 ms, CPU 4x slower):
+  DOM 1.35 s, the sentence 2.2 s, heat.json in at 2.0 s, the map chunk starts only at 1.27 s
+  (after main.js runs) and lands at 3.2 s, the map canvas at 4.9 s, the worker only once
+  MapLibre has constructed, the dots at 7.9 s (harness clock; the page's own clock put the
+  same run at 4.6 s against a local server). So the data is on the phone for seconds before
+  anything is drawn.
+
+Decisions (web only, no data or ingest change):
+1. **Paint the dots before the map.** When heat.json arrives, draw every cell on a plain
+   canvas inside the map frame, in the map's own vocabulary (black ground, flat white circles
+   in the five stepped radii and opacities by the same log weight, no outlines, no labels),
+   projected exactly as MapLibre's first camera will show them (portrait: centre [15, 20] at
+   fillHeightZoom(height); landscape: the world fitted; the same mercator helpers and world
+   constraint as map.ts), so the swap is invisible. The canvas is removed on the map's first
+   frame that has the cells drawn (after setCells and the map's next render), never before.
+   A stepped state (dots, then the map) in the design's terms; it needs no motion.
+2. **Start the map's downloads with the page.** A small Vite plugin injects
+   `<link rel="modulepreload">` for the map chunk and the MapLibre worker chunk into
+   index.html at build time (names are hashed), so both start at ~0.5 s instead of 1.3 s and
+   6.4 s. The bundle is already split (MapLibre is its own chunk behind a dynamic import,
+   h3-js loads on the first click); nothing more to split.
+3. **Say what is happening.** The status reads "drawing the map" between the dots and the
+   map, "loading" only before the snapshot arrives.
+4. PRODUCT.md's performance line is corrected to the measured numbers.
+
+**Status 2026-10-23: shipped.** Measured on a local production build served Pages-like (gzip,
+max-age=600), phone profile, median of 3, page clock: heat.json in 1.38 s, the dots on the
+pre-paint canvas at 1.51 s (before: the map's first dots at 4.61 s), the map's own first
+frame with the dots at 4.58 s (before 4.61 s). Swap check: 2.9% of pixels differ on the
+phone frame and 6.7% on desktop, all of them the land, borders and labels appearing; the
+dots do not move. Decided differently from item 2: head `<link rel="modulepreload">` tags
+shared the slow link with heat.json and held the first dots back by 0.8 s with no gain in
+map-ready time, so instead the build writes the map chunk and worker names into a meta tag
+and main.ts starts both downloads, plus the countries outline, the moment the snapshot is
+in. Map-ready time is bandwidth-bound on this profile (about 613 KB at about 200 KB/s);
+getting it earlier means sending fewer bytes, which is a later item. Desktop map-ready is
+unchanged within 70 ms. The pure projection helpers moved to web/src/projection.ts so the
+pre-paint ships in main.js without MapLibre.
+
+Targets on the phone profile against a local production build served the same way: dots
+visible within 0.3 s of heat.json arriving (about 2.3 s), the map ready at least 1.5 s
+earlier than today, and a screenshot diff between the last pre-paint frame and the map's
+first frame that shows only the land outlines and labels appearing, with every dot in the
+same place.
+
 ## Visual redesign: Datamatics Field (shipped 2026-10-21)
 
 The web app's visual world was replaced on 2026-10-21 through the Impeccable workflow:

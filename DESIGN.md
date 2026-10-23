@@ -241,7 +241,7 @@ Black, white, and a short ladder of greys for secondary text and strips; chroma 
 
 **The Faint-Is-Not-Text Rule.** #5c5c5c appears only on strips, bars and baselines. Text drops no lower than #777.
 
-**The Flat-Mark Rule.** A map mark is a solid white circle with a hard edge (`circle-blur: 0`) and a black hairline around it. Volume is encoded by stepped radius and stepped opacity, never by blur, a heatmap or a glow.
+**The Flat-Mark Rule.** A map mark is a solid white circle with a hard edge (`circle-blur: 0`) and a black hairline around it. Volume is encoded by stepped radius and stepped opacity, never by blur, a heatmap or a glow. Before the map is up, the same marks are drawn on a plain canvas in the map's first camera (the pre-paint, `web/src/prepaint.ts`, from the constants in `web/src/projection.ts`); it is removed in one step on the map's first frame with the marks, so a change to the marks changes both.
 
 ## Typography
 

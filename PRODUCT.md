@@ -35,7 +35,7 @@ No editorial voice, with the receipts shown. Brightness is measured article volu
 - Data contract: docs/DATA-CONTRACT.md (binding). Heat per H3 cell (n, u, o, c, i, l, t, b), per-cell detail with stories, 24 h replay frames, baseline, broadcast.json.
 - Stack: Vite + vanilla TypeScript + MapLibre GL (no tiles; Natural Earth outlines), CSS custom properties in web/src/tokens.css; about.css for the methodology page; clip.css for the clip frame.
 - Phone layout is a bottom sheet; the panel is 400 px on desktop; keyboard access and focus rings exist and must survive.
-- Performance: the main bundle is ~1 MB (MapLibre); first paint on a cold cache is slow today (~20 s observed) and must not get worse.
+- Performance (measured 2026-10-23): the map chunk is ~1 MB (MapLibre, 289 KB gzipped) plus a 519 KB worker; desktop reaches a ready map in ~1.6 s; on a phone profile (iPhone 13 Pro Max, slow 4G, CPU 4x) the dots used to appear only with the map (7.9 s on the live site, 4.6 s on a local build), and since the pre-paint they appear at 1.5 s with the map ready at 4.6 s (local build); this must not get worse.
 - The clip frame is captured by a headless browser at 1080x1920 (and 540x960 locally); text must stay inside platform safe areas.
 - Terminology: place (cell), story, outlet, reprint, "heard in N other countries", signal (broadcast slot), normal (baseline), snapshot.
 - Undecided: newsletter; accounts; monetisation surfaces (none built).

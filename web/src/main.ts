@@ -1,18 +1,24 @@
 import './style.css';
 import { loadBroadcast, SLOT_IDS, SLOT_LABELS, type Broadcast, type Slot, type SlotId } from './broadcast';
-import { isCellId, loadCell, loadHeat, type FrameRow, type HeatCell, type Totals } from './data';
+import { isCellId, loadCell, loadHeat, siteUrl, type FrameRow, type Heat, type HeatCell, type Totals } from './data';
 import { count, plural, shortName, utcDayTime, utcTime } from './format';
 import type { HeatMode, MapCell, WorldMap } from './map';
 import * as panel from './panel';
+import { prepaint, type Prepaint } from './prepaint';
 import { initPresence } from './presence';
 import { readPref, writePref } from './prefs';
 import { initQuakes } from './quakes';
 import { initReplay, type FrameView, type Replay } from './replay';
 
-// The snapshot is fetched first: the sentence and the totals need nothing else. The map
-// module (MapLibre, the largest download) loads beside it and never holds them up.
+// The snapshot is fetched first (index.html starts it while the page parses): the sentence,
+// the totals and the pre-paint's dots need nothing else. Only once it is in do the map's
+// downloads start, all together (preloadMapFiles), so on a slow link they never share the
+// bandwidth with it and hold the first dots back.
 const heatPromise = loadHeat();
-const mapModule = import('./map');
+const mapModule = heatPromise.catch(() => null).then(() => {
+  preloadMapFiles();
+  return import('./map');
+});
 
 /** Relative heat needs this many complete days of per-cell history (see DATA-CONTRACT "Baseline"). */
 const MIN_BASELINE_DAYS = 3;
@@ -20,6 +26,8 @@ const MODE_PREF = 'toe.heatMode';
 /** Set once someone has opened a place; until then a one-line hint says how. */
 const SEEN_PREF = 'toe.seenCell';
 const HINT = 'Open a dot to see who is covering it';
+/** Between the snapshot's arrival (the pre-paint's dots) and the map's first frame with them. */
+const DRAWING = 'drawing the map';
 /** How many places the Places list and the places column show. */
 const PLACES_MAX = 100;
 
@@ -34,6 +42,32 @@ const mapFrame = $('map-frame');
 
 /** Wide: the three-column field with the place panel over the right column. Below it the page stacks. */
 const wide = window.matchMedia('(min-width: 1100px)');
+
+/**
+ * Built pages only (dev pages have no list): starts the map chunk, the MapLibre worker and
+ * the first-paint outlines downloading together. Without this the worker would start only
+ * once MapLibre has constructed, and the outlines only once the worker runs. The chunk and
+ * worker names are hashed, so the build writes them into index.html (vite.config.ts,
+ * preloadMap). The outlines are fetched into the HTTP cache, where the worker finds them.
+ */
+function preloadMapFiles() {
+  const files = document.querySelector<HTMLMetaElement>('meta[name="toe-map-files"]')?.content.split(' ').filter(Boolean);
+  if (!files?.length) return;
+  for (const href of files) {
+    document.head.append(Object.assign(document.createElement('link'), { rel: 'modulepreload', href, crossOrigin: '' }));
+  }
+  // The same URL as the countries source in map.ts style().
+  fetch(siteUrl('geo/countries.json'))
+    .then((res) => res.arrayBuffer())
+    .catch(() => {});
+}
+
+/** The live snapshot's largest n: the scale of every frame's marks. */
+const maxOf = (cells: HeatCell[]) => Math.max(1, ...cells.map((c) => c.n));
+
+/** The brightness mode the map starts in: "vs. normal" only when kept and available. */
+const initialMode = (heat: Heat): HeatMode =>
+  (heat.baselineDays ?? 0) >= MIN_BASELINE_DAYS && readPref(MODE_PREF) === 'normal' ? 'normal' : 'articles';
 
 function setStatus(text: string) {
   status.textContent = text;
@@ -296,11 +330,18 @@ const bandObserver = new IntersectionObserver(
 for (const [section] of sections) bandObserver.observe(section);
 
 async function start() {
-  // The header fills in as soon as the snapshot arrives; the map catches up when ready.
+  // The pre-paint's dots, from the snapshot's arrival until the map has drawn them.
+  // (Typed by assertion: it is set inside the callback below, which TypeScript does not follow.)
+  let prepainted = null as Prepaint | null;
+  // The header fills in as soon as the snapshot arrives; the map catches up when ready. So
+  // do the dots: drawn at once on a plain canvas in the map's camera (prepaint.ts), while
+  // the MapLibre chunk and its worker are still loading.
   heatPromise.then(
     (h) => {
       showTotals(h.totals, h.generatedAt, false);
       setStamp(h.generatedAt);
+      if (h.cells.length) prepainted = prepaint(mapFrame, h.cells, maxOf(h.cells), initialMode(h));
+      setStatus(DRAWING);
     },
     () => {
       sentence.textContent = 'The news snapshot could not be loaded.';
@@ -484,7 +525,7 @@ async function start() {
   if (heat) {
     liveCells = heat.cells;
     for (const c of liveCells) live.set(c.id, c);
-    liveMax = Math.max(1, ...liveCells.map((c) => c.n));
+    liveMax = maxOf(liveCells);
     windowHours = heat.windowHours || 24;
     $('legend-max').textContent = count(liveMax);
     colPick = (id: string) => {
@@ -549,7 +590,7 @@ async function start() {
   const modeControl = $('mode');
   const modeNote = $('mode-note');
   const relativeAvailable = (heat.baselineDays ?? 0) >= MIN_BASELINE_DAYS;
-  let mode: HeatMode = relativeAvailable && readPref(MODE_PREF) === 'normal' ? 'normal' : 'articles';
+  let mode: HeatMode = initialMode(heat);
 
   const redraw = () => {
     if (shownRows) {
@@ -582,10 +623,24 @@ async function start() {
     });
   }
   setMode(mode);
-  setStatus(liveCells.length ? '' : 'No coverage in this snapshot.');
-  if (liveCells.length && readPref(SEEN_PREF) !== '1' && !panel.isOpen()) {
-    hintShown = true;
-    setStatus(HINT);
+  const settleStatus = () => {
+    setStatus(liveCells.length ? '' : 'No coverage in this snapshot.');
+    if (liveCells.length && readPref(SEEN_PREF) !== '1' && !panel.isOpen()) {
+      hintShown = true;
+      setStatus(HINT);
+    }
+  };
+  // The pre-paint goes on the map's first frame with the cells drawn, never before, and the
+  // status follows it; the rest of the page does not wait for that frame.
+  const pre = prepainted;
+  if (pre) {
+    void map.whenDrawn().then(() => {
+      pre.remove();
+      prepainted = null;
+      settleStatus();
+    });
+  } else {
+    settleStatus();
   }
 
   const showFrame = (fv: FrameView) => {
