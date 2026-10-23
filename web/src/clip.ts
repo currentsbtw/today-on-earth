@@ -22,11 +22,19 @@
 //                      lapse     the day's snapshots on a virtual clock running linearly from
 //                                the first to the last; each cell's n and the totals
 //                                interpolate between the two snapshots around it, and portrait
-//                                frames centre local noon at that time;
+//                                frames centre local noon at that time. The article total
+//                                stands at display size under the clock (the foot keeps the
+//                                other three totals) and a square on the top rule walks from
+//                                the first tick (the first snapshot) to the last (the live
+//                                one). The time-lapse window is measured with that total on,
+//                                and the hook, pull-back and flights use the same window;
 //                      flight    per chosen slot (the first `slots` filled slots in file
-//                                order): a flight from the previous camera captioned with the
-//                                slot label,
-//                      card      then the slot's card held;
+//                                order): a flight from the previous camera captioned
+//                                "N/M · <plain slot label> → <place>" (N the card's place
+//                                among the chosen slots, M their count),
+//                      card      then the slot's card held: the header "N/M · <plain slot
+//                                label>", the place's short name, the ledger row of the
+//                                story's counts, the outlet's headline and its credit;
 //                      end       the end card.
 //   ?t=<stamp>       the heat of one replay frame, a wordmark, the frame's date and time, a
 //                    fixed line saying what a dot and its size mean, and its counts. Landscape
@@ -35,18 +43,18 @@
 //                    of local noon at the frame's time, so the camera turns once westward over
 //                    the day;
 //   ?signal=<slot>   one broadcast slot: the map at the slot's cell with the live heat, the
-//                    cell's outline, reticle and name tag, the slot label, its fixed
-//                    sentence and the outlet's own headline. With `from=<ref>&fly=<F>` the
-//                    page is a flight to that card instead: it opens on step 0 (the
-//                    time-lapse layout at the `from` camera, captioned with the slot label)
-//                    and window.__clipStep(i) moves it to step i of F; step F is the card;
+//                    cell's outline, reticle and name tag, and the card as in the timeline,
+//                    its header counted "1/1". With `from=<ref>&fly=<F>` the page is a flight
+//                    to that card instead: it opens on step 0 (the time-lapse layout at the
+//                    `from` camera, captioned "1/1 · <plain slot label> → <place>") and
+//                    window.__clipStep(i) moves it to step i of F; step F is the card;
 //   ?end=1           the logo lockup, the site address and the live snapshot's totals.
 // Nothing animates inside a frame: the renderer captures stills, and the camera, the dots and
 // the clock move only between them. The look (Datamatics Field) lives in clip.css: black text
 // bands with the dot grid above and below a tick-edged map window.
 import './clip.css';
 import type { FilterSpecification, GeoJSONSource, Map as MapLibreMap } from 'maplibre-gl';
-import { loadBroadcast, signalLine, SLOT_IDS, SLOT_LABELS, type Broadcast, type Slot, type SlotId } from './broadcast';
+import { loadBroadcast, PLAIN_LABELS, sentenceFacts, SLOT_IDS, type Broadcast, type SignalFact, type Slot, type SlotStory } from './broadcast';
 import { loadFrame, loadHeat, loadHistoryIndex, siteUrl, type FrameRow, type Heat, type HistoryFrame, type Totals } from './data';
 import { flightPath, wrapLon } from './flight';
 import { count, shortName, stampOf, utcTime } from './format';
@@ -110,6 +118,9 @@ const paddingOf = (w: Window) => ({ top: w.top, bottom: H - w.bottom, left: 0, r
 
 const dateFormat = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' });
 const el = (id: string) => document.getElementById(id)!;
+/** The tick length (clip.css's --tick, max(5px, 1.1u)) on whole pixels: the progress marker's side. */
+const tickPx = Math.round(Math.max(5, unit * 1.1));
+root.style.setProperty('--tick-px', `${tickPx}px`);
 
 /** The clip map, with the callout tag's type scaled with the frame (2.04u: 22 px at 1080 wide). */
 const clipMap = (padding: ReturnType<typeof paddingOf>, view?: ClipCamera, wrap = false) =>
@@ -147,26 +158,55 @@ function setTime(at: string, clock = true) {
   el('clip-time').replaceChildren(...parts);
 }
 
+/** One figure in the totals' register: the number over its label. */
+function countItem(n: number, one: string, many: string) {
+  const item = Object.assign(document.createElement('div'), { className: 'clip-count' });
+  item.append(Object.assign(document.createElement('b'), { textContent: count(n) }), Object.assign(document.createElement('span'), { textContent: n === 1 ? one : many }));
+  return item;
+}
+
 /**
  * Totals along the foot: number over label; null clears them. The end card names the fourth
- * one as the map's places column does, OUTLET COUNTRIES.
+ * one as the map's places column does, OUTLET COUNTRIES. `articles` false leaves the article
+ * total out (the timeline's time-lapse shows it under the clock instead).
  */
-function setCounts(totals: Totals | null, outletCountries = false) {
+function setCounts(totals: Totals | null, outletCountries = false, articles = true) {
   const items: [n: number, one: string, many: string][] = totals
     ? [
-        [totals.articles, 'article', 'articles'],
+        ...(articles ? [[totals.articles, 'article', 'articles'] as [number, string, string]] : []),
         [totals.cells, 'place', 'places'],
         [totals.outlets, 'outlet', 'outlets'],
         [totals.countries, outletCountries ? 'outlet country' : 'country', outletCountries ? 'outlet countries' : 'countries'],
       ]
     : [];
-  el('clip-counts').replaceChildren(
-    ...items.map(([n, one, many]) => {
-      const item = Object.assign(document.createElement('div'), { className: 'clip-count' });
-      item.append(Object.assign(document.createElement('b'), { textContent: count(n) }), Object.assign(document.createElement('span'), { textContent: n === 1 ? one : many }));
-      return item;
-    }),
-  );
+  const counts = el('clip-counts');
+  counts.style.setProperty('--cols', String(Math.max(1, items.length)));
+  counts.replaceChildren(...items.map(([n, one, many]) => countItem(n, one, many)));
+}
+
+/** The article total at display size under the clock (the timeline's time-lapse only); null hides it. */
+function setTotal(articles: number | null) {
+  el('clip-total').hidden = articles === null;
+  if (articles === null) return;
+  el('clip-total-n').textContent = count(articles);
+  el('clip-total-label').textContent = articles === 1 ? 'article' : 'articles';
+}
+
+/**
+ * The progress marker on the top rule (the timeline's time-lapse only): `fraction` of the day
+ * elapsed, 0 on the first tick and 1 on the last, the square centred there on a whole pixel;
+ * null hides it.
+ */
+function setProgress(fraction: number | null) {
+  const marker = el('clip-progress');
+  marker.hidden = fraction === null;
+  if (fraction === null) return;
+  const edge = el('clip-edge-top');
+  const ticks = edge.querySelector('.clip-ticks')!.children;
+  const first = ticks[0].getBoundingClientRect().left;
+  const last = ticks[ticks.length - 1].getBoundingClientRect().left;
+  const centre = first + 0.5 + Math.min(1, Math.max(0, fraction)) * (last - first);
+  marker.style.left = `${Math.round(centre - tickPx / 2 - edge.getBoundingClientRect().left)}px`;
 }
 
 /** The reading key under the date ("One dot per place…"): time-lapse layouts only. */
@@ -396,11 +436,39 @@ interface CardWindow extends Window {
   fit: string;
 }
 
-/** Put one slot's texts in the card (slot label, fixed sentence, headline, outlet) at type scale `fit`. */
-function fillCard(slot: FilledSlot, fit?: string) {
-  const { story } = slot;
-  el('clip-slot').textContent = SLOT_LABELS[slot.id as SlotId];
-  el('clip-line').textContent = signalLine(slot);
+/** A card's place in the run: the n-th (1-based) of the chosen slots' count. */
+interface RunPlace {
+  n: number;
+  of: number;
+}
+
+/** The single card of the ?signal= stills. */
+const ONLY: RunPlace = { n: 1, of: 1 };
+
+/** Each ledger fact: the story's count and its label. */
+const LEDGER: Record<SignalFact, [value: (story: SlotStory) => number, one: string, many: string]> = {
+  articles: [(s) => s.n, 'article', 'articles'],
+  outlets: [(s) => s.o, 'outlet', 'outlets'],
+  languages: [(s) => s.l, 'language', 'languages'],
+  heardIn: [(s) => s.i, 'other country', 'other countries'],
+};
+
+/**
+ * Put one slot's texts in the card at type scale `fit`: the header "N/M · plain label", the
+ * place's short name, the ledger row (the counts the site's sentence states for the slot), the
+ * headline and the outlet. A `caption` (a flight's) adds " → place" to the header.
+ */
+function fillCard(slot: FilledSlot, run: RunPlace, fit?: string, caption = false) {
+  const { story, cell } = slot;
+  const place = shortName(cell.name) || cell.name;
+  el('clip-slot').textContent = `${run.n}/${run.of} · ${PLAIN_LABELS[slot.id]}${caption ? ` → ${place}` : ''}`;
+  el('clip-place').textContent = place;
+  el('clip-ledger').replaceChildren(
+    ...sentenceFacts(slot.id).map((fact) => {
+      const [value, one, many] = LEDGER[fact];
+      return countItem(value(story), one, many);
+    }),
+  );
   const headline = el('clip-headline');
   el('clip-quote').hidden = !story.headline;
   headline.textContent = story.headline;
@@ -415,19 +483,22 @@ function fillCard(slot: FilledSlot, fit?: string) {
  * text to above the card, at least 22% of the frame), where its slot header sits and the type
  * scale it fitted.
  */
-async function layoutCard(slot: FilledSlot): Promise<CardWindow> {
+async function layoutCard(slot: FilledSlot, run: RunPlace): Promise<CardWindow> {
   const card = el('clip-card');
-  fillCard(slot);
+  fillCard(slot, run);
   card.classList.remove('clip-card--caption');
   card.hidden = false;
-  // The card's window is measured without the key, which the card layout hides, so a flight's
-  // arrival matches the direct card exactly.
+  // The card's window is measured without the key and the article total, which the card
+  // layout hides, so a flight's arrival matches the direct card exactly.
   const key = el('clip-key');
-  const keyShown = !key.hidden;
+  const total = el('clip-total');
+  const shown = [!key.hidden, !total.hidden];
   key.hidden = true;
+  total.hidden = true;
   await fontsLaidOut();
   const top = textTop();
-  key.hidden = !keyShown;
+  key.hidden = !shown[0];
+  total.hidden = !shown[1];
   const gap = Math.round(unit * 3.6 + tickLength());
   fitCard(card, H - safeBottom - top - gap - Math.round(H * 0.22));
   const header = H - safeBottom - card.offsetHeight;
@@ -452,6 +523,8 @@ function arrivalCamera(timelapse: Window, card: Window, cell: { lon: number; lat
 function baseLayout() {
   root.classList.remove('clip--card', 'clip--signal', 'clip--end');
   el('clip-map').style.visibility = '';
+  setTotal(null);
+  setProgress(null);
   el('clip-hook').hidden = true;
   el('clip-end').hidden = true;
   const card = el('clip-card');
@@ -461,24 +534,31 @@ function baseLayout() {
   if (counts.parentElement !== root) root.insertBefore(counts, card);
 }
 
-/** The time-lapse layout: date and clock, reading key, totals, the time-lapse window. */
-function lapseLayout(at: string, totals: Totals, timelapse: Window) {
+/**
+ * The time-lapse layout: date and clock, reading key, totals, the time-lapse window. With
+ * `progress` (the timeline's time-lapse frames: the share of the day elapsed) the article total
+ * stands under the clock, the foot keeps the other three, and the marker walks the top rule.
+ */
+function lapseLayout(at: string, totals: Totals, timelapse: Window, progress: number | null = null) {
   baseLayout();
+  const lapse = progress !== null;
   setTime(at);
-  setCounts(totals);
+  setTotal(lapse ? totals.articles : null);
+  setCounts(totals, false, !lapse);
   showKey(true);
   setEdges(timelapse);
+  setProgress(progress);
 }
 
 /**
- * A flight's layout: the time-lapse layout plus one caption, the card's slot header alone,
- * where the card will put it; in portrait it is kept clear of the totals on the window's
- * lower rule.
+ * A flight's layout: the time-lapse layout plus one caption, the card's slot header followed
+ * by " → place", where the card will put its header; in portrait it is kept clear of the
+ * totals on the window's lower rule.
  */
-function flightLayout(slot: FilledSlot, at: string, totals: Totals, timelapse: Window, card: CardWindow) {
+function flightLayout(slot: FilledSlot, run: RunPlace, at: string, totals: Totals, timelapse: Window, card: CardWindow) {
   lapseLayout(at, totals, timelapse);
   const cardEl = el('clip-card');
-  fillCard(slot, card.fit);
+  fillCard(slot, run, card.fit, true);
   cardEl.classList.add('clip-card--caption');
   cardEl.hidden = false;
   const counts = el('clip-counts').getBoundingClientRect();
@@ -488,14 +568,14 @@ function flightLayout(slot: FilledSlot, at: string, totals: Totals, timelapse: W
 }
 
 /** A slot's card: date and clock, no key or totals, the window ending above the card. */
-function cardLayout(slot: FilledSlot, at: string, card: CardWindow) {
+function cardLayout(slot: FilledSlot, run: RunPlace, at: string, card: CardWindow) {
   baseLayout();
   root.classList.add('clip--card', 'clip--signal');
   setTime(at);
   setCounts(null);
   showKey(false);
   setEdges(card);
-  fillCard(slot, card.fit);
+  fillCard(slot, run, card.fit);
   el('clip-card').hidden = false;
 }
 
@@ -543,8 +623,8 @@ async function renderSignal(id: string) {
   setTime(broadcast.generatedAt);
   // Lay the text out before the map so the cell can be centred in the window left between
   // the wordmark's band and the card's band.
-  const w = await layoutCard(slot);
-  cardLayout(slot, broadcast.generatedAt, w);
+  const w = await layoutCard(slot, ONLY);
+  cardLayout(slot, ONLY, broadcast.generatedAt, w);
 
   const { map, setCells } = await clipMap(paddingOf(w), { center: [cell.lon, cell.lat], zoom: signalZoom() });
   const [, callout] = await Promise.all([loadDetail(map), slotCallout(slot, heat)]);
@@ -600,13 +680,13 @@ async function renderFlight(id: string, fromParam: string, flyParam: string) {
     startView = timelapseView(at, timelapse);
   } else {
     const previous = filledSlot(broadcast, from.id);
-    startView = arrivalCamera(timelapse, await layoutCard(previous), previous.cell);
+    startView = arrivalCamera(timelapse, await layoutCard(previous, ONLY), previous.cell);
   }
-  const card = await layoutCard(slot);
+  const card = await layoutCard(slot, ONLY);
   const arrival = arrivalCamera(timelapse, card, slot.cell);
   const callout = await slotCallout(slot, heat);
 
-  flightLayout(slot, at, totals, timelapse, card);
+  flightLayout(slot, ONLY, at, totals, timelapse, card);
 
   const { map, setCells } = await clipMap(paddingOf(timelapse), startView, portrait);
   setCells(heat.cells, maxN);
@@ -628,8 +708,8 @@ async function renderFlight(id: string, fromParam: string, flyParam: string) {
     const arrived = i === fly;
     // The last step is the exact card camera a later flight's `from=s:` reproduces.
     map.jumpTo(arrived ? arrival : path[i]);
-    if (arrived) cardLayout(slot, broadcast.generatedAt, card);
-    else flightLayout(slot, at, totals, timelapse, card);
+    if (arrived) cardLayout(slot, ONLY, broadcast.generatedAt, card);
+    else flightLayout(slot, ONLY, at, totals, timelapse, card);
     setCallout(map, arrived ? callout : null);
     if (arrived || map.getZoom() >= 3) await ensureDetail();
     await settle(map);
@@ -707,15 +787,20 @@ async function renderTimeline() {
   const plan: ClipPlan = buildPlan(options, chosen.map((s) => s.id), times);
 
   // Measure every layout once, with the fonts laid out: the time-lapse window (top text with
-  // the clock and the key), each card's window, and the hook caption's top.
+  // the clock, the article total and the key, so the hook, pull-back, time-lapse and flights
+  // share one window and no camera path moves between them), each card's window, and the hook
+  // caption's top.
   setTime(liveAt);
-  setCounts(heat.totals);
+  setTotal(heat.totals.articles);
+  setCounts(heat.totals, false, false);
   showKey(true);
   await fontsLaidOut();
   const timelapse = timelapseWindow();
+  setTotal(null);
   setTime(cardAt);
+  const runs: RunPlace[] = chosen.map((_, n) => ({ n: n + 1, of: chosen.length }));
   const cards: CardWindow[] = [];
-  for (const slot of chosen) cards.push(await layoutCard(slot));
+  for (const [n, slot] of chosen.entries()) cards.push(await layoutCard(slot, runs[n]));
   hookLayout(liveAt, heat.totals.articles, timelapse);
   await fontsLaidOut();
   // The hook's cell is centred in the window above its caption.
@@ -796,7 +881,8 @@ async function renderTimeline() {
         const t = lapseTime(times[0], times[live], lapseFrames, offset);
         const { lo, hi, f } = bracket(times, t);
         map.jumpTo(lapseView(t));
-        lapseLayout(new Date(Math.round(t)).toISOString(), interpolateTotals(snapshots[lo].totals, snapshots[hi].totals, f), timelapse);
+        const progress = times[live] > times[0] ? (t - times[0]) / (times[live] - times[0]) : 1;
+        lapseLayout(new Date(Math.round(t)).toISOString(), interpolateTotals(snapshots[lo].totals, snapshots[hi].totals, f), timelapse, progress);
         if (f === 0 || lo === hi) showCells(`snap:${lo}`, () => snapshots[lo].cells);
         else showCells(`lapse:${offset}`, () => interpolateCells(snapshots[lo].cells, snapshots[hi].cells, f));
         showCallout(null);
@@ -805,13 +891,13 @@ async function renderTimeline() {
       case 'flight':
         map.jumpTo(flights[n][offset + 1]);
         // The first flight keeps the last time-lapse frame's clock and totals; later ones the card's.
-        flightLayout(chosen[n], n === 0 ? liveAt : cardAt, heat.totals, timelapse, cards[n]);
+        flightLayout(chosen[n], runs[n], n === 0 ? liveAt : cardAt, heat.totals, timelapse, cards[n]);
         showLive();
         showCallout(null);
         break;
       case 'card':
         map.jumpTo(arrivals[n]);
-        cardLayout(chosen[n], cardAt, cards[n]);
+        cardLayout(chosen[n], runs[n], cardAt, cards[n]);
         showLive();
         showCallout(n);
         closeUp = true;

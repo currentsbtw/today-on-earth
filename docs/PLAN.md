@@ -686,7 +686,7 @@ clip sections) and the renderer (render/src/clip.mjs, lib.mjs, a new audio.mjs w
 clip.yml, README "Daily clip") run in parallel on the contract above; the orchestrator
 integrates against the dev server, then one CI run, and watches the mp4.
 
-### Clip v3 stage 2: silent-first (proposed 2026-10-23, not decided)
+### Clip v3 stage 2: silent-first (proposed 2026-10-23; items 1-3 decided the same day, in progress)
 
 Owner's direction after stage 1: park the audio/music work; make the clip extremely
 understandable with sound off (most social video is watched muted). The orchestrator's
@@ -717,6 +717,26 @@ proposal, ordered by impact, each item small enough to judge from a still:
    cell file, names as domains or short names, never logos), painted 1.5 s after the card.
 6. **The end card says what to do in one verb** and keeps the address; add the day's four
    totals as now. Nothing else.
+
+Decisions for items 1-3 (2026-10-23), page only, the renderer and its contract unchanged:
+- Labels: a clip-only `PLAIN_LABELS` map beside `SLOT_LABELS` in broadcast.ts (the site's
+  own labels stay). The card header is "N/M · PLAIN LABEL" (N the card's place among the
+  chosen slots, M their count); the flight caption is the same header followed by " → " and
+  the place's short name; the header font and rule stay as they are.
+- Ledger card: header, then the place's short name as the one large line (Source Sans 3
+  600, the headline's size), then the ledger row in the totals' register (number over
+  label, as the foot's totals: ARTICLES, OUTLETS and the slot's third fact per
+  sentenceFacts: LANGUAGES, or OTHER COUNTRIES for `planet`; two facts for the slots whose
+  sentence states two), then the outlet's headline and credit. The fixed sentence leaves
+  the card (it stays on the site). fitCard shrinks the whole card as before.
+- Time-lapse progress: during the lapse only, a marker on the top edge rule walks the 24
+  hours of the day across the 25 ticks (left tick = the first snapshot, right tick = the
+  last; a filled white block one tick wide and the tick's height, on whole pixels), and the
+  article total stands at display size (the hook caption's size) under the clock with its
+  ARTICLES label, ticking with the interpolated totals; the foot row then shows the other
+  three totals (places, outlets, countries). The lapse window is measured with this block
+  on, and the hook and pull-back use that same window so no camera path moves. Poster
+  frames carry the block.
 
 Method: judge each item on a 540x960 still with the phone muted (the "mute test"), and on
 a 3-second flip through the frames (the "flip test": every frame must say what it is).

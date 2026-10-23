@@ -19,6 +19,19 @@ export const SLOT_LABELS: Record<SlotId, string> = {
   faint: 'Faint signal',
 };
 
+/**
+ * The slots in plain words, for the daily clip only (a stranger watching it muted has no key
+ * to the site's own labels above, which stay as they are on the site).
+ */
+export const PLAIN_LABELS: Record<SlotId, string> = {
+  loudest: 'Most covered story',
+  planet: 'Covered in the most countries',
+  rising: 'Fastest rising place',
+  brightest: 'The most positive story',
+  ordinary: 'A story of ordinary life',
+  faint: 'A quiet place in the news',
+};
+
 export interface SlotCell {
   id: string;
   name: string;

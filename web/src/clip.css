@@ -99,12 +99,25 @@ body {
   background: var(--w);
 }
 
+/* Time-lapse frames only: a filled white square on the top rule, a tick long on each side,
+   whose place between the first and the last tick is the share of the day elapsed (clip.ts
+   sets its left on a whole pixel). */
+.clip-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--tick-px);
+  height: var(--tick);
+  background: var(--w);
+}
+
 /* Text sits on black blocks so the dot grid never runs through a glyph. */
 .clip-wordmark,
 .clip-time,
+.clip-total,
 .clip-key,
 .clip-count,
-.clip-line,
+.clip-place,
 .clip-quote,
 .clip-cta {
   background: var(--k);
@@ -185,6 +198,33 @@ body {
   letter-spacing: 0.02em;
 }
 
+/* The timeline's time-lapse frames: the article total under the clock at the hook caption's
+   size, its label beside it in the totals' register, ticking with the interpolated totals. */
+.clip-total {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--u) * 2);
+  padding-right: calc(var(--u) * 1.4);
+  white-space: nowrap;
+}
+
+.clip-total b {
+  font-family: var(--c-hum);
+  font-size: calc(var(--u) * 7);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.clip-total span {
+  font-size: calc(var(--u) * 2.04);
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
 /* The reading key under the date: one fixed sentence in the prose voice, time-lapse
    layouts only (clip.ts shows it). */
 .clip-key {
@@ -202,14 +242,16 @@ body {
   display: inline-block;
 }
 
-/* Totals along the foot: number over label, four columns. */
+/* Totals along the foot: number over label, four columns (three in the timeline's
+   time-lapse, where the article total stands under the clock; clip.ts sets --cols). */
 .clip-counts {
+  --cols: 4;
   position: absolute;
   top: calc(var(--edge-bottom) + var(--tick) + var(--u) * 1.8);
   left: var(--m);
   right: var(--m);
   display: grid;
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: repeat(var(--cols), auto);
   justify-content: space-between;
   pointer-events: none;
   z-index: 2;
@@ -244,8 +286,9 @@ body {
 
 /* Cards (?signal= and ?end=1): text kept between --safe-top and --safe-bottom, the strips a
    9:16 short's platform UI covers, and clear of the right 15% in portrait. */
-/* Signal card: the slot as a column header, the fixed sentence, then the outlet's own
-   headline (the one bold line). */
+/* Signal card: the slot as a column header ("1/3 · MOST COVERED STORY"), the place's short
+   name as the one large line, the ledger row of the story's own counts, then the outlet's
+   own headline (the bold line) and its credit. */
 .clip-card {
   --fit: 1;
   position: absolute;
@@ -268,7 +311,8 @@ body {
   bottom: auto;
 }
 
-.clip-card--caption .clip-line,
+.clip-card--caption .clip-place,
+.clip-card--caption .clip-ledger,
 .clip-card--caption .clip-quote {
   display: none;
 }
@@ -287,17 +331,33 @@ body {
   text-transform: uppercase;
 }
 
-/* The fixed sentence reads as body text; the outlet's headline below is the bold line. */
-.clip-line {
+/* The place's short name: the card's one large line, at the headline's size. */
+.clip-place {
   margin: 0;
-  padding-right: calc(var(--u) * 1);
+  padding-right: calc(var(--u) * 1.2);
   font-family: var(--c-hum);
-  font-size: calc(var(--u) * 3.6 * var(--fit));
-  font-weight: 400;
-  line-height: 1.32;
-  font-variant-numeric: lining-nums tabular-nums;
-  text-wrap: pretty;
+  font-size: calc(var(--u) * 6 * var(--fit));
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
   overflow-wrap: anywhere;
+}
+
+/* The ledger row: the story's counts in the foot totals' register (number over label), two
+   or three columns at the left of the card. */
+.clip-ledger {
+  display: flex;
+  gap: calc(var(--u) * 5 * var(--fit));
+  margin-top: calc(var(--u) * 2.6 * var(--fit));
+}
+
+.clip-ledger .clip-count b {
+  font-size: calc(var(--u) * 3.6 * var(--fit));
+}
+
+.clip-ledger .clip-count span {
+  margin-top: calc(var(--u) * 1 * var(--fit));
+  font-size: calc(var(--u) * 2.04 * var(--fit));
 }
 
 .clip-quote {
