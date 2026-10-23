@@ -686,7 +686,7 @@ clip sections) and the renderer (render/src/clip.mjs, lib.mjs, a new audio.mjs w
 clip.yml, README "Daily clip") run in parallel on the contract above; the orchestrator
 integrates against the dev server, then one CI run, and watches the mp4.
 
-### Clip v3 stage 2: silent-first (proposed 2026-10-23; items 1-3 decided the same day, in progress)
+### Clip v3 stage 2: silent-first (proposed 2026-10-23; items 1-3 shipped the same day, 1d8facc)
 
 Owner's direction after stage 1: park the audio/music work; make the clip extremely
 understandable with sound off (most social video is watched muted). The orchestrator's
@@ -737,6 +737,14 @@ Decisions for items 1-3 (2026-10-23), page only, the renderer and its contract u
   three totals (places, outlets, countries). The lapse window is measured with this block
   on, and the hook and pull-back use that same window so no camera path moves. Poster
   frames carry the block.
+
+**Status 2026-10-23 17:02 UTC: items 1-3 shipped (1d8facc).** CI run 39990813970: 990
+frames, 0 bad, `clip-2026-10-23.mp4` on the `clips` release. Built as decided except: the
+progress marker is a square one tick on a side (a 1px block read as another tick), the
+place line is title case ("Paris"), and ARTICLES sits beside the display-size figure on its
+baseline. The shared window puts the map top ~100px lower in the hook, pull-back and
+flights than before, and the card's window top jumps up on arrival (a one-step layout
+change at a cut). Items 4-6 open.
 
 Method: judge each item on a 540x960 still with the phone muted (the "mute test"), and on
 a 3-second flip through the frames (the "flip test": every frame must say what it is).
