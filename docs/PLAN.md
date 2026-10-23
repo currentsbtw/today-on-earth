@@ -686,6 +686,42 @@ clip sections) and the renderer (render/src/clip.mjs, lib.mjs, a new audio.mjs w
 clip.yml, README "Daily clip") run in parallel on the contract above; the orchestrator
 integrates against the dev server, then one CI run, and watches the mp4.
 
+### Clip v3 stage 2: silent-first (proposed 2026-10-23, not decided)
+
+Owner's direction after stage 1: park the audio/music work; make the clip extremely
+understandable with sound off (most social video is watched muted). The orchestrator's
+proposal, ordered by impact, each item small enough to judge from a still:
+
+1. **Plain words for the slots, and a step count.** "Loudest signal" is house jargon to a
+   stranger. On the clip the slot header reads in plain words with its place in the run:
+   "1/3 · MOST COVERED STORY", "2/3 · COVERED IN THE MOST COUNTRIES", "3/3 · THE MOST
+   POSITIVE STORY" (rising: "FASTEST RISING PLACE"; ordinary: "A STORY OF ORDINARY LIFE";
+   faint: "A QUIET PLACE IN THE NEWS"). The site's own labels can stay as they are or follow;
+   owner's call. The flight caption names the destination before arrival: "1/3 · MOST
+   COVERED STORY → PARIS", so the viewer knows where the camera is going and why.
+2. **Numbers as a ledger row, not prose.** On the card the fixed sentence becomes (or gains
+   above it) a row of three figures in the totals' register: 456 ARTICLES · 339 OUTLETS ·
+   35 LANGUAGES (the slot's own facts from sentenceFacts), with the place name large under
+   the header: PARIS. A muted viewer scans figures in under a second; a sentence takes three.
+   The voice rule holds: numbers, the outlet's own headline, nothing written about the story.
+3. **The time-lapse shows its own progress.** The edge rule already carries 25 ticks: during
+   the lapse a marker on the top rule walks the 24 hours (one tick an hour), and the article
+   total ticks up at display size beside the clock, so the seven seconds read as "a day
+   passing and the count growing" rather than as dots flickering. The key stays.
+4. **Stepped reveals in the hook.** Line 1 ("278,481 articles in 24 hours.") paints at 0 s,
+   the key sentence at about 0.7 s, the place tag with the callout at about 1.2 s: three
+   states, no easing (the Stepped-Motion rule), each directing the eye to the next thing.
+5. **The coverage stack reshaped for scanning.** The earlier stage 2 idea (three or four
+   extra headlines per card) is too much reading in 5 s with no sound. Instead one line of
+   who else covered it: "ALSO: LE MONDE · BBC · NHK · +336 OUTLETS" (top outlets from the
+   cell file, names as domains or short names, never logos), painted 1.5 s after the card.
+6. **The end card says what to do in one verb** and keeps the address; add the day's four
+   totals as now. Nothing else.
+
+Method: judge each item on a 540x960 still with the phone muted (the "mute test"), and on
+a 3-second flip through the frames (the "flip test": every frame must say what it is).
+Out of scope for this stage: sound, narration, imagery. Rights rules unchanged.
+
 ## Visual redesign: Datamatics Field (shipped 2026-10-21)
 
 The web app's visual world was replaced on 2026-10-21 through the Impeccable workflow:
