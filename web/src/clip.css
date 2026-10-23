@@ -313,7 +313,7 @@ body {
 .clip-headline {
   margin: 0;
   font-family: var(--c-hum);
-  font-size: calc(var(--u) * 5 * var(--fit));
+  font-size: calc(var(--u) * 6 * var(--fit));
   font-weight: 600;
   line-height: 1.14;
   letter-spacing: -0.01em;
@@ -332,6 +332,59 @@ body {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   overflow-wrap: anywhere;
+}
+
+/* Hook (timeline mode's opening frames and its pull-back): one caption block in the prose
+   voice inside the window, 2.4u above its lower rule (so inside the bottom safe strip, and
+   clear of the platform UI's right 15% in portrait): the live article count at 7u over the
+   reading key's first sentence at the key's size, each on its own black block. */
+.clip-hook {
+  position: absolute;
+  left: var(--m);
+  right: var(--m);
+  bottom: calc(100% - var(--edge-bottom) + var(--u) * 2.4);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.clip--portrait .clip-hook {
+  right: calc(var(--u) * 15);
+}
+
+.clip-hook-lead,
+.clip-hook-key {
+  margin: 0;
+  font-family: var(--c-hum);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* The count wraps; each of its lines gets its own black block, so the block hugs the words. */
+.clip-hook-lead span,
+.clip-hook-key {
+  padding-right: calc(var(--u) * 1.2);
+  background: var(--k);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.clip-hook-key {
+  width: fit-content;
+}
+
+.clip-hook-lead {
+  font-size: calc(var(--u) * 7);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.clip-hook-key {
+  margin-top: calc(var(--u) * 2.4);
+  font-size: calc(var(--u) * 3);
+  font-weight: 400;
+  line-height: 1.3;
+  text-wrap: pretty;
 }
 
 /* End card: no map. The whole frame is the dotted ground; the date stays at the top, the

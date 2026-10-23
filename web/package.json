@@ -8,7 +8,8 @@
     "dev": "vite --port 5173 --host",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host",
-    "fixtures": "node scripts/make-fixtures.mjs"
+    "fixtures": "node scripts/make-fixtures.mjs",
+    "test": "node --test test/*.test.ts"
   },
   "dependencies": {
     "h3-js": "^4.5.0",

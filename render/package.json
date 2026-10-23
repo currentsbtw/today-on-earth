@@ -2,7 +2,7 @@
   "name": "today-on-earth-render",
   "version": "0.1.0",
   "private": true,
-  "description": "Renders the daily time-lapse clip from the live site's replay history (clip.html) with a system Chrome/Edge and ffmpeg",
+  "description": "Renders the daily vertical clip by stepping the live site's clip.html timeline in a system Chrome/Edge, with a generated soundtrack, and encodes it with ffmpeg",
   "type": "module",
   "engines": {
     "node": ">=24"

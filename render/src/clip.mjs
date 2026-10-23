@@ -1,60 +1,27 @@
-// Daily time-lapse clip: one screenshot per replay frame of the live site's clip.html, then
-// one card per filled broadcast slot and an end card (clip.html?end=1), encoded to an H.264
-// mp4 with ffmpeg. Each card is flown into: clip.html?signal=<id>&from=<ref>&fly=<F> is
-// loaded once and stepped in-page (window.__clipStep(i), one screenshot per step i = 1..F,
-// the last step being the card), starting from the last time-lapse frame's camera
-// (from=t:<stamp>) or the previous card's (from=s:<slot>). `--fly 0` cuts to each card
-// (clip.html?signal=<id>) as v1 did.
+// Daily vertical clip (v3): loads the live site's clip.html once in timeline mode
+// (clip.html?timeline=1&w&h&fps&hook&fly&lapse&card&end&slots&max), reads the page's plan
+// (window.__clipPlan(): frames, the clip's date, the poster frame, the time-lapse's hour
+// marks and the segments hook, pull-back, time-lapse, flight + card per signal, end), then
+// steps it frame by frame (window.__clipStep(i), one screenshot per frame), builds the
+// soundtrack from the plan (audio.mjs; or `--music <file>`, or `--music none`) and encodes an
+// H.264 + AAC mp4 with ffmpeg, the last frame held `--hold` seconds.
 //
-//   npm run clip -- --site <base url> --out <dir> --w 1080 --h 1920 --fps 8 --card 3 --end 3 --hold 1 --fly 1.5
+//   npm run clip -- --site <base url> --out <dir> --w 1080 --h 1920 --fps 30 --hook 2 --fly 1.5 --lapse 7 --card 5 --end 3 --hold 1 --slots 3 --music generated
 //
-// Uses a system browser through playwright-core (no browser download): Chrome on Linux
-// (GitHub's ubuntu runners ship it), Edge on Windows. `--channel` overrides.
+// A step that fails is retried once; a frame that fails twice is replaced by the previous
+// one, and more than 10% of such frames fail the clip. Uses a system browser through
+// playwright-core (no browser download): Chrome on Linux (GitHub's ubuntu runners ship it),
+// Edge on Windows. `--channel` overrides.
 import { spawnSync } from "node:child_process";
-import { copyFile, mkdir, rename, rm } from "node:fs/promises";
+import { access, copyFile, mkdir, rm, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { chromium } from "playwright-core";
-import {
-  availableSlots,
-  captureCards,
-  cardMoves,
-  captureFrames,
-  clipDate,
-  endUrl,
-  ffmpegArgs,
-  frameName,
-  frameUrl,
-  MAX_BAD_SHARE,
-  maxCellN,
-  parseArgs,
-  planCards,
-  signalUrl,
-  stillListed,
-} from "./lib.mjs";
+import { audioEvents, renderWav, SAMPLE_RATE } from "./audio.mjs";
+import { captureTimeline, checkPlan, describeSegments, ffmpegArgs, frameName, maxCellN, parseArgs, timelineUrl } from "./lib.mjs";
 
 const READY_TIMEOUT_MS = 60_000;
+const STEP_TIMEOUT_MS = 30_000;
 const log = (msg) => process.stderr.write(`${msg}\n`);
-
-async function fetchIndex(site) {
-  const url = `${site}/data/history/index.json`;
-  const res = await fetch(url, { signal: AbortSignal.timeout(60_000) });
-  if (!res.ok) throw new Error(`GET ${url}: HTTP ${res.status}`);
-  const index = await res.json();
-  if (!index || !Array.isArray(index.frames) || index.frames.length === 0) throw new Error(`${url} has no frames`);
-  return index.frames.map((f) => f.at).filter((at) => typeof at === "string" && /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$/.test(at));
-}
-
-/** `ats` without the frames a deploy since the start has dropped from the index; unchanged if the re-read fails. */
-async function refreshFrames(site, ats) {
-  try {
-    const kept = stillListed(ats, await fetchIndex(site));
-    if (kept.length < ats.length) log(`clip: ${ats.length - kept.length} frame(s) left the index since the start (a snapshot deploy landed); shooting ${kept.length}`);
-    return kept;
-  } catch (err) {
-    log(`clip: could not re-read the index (${err.message}); shooting all ${ats.length} frames`);
-    return ats;
-  }
-}
 
 async function fetchMaxN(site) {
   const url = `${site}/data/heat.json`;
@@ -63,40 +30,27 @@ async function fetchMaxN(site) {
   return maxCellN(await res.json());
 }
 
-/** Filled broadcast slot ids, or none (logged) when broadcast.json is missing or unreadable. */
-async function fetchSlots(site) {
-  const url = `${site}/data/broadcast.json`;
-  try {
-    const res = await fetch(url, { signal: AbortSignal.timeout(60_000) });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return availableSlots(await res.json());
-  } catch (err) {
-    log(`clip: no broadcast cards (${url}: ${err.message})`);
-    return [];
-  }
-}
-
-/** Navigate and wait until the page says the frame is drawn. Throws on timeout or a page-reported error. */
-async function loadFrame(page, opts, at, max) {
-  if (opts.page === "index") {
-    // Development stand-in for clip.html: the scrubber exists once the history is loaded.
-    const url = frameUrl(opts, at, max);
-    const res = await page.goto(url, { waitUntil: "load", timeout: READY_TIMEOUT_MS });
-    if (res && res.status() >= 400) throw new Error(`${url} returned HTTP ${res.status()}`);
-    await page.waitForSelector("input[type=range]", { timeout: READY_TIMEOUT_MS });
-    await page.waitForTimeout(1500);
-    return;
-  }
-  await loadClipPage(page, frameUrl(opts, at, max));
-}
-
-/** Open one clip.html URL and wait for data-ready; a page-reported data-error throws. */
-async function loadClipPage(page, url) {
+/** Open the timeline URL and wait for data-ready; a page-reported data-error throws. */
+async function loadTimeline(page, url) {
   const res = await page.goto(url, { waitUntil: "load", timeout: READY_TIMEOUT_MS });
   if (res && res.status() >= 400) throw new Error(`${url} returned HTTP ${res.status()}`);
   await page.waitForSelector('body[data-ready="1"]', { state: "attached", timeout: READY_TIMEOUT_MS });
   const error = await page.evaluate(() => document.body.dataset.error ?? "");
   if (error) throw new Error(`clip.html reported: ${error}`);
+}
+
+/** Draw frame i in the page; throws unless __clipStep resolves true within the timeout. */
+async function stepFrame(page, i) {
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`step timed out after ${STEP_TIMEOUT_MS / 1000}s`)), STEP_TIMEOUT_MS);
+  });
+  try {
+    const done = await Promise.race([page.evaluate((n) => window.__clipStep(n), i), timeout]);
+    if (done !== true) throw new Error(`__clipStep(${i}) returned ${JSON.stringify(done)}`);
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 function findFfmpeg() {
@@ -108,18 +62,24 @@ async function main() {
   const opts = parseArgs(process.argv.slice(2));
   const outDir = resolve(opts.out);
   const framesDir = join(outDir, "frames");
-  // Cards are shot first (see below) into their own directory, then moved after the frames.
-  const cardsDir = join(outDir, "cards");
+  const posterPath = join(outDir, "poster.jpg");
+  const wavPath = join(outDir, "audio.wav");
+  let music = null;
+  if (opts.music !== "generated" && opts.music !== "none") {
+    music = resolve(opts.music);
+    await access(music).catch(() => {
+      throw new Error(`--music file not found: ${music}`);
+    });
+  }
   await rm(framesDir, { recursive: true, force: true });
-  await rm(cardsDir, { recursive: true, force: true });
+  await rm(posterPath, { force: true });
+  // A previous run's soundtrack, unless it is the --music file itself.
+  if (music?.toLowerCase() !== wavPath.toLowerCase()) await rm(wavPath, { force: true });
   await mkdir(framesDir, { recursive: true });
-  await mkdir(cardsDir, { recursive: true });
 
-  let ats = await fetchIndex(opts.site);
   const max = await fetchMaxN(opts.site);
-  // The index.html stand-in has no card modes.
-  const slots = opts.page === "clip" ? await fetchSlots(opts.site) : [];
-  log(`clip: ${ats.length} frames from ${opts.site} (${opts.page === "clip" ? "clip.html" : "index.html stand-in"}), ${opts.w}x${opts.h}, heat max ${max}, browser channel ${opts.channel}`);
+  const url = timelineUrl(opts, max);
+  log(`clip: ${url}, heat max ${max}, browser channel ${opts.channel}`);
 
   const browser = await chromium.launch({
     channel: opts.channel,
@@ -128,75 +88,60 @@ async function main() {
     args: process.platform === "linux" ? ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"] : [],
   });
   const started = Date.now();
+  let plan;
   let result;
-  let cardResult = { written: 0, cards: 0, skipped: 0 };
   try {
     const context = await browser.newContext({ viewport: { width: opts.w, height: opts.h }, deviceScaleFactor: 1, colorScheme: "dark" });
     const page = await context.newPage();
-    const png = (n) => join(framesDir, frameName(n));
-    const cardPng = (n) => join(cardsDir, frameName(n));
-    // Cards first: they read the live broadcast.json and heat.json, so shooting them before
-    // the minutes of time-lapse frames keeps them on the snapshot the clip was planned from
-    // (a deploy landing mid-clip could otherwise empty a slot or change its numbers).
-    if (opts.page === "clip") {
-      const plan = planCards({ timelapse: ats.length, slots, fps: opts.fps, card: opts.card, end: opts.end, hold: opts.hold, fly: opts.fly, lastAt: ats.at(-1) });
-      const flyFrames = plan.steps.find((s) => s.kind === "signal")?.fly ?? 0;
-      log(`clip: ${slots.length} signal card(s) ${slots.length ? `(${slots.join(", ")}) ` : ""}${flyFrames ? `flown into over ${flyFrames} frames each ` : ""}and ${opts.end > 0 ? "an" : "no"} end card, captured first`);
-      cardResult = await captureCards(plan.steps, 0, {
-        load: (step) => loadClipPage(page, step.kind === "end" ? endUrl(opts, max) : signalUrl(opts, step.id, max, step.fly > 0 ? step : null)),
-        // A step resolves true once drawn and rejects on failure (which retries the whole card).
-        step: async (i) => {
-          const done = await page.evaluate((n) => window.__clipStep(n), i);
-          if (done !== true) throw new Error(`flight step ${i} did not finish`);
-        },
-        shoot: (n) => page.screenshot({ path: cardPng(n), type: "png" }),
-        repeat: (from, to) => copyFile(cardPng(from), cardPng(to)),
-        log,
-      });
+    try {
+      await loadTimeline(page, url);
+    } catch (err) {
+      log(`clip: page load failed (${err.message}); retrying once`);
+      await loadTimeline(page, url);
     }
-    // The cards took about 40 s; drop any frame a deploy has since retired.
-    ats = await refreshFrames(opts.site, ats);
-    result = await captureFrames(ats, {
-      load: (at) => loadFrame(page, opts, at, max),
+    plan = checkPlan(await page.evaluate(() => window.__clipPlan()), opts.fps);
+    log(`clip: plan for ${plan.date}: ${plan.frames} frames at ${plan.fps} fps (${(plan.frames / plan.fps).toFixed(1)}s + ${opts.hold}s hold), time-lapse ${plan.lapse.from} to ${plan.lapse.to} over ${plan.lapse.snapshots} snapshots, ${plan.hourMarks.length} hour marks, poster at frame ${plan.poster}`);
+    log(`clip: segments ${describeSegments(plan.segments)}`);
+    const png = (n) => join(framesDir, frameName(n));
+    result = await captureTimeline(plan, {
+      step: (i) => stepFrame(page, i),
       shoot: (n) => page.screenshot({ path: png(n), type: "png" }),
       repeat: (from, to) => copyFile(png(from), png(to)),
+      poster: () => page.screenshot({ path: posterPath, type: "jpeg", quality: 90 }),
       log,
     });
-    if (result.written > 0) {
-      // Poster: the last good frame as JPEG (needs no ffmpeg). Re-open it if the page has
-      // since moved on to a frame that failed.
-      if (result.lastGood !== ats.at(-1)) await loadFrame(page, opts, result.lastGood, max);
-      await page.screenshot({ path: join(outDir, "poster.jpg"), type: "jpeg", quality: 90 });
-    }
-    // The output order stays frames, cards, end card: the cards follow the frames actually
-    // written (a bad first frame is skipped, so that can be fewer than ats.length).
-    if (result.written > 0) {
-      for (const [from, to] of cardMoves(cardResult.written, result.written)) await rename(cardPng(from), png(to));
-    }
     await context.close();
   } finally {
     await browser.close();
   }
-  await rm(cardsDir, { recursive: true, force: true });
-  const { written, bad } = result;
-  log(`clip: ${written} frames written, ${bad} of ${ats.length} bad, in ${((Date.now() - started) / 1000).toFixed(1)}s`);
-  if (cardResult.cards || cardResult.skipped) log(`clip: ${cardResult.cards} card(s) placed after the frames (${cardResult.written} frames), ${cardResult.skipped} skipped`);
-  const total = written + (written > 0 ? cardResult.written : 0);
-  if (written === 0 || bad > MAX_BAD_SHARE * ats.length) {
-    throw new Error(`${bad} of ${ats.length} frames failed (more than ${MAX_BAD_SHARE * 100}% allowed); not encoding`);
-  }
+  const { written, bad, posterAt } = result;
+  log(`clip: ${written} frames written, ${bad} of ${plan.frames} bad, in ${((Date.now() - started) / 1000).toFixed(1)}s`);
+  if (written === 0) throw new Error("no frames were written; not encoding");
+  if (posterAt < 0) throw new Error(`no good frame at or after the poster frame ${plan.poster}; not encoding`);
 
-  const output = join(outDir, `clip-${clipDate(ats)}.mp4`);
+  const seconds = written / plan.fps + opts.hold;
+  let audio = { kind: "none" };
+  if (music) {
+    audio = { kind: "music", path: music };
+  } else if (opts.music === "generated") {
+    const events = audioEvents(plan, opts.hold);
+    await writeFile(wavPath, renderWav(events, plan.frames / plan.fps + opts.hold, SAMPLE_RATE));
+    audio = { kind: "wav", path: wavPath };
+    log(`clip: wrote ${wavPath} (${events.length} sounds, ${(plan.frames / plan.fps + opts.hold).toFixed(2)}s)`);
+  }
+  const audioName = audio.kind === "none" ? "no audio" : audio.kind === "wav" ? "generated soundtrack" : `music ${music}`;
+
+  const output = join(outDir, `clip-${plan.date}.mp4`);
+  const args = ffmpegArgs({ framesPattern: join(framesDir, "%04d.png"), fps: plan.fps, hold: opts.hold, output, seconds, audio });
   const ffmpeg = findFfmpeg();
   if (!ffmpeg) {
-    log("clip: ffmpeg not found on PATH; skipped the encode (frames and poster.jpg are written)");
+    log(`clip: ffmpeg not found on PATH; skipped the encode (${audio.kind === "wav" ? "frames, poster.jpg and audio.wav" : "frames and poster.jpg"} are written). It would run: ffmpeg ${args.join(" ")}`);
     return 0;
   }
-  const args = ffmpegArgs({ framesPattern: join(framesDir, "%04d.png"), fps: opts.fps, hold: opts.hold, output });
   const t0 = Date.now();
   const run = spawnSync(ffmpeg, args, { stdio: ["ignore", "inherit", "inherit"] });
   if (run.status !== 0) throw new Error(`ffmpeg exited with ${run.status}`);
-  log(`clip: wrote ${output} in ${((Date.now() - t0) / 1000).toFixed(1)}s (${total} frames at ${opts.fps} fps + ${opts.hold}s hold, ${(total / opts.fps + opts.hold).toFixed(1)}s)`);
+  log(`clip: wrote ${output} in ${((Date.now() - t0) / 1000).toFixed(1)}s (${written} frames at ${plan.fps} fps + ${opts.hold}s hold, ${seconds.toFixed(1)}s, ${audioName})`);
   return 0;
 }
 

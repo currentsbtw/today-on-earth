@@ -1,11 +1,39 @@
-// clip.html: one still frame of the map for a headless time-lapse renderer. No header,
-// panel or controls. Three modes, all drawn at a fixed size and reporting readiness the
-// same way:
+// clip.html: the daily clip's frames, drawn at a fixed size for a headless renderer. No header,
+// panel or controls. The renderer drives the timeline mode; the other modes are single stills
+// kept for debugging. Every mode reports readiness the same way (body[data-ready="1"], plus
+// data-error="<reason>" on failure).
+//   ?timeline=1&fps=30&hook=2&fly=1.5&lapse=7&card=5&end=3&slots=3   the whole clip as one
+//                    timeline (values are the defaults; fps an integer 1..60, seconds 0..30,
+//                    slots an integer 0..6, a flight at most 60 frames, else data-error). One
+//                    map for the whole clip; window.__clipPlan() returns the plan
+//                    { fps, frames, date, lapse: { from, to, snapshots }, poster, hourMarks,
+//                    segments: [{ kind, slot?, start, frames }] } (web/src/timeline.ts), and
+//                    window.__clipStep(i) draws frame i, resolving true once the map is idle
+//                    and the fonts are ready (rejecting on failure or after 20 s). Each step
+//                    sets the whole state of its frame, so a retry redraws the same frame.
+//                    Frame 0 is drawn at ready. The segments, in order:
+//                      hook      the camera on the first chosen slot's cell at the card zoom
+//                                with its callout, the wordmark and date, and one caption: the
+//                                live article count "in 24 hours" over the reading key;
+//                      pullback  a flyTo-style flight from there to the time-lapse camera at
+//                                the first snapshot's time, the caption still up, the dots
+//                                running back from the live snapshot to the first (its last
+//                                frame is the first time-lapse frame's camera and dots);
+//                      lapse     the day's snapshots on a virtual clock running linearly from
+//                                the first to the last; each cell's n and the totals
+//                                interpolate between the two snapshots around it, and portrait
+//                                frames centre local noon at that time;
+//                      flight    per chosen slot (the first `slots` filled slots in file
+//                                order): a flight from the previous camera captioned with the
+//                                slot label,
+//                      card      then the slot's card held;
+//                      end       the end card.
 //   ?t=<stamp>       the heat of one replay frame, a wordmark, the frame's date and time, a
-//                    fixed line saying what a dot and its size mean, and its counts. Landscape frames fit the whole world. Portrait frames fill
-//                    the map window's height with the world (about 60% of its width in view)
-//                    and centre the longitude of local noon at the frame's time, so the camera
-//                    turns once westward over the day;
+//                    fixed line saying what a dot and its size mean, and its counts. Landscape
+//                    frames fit the whole world. Portrait frames fill the map window's height
+//                    with the world (about 60% of its width in view) and centre the longitude
+//                    of local noon at the frame's time, so the camera turns once westward over
+//                    the day;
 //   ?signal=<slot>   one broadcast slot: the map at the slot's cell with the live heat, the
 //                    cell's outline, reticle and name tag, the slot label, its fixed
 //                    sentence and the outlet's own headline. With `from=<ref>&fly=<F>` the
@@ -13,16 +41,17 @@
 //                    time-lapse layout at the `from` camera, captioned with the slot label)
 //                    and window.__clipStep(i) moves it to step i of F; step F is the card;
 //   ?end=1           the logo lockup, the site address and the live snapshot's totals.
-// Nothing animates: the renderer captures stills, and the camera moves only between them.
-// The look (Datamatics Field) lives in clip.css: black text bands with the dot grid above
-// and below a tick-edged map window.
+// Nothing animates inside a frame: the renderer captures stills, and the camera, the dots and
+// the clock move only between them. The look (Datamatics Field) lives in clip.css: black text
+// bands with the dot grid above and below a tick-edged map window.
 import './clip.css';
-import type { GeoJSONSource, Map as MapLibreMap } from 'maplibre-gl';
+import type { FilterSpecification, GeoJSONSource, Map as MapLibreMap } from 'maplibre-gl';
 import { loadBroadcast, signalLine, SLOT_IDS, SLOT_LABELS, type Broadcast, type Slot, type SlotId } from './broadcast';
 import { loadFrame, loadHeat, loadHistoryIndex, siteUrl, type FrameRow, type Heat, type HistoryFrame, type Totals } from './data';
 import { flightPath, wrapLon } from './flight';
 import { count, shortName, stampOf, utcTime } from './format';
 import { createClipMap, EMPTY, FILL_LAT, fillHeightZoom, fitWorldZoom, latOf, mercY, TILE, type ClipCamera, type MapCell } from './map';
+import { bracket, buildPlan, framesFor, interpolateCells, interpolateTotals, lapseTime, pullbackFraction, readTimelineParams, segmentAt, type ClipPlan } from './timeline';
 
 const params = new URLSearchParams(location.search);
 const size = (value: string | null, fallback: number) => {
@@ -71,7 +100,9 @@ function setEdges({ top, bottom }: Window) {
   root.style.setProperty('--edge-top', `${Math.round(top)}px`);
   root.style.setProperty('--edge-bottom', `${Math.round(bottom)}px`);
 }
-setEdges({ top: topBand, bottom: H - bottomBand });
+/** The reserved bands' window, where every page starts (and the end card's dot grid lines up). */
+const bandWindow: Window = { top: topBand, bottom: H - bottomBand };
+setEdges(bandWindow);
 /** The tick length clip.css resolves for --tick. */
 const tickLength = () => el('clip-edge-top').offsetHeight;
 /** Map padding that centres the camera in a window spanning the full width. */
@@ -80,13 +111,19 @@ const paddingOf = (w: Window) => ({ top: w.top, bottom: H - w.bottom, left: 0, r
 const dateFormat = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' });
 const el = (id: string) => document.getElementById(id)!;
 
+/** The clip map, with the callout tag's type scaled with the frame (2.04u: 22 px at 1080 wide). */
+const clipMap = (padding: ReturnType<typeof paddingOf>, view?: ClipCamera, wrap = false) =>
+  createClipMap(el('clip-map'), padding, view, { wrap, tagSize: Math.round(unit * 2.04 * 100) / 100 });
+
 let marked = false;
 /** Put the pixel mark on whole device pixels (a fractional offset blurs its pixel rows). */
 function snapMark() {
   const mark = el('clip-mark');
+  const wordmark = mark.parentElement!;
+  wordmark.style.left = '';
+  wordmark.style.top = '';
   const r = mark.getBoundingClientRect();
   if (!r.width) return;
-  const wordmark = mark.parentElement!;
   wordmark.style.position = 'relative';
   wordmark.style.left = `${Math.round(r.left) - r.left}px`;
   wordmark.style.top = `${Math.round(r.top) - r.top}px`;
@@ -102,10 +139,12 @@ function markReady(error?: string) {
   document.body.dataset.ready = '1';
 }
 
-/** "WED 21 OCT 2026  19:30 UTC" (uppercased by CSS). */
-function setTime(at: string) {
+/** "WED 21 OCT 2026  19:30 UTC" (uppercased by CSS); `clock` false leaves the date alone. */
+function setTime(at: string, clock = true) {
   const date = dateFormat.format(new Date(at)).replace(/,/g, '');
-  el('clip-time').replaceChildren(Object.assign(document.createElement('span'), { textContent: date }), Object.assign(document.createElement('b'), { textContent: utcTime(at) }));
+  const parts: HTMLElement[] = [Object.assign(document.createElement('span'), { textContent: date })];
+  if (clock) parts.push(Object.assign(document.createElement('b'), { textContent: utcTime(at) }));
+  el('clip-time').replaceChildren(...parts);
 }
 
 /**
@@ -165,6 +204,15 @@ function heatMax(heat: Heat): number {
 
 const idle = (map: MapLibreMap) => new Promise<void>((resolve) => map.once('idle', () => resolve()));
 
+/** Wait for a stepped frame to be drawn: fonts ready and the map idle, failing after 20 s. */
+async function settle(map: MapLibreMap) {
+  await document.fonts.ready;
+  const done = idle(map);
+  map.triggerRepaint();
+  let timer = 0;
+  await Promise.race([done, new Promise<never>((_, reject) => (timer = window.setTimeout(() => reject(new Error('step timeout')), 20_000)))]).finally(() => window.clearTimeout(timer));
+}
+
 /** Lay the text out with its fonts loaded (reading a size forces the layout that starts their loads). */
 async function fontsLaidOut() {
   void root.offsetHeight;
@@ -207,6 +255,12 @@ function noonLon(at: string) {
 const timelapseView = (at: string, w: Window): ClipCamera | undefined =>
   portrait ? { center: [noonLon(at), FILL_LAT], zoom: fillHeightZoom(w.bottom - w.top) } : undefined;
 
+/** The lowest zoom a flight may take: the time-lapse's own view of the world. */
+function flightFloor(timelapse: Window) {
+  const height = timelapse.bottom - timelapse.top;
+  return portrait ? fillHeightZoom(height) : fitWorldZoom(W, height);
+}
+
 /** What a ?t frame shows: its time, totals and, unless it is the live snapshot, its own rows. */
 async function frameInfo(t: string, heat: Heat, frames: HistoryFrame[], rowsToo: boolean) {
   const frame = frames.find((f) => stampOf(f.at) === t);
@@ -218,6 +272,9 @@ async function frameInfo(t: string, heat: Heat, frames: HistoryFrame[], rowsToo:
   return { at: heat.generatedAt, totals: heat.totals, rows: null as FrameRow[] | null };
 }
 
+/** A replay frame's rows as map cells, named from the live snapshot where it knows the place. */
+const rowCells = (rows: FrameRow[], names: Map<string, string>): MapCell[] => rows.map(([id, lat, lon, n]) => ({ id, lat, lon, n, name: names.get(id) ?? '' }));
+
 async function renderFrame() {
   const [heat, frames] = await Promise.all([loadHeat(), loadHistoryIndex().catch(() => [])]);
   let at = heat.generatedAt;
@@ -227,11 +284,8 @@ async function renderFrame() {
   const t = params.get('t');
   if (t) ({ at, totals, rows } = await frameInfo(t, heat, frames, true));
 
-  const live = new Map(heat.cells.map((c) => [c.id, c]));
   const maxN = heatMax(heat);
-  const cells: MapCell[] = rows
-    ? rows.map(([id, lat, lon, n]) => ({ id, lat, lon, n, name: live.get(id)?.name ?? '' }))
-    : heat.cells;
+  const cells: MapCell[] = rows ? rowCells(rows, new Map(heat.cells.map((c) => [c.id, c.name]))) : heat.cells;
 
   setTime(at);
   setCounts(totals);
@@ -240,7 +294,7 @@ async function renderFrame() {
   const w = timelapseWindow();
   setEdges(w);
 
-  const { map, setCells } = await createClipMap(el('clip-map'), paddingOf(w), timelapseView(at, w), { wrap: portrait });
+  const { map, setCells } = await clipMap(paddingOf(w), timelapseView(at, w), portrait);
   setCells(cells, maxN);
   await idle(map);
   await document.fonts.ready;
@@ -287,10 +341,34 @@ function cellTag(cell: NonNullable<Slot['cell']>, heat: Heat): GeoJSON.Feature {
   return { type: 'Feature', geometry: { type: 'Point', coordinates: [cell.lon, cell.lat] }, properties: { label } };
 }
 
-/** Light the cell's hexagon and its tag, or clear both (null). */
-function setCallout(map: MapLibreMap, callout: { outline: GeoJSON.Feature | null; tag: GeoJSON.Feature } | null) {
+type Callout = { id: string; outline: GeoJSON.Feature | null; tag: GeoJSON.Feature };
+
+/** A slot's callout: its cell's id, its hexagon (when it can be drawn) and its tag. */
+const slotCallout = async (slot: FilledSlot, heat: Heat): Promise<Callout> => ({ id: slot.cell.id, outline: await cellOutline(slot.cell.id).catch(() => null), tag: cellTag(slot.cell, heat) });
+
+/** The heat layers that name a place; the callout's tag replaces its own label there. */
+const HEAT_LABELS = ['cell-label-top', 'cell-label'];
+/** Each clip map's own filters on those layers, read before the callout first changes them. */
+const labelFilters = new WeakMap<MapLibreMap, Map<string, FilterSpecification | undefined>>();
+
+/**
+ * Light the cell's hexagon and its tag, or clear both (null). While the tag is on, the cell's
+ * own heat label is filtered out, so the place is named once.
+ */
+function setCallout(map: MapLibreMap, callout: Callout | null) {
   map.getSource<GeoJSONSource>('selected')?.setData(callout?.outline ?? EMPTY);
   map.getSource<GeoJSONSource>('selected-tag')?.setData(callout?.tag ?? EMPTY);
+  let base = labelFilters.get(map);
+  if (!base) {
+    base = new Map(HEAT_LABELS.map((id) => [id, (map.getFilter(id) ?? undefined) as FilterSpecification | undefined]));
+    labelFilters.set(map, base);
+  }
+  for (const [id, filter] of base) {
+    if (!map.getLayer(id)) continue;
+    const others: FilterSpecification | null = callout ? ['!=', ['get', 'id'], callout.id] : null;
+    const next = others && filter ? (['all', filter, others] as FilterSpecification) : (others ?? filter ?? null);
+    map.setFilter(id, next);
+  }
 }
 
 /** Shrink the card's type until it fits `maxHeight`; a headline still too long is clamped by CSS. */
@@ -301,31 +379,45 @@ function fitCard(card: HTMLElement, maxHeight: number) {
   }
 }
 
+type FilledSlot = Slot & Required<Pick<Slot, 'cell' | 'story'>>;
+
 /** A filled slot from the broadcast, or an error naming why it cannot be drawn. */
-function filledSlot(broadcast: Broadcast, id: string): Slot & Required<Pick<Slot, 'cell' | 'story'>> {
+function filledSlot(broadcast: Broadcast, id: string): FilledSlot {
   if (!(SLOT_IDS as readonly string[]).includes(id)) throw new Error(`unknown slot ${id}`);
   const slot = broadcast.slots.find((s) => s.id === id);
   if (!slot) throw new Error(`slot ${id} missing`);
   if (!slot.available || !slot.cell || !slot.story) throw new Error(`slot ${id} unavailable`);
-  return slot as Slot & Required<Pick<Slot, 'cell' | 'story'>>;
+  return slot as FilledSlot;
 }
 
-/**
- * Fill the card with one slot and lay it out: the map window it leaves (from under the top
- * text to above the card, at least 22% of the frame) and where its slot header sits.
- */
-async function layoutCard(slot: ReturnType<typeof filledSlot>): Promise<Window & { header: number }> {
+/** The card's window (from under the top text to above the card), its header's top and its type scale. */
+interface CardWindow extends Window {
+  header: number;
+  fit: string;
+}
+
+/** Put one slot's texts in the card (slot label, fixed sentence, headline, outlet) at type scale `fit`. */
+function fillCard(slot: FilledSlot, fit?: string) {
   const { story } = slot;
-  const card = el('clip-card');
   el('clip-slot').textContent = SLOT_LABELS[slot.id as SlotId];
   el('clip-line').textContent = signalLine(slot);
   const headline = el('clip-headline');
-  const quote = el('clip-quote');
-  quote.hidden = !story.headline;
+  el('clip-quote').hidden = !story.headline;
   headline.textContent = story.headline;
   headline.removeAttribute('lang');
   if (story.headlineLang) headline.lang = story.headlineLang;
   el('clip-outlet').textContent = story.headline ? story.headlineSource : '';
+  if (fit !== undefined) el('clip-card').style.setProperty('--fit', fit);
+}
+
+/**
+ * Fill the card with one slot and lay it out: the map window it leaves (from under the top
+ * text to above the card, at least 22% of the frame), where its slot header sits and the type
+ * scale it fitted.
+ */
+async function layoutCard(slot: FilledSlot): Promise<CardWindow> {
+  const card = el('clip-card');
+  fillCard(slot);
   card.classList.remove('clip-card--caption');
   card.hidden = false;
   // The card's window is measured without the key, which the card layout hides, so a flight's
@@ -339,7 +431,7 @@ async function layoutCard(slot: ReturnType<typeof filledSlot>): Promise<Window &
   const gap = Math.round(unit * 3.6 + tickLength());
   fitCard(card, H - safeBottom - top - gap - Math.round(H * 0.22));
   const header = H - safeBottom - card.offsetHeight;
-  return { top, bottom: header - gap, header };
+  return { top, bottom: header - gap, header, fit: card.style.getPropertyValue('--fit') };
 }
 
 /**
@@ -353,6 +445,94 @@ function arrivalCamera(timelapse: Window, card: Window, cell: { lon: number; lat
   return { center: [cell.lon, latOf(mercY(cell.lat) - dy / (TILE * 2 ** zoom))], zoom };
 }
 
+// The layouts. Each sets everything its frame shows, starting from baseLayout(), so the
+// timeline can draw any frame regardless of the one before it.
+
+/** Undo what any layout changed: classes, hidden blocks, the map's visibility, the totals' place. */
+function baseLayout() {
+  root.classList.remove('clip--card', 'clip--signal', 'clip--end');
+  el('clip-map').style.visibility = '';
+  el('clip-hook').hidden = true;
+  el('clip-end').hidden = true;
+  const card = el('clip-card');
+  card.hidden = true;
+  card.classList.remove('clip-card--caption');
+  const counts = el('clip-counts');
+  if (counts.parentElement !== root) root.insertBefore(counts, card);
+}
+
+/** The time-lapse layout: date and clock, reading key, totals, the time-lapse window. */
+function lapseLayout(at: string, totals: Totals, timelapse: Window) {
+  baseLayout();
+  setTime(at);
+  setCounts(totals);
+  showKey(true);
+  setEdges(timelapse);
+}
+
+/**
+ * A flight's layout: the time-lapse layout plus one caption, the card's slot header alone,
+ * where the card will put it; in portrait it is kept clear of the totals on the window's
+ * lower rule.
+ */
+function flightLayout(slot: FilledSlot, at: string, totals: Totals, timelapse: Window, card: CardWindow) {
+  lapseLayout(at, totals, timelapse);
+  const cardEl = el('clip-card');
+  fillCard(slot, card.fit);
+  cardEl.classList.add('clip-card--caption');
+  cardEl.hidden = false;
+  const counts = el('clip-counts').getBoundingClientRect();
+  const floor = portrait && counts.height ? counts.top : timelapse.bottom;
+  const header = el('clip-slot').offsetHeight;
+  cardEl.style.setProperty('--caption-top', `${Math.min(card.header, Math.round(floor - unit * 2.4 - header))}px`);
+}
+
+/** A slot's card: date and clock, no key or totals, the window ending above the card. */
+function cardLayout(slot: FilledSlot, at: string, card: CardWindow) {
+  baseLayout();
+  root.classList.add('clip--card', 'clip--signal');
+  setTime(at);
+  setCounts(null);
+  showKey(false);
+  setEdges(card);
+  fillCard(slot, card.fit);
+  el('clip-card').hidden = false;
+}
+
+/** The hook: the date without the clock, no key or totals, and the caption block. */
+function hookLayout(at: string, articles: number, timelapse: Window) {
+  baseLayout();
+  setTime(at, false);
+  setCounts(null);
+  showKey(false);
+  setEdges(timelapse);
+  el('clip-hook-lead').replaceChildren(Object.assign(document.createElement('span'), { textContent: `${count(articles)} articles in 24 hours.` }));
+  el('clip-hook').hidden = false;
+}
+
+/** The end card: no map; the lockup, the address and the live totals. */
+async function endLayout(heat: Heat) {
+  baseLayout();
+  root.classList.add('clip--card', 'clip--end');
+  el('clip-map').style.visibility = 'hidden';
+  setEdges(bandWindow);
+  setTime(heat.generatedAt);
+  setCounts(heat.totals, true);
+  showKey(false);
+  el('clip-end-text').prepend(el('clip-counts'));
+  el('clip-end').hidden = false;
+  // The lockup takes the centre of the dotted ground.
+  await document.fonts.ready;
+  fitWidth(el('clip-cta'));
+  // Flex centring can land the lockup on a half pixel, which blurs its pixel rows; the block
+  // centres its content, so padding it by twice the remainder moves the lockup down by it.
+  const block = document.querySelector<HTMLElement>('.clip-lockup-block')!;
+  block.style.paddingTop = '';
+  const lockupTop = el('clip-lockup').getBoundingClientRect().top;
+  const nudge = Math.ceil(lockupTop) - lockupTop;
+  if (nudge > 0.001) block.style.paddingTop = `${2 * nudge}px`;
+}
+
 /** The card drawn directly (a cut, no flight): the map padded to the card's window. */
 async function renderSignal(id: string) {
   const [heat, broadcast] = await Promise.all([loadHeat(), loadBroadcast()]);
@@ -364,11 +544,11 @@ async function renderSignal(id: string) {
   // Lay the text out before the map so the cell can be centred in the window left between
   // the wordmark's band and the card's band.
   const w = await layoutCard(slot);
-  setEdges(w);
+  cardLayout(slot, broadcast.generatedAt, w);
 
-  const { map, setCells } = await createClipMap(el('clip-map'), paddingOf(w), { center: [cell.lon, cell.lat], zoom: signalZoom() });
-  const [, outline] = await Promise.all([loadDetail(map), cellOutline(cell.id).catch(() => null)]);
-  setCallout(map, { outline, tag: cellTag(cell, heat) });
+  const { map, setCells } = await clipMap(paddingOf(w), { center: [cell.lon, cell.lat], zoom: signalZoom() });
+  const [, callout] = await Promise.all([loadDetail(map), slotCallout(slot, heat)]);
+  setCallout(map, callout);
   setCells(heat.cells, heatMax(heat));
   await idle(map);
   markReady();
@@ -381,6 +561,12 @@ function parseFrom(from: string): { kind: 't'; stamp: string } | { kind: 's'; id
   const s = /^s:([a-z]+)$/.exec(from);
   if (s && (SLOT_IDS as readonly string[]).includes(s[1])) return { kind: 's', id: s[1] };
   throw new Error(`bad from ${from}`);
+}
+
+/** The camera the map actually holds for `view` (after its world constraint); undefined fits the world. */
+function held(map: MapLibreMap, view: ClipCamera | undefined): ClipCamera {
+  map.jumpTo(view ?? { center: [10, 20], zoom: -2 });
+  return { center: map.getCenter().toArray() as [number, number], zoom: map.getZoom() };
 }
 
 /**
@@ -418,70 +604,35 @@ async function renderFlight(id: string, fromParam: string, flyParam: string) {
   }
   const card = await layoutCard(slot);
   const arrival = arrivalCamera(timelapse, card, slot.cell);
-  const outline = await cellOutline(slot.cell.id).catch(() => null);
-  const callout = { outline, tag: cellTag(slot.cell, heat) };
+  const callout = await slotCallout(slot, heat);
 
-  // The caption: the card's slot header alone, where the card will put it; in portrait it is
-  // kept clear of the totals on the window's lower rule.
-  const cardEl = el('clip-card');
-  const flightLayout = () => {
-    root.classList.remove('clip--card', 'clip--signal');
-    setTime(at);
-    setCounts(totals);
-    showKey(true);
-    setEdges(timelapse);
-    cardEl.classList.add('clip-card--caption');
-    const counts = el('clip-counts').getBoundingClientRect();
-    const floor = portrait && counts.height ? counts.top : timelapse.bottom;
-    const header = el('clip-slot').offsetHeight;
-    cardEl.style.setProperty('--caption-top', `${Math.min(card.header, Math.round(floor - unit * 2.4 - header))}px`);
-  };
-  const cardLayout = () => {
-    root.classList.add('clip--card', 'clip--signal');
-    setTime(broadcast.generatedAt);
-    setCounts(null);
-    showKey(false);
-    setEdges(card);
-    cardEl.classList.remove('clip-card--caption');
-  };
-  flightLayout();
+  flightLayout(slot, at, totals, timelapse, card);
 
-  const { map, setCells } = await createClipMap(el('clip-map'), paddingOf(timelapse), startView, { wrap: portrait });
+  const { map, setCells } = await clipMap(paddingOf(timelapse), startView, portrait);
   setCells(heat.cells, maxN);
 
   // The path runs between the cameras the map actually holds (after its world constraint).
-  const start: ClipCamera = { center: map.getCenter().toArray() as [number, number], zoom: map.getZoom() };
-  map.jumpTo(arrival);
-  const end: ClipCamera = { center: map.getCenter().toArray() as [number, number], zoom: map.getZoom() };
-  map.jumpTo(startView ?? { center: [10, 20], zoom: -2 });
+  const start = held(map, startView);
+  const end = held(map, arrival);
+  map.jumpTo(start);
   // Never zoom out past the time-lapse's own view of the world.
-  const height = timelapse.bottom - timelapse.top;
-  const minZoom = portrait ? fillHeightZoom(height) : fitWorldZoom(W, height);
-  const path = flightPath(start, end, fly, { width: W, height: H, minZoom, wrap: portrait });
+  const path = flightPath(start, end, fly, { width: W, height: H, minZoom: flightFloor(timelapse), wrap: portrait });
 
   // The finer outlines load once the camera is past zoom 3 (as on the live site) or on the card.
   let detail: Promise<void> | null = null;
   const ensureDetail = () => (detail ??= loadDetail(map));
   if (from.kind === 's') await ensureDetail();
 
-  const settle = async () => {
-    await document.fonts.ready;
-    const done = idle(map);
-    map.triggerRepaint();
-    let timer = 0;
-    await Promise.race([done, new Promise<never>((_, reject) => (timer = window.setTimeout(() => reject(new Error('step timeout')), 20_000)))]).finally(() => window.clearTimeout(timer));
-  };
-
   (window as unknown as { __clipStep: (i: number) => Promise<boolean> }).__clipStep = async (i: number) => {
     if (!Number.isInteger(i) || i < 1 || i > fly) throw new Error(`step ${i} outside 1..${fly}`);
     const arrived = i === fly;
     // The last step is the exact card camera a later flight's `from=s:` reproduces.
     map.jumpTo(arrived ? arrival : path[i]);
-    if (arrived) cardLayout();
-    else flightLayout();
+    if (arrived) cardLayout(slot, broadcast.generatedAt, card);
+    else flightLayout(slot, at, totals, timelapse, card);
     setCallout(map, arrived ? callout : null);
     if (arrived || map.getZoom() >= 3) await ensureDetail();
-    await settle();
+    await settle(map);
     return true;
   };
 
@@ -492,23 +643,201 @@ async function renderFlight(id: string, fromParam: string, flyParam: string) {
 
 async function renderEnd() {
   const heat = await loadHeat();
-  root.classList.add('clip--card', 'clip--end');
-  setTime(heat.generatedAt);
-  setCounts(heat.totals, true);
-  el('clip-end-text').prepend(el('clip-counts'));
-  el('clip-end').hidden = false;
-  // No map: the lockup takes the centre of the dotted ground.
-  await document.fonts.ready;
-  fitWidth(el('clip-cta'));
-  // Flex centring can land the lockup on a half pixel, which blurs its pixel rows; the block
-  // centres its content, so padding it by twice the remainder moves the lockup down by it.
-  const lockupTop = el('clip-lockup').getBoundingClientRect().top;
-  const nudge = Math.ceil(lockupTop) - lockupTop;
-  if (nudge > 0.001) document.querySelector<HTMLElement>('.clip-lockup-block')!.style.paddingTop = `${2 * nudge}px`;
+  await endLayout(heat);
+  markReady();
+}
+
+/** Run `fn` over `items` with at most `limit` calls in flight; results keep the items' order. */
+async function mapLimit<T, R>(items: readonly T[], limit: number, fn: (item: T) => Promise<R>): Promise<R[]> {
+  const out = new Array<R>(items.length);
+  let next = 0;
+  const worker = async () => {
+    while (next < items.length) {
+      const i = next++;
+      out[i] = await fn(items[i]);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+  return out;
+}
+
+/** One snapshot of the time-lapse: its time (ms), totals and cells. */
+interface Snapshot {
+  at: number;
+  totals: Totals;
+  cells: MapCell[];
+}
+
+/**
+ * The whole clip as one timeline (see the top of this file and web/src/timeline.ts). One map,
+ * padded to the time-lapse window throughout: cards and the hook place their cell by
+ * offsetting the camera, never by repadding.
+ */
+async function renderTimeline() {
+  const options = readTimelineParams((name) => params.get(name));
+  const [heat, index, broadcast] = await Promise.all([
+    loadHeat(),
+    loadHistoryIndex().catch(() => [] as HistoryFrame[]),
+    // Without a broadcast the clip still runs, as with no filled slot.
+    options.slots > 0 ? loadBroadcast().catch(() => null) : Promise.resolve(null),
+  ]);
+  const liveAt = heat.generatedAt;
+  const liveMs = Date.parse(liveAt);
+  const maxN = heatMax(heat);
+  const names = new Map(heat.cells.map((c) => [c.id, c.name]));
+
+  // Every index entry older than the live snapshot (the index's last entry is the live
+  // snapshot itself, with no separate file), then the live heat. A frame that fails to load is
+  // left out; the interpolation spans the gap.
+  const past = index.filter((f) => f.file && Date.parse(f.at) < liveMs);
+  const loaded = await mapLimit(past, 6, async (f): Promise<Snapshot | null> => {
+    try {
+      return { at: Date.parse(f.at), totals: f.totals, cells: rowCells(await loadFrame(f.file), names) };
+    } catch (e) {
+      console.warn(`frame ${f.file} left out`, e);
+      return null;
+    }
+  });
+  const snapshots: Snapshot[] = [...loaded.filter((s): s is Snapshot => s !== null), { at: liveMs, totals: heat.totals, cells: heat.cells }];
+  const times = snapshots.map((s) => s.at);
+  const live = snapshots.length - 1;
+
+  const chosen = (broadcast?.slots ?? []).filter((s): s is FilledSlot => s.available && !!s.cell && !!s.story).slice(0, options.slots);
+  const cardAt = broadcast?.generatedAt ?? liveAt;
+  const plan: ClipPlan = buildPlan(options, chosen.map((s) => s.id), times);
+
+  // Measure every layout once, with the fonts laid out: the time-lapse window (top text with
+  // the clock and the key), each card's window, and the hook caption's top.
+  setTime(liveAt);
+  setCounts(heat.totals);
+  showKey(true);
+  await fontsLaidOut();
+  const timelapse = timelapseWindow();
+  setTime(cardAt);
+  const cards: CardWindow[] = [];
+  for (const slot of chosen) cards.push(await layoutCard(slot));
+  hookLayout(liveAt, heat.totals.articles, timelapse);
+  await fontsLaidOut();
+  // The hook's cell is centred in the window above its caption.
+  const hookWindow: Window = { top: timelapse.top, bottom: Math.round(el('clip-hook').getBoundingClientRect().top - unit * 2.4) };
+
+  const { map, setCells } = await clipMap(paddingOf(timelapse), undefined, portrait);
+
+  // Every camera as the map holds it, so the flights join them exactly.
+  const fitted = held(map, undefined);
+  const lapseView = (ms: number) => timelapseView(new Date(ms).toISOString(), timelapse) ?? fitted;
+  const firstView = held(map, lapseView(times[0]));
+  const lastView = held(map, lapseView(times[live]));
+  const arrivals = chosen.map((slot, n) => held(map, arrivalCamera(timelapse, cards[n], slot.cell)));
+  const hookView = chosen.length ? held(map, arrivalCamera(timelapse, hookWindow, chosen[0].cell)) : lastView;
+  // A flight of F frames shows the inner cameras 1..F of an F+1 step path: the segment before
+  // it holds the start, the card after it the end, so every frame of the move is new. The
+  // pull-back instead ends on the time-lapse's first camera (cameras 1..F of an F step path), so
+  // its last frame and the first time-lapse frame differ only by the layout.
+  const flyFrames = framesFor(options.fly, options.fps);
+  const minZoom = flightFloor(timelapse);
+  const path = (a: ClipCamera, b: ClipCamera, steps = flyFrames + 1) => flightPath(a, b, steps, { width: W, height: H, minZoom, wrap: portrait });
+  const pullback = path(hookView, firstView, flyFrames);
+  const flights = chosen.map((_, n) => path(n ? arrivals[n - 1] : lastView, arrivals[n]));
+  const callouts = await Promise.all(chosen.map((slot) => slotCallout(slot, heat)));
+  const lapseFrames = plan.segments.find((s) => s.kind === 'lapse')?.frames ?? 0;
+
+  // What the map holds now, so a step sends data only when its frame changes it.
+  let shownCells: string | null = null;
+  let shownCallout: number | null | undefined;
+  const showCells = (key: string, cells: () => MapCell[]) => {
+    if (shownCells === key) return;
+    setCells(cells(), maxN);
+    shownCells = key;
+  };
+  const showLive = () => showCells(`snap:${live}`, () => heat.cells);
+  const showCallout = (n: number | null) => {
+    if (shownCallout === n) return;
+    setCallout(map, n === null ? null : callouts[n]);
+    shownCallout = n;
+  };
+
+  let detail: Promise<void> | null = null;
+  const ensureDetail = () => (detail ??= loadDetail(map));
+  let lastStep = -1;
+
+  const step = async (i: number): Promise<boolean> => {
+    const at = Number.isInteger(i) ? segmentAt(plan, i) : null;
+    if (!at) throw new Error(`step ${i} outside 0..${plan.frames - 1}`);
+    // A retry redraws the frame from scratch.
+    if (i === lastStep) {
+      shownCells = null;
+      shownCallout = undefined;
+    }
+    lastStep = i;
+    const { segment, offset } = at;
+    const n = segment.slot === undefined ? -1 : chosen.findIndex((s) => s.id === segment.slot);
+    let closeUp = false;
+    switch (segment.kind) {
+      case 'hook':
+        map.jumpTo(hookView);
+        hookLayout(liveAt, heat.totals.articles, timelapse);
+        showLive();
+        showCallout(chosen.length ? 0 : null);
+        closeUp = chosen.length > 0;
+        break;
+      case 'pullback': {
+        // The dots run back from the live snapshot to the first, as the time-lapse interpolates
+        // them; the last pull-back frame holds exactly the first snapshot.
+        const f = pullbackFraction(offset, segment.frames);
+        map.jumpTo(pullback[offset + 1]);
+        hookLayout(liveAt, heat.totals.articles, timelapse);
+        if (f >= 1) showCells('snap:0', () => snapshots[0].cells);
+        else showCells(`pull:${offset}`, () => interpolateCells(snapshots[live].cells, snapshots[0].cells, f));
+        showCallout(null);
+        break;
+      }
+      case 'lapse': {
+        const t = lapseTime(times[0], times[live], lapseFrames, offset);
+        const { lo, hi, f } = bracket(times, t);
+        map.jumpTo(lapseView(t));
+        lapseLayout(new Date(Math.round(t)).toISOString(), interpolateTotals(snapshots[lo].totals, snapshots[hi].totals, f), timelapse);
+        if (f === 0 || lo === hi) showCells(`snap:${lo}`, () => snapshots[lo].cells);
+        else showCells(`lapse:${offset}`, () => interpolateCells(snapshots[lo].cells, snapshots[hi].cells, f));
+        showCallout(null);
+        break;
+      }
+      case 'flight':
+        map.jumpTo(flights[n][offset + 1]);
+        // The first flight keeps the last time-lapse frame's clock and totals; later ones the card's.
+        flightLayout(chosen[n], n === 0 ? liveAt : cardAt, heat.totals, timelapse, cards[n]);
+        showLive();
+        showCallout(null);
+        break;
+      case 'card':
+        map.jumpTo(arrivals[n]);
+        cardLayout(chosen[n], cardAt, cards[n]);
+        showLive();
+        showCallout(n);
+        closeUp = true;
+        break;
+      case 'end':
+        await endLayout(heat);
+        break;
+    }
+    if (segment.kind !== 'end' && (closeUp || map.getZoom() >= 3)) await ensureDetail();
+    snapMark();
+    await settle(map);
+    return true;
+  };
+
+  const page = window as unknown as { __clipPlan: () => ClipPlan; __clipStep: (i: number) => Promise<boolean> };
+  page.__clipPlan = () => structuredClone(plan);
+  page.__clipStep = step;
+
+  await step(0);
+  // The renderer's own first step(0) is not a retry: what the map holds stays valid.
+  lastStep = -1;
   markReady();
 }
 
 function render(): Promise<void> {
+  if (params.get('timeline') === '1') return renderTimeline();
   const signal = params.get('signal');
   if (signal !== null) {
     const from = params.get('from');
@@ -519,7 +848,8 @@ function render(): Promise<void> {
   return renderFrame();
 }
 
-// A renderer waits for data-ready; on failure it also gets data-error so it never hangs.
-const TIMEOUT_MS = 20_000;
+// A renderer waits for data-ready; on failure it also gets data-error so it never hangs. The
+// timeline loads the day's ~100 snapshots first, so it gets longer (the renderer waits 60 s).
+const TIMEOUT_MS = params.get('timeline') === '1' ? 50_000 : 20_000;
 const timeout = new Promise<never>((_, reject) => window.setTimeout(() => reject(new Error('timeout')), TIMEOUT_MS));
 Promise.race([render(), timeout]).catch((e: unknown) => markReady(e instanceof Error ? e.message : 'failed'));

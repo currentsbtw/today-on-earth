@@ -1,8 +1,9 @@
 name: Clip
 
-# Daily time-lapse of the last 24 hours: drives the live site's clip.html for every replay
-# frame in /data/history/index.json, encodes an H.264 mp4, and publishes it as an artifact
-# and on the rolling "clips" release. Runs after the 00:15 UTC snapshot.
+# Daily vertical clip of the last 24 hours: loads the live site's clip.html once in timeline
+# mode, steps it frame by frame at 30 fps (hook, pull-back, time-lapse, signal cards, end
+# card), adds the soundtrack generated from the timeline, encodes an H.264 + AAC mp4, and
+# publishes it as an artifact and on the rolling "clips" release. Runs after the 00:15 UTC snapshot.
 on:
   schedule:
     - cron: "20 0 * * *"
@@ -90,7 +91,7 @@ jobs:
         working-directory: render
         run: |
           npm ci
-          npm run clip -- --site "$SITE_URL" --out ../clip-out --w "$CLIP_W" --h "$CLIP_H" --fps 8 --card 3 --end 3 --hold 1 --fly 1.5
+          npm run clip -- --site "$SITE_URL" --out ../clip-out --w "$CLIP_W" --h "$CLIP_H" --fps 30 --hook 2 --fly 1.5 --lapse 7 --card 5 --end 3 --hold 1 --slots 3
           ls -l ../clip-out
 
       - uses: actions/upload-artifact@v7

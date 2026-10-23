@@ -456,18 +456,22 @@ export interface ClipCamera {
  * A non-interactive map for the clip page: same style, world fitted inside `padding`.
  * `view` moves the camera there instead (a signal card zoomed to one cell); the world box
  * still bounds it. `wrap` renders world copies and frees the longitude (the portrait
- * time-lapse pans round the globe); latitude and zoom stay bounded.
+ * time-lapse pans round the globe); latitude and zoom stay bounded. `tagSize` sets the callout
+ * tag's text size in px (the live map keeps 11; the clip scales it with the frame).
  */
 export function createClipMap(
   container: HTMLElement,
   padding: Padding,
   view?: ClipCamera,
-  options: { wrap?: boolean } = {},
+  options: { wrap?: boolean; tagSize?: number } = {},
 ): Promise<{ map: MapLibreMap; setCells: (cells: MapCell[], maxN: number) => void }> {
   let ref: MapLibreMap | null = null;
+  const clipStyle = style();
+  const tag = clipStyle.layers.find((layer) => layer.id === 'selected-tag');
+  if (options.tagSize && tag?.type === 'symbol') tag.layout = { ...tag.layout, 'text-size': options.tagSize };
   const map = new MapLibreMap({
     container,
-    style: style(),
+    style: clipStyle,
     center: [10, 20],
     zoom: -2,
     minZoom: -2,

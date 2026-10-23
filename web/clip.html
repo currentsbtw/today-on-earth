@@ -8,7 +8,25 @@
     <title>Today On Earth · clip frame</title>
   </head>
   <body>
-    <!-- Render target for a headless time-lapse renderer. Modes:
+    <!-- Render target for the headless clip renderer. Modes:
+         ?timeline=1&w=1080&h=1920&fps=30&hook=2&fly=1.5&lapse=7&card=5&end=3&slots=3[&max=<n>]
+                                                           the whole clip as one timeline (the
+                                                           values shown are the defaults; fps an
+                                                           integer 1..60, seconds 0..30, slots an
+                                                           integer 0..6, a flight at most 60
+                                                           frames, else data-error): hook,
+                                                           pull-back, time-lapse, a flight and a
+                                                           card per chosen slot, end card.
+                                                           window.__clipPlan() returns { fps,
+                                                           frames, date, lapse: { from, to,
+                                                           snapshots }, poster, hourMarks,
+                                                           segments: [{ kind, slot?, start,
+                                                           frames }] }; window.__clipStep(i),
+                                                           0 <= i < frames, draws frame i and
+                                                           resolves true once drawn (rejects on
+                                                           failure; a retry redraws the same
+                                                           frame). Frame 0 is drawn at ready.
+         The modes below are single stills, kept for debugging:
          ?t=<frame stamp>&w=1080&h=1920&dark=1[&max=<n>]  one replay frame (portrait frames
                                                            fill the height and centre noon)
          ?signal=<slot id>&w&h[&max=<n>]                  one broadcast slot's card
@@ -40,6 +58,11 @@
         <p id="clip-key" class="clip-key" hidden><span>One dot per place in the last 24 hours of news.</span> <span>Size = number of articles.</span></p>
       </header>
       <div id="clip-counts" class="clip-counts"></div>
+      <!-- The hook caption: the timeline's opening frames and its pull-back only. -->
+      <section id="clip-hook" class="clip-hook" hidden>
+        <p id="clip-hook-lead" class="clip-hook-lead"></p>
+        <p class="clip-hook-key">One dot per place in the last 24 hours of news.</p>
+      </section>
       <section id="clip-card" class="clip-card" hidden>
         <p id="clip-slot" class="clip-slot"></p>
         <p id="clip-line" class="clip-line"></p>
