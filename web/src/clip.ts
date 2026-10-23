@@ -214,8 +214,8 @@ const showKey = (on: boolean) => void (el('clip-key').hidden = !on);
 
 /**
  * Shrink a one-line element's type (its --fit) until it fits its parent's width. When the
- * parent lays its children out in a row (the landscape end card's "Open a dot at" line beside
- * the address), the siblings and the gaps take their share of that width first.
+ * parent lays its children out in a row (the landscape end card's "Today's broadcast at" line
+ * beside the address), the siblings and the gaps take their share of that width first.
  */
 function fitWidth(node: HTMLElement) {
   const parent = node.parentElement!;

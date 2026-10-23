@@ -1,17 +1,21 @@
-// prebuild: static place pages, the places index and the sitemap, from the snapshot in
-// public/data (heat.json + cells/<id>.json, docs/DATA-CONTRACT.md). No JavaScript in the
-// output; one inline sheet in the about page's reading-column register (DESIGN.md "Place
-// page"). Deterministic for the same data. Usage: node scripts/build-places.mjs
-// [--data <dir>] [--out <dir>] (defaults: public/data and public).
+// prebuild: static place pages with their Atom feeds, the places index, the broadcast page and
+// its feed, and the sitemap, from the snapshot in public/data (heat.json + cells/<id>.json +
+// broadcast.json, docs/DATA-CONTRACT.md). No JavaScript in the output; one inline sheet in
+// the about page's reading-column register (DESIGN.md "Place page"). Deterministic for the
+// same data. Usage: node scripts/build-places.mjs [--data <dir>] [--out <dir>] (defaults:
+// public/data and public).
+import { createHash } from 'node:crypto';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 // The site's own display rules (Node 24 strips the types; format.ts and projection.ts import nothing).
-import { codeName, count, host, LARGEST_SHOWN, normalLine, plural, safeHref, silentAmong, utcDayTime } from '../src/format.ts';
+import { codeName, count, host, LARGEST_SHOWN, normalLine, plural, safeHref, shortName, silentAmong, utcDayTime } from '../src/format.ts';
 import { relativeRatio } from '../src/projection.ts';
 
 const SITE = 'https://currentsbtw.github.io/today-on-earth/';
+const TAG = 'tag:currentsbtw.github.io,2026:';
+const CLIPS = 'https://github.com/currentsbtw/today-on-earth/releases/tag/clips';
 const PAGE_MIN = 10; // a cell gets a page at 10+ articles
 const INDEX_MIN = 2; // the index lists every cell with 2+
 const NEWEST = 20; // newest articles on a page
@@ -91,6 +95,193 @@ function normalSentence(b, n, baselineDays) {
   return line ? `${line[0].toUpperCase()}${line.slice(1).replace(' · ', '; ')}.` : '';
 }
 
+// The broadcast's labels and fixed sentences: a port of the pure parts of src/broadcast.ts
+// (SLOT_IDS, SLOT_LABELS, PLAIN_LABELS, signalLine, sentenceFacts, emptyLine), which Node
+// cannot import directly (its extensionless './data' and './format' imports do not resolve).
+// Keep the two in step.
+
+const SLOT_IDS = ['loudest', 'planet', 'rising', 'brightest', 'ordinary', 'faint'];
+const SLOT_LABELS = {
+  loudest: 'Loudest signal',
+  planet: 'Heard across the planet',
+  rising: 'Rising',
+  brightest: 'Most positive tone',
+  ordinary: 'Ordinary life',
+  faint: 'Faint signal',
+};
+const PLAIN_LABELS = {
+  loudest: 'Most covered story',
+  planet: 'Covered in the most countries',
+  rising: 'Fastest rising place',
+  brightest: 'The most positive story',
+  ordinary: 'A story of ordinary life',
+  faint: 'A quiet place in the news',
+};
+const SENTENCE_FACTS = {
+  loudest: ['articles', 'outlets', 'languages'],
+  planet: ['articles', 'outlets', 'heardIn'],
+  rising: ['articles', 'outlets'],
+  brightest: ['articles', 'outlets'],
+  ordinary: ['articles', 'outlets', 'languages'],
+  faint: ['articles', 'outlets'],
+};
+const tone = (t) => (t > 0 ? `+${t.toFixed(1)}` : t.toFixed(1));
+
+function signalLine(slot) {
+  if (!slot.available || !slot.cell || !slot.story) return '';
+  const place = shortName(slot.cell.name) || slot.cell.name;
+  const s = slot.story;
+  const articles = `${plural(s.n, 'article', 'articles')} from ${plural(s.o, 'outlet', 'outlets')}`;
+  const languages = plural(s.l, 'language', 'languages');
+  switch (slot.id) {
+    case 'loudest':
+      return `One story over ${place}: ${articles} in ${languages}.`;
+    case 'planet':
+      return `One story over ${place}, heard in ${plural(s.i, 'other country', 'other countries')}: ${articles}.`;
+    case 'rising': {
+      const usual = Math.round(slot.b ?? 0);
+      return usual > 0
+        ? `One story over ${place}: ${articles}, where the place usually has ${plural(usual, 'article', 'articles')} a day.`
+        : `One story over ${place}: ${articles}, where the place usually has none.`;
+    }
+    case 'brightest':
+      return `The most positive story, over ${place}: ${articles}, tone ${tone(s.t)}.`;
+    case 'ordinary':
+      return `One story of ordinary life, over ${place}: ${articles} in ${languages}.`;
+    case 'faint': {
+      const usual = Math.round(slot.b ?? 0);
+      return usual > 0
+        ? `One story from a quiet place, ${place}: ${articles}; the place usually has ${count(usual)} a day.`
+        : `One story from a quiet place, ${place}: ${articles}; the place usually has none.`;
+    }
+    default:
+      return '';
+  }
+}
+
+function emptyLine(slot) {
+  if (slot.available) return '';
+  if (slot.reason === 'baseline') return slot.availableFrom ? `Needs more days of history; from ${slot.availableFrom}.` : 'Needs more days of history.';
+  return 'No story met the rule today.';
+}
+
+/** The story's counts the slot's sentence does not already state (the Signals entry's meta line). */
+function slotCounts(slot) {
+  const said = SENTENCE_FACTS[slot.id] ?? [];
+  const s = slot.story;
+  const parts = [
+    ['articles', plural(num(s.n), 'article', 'articles')],
+    ['outlets', plural(num(s.o), 'outlet', 'outlets')],
+    ['languages', plural(num(s.l), 'language', 'languages')],
+  ]
+    .filter(([fact]) => !said.includes(fact))
+    .map(([, text]) => text);
+  if (!said.includes('heardIn')) {
+    const heard = heardIn(num(s.i), num(s.c), str(slot.cell.home));
+    if (heard) parts.push(heard);
+  }
+  return parts.join(' · ');
+}
+
+// Feeds -------------------------------------------------------------------------------
+
+/** XML text: drops the characters XML 1.0 cannot carry (controls, lone surrogates), then escapes. */
+const xesc = (s) =>
+  esc(String(s ?? '').replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F￾￿]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g, ''));
+const RFC3339 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})$/;
+/** The time when it is an RFC 3339 date-time with a valid instant, else "". */
+const rfc = (t) => (typeof t === 'string' && RFC3339.test(t) && Number.isFinite(Date.parse(t)) ? t : '');
+const EPOCH = '1970-01-01T00:00:00Z';
+
+/** A lowercase ASCII slug of a headline for a tag: id; a short hash when nothing ASCII is left. */
+function slug(text) {
+  const s = String(text)
+    .normalize('NFKD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80)
+    .replace(/-+$/, '');
+  return s || `h${createHash('sha1').update(String(text)).digest('hex').slice(0, 12)}`;
+}
+
+/** An Atom 1.0 document; `entries` are ready-made <entry> strings. */
+function atom({ id, title, subtitle, alternate, self, updated, entries }) {
+  return (
+    '<?xml version="1.0" encoding="utf-8"?>\n<feed xmlns="http://www.w3.org/2005/Atom">\n' +
+    `<id>${xesc(id)}</id>\n<title type="text">${xesc(title)}</title>\n` +
+    (subtitle ? `<subtitle type="text">${xesc(subtitle)}</subtitle>\n` : '') +
+    `<link rel="alternate" type="text/html" href="${xesc(alternate)}"/>\n<link rel="self" type="application/atom+xml" href="${xesc(self)}"/>\n` +
+    `<updated>${xesc(updated)}</updated>\n<author><name>Today On Earth</name><uri>${SITE}</uri></author>\n` +
+    `<icon>${SITE}favicon-32.png</icon>\n` +
+    entries.join('') +
+    '</feed>\n'
+  );
+}
+
+/** One <entry>; `content` is HTML (escaped here into type="html"). */
+function atomEntry({ id, title, link, published, updated, summary, content }) {
+  return (
+    `<entry>\n<id>${xesc(id)}</id>\n<title type="text">${xesc(title)}</title>\n` +
+    (link ? `<link rel="alternate" type="text/html" href="${xesc(link)}"/>\n` : '') +
+    (published ? `<published>${xesc(published)}</published>\n` : '') +
+    `<updated>${xesc(updated)}</updated>\n` +
+    (summary ? `<summary type="text">${xesc(summary)}</summary>\n` : '') +
+    `<content type="html">${xesc(content)}</content>\n</entry>\n`
+  );
+}
+
+/** The place's feed: one entry per story, newest `last` first (file order breaks ties). */
+function placeFeed(cell, heat) {
+  const name = str(cell.name) || cell.id;
+  const home = str(cell.home);
+  const largest = largestOf(heat);
+  const pageUrl = `${SITE}place/${cell.id}.html`;
+  const updated = rfc(heat.generatedAt) || EPOCH;
+  const stories = arr(cell.stories)
+    .filter((s) => s && typeof s === 'object')
+    .map((s, i) => ({ s, i, last: rfc(s.last) }))
+    .sort((a, b) => (a.last < b.last ? 1 : a.last > b.last ? -1 : a.i - b.i));
+  const seen = new Set();
+  const entries = stories.map(({ s, last }) => {
+    const text = str(s.headline).trim();
+    const href = safeHref(str(s.headlineUrl));
+    const source = str(s.headlineSource);
+    // Ids stay unique within the feed: a repeat (same URL or same slug) takes a counter.
+    const base = href || `${TAG}place/${cell.id}/${slug(text || `${str(s.first)} ${num(s.n)}`)}`;
+    let id = base;
+    for (let k = 2; seen.has(id); k++) id = `${base}${href ? '#' : '-'}${k}`;
+    seen.add(id);
+    const heard = heardIn(num(s.i), num(s.c), home);
+    const counts = `${plural(num(s.n), 'article', 'articles')} from ${plural(num(s.o), 'outlet', 'outlets')} in ${plural(num(s.l), 'language', 'languages')}${heard ? `, ${heard}` : ''}.`;
+    const silent = silentSentence(codesOf(s.countries), largest, home);
+    const summary = [counts, silent].filter(Boolean).join(' ');
+    const content =
+      `<p>${esc(counts)}</p>` +
+      (silent ? `<p>${esc(silent)}</p>` : '') +
+      (source ? `<p>Headline from ${esc(source)}.</p>` : '') +
+      `<p><a href="${esc(pageUrl)}">${esc(name)} on Today On Earth</a></p>`;
+    return atomEntry({
+      id,
+      title: text || `A story of ${plural(num(s.n), 'article', 'articles')}${source ? ` (${source})` : ''}`,
+      link: href || '',
+      published: rfc(s.first),
+      updated: last || updated,
+      summary,
+      content,
+    });
+  });
+  return atom({
+    id: `${TAG}place/${cell.id}`,
+    title: `${name} · Today On Earth`,
+    alternate: pageUrl,
+    self: `${SITE}place/${cell.id}.xml`,
+    updated,
+    entries,
+  });
+}
+
 // Chrome ------------------------------------------------------------------------------
 
 const MARK =
@@ -136,6 +327,7 @@ h1{margin:0 0 16px;font:600 clamp(36px,5vw,56px)/1.06 var(--hum);letter-spacing:
 .label{margin:0;color:var(--muted);font-size:11px;line-height:1.4;letter-spacing:.06em}
 .act{display:inline-flex;align-items:center;min-height:28px;margin-top:20px;padding:0 10px;border:1px solid #fff;font-size:11px;font-weight:500;line-height:1;letter-spacing:.1em;text-decoration:none}
 .act:hover{background:#fff;color:#000}
+.acts{display:flex;flex-wrap:wrap;gap:0 8px}
 h2{margin:40px 0 0;padding:6px 0;border-bottom:1px solid #fff;font-size:11px;font-weight:500;line-height:1;letter-spacing:.1em}
 ol,ul{margin:0;padding:0;list-style:none}
 .story{margin-top:14px;padding-left:12px;border-left:1px solid rgba(255,255,255,.4)}
@@ -166,8 +358,11 @@ h3 a:hover,.art a:hover{text-decoration:underline;text-decoration-style:solid}
 .foot a{display:inline-block;color:#fff}
 @media (max-width:720px){.top{grid-template-columns:1fr auto;padding:env(safe-area-inset-top) 16px 0}.nav{justify-self:end;margin-right:-10px}.nav a,.act{min-height:36px}.globe{width:24px;height:24px}.brand{gap:10px}.wordmark{font-size:13px}.doc{margin:8px 0 32px;padding:28px 16px 28px}.lede{font-size:18px}h3{font-size:17px}.foot a{padding-bottom:12px}}`;
 
-/** The document around `body`: head, brand line (MAP to the map), the column, the foot. */
-function page({ root, title, description, canonical, body }) {
+/**
+ * The document around `body`: head, brand line (MAP to the map), the column, the foot.
+ * `feed`: { href, title } for the page's Atom feed; `css`: rules only this page needs.
+ */
+function page({ root, title, description, canonical, body, feed = null, css = '' }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -178,7 +373,7 @@ function page({ root, title, description, canonical, body }) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${esc(canonical)}">
-<meta property="og:type" content="website">
+${feed ? `<link rel="alternate" type="application/atom+xml" href="${esc(feed.href)}" title="${esc(feed.title)}">\n` : ''}<meta property="og:type" content="website">
 <meta property="og:site_name" content="Today On Earth">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
@@ -192,7 +387,7 @@ function page({ root, title, description, canonical, body }) {
 <link rel="icon" type="image/png" sizes="32x32" href="${root}favicon-32.png">
 <link rel="apple-touch-icon" href="${root}apple-touch-icon.png">
 <link rel="preload" href="${root}fonts/source-sans-3-latin.woff2" as="font" type="font/woff2" crossorigin>
-<style>${sheet(root)}</style>
+<style>${sheet(root)}${css}</style>
 </head>
 <body>
 <header class="top"><a class="brand" href="${root}" aria-label="Today On Earth, back to the map">${MARK}<span class="wordmark">Today On Earth</span></a><nav class="nav" aria-label="Views"><a href="${root}">Map</a></nav></header>
@@ -306,12 +501,13 @@ function placePage(cell, heat, live) {
     title: `${d.name}: ${counts} in the last ${hours(win)} · Today On Earth`,
     description,
     canonical: `${SITE}place/${cell.id}.html`,
+    feed: { href: `${cell.id}.xml`, title: `${d.name} · Today On Earth` },
     body: [
       `<h1>${esc(d.name)}</h1>`,
       `<p class="lede">${esc(countsSentence(d))}</p>`,
       ...gapLines.map((line) => `<p class="gap">${esc(line)}</p>`),
       stamp(heat.generatedAt),
-      `<a class="act" href="../#c=${esc(cell.id)}">Open on the map</a>`,
+      `<div class="acts"><a class="act" href="../#c=${esc(cell.id)}">Open on the map</a><a class="act" href="${esc(cell.id)}.xml" type="application/atom+xml">Feed</a></div>`,
       ...sections,
     ].join('\n'),
   });
@@ -340,6 +536,128 @@ function indexPage(listed, paged, heat) {
       '<h2>Places</h2>',
       `<ol class="places">\n${items.join('\n')}\n</ol>`,
     ].join('\n'),
+  });
+}
+
+// Broadcast ---------------------------------------------------------------------------
+
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+/** The UTC day of `at`: { iso: "2026-10-22", text: "22 October 2026", time: "14:27" }; null when unreadable. */
+function utcDay(at) {
+  const t = rfc(at) ? new Date(at) : null;
+  if (!t) return null;
+  const pad = (v) => String(v).padStart(2, '0');
+  return {
+    iso: `${t.getUTCFullYear()}-${pad(t.getUTCMonth() + 1)}-${pad(t.getUTCDate())}`,
+    text: `${t.getUTCDate()} ${MONTHS[t.getUTCMonth()]} ${t.getUTCFullYear()}`,
+    time: `${pad(t.getUTCHours())}:${pad(t.getUTCMinutes())}`,
+  };
+}
+
+/**
+ * The slots to show: the file's well-formed slots with a known id, in file order. Without a
+ * broadcast file, six empty slots that say so (`none`).
+ */
+function slotsOf(broadcast) {
+  if (!broadcast) return SLOT_IDS.map((id) => ({ id, available: false, none: true }));
+  return arr(broadcast.slots).filter((s) => s && typeof s === 'object' && SLOT_IDS.includes(s.id));
+}
+const NO_BROADCAST = 'No broadcast in this snapshot.';
+const filled = (slot) => !!(slot.available && slot.cell && slot.story && typeof slot.cell.id === 'string');
+
+/** One slot of the broadcast page: plain label, site label, then the place, sentence and story. */
+function slotSection(slot, paged) {
+  const head = `<h2>${esc(PLAIN_LABELS[slot.id])}</h2>\n<p class="label slot-id">${esc(SLOT_LABELS[slot.id])}</p>`;
+  const line = filled(slot) ? signalLine(slot) : '';
+  if (!line) return `<section class="slot">\n${head}\n<p class="line">${esc(slot.none ? NO_BROADCAST : emptyLine(slot) || 'No story met the rule today.')}</p>\n</section>`;
+  const { cell, story } = slot;
+  const name = str(cell.name) || cell.id;
+  const place = paged.has(cell.id) ? `<a href="place/${esc(cell.id)}.html">${esc(name)}</a>` : esc(name);
+  const text = str(story.headline).trim();
+  const source = str(story.headlineSource);
+  const counts = slotCounts(slot);
+  return (
+    `<section class="slot">\n${head}\n<p class="where">${place}</p>\n<p class="line">${esc(line)}</p>\n<div class="story">` +
+    (text ? `<h3>${titleLink(text, story.headlineUrl, story.headlineLang)}</h3>` : '') +
+    (source ? `<p class="credit">${esc(source)}</p>` : '') +
+    (counts ? `<p class="counts">${esc(counts)}</p>` : '') +
+    '</div>\n</section>'
+  );
+}
+
+/** Rules only the broadcast page needs, on top of the shared sheet. */
+const BROADCAST_CSS =
+  '.slot-id{margin-top:6px}.where{margin:14px 0 0;font:600 22px/1.25 var(--hum);overflow-wrap:anywhere}.line{margin:6px 0 0}.slot .story{margin-top:12px}.acts.end{margin-top:48px}.acts.end .act{margin-top:8px}';
+
+function broadcastPage(broadcast, heat, paged) {
+  const at = broadcast ? str(broadcast.generatedAt) : str(heat.generatedAt);
+  const day = utcDay(at);
+  const win = num(broadcast?.windowHours) || num(heat.windowHours) || 24;
+  const lineParts = day ? [esc(day.text), `updated <time datetime="${esc(at)}">${esc(day.time)} UTC</time>`] : [];
+  lineParts.push(`the last ${esc(hours(win))}`);
+  return page({
+    root: './',
+    title: `Today's broadcast${day ? ` · ${day.text}` : ''} · Today On Earth`,
+    description: `Six signals from the last ${hours(win)} of news coverage${day ? ` on ${day.text}` : ''}, each one story picked by a published rule: an outlet's own headline and the story's numbers, from GDELT.`,
+    canonical: `${SITE}broadcast.html`,
+    feed: { href: 'broadcast.xml', title: "Today's broadcast · Today On Earth" },
+    css: BROADCAST_CSS,
+    body: [
+      "<h1>Today's broadcast</h1>",
+      `<p class="label">${lineParts.join(' · ')}</p>`,
+      ...slotsOf(broadcast).map((slot) => slotSection(slot, paged)),
+      '<div class="acts end">' +
+        '<a class="act" href="./">Open the map</a>' +
+        `<a class="act" href="${CLIPS}" target="_blank" rel="noopener">The daily clip</a>` +
+        '<a class="act" href="broadcast.xml" type="application/atom+xml">Feed</a>' +
+        '</div>',
+    ].join('\n'),
+  });
+}
+
+/** broadcast.xml: one entry per UTC day, filled in through the day; no entry without a broadcast. */
+function broadcastFeed(broadcast, heat, paged) {
+  const at = rfc(broadcast ? broadcast.generatedAt : heat.generatedAt) || EPOCH;
+  const day = utcDay(at);
+  const entries = [];
+  if (broadcast && day) {
+    const parts = slotsOf(broadcast).map((slot) => {
+      const head = `<h3>${esc(PLAIN_LABELS[slot.id])}</h3><p>${esc(SLOT_LABELS[slot.id])}</p>`;
+      const line = filled(slot) ? signalLine(slot) : '';
+      if (!line) return `${head}<p>${esc(emptyLine(slot) || 'No story met the rule today.')}</p>`;
+      const { cell, story } = slot;
+      const name = str(cell.name) || cell.id;
+      const place = paged.has(cell.id) ? `<a href="${esc(`${SITE}place/${cell.id}.html`)}">${esc(name)}</a>` : esc(name);
+      const text = str(story.headline).trim();
+      const href = safeHref(str(story.headlineUrl));
+      const source = str(story.headlineSource);
+      const headline = text ? (href ? `<a href="${esc(href)}">${esc(text)}</a>` : esc(text)) : '';
+      const counts = slotCounts(slot);
+      return (
+        `${head}<p>${place}</p><p>${esc(line)}</p>` +
+        (headline || source ? `<p>${headline}${headline && source ? ' · ' : ''}${esc(source)}</p>` : '') +
+        (counts ? `<p>${esc(counts)}</p>` : '')
+      );
+    });
+    entries.push(
+      atomEntry({
+        id: `${TAG}broadcast/${day.iso}`,
+        title: `Today's broadcast · ${day.text}`,
+        link: `${SITE}broadcast.html`,
+        published: `${day.iso}T00:00:00Z`,
+        updated: at,
+        content: parts.join('') + `<p><a href="${SITE}broadcast.html">Today's broadcast on Today On Earth</a></p>`,
+      }),
+    );
+  }
+  return atom({
+    id: `${TAG}broadcast`,
+    title: "Today's broadcast · Today On Earth",
+    subtitle: 'Six signals a day from the news coverage of the last 24 hours, each one story picked by a published rule.',
+    alternate: `${SITE}broadcast.html`,
+    self: `${SITE}broadcast.xml`,
+    updated: at,
+    entries,
   });
 }
 
@@ -394,7 +712,7 @@ const written = await pool(candidates, CONCURRENCY, async (c) => {
   const html = placePage({ ...cell, id: c.id }, heat, c);
   const bytes = Buffer.byteLength(html);
   if (bytes > largest.bytes) largest = { bytes, id: c.id };
-  await writeFile(join(placeDir, `${c.id}.html`), html);
+  await Promise.all([writeFile(join(placeDir, `${c.id}.html`), html), writeFile(join(placeDir, `${c.id}.xml`), placeFeed({ ...cell, id: c.id }, heat))]);
   return c.id;
 });
 const paged = new Set(written.filter(Boolean));
@@ -404,12 +722,28 @@ const listed = cells.filter((c) => num(c.n) >= INDEX_MIN);
 const index = indexPage(listed, paged, heat);
 await writeFile(join(outDir, 'places.html'), index);
 
-const urls = ['', 'about.html', 'places.html', ...pagedInOrder.map((c) => `place/${c.id}.html`)];
+// The broadcast page and feed; a missing or unreadable broadcast.json gives six empty slots
+// and a feed with no entries, never a failed build.
+let broadcast = null;
+try {
+  const parsed = JSON.parse(await readFile(join(dataDir, 'broadcast.json'), 'utf8'));
+  if (parsed && typeof parsed === 'object' && Array.isArray(parsed.slots)) broadcast = parsed;
+} catch {
+  broadcast = null;
+}
+const broadcastHtml = broadcastPage(broadcast, heat, paged);
+const broadcastXml = broadcastFeed(broadcast, heat, paged);
+await writeFile(join(outDir, 'broadcast.html'), broadcastHtml);
+await writeFile(join(outDir, 'broadcast.xml'), broadcastXml);
+const filledSlots = broadcast ? slotsOf(broadcast).filter((s) => filled(s) && signalLine(s)).length : 0;
+
+const urls = ['', 'about.html', 'places.html', 'broadcast.html', ...pagedInOrder.map((c) => `place/${c.id}.html`)];
 await writeFile(join(outDir, 'sitemap.xml'), sitemap(urls, heat.generatedAt));
 
 const ms = Math.round(performance.now() - started);
 console.log(
-  `build-places: ${paged.size} place pages (n >= ${PAGE_MIN}${missing ? `; ${missing} skipped, no cell file` : ''}), ` +
+  `build-places: ${paged.size} place pages and ${paged.size} feeds (n >= ${PAGE_MIN}${missing ? `; ${missing} skipped, no cell file` : ''}), ` +
     `${listed.length} index rows, ${urls.length} sitemap URLs; largest page ${(largest.bytes / 1024).toFixed(1)} KB (${largest.id || 'none'}), ` +
-    `index ${(Buffer.byteLength(index) / 1024).toFixed(1)} KB; ${ms} ms`,
+    `index ${(Buffer.byteLength(index) / 1024).toFixed(1)} KB; ` +
+    `broadcast page ${(Buffer.byteLength(broadcastHtml) / 1024).toFixed(1)} KB and feed (${broadcast ? `${filledSlots} of 6 slots filled` : 'no broadcast.json: empty slots, no entry'}); ${ms} ms`,
 );

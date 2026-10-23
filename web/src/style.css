@@ -963,6 +963,25 @@ body.is-replay .map-frame {
   letter-spacing: 0.06em;
 }
 
+/* PAGE after the note in the Signals head: the broadcast page, a same-tab link in the panel's
+   PAGE register (mono label, inverted on hover). The note takes the free space on its left so
+   the two sit together at the right; the box bleeds into the head's padding to keep its height. */
+.col-head-note:has(+ .col-head-link) {
+  margin-left: auto;
+}
+
+.col-head-link {
+  margin: -6px -6px -6px 0;
+  padding: 6px;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.col-head-link:hover {
+  background: var(--fg);
+  color: var(--bg);
+}
+
 /* The places section head exists for the stacked layouts; wide screens head the column
    with the filter and the PLACE / ART / OUT / CTY row. */
 .places-head {

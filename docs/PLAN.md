@@ -1049,6 +1049,50 @@ Verification: ingest tests and checker on a real run; the panel and a place page
 dev server against a real snapshot with the new fields; the baseline words on a fixture
 with `baselineDays` 3 (live data reaches 3 complete days on 2026-10-25).
 
+## Return loop: feeds, the broadcast page, the clip's end card (decided 2026-10-23, shipped the same day)
+
+Why: nothing brings a visitor back without an account. The broadcast exists only inside the
+map's Signals column, the clip ends on the bare home address, and no place can be followed.
+
+Decisions (all static, generated at build time by `web/scripts/build-places.mjs` from the
+snapshot data; no ingest change, no server, no accounts):
+1. **A feed per place.** `place/<cellId>.xml`, Atom 1.0, for every place that has a page
+   (10+ articles): one entry per story, newest `last` first, id = the story's headline URL
+   (or `tag:` + cell id + the headline's reprint-style key when the URL is empty), title =
+   the outlet's headline, link = the outlet's article (rel alternate), published = `first`,
+   updated = `last`, summary = the counts sentence and the silent line in plain text, with a
+   link to the place page in the content. Feed `updated` = the snapshot time. Each place
+   page gets `<link rel="alternate" type="application/atom+xml">` and a visible FEED link.
+2. **The broadcast page.** `broadcast.html`: today's six signals as the Signals column shows
+   them (slot in plain words and in the site's label, the place linked to its page, the fixed
+   sentence, the outlet's headline linked to the article, the counts, empty slots with their
+   reason), the date and "updated <time> UTC", a link to the map and to the clip's release
+   page, the same chrome as the place pages, under 20 KB, no script. `broadcast.xml`: Atom,
+   one entry per UTC day (id `tag:currentsbtw.github.io,2026:broadcast/<YYYY-MM-DD>`,
+   updated = the snapshot time, content = the six signals in text with links), so a reader
+   shows one item a day that fills in through the day. The Signals column head links to
+   the page (PAGE, as the panel does) and the page links the feed.
+3. **The clip's end card** points at the broadcast page: the lead line reads TODAY'S
+   BROADCAST AT and the address `currentsbtw.github.io/today-on-earth/broadcast`
+   (the page is served at `broadcast.html`; the short address needs no redirect only if Pages
+   serves it, so the end card shows `.../broadcast.html` unless a clean path is verified to
+   resolve on Pages). The end card's totals and lockup stay.
+4. The sitemap lists `broadcast.html`; robots unchanged. README and DESIGN.md record the
+   generated files; the methodology says the feeds carry the same fixed sentences.
+
+**Status 2026-10-23 ~21:10 UTC: shipped.** Built as decided: 890 place feeds on the local
+snapshot (one per place page), every feed well-formed with one entry per story, broadcast.html
+(12.7 KB) and broadcast.xml, the Signals head PAGE link, the end card reading TODAY'S
+BROADCAST AT currentsbtw.github.io/today-on-earth/broadcast (Pages serves `x.html` at `/x`:
+`/about` returns 200). broadcast.ts cannot be imported by Node (extensionless imports), so the
+generator carries a copy of the slot labels, the fixed sentences and the empty-slot reasons
+with a keep-in-step comment; the broadcast page also shows the story counts its sentence
+leaves out, as the Signals entry does. Not verified: a feed reader subscribing (only the XML).
+
+Not in this stage: a dated broadcast archive (the ingest keeps only the current
+broadcast.json; the daily archive release holds heat.json, not broadcast.json), the email
+newsletter, and any per-topic feed.
+
 ## Visual redesign: Datamatics Field (shipped 2026-10-21)
 
 The web app's visual world was replaced on 2026-10-21 through the Impeccable workflow:

@@ -155,6 +155,9 @@ order:
   at most 3 articles a day, including places with no history). Needs 3 complete days
   of history; at least 5 outlets and 2 countries.
 
+The broadcast page (`broadcast.html`), its feed and each place's feed carry the same fixed
+sentences, headlines and numbers as the site, nothing more.
+
 The four theme families, in full, from GDELT's own theme tags. A name ending in `*`
 covers every theme that starts with it.
 
