@@ -147,13 +147,132 @@ button {
   white-space: nowrap;
 }
 
-.nav {
+/* The top line's centre: the nav, then the topic search. */
+.nav-row {
   grid-area: nav;
   align-self: center;
   justify-self: center;
   display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.nav {
+  display: flex;
   gap: 4px;
   background: var(--bg);
+}
+
+/* Topic search: a filter-style field and a listbox of up to 8 topics under it. */
+.topic {
+  position: relative;
+  flex: 0 1 220px;
+  min-width: 150px;
+}
+
+.topic-input {
+  display: block;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  padding: 0 8px;
+  border: 1px solid var(--hairline-mid);
+  border-radius: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 400 11px/1 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.topic-input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+.topic-input:focus-visible {
+  border-color: var(--fg);
+}
+
+.topic-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.topic-list,
+.topic-note {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 30;
+  min-width: 100%;
+  width: max-content;
+  max-width: min(360px, calc(100vw - 32px));
+  margin: 0;
+  border: 1px solid var(--fg);
+  background: var(--bg);
+}
+
+.topic-list {
+  padding: 0;
+  list-style: none;
+}
+
+.topic-note {
+  padding: 7px 8px;
+  color: var(--muted);
+  font: 400 11px/1.3 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.topic-list[hidden],
+.topic-note[hidden] {
+  display: none;
+}
+
+.topic-opt {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 28px;
+  padding: 7px 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.topic-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.topic-counts {
+  flex: none;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+.topic-opt:hover .topic-name {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* The Inversion Rule: the active option swaps ink and white. */
+.topic-opt[aria-selected='true'] {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+.topic-opt[aria-selected='true'] .topic-counts {
+  color: var(--bg);
 }
 
 .nav-item {
@@ -468,6 +587,21 @@ button {
 
 .col-totals dd {
   margin: 0;
+}
+
+/* The places index (places.html), under the totals. */
+.col-link {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  margin-top: 4px;
+  color: var(--fg);
+  font: 500 11px/1 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* Map ------------------------------------------------------------------------------ */
@@ -1242,6 +1376,11 @@ body.is-replay .map-frame {
 .panel-close:hover {
   background: var(--fg);
   color: var(--bg);
+}
+
+/* The PAGE link shares the close control's box; a link, so the default underline is dropped. */
+.panel-page {
+  text-decoration: none;
 }
 
 .panel-title {
@@ -2028,9 +2167,19 @@ a.article-title:visited,
     min-height: 64px;
   }
 
+  .nav-row {
+    justify-self: stretch;
+    flex-wrap: wrap;
+    row-gap: 6px;
+    margin: 0 0 8px;
+  }
+
   .nav {
-    justify-self: start;
-    margin: 0 0 8px -10px;
+    margin-left: -10px;
+  }
+
+  .topic {
+    flex: 0 1 280px;
   }
 
   .sentence {
@@ -2174,8 +2323,29 @@ a.article-title:visited,
     font-size: 15px;
   }
 
+  /* The search stacks under the nav, full width. */
+  .nav-row {
+    flex-direction: column;
+    align-items: stretch;
+    margin: 0 0 6px;
+  }
+
   .nav {
-    margin: 0 0 6px -10px;
+    align-self: flex-start;
+  }
+
+  .topic {
+    flex: none;
+    width: 100%;
+  }
+
+  .topic-input {
+    height: 36px;
+  }
+
+  .topic-opt {
+    min-height: 36px;
+    padding: 11px 8px;
   }
 
   .nav-item {

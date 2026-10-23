@@ -199,3 +199,9 @@ export interface BroadcastFile {
   baselineDays: number;
   slots: Slot[];
 }
+
+/** `/data/topics.json` (docs/DATA-CONTRACT.md "Topics"): [name, total, [[cellId, n], ...]] per topic. */
+export interface TopicsFile {
+  generatedAt: string;
+  topics: [string, number, [string, number][]][];
+}

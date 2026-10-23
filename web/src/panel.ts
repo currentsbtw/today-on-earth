@@ -85,6 +85,25 @@ const el = <K extends keyof HTMLElementTagNameMap>(tag: K, className: string, te
   return node;
 };
 
+/** Places with this many articles have a static page (scripts/build-places.mjs, PAGE_MIN). */
+const PAGE_MIN = 10;
+// PAGE: the open place's static page, in the sticky bar left of CLOSE and in its register
+// (the bar's mono label, the same box on every width), same tab. A plain link, so it is one
+// tab stop before CLOSE and opens with Enter like any link. In the bar only while it applies
+// (`.panel-close` sets a display, so `hidden` would not hide it).
+const pageLink = el('a', 'panel-close panel-page', 'Page');
+
+/** Shows PAGE for a current-snapshot place with a page; hides it otherwise. */
+function setPage(cell: { id: string; name: string; n: number } | null) {
+  if (cell && cell.n >= PAGE_MIN) {
+    pageLink.href = `place/${cell.id}.html`;
+    pageLink.setAttribute('aria-label', `Page for ${cell.name}`);
+    if (!pageLink.isConnected) closeButton.before(pageLink);
+  } else {
+    pageLink.remove();
+  }
+}
+
 /**
  * The place's counts as a mono table: articles, headlines (reprints collapsed), outlets,
  * the countries those outlets are based in, languages, and the countries other than its own
@@ -655,6 +674,7 @@ export function renderSignals(list: HTMLElement, when: HTMLElement, broadcast: B
 /** Opens the panel for a cell straight away, using the heat.json counts while the detail loads. */
 export function openLoading(cell: HeatCell, windowHours: number) {
   title.textContent = cell.name;
+  setPage(cell);
   setSummary(cell);
   setCounts(cell);
   setReach(cell, windowHours);
@@ -669,6 +689,7 @@ export function openLoading(cell: HeatCell, windowHours: number) {
 /** Fills the panel from the cell's detail file; returns whether `pin`'s story was found and pinned. */
 export function showDetail(detail: CellDetail, windowHours: number, pin: StoryPin | null = null): boolean {
   title.textContent = detail.name;
+  setPage(detail);
   setSummary(detail);
   setCounts(detail);
   setReach(detail, windowHours);
@@ -688,6 +709,7 @@ export function showDetail(detail: CellDetail, windowHours: number, pin: StoryPi
 /** A replay cell that is not in the current snapshot: there is no detail file for it. */
 export function openMissing(n: number) {
   title.textContent = plural(n, 'article', 'articles');
+  setPage(null);
   setSummary(null);
   setCounts(null);
   setReach(null);

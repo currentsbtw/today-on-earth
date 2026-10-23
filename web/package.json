@@ -6,6 +6,7 @@
   "scripts": {
     "predev": "node scripts/seed-dev-data.mjs",
     "dev": "vite --port 5173 --host",
+    "prebuild": "node scripts/build-places.mjs",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host",
     "fixtures": "node scripts/make-fixtures.mjs",

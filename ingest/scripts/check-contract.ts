@@ -15,6 +15,7 @@ import {
 } from "../src/broadcast.ts";
 import { reprintKey } from "../src/reprints.ts";
 import { MAX_STORIES } from "../src/stories.ts";
+import { MAX_TOPICS, TOPIC_MAX_CELLS, TOPIC_MIN_TOTAL, isJunkTopic } from "../src/topics.ts";
 import { checkStepFields } from "./history-step-check.ts";
 
 const dir = resolve(process.argv[2] ?? process.env.OUT_DIR ?? join(fileURLToPath(new URL("..", import.meta.url)), "out"));
@@ -476,15 +477,77 @@ if (!existsSync(broadcastPath)) {
   broadcastSummary = `${filled.length}/6 slots filled (${filled.join(", ") || "none"})`;
 }
 
+// ---- topics.json (contract section "Topics") ----
+let topicsSummary = "missing";
+const topicsPath = join(dir, "topics.json");
+if (!existsSync(topicsPath)) {
+  err("topics", "missing topics.json");
+} else {
+  const topicsBytes = readFileSync(topicsPath);
+  const tf = JSON.parse(topicsBytes.toString("utf8")) as Record<string, unknown>;
+  exactKeys("topics", tf, ["generatedAt", "topics"]);
+  if (tf.generatedAt !== heat.generatedAt) err("topics.generatedAt", `differs from heat.json (${String(tf.generatedAt)} vs ${String(heat.generatedAt)})`);
+  const list = Array.isArray(tf.topics) ? (tf.topics as unknown[]) : (err("topics.topics", "not an array"), []);
+  if (list.length > MAX_TOPICS) err("topics.topics", `${list.length} > ${MAX_TOPICS}`);
+  // n of (name, cell) recomputed from the cell files: the sum of n of the cell's stories carrying it.
+  const storyN = new Map<string, number>();
+  for (const { cell, s } of allStories) {
+    if (!Array.isArray(s.entities) || typeof s.n !== "number") continue;
+    for (const e of new Set(s.entities as string[])) {
+      const k = `${String(cell.id)}
+${e}`;
+      storyN.set(k, (storyN.get(k) ?? 0) + s.n);
+    }
+  }
+  const names = new Set<string>();
+  let prev: [string, number] | null = null;
+  list.forEach((t, i) => {
+    const w = `topics.topics[${i}]`;
+    if (!Array.isArray(t) || t.length !== 3 || typeof t[0] !== "string" || !Number.isInteger(t[1]) || !Array.isArray(t[2])) {
+      return err(w, `expected [name, total, [[cellId, n], ...]], got ${JSON.stringify(t).slice(0, 120)}`);
+    }
+    const [name, total, tcells] = t as [string, number, unknown[]];
+    if (names.has(name)) err(w, `duplicate name ${JSON.stringify(name)}`);
+    names.add(name);
+    if (name !== name.toLowerCase()) err(w, `name not lowercase: ${JSON.stringify(name)}`);
+    if (isJunkTopic(name)) err(w, `junk name ${JSON.stringify(name)}`);
+    if (total < TOPIC_MIN_TOTAL) err(w, `total ${total} < ${TOPIC_MIN_TOTAL}`);
+    if (prev && (prev[1] < total || (prev[1] === total && prev[0] >= name))) err(w, "not sorted by total desc, then name");
+    prev = [name, total];
+    if (tcells.length === 0 || tcells.length > TOPIC_MAX_CELLS) err(w, `${tcells.length} cells, expected 1..${TOPIC_MAX_CELLS}`);
+    let sum = 0;
+    const ids = new Set<string>();
+    tcells.forEach((p, j) => {
+      const pw = `${w}[2][${j}]`;
+      if (!Array.isArray(p) || p.length !== 2 || typeof p[0] !== "string" || !Number.isInteger(p[1]) || p[1] < 1) {
+        return err(pw, `expected [cellId, positive int], got ${JSON.stringify(p)}`);
+      }
+      const [id, n] = p as [string, number];
+      if (!heatById.has(id)) err(pw, `${id} is not a cell of heat.json`);
+      if (ids.has(id)) err(pw, `duplicate cell ${id}`);
+      ids.add(id);
+      sum += n;
+      const q = tcells[j - 1] as [string, number] | undefined;
+      if (Array.isArray(q) && (q[1] < n || (q[1] === n && q[0] >= id))) err(pw, "cells not sorted by n desc, then id");
+      const expected = storyN.get(`${id}
+${name}`) ?? 0;
+      if (n !== expected) err(pw, `n ${n} != ${expected}, the sum of n of that cell's stories carrying ${JSON.stringify(name)}`);
+    });
+    if (sum !== total) err(w, `total ${total} != sum of its cells ${sum}`);
+  });
+  topicsSummary = `${topicsBytes.length} bytes, ${list.length} topics`;
+}
+
 console.log(`checked ${dir}`);
 console.log(`  heat.json: ${bytes} bytes, ${cells.length} cells`);
 console.log(`  cell files: ${files.length}, articles checked: ${articlesChecked}, stories checked: ${storiesChecked}`);
 console.log(`  history: ${frameCount} frames, largest frame ${largestFrame} bytes`);
 console.log(`  broadcast: ${broadcastSummary}`);
+console.log(`  topics: ${topicsSummary}`);
 for (const w of warnings) console.log(`  WARN ${w}`);
 if (errors.length) {
   console.log(`FAIL: ${errors.length}${errors.length >= 200 ? "+" : ""} violations`);
   for (const e of errors) console.log(`  - ${e}`);
   process.exit(1);
 }
-console.log("OK: heat.json, every cell file, history/index.json, every frame and broadcast.json match docs/DATA-CONTRACT.md");
+console.log("OK: heat.json, every cell file, history/index.json, every frame, broadcast.json and topics.json match docs/DATA-CONTRACT.md");

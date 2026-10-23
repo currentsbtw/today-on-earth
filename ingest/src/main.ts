@@ -28,6 +28,7 @@ import { CarryLoadError, resolveCarrySource } from "./carry.ts";
 import { appendFrame, arrivedUnits, buildHistoryEntry, buildIndex, encodeHistory, frameFileName, loadHistory, previousFrame, stepArrivals, toFrame, type HistoryEntry } from "./history.ts";
 import { resolvePlacement } from "./place.ts";
 import { encodeState, loadState, type IngestState } from "./state.ts";
+import { buildTopics } from "./topics.ts";
 import type { ArticleRecord } from "./types.ts";
 import { coveredHours, mergeRecords, planSlots, pruneProcessed, type FeedProgress } from "./window.ts";
 
@@ -174,6 +175,9 @@ async function main(): Promise<number> {
   await mapLimit(snapshot.cells, 32, (cell) => writeFile(join(cellsDir, `${cell.id}.json`), JSON.stringify(cell)));
   const heatJson = JSON.stringify(snapshot.heat);
   await writeFile(join(outDir, "heat.json"), heatJson);
+  const topics = buildTopics(snapshot.cells, snapshot.heat.generatedAt, snapshot.storyNames);
+  const topicsJson = JSON.stringify(topics);
+  await writeFile(join(outDir, "topics.json"), topicsJson);
   const broadcast = buildBroadcastSafe({ heat: snapshot.heat, cells: snapshot.cells, storyTagged: snapshot.storyTagged, baselineSince: nextBaseline.since }, log);
   await writeFile(join(outDir, "broadcast.json"), JSON.stringify(broadcast));
   const stateBytes = encodeState({ feeds, records }, snapshot.heat.generatedAt);
@@ -210,7 +214,7 @@ async function main(): Promise<number> {
     `ingest: files fetched=${ok.length} missing=${missing.length} failed=${failed.length}; ` +
       `new records=${ok.reduce((s, r) => s + r.records.length, 0)}; ` +
       `window articles=${t.articles} (unplaced=${t.unplaced}) outlets=${t.outlets} countries=${t.countries} cells=${t.cells}; ` +
-      `heat.json=${Buffer.byteLength(heatJson)}B state.json.gz=${stateBytes.length}B; ` +
+      `heat.json=${Buffer.byteLength(heatJson)}B topics=${topics.topics.length} topics.json=${Buffer.byteLength(topicsJson)}B state.json.gz=${stateBytes.length}B; ` +
       `history frames=${history.length} added=${historyEntry.added ?? "unknown"} largest frame=${largestFrame}B history.json.gz=${historyBytes.length}B; ` +
       `baseline days=${Object.keys(nextBaseline.days).length} complete=${baseline.baselineDays} new=${firstMerged.length} baseline.json.gz=${baselineBytes.length}B; ` +
       `${((Date.now() - started) / 1000).toFixed(1)}s`,

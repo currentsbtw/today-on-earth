@@ -1,6 +1,6 @@
 import './style.css';
 import { loadBroadcast, SLOT_IDS, SLOT_LABELS, type Broadcast, type Slot, type SlotId } from './broadcast';
-import { isCellId, loadCell, loadHeat, siteUrl, type FrameRow, type Heat, type HeatCell, type Totals } from './data';
+import { isCellId, loadCell, loadHeat, loadTopics, siteUrl, type FrameRow, type Heat, type HeatCell, type TopicEntry, type Totals } from './data';
 import { count, plural, shortName, utcDayTime, utcTime } from './format';
 import type { HeatMode, MapCell, WorldMap } from './map';
 import * as panel from './panel';
@@ -63,15 +63,28 @@ function preloadMapFiles() {
 }
 
 /** The live snapshot's largest n: the scale of every frame's marks. */
-const maxOf = (cells: HeatCell[]) => Math.max(1, ...cells.map((c) => c.n));
+const maxOf = (cells: { n: number }[]) => Math.max(1, ...cells.map((c) => c.n));
 
 /** The brightness mode the map starts in: "vs. normal" only when kept and available. */
 const initialMode = (heat: Heat): HeatMode =>
   (heat.baselineDays ?? 0) >= MIN_BASELINE_DAYS && readPref(MODE_PREF) === 'normal' ? 'normal' : 'articles';
 
-function setStatus(text: string) {
+// The status line: topic mode's line covers whatever the page last said, which comes back
+// when topic mode ends.
+let baseStatus = status.textContent ?? '';
+let topicStatus = '';
+function renderStatus() {
+  const text = topicStatus || baseStatus;
   status.textContent = text;
   status.hidden = !text;
+}
+function setStatus(text: string) {
+  baseStatus = text;
+  renderStatus();
+}
+function setTopicStatus(text: string) {
+  topicStatus = text;
+  renderStatus();
 }
 
 // The clock ---------------------------------------------------------------------
@@ -277,6 +290,165 @@ colList.addEventListener('keydown', (e) => {
   buttons[next].focus();
 });
 
+// The topic search -----------------------------------------------------------------
+// A combobox in the top line: topics.json loads on the field's first focus and is kept;
+// typing matches names by substring (in memory, at most 5,000 names), largest total first.
+// Choosing a topic hands it to start(), which owns topic mode (topicChoose/topicClear).
+
+const topicInput = $<HTMLInputElement>('topic-input');
+const topicList = $<HTMLUListElement>('topic-list');
+const topicNote = $('topic-note');
+const TOPIC_ROWS = 8;
+const TOPIC_DEBOUNCE_MS = 100;
+let topics: TopicEntry[] | null = null;
+let topicsPromise: Promise<TopicEntry[]> | null = null;
+let topicMatches: TopicEntry[] = [];
+let topicActive = -1;
+let topicTimer = 0;
+/** Set by start() once the map and the replay are up; until then a choice waits in pendingTopic. */
+let pendingTopic: TopicEntry | null = null;
+let topicChoose: (entry: TopicEntry) => void = (entry) => void (pendingTopic = entry);
+let topicClear: () => void = () => void (pendingTopic = null);
+
+const isTopic = (t: unknown): t is TopicEntry =>
+  Array.isArray(t) && typeof t[0] === 'string' && !!t[0] && typeof t[1] === 'number' && Array.isArray(t[2]);
+
+/** The topics, fetched once; a failure lets the next call try again. */
+function ensureTopics(): Promise<TopicEntry[]> {
+  topicsPromise ??= loadTopics().then(
+    (file) => (topics = file.topics.filter(isTopic).sort((a, b) => b[1] - a[1])),
+    (err: unknown) => {
+      topicsPromise = null;
+      throw err;
+    },
+  );
+  return topicsPromise;
+}
+
+function setTopicNote(text: string) {
+  topicNote.textContent = text;
+  topicNote.hidden = !text;
+}
+
+function renderTopicList() {
+  const open = topicMatches.length > 0;
+  topicList.replaceChildren(
+    ...topicMatches.map((t, i) => {
+      const li = document.createElement('li');
+      li.id = `topic-opt-${i}`;
+      li.className = 'topic-opt';
+      li.setAttribute('role', 'option');
+      li.setAttribute('aria-selected', String(i === topicActive));
+      const name = Object.assign(document.createElement('span'), { className: 'topic-name', textContent: t[0] });
+      const counts = Object.assign(document.createElement('span'), {
+        className: 'topic-counts',
+        textContent: `${count(t[1])} ART · ${count(t[2].length)} PL`,
+      });
+      li.setAttribute('aria-label', `${t[0]}, ${plural(t[1], 'article', 'articles')} over ${plural(t[2].length, 'place', 'places')}`);
+      li.append(name, counts);
+      // Keep focus in the field: the choice happens on click.
+      li.addEventListener('mousedown', (e) => e.preventDefault());
+      li.addEventListener('click', () => chooseTopicEntry(t));
+      return li;
+    }),
+  );
+  topicList.hidden = !open;
+  topicInput.setAttribute('aria-expanded', String(open));
+  if (open && topicActive >= 0) topicInput.setAttribute('aria-activedescendant', `topic-opt-${topicActive}`);
+  else topicInput.removeAttribute('aria-activedescendant');
+}
+
+function closeTopicList() {
+  topicMatches = [];
+  topicActive = -1;
+  setTopicNote('');
+  renderTopicList();
+}
+
+/** Matches the field's text against the topics (loading them first if needed). */
+function searchTopics() {
+  window.clearTimeout(topicTimer);
+  topicTimer = 0;
+  const q = topicInput.value.trim().toLowerCase();
+  if (!q) {
+    closeTopicList();
+    topicClear();
+    return;
+  }
+  if (!topics) {
+    setTopicNote('Loading topics');
+    ensureTopics().then(
+      () => {
+        if (document.activeElement === topicInput) searchTopics();
+        else setTopicNote('');
+      },
+      () => setTopicNote('Topics could not be loaded'),
+    );
+    return;
+  }
+  const found: TopicEntry[] = [];
+  for (const t of topics) {
+    if (t[0].toLowerCase().includes(q)) found.push(t);
+    if (found.length === TOPIC_ROWS) break;
+  }
+  topicMatches = found;
+  topicActive = found.length ? 0 : -1;
+  setTopicNote(found.length ? '' : `No topic matches "${topicInput.value.trim()}"`);
+  renderTopicList();
+}
+
+function chooseTopicEntry(entry: TopicEntry) {
+  topicInput.value = entry[0];
+  closeTopicList();
+  topicChoose(entry);
+}
+
+/** Escape: clears the field and ends topic mode. */
+function clearTopicField() {
+  window.clearTimeout(topicTimer);
+  topicTimer = 0;
+  topicInput.value = '';
+  closeTopicList();
+  topicClear();
+}
+
+topicInput.addEventListener('focus', () => void ensureTopics().catch(() => {}));
+topicInput.addEventListener('input', () => {
+  window.clearTimeout(topicTimer);
+  topicTimer = window.setTimeout(searchTopics, TOPIC_DEBOUNCE_MS);
+});
+topicInput.addEventListener('blur', () => {
+  window.clearTimeout(topicTimer);
+  topicTimer = 0;
+  closeTopicList();
+});
+topicInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    // One Escape, one effect: an open place stays open while the field clears.
+    e.stopPropagation();
+    clearTopicField();
+    return;
+  }
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    // Typing and Enter faster than the debounce: match now.
+    if (topicTimer || (!topicMatches.length && topicInput.value.trim())) searchTopics();
+    const pick = topicMatches[Math.max(0, topicActive)];
+    if (pick) chooseTopicEntry(pick);
+    return;
+  }
+  if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+  e.preventDefault();
+  if (!topicMatches.length) {
+    if (topicInput.value.trim()) searchTopics();
+    return;
+  }
+  const last = topicMatches.length - 1;
+  topicActive = e.key === 'ArrowDown' ? Math.min(last, topicActive + 1) : Math.max(0, topicActive - 1);
+  renderTopicList();
+});
+
 // The right column ------------------------------------------------------------------
 // Wide screens: the column shows Signals (the default) or Replay, chosen in the nav; a
 // selected place overlays it, and closing the place brings back what was there. Below
@@ -362,11 +534,17 @@ async function start() {
   // The signal the open place came from (`s=` in the permalink): its story leads the panel.
   let pinSlot: SlotId | null = null;
 
-  // Permalink: "replay" while the column shows the replay, then c=<cellId>, s=<slot id> when
-  // the place was opened from a signal, and t=<frame stamp>; keys at their default are
-  // dropped, so the Signals state with nothing selected has no hash at all.
+  // The topic on the map (topic mode), or null for the live snapshot. Topic mode is always
+  // the live frame: starting replay ends it.
+  let topic: { name: string; total: number; places: number; cells: MapCell[]; max: number } | null = null;
+
+  // Permalink: "replay" while the column shows the replay, then q=<topic> in topic mode,
+  // c=<cellId>, s=<slot id> when the place was opened from a signal, and t=<frame stamp>;
+  // keys at their default are dropped, so the Signals state with nothing selected has no
+  // hash at all.
   const writeHash = () => {
     const params = new URLSearchParams();
+    if (topic) params.set('q', topic.name);
     if (selected) params.set('c', selected);
     if (selected && pinSlot) params.set('s', pinSlot);
     if (replay && !frame.live) params.set('t', replay.stamp(frame.index));
@@ -507,7 +685,7 @@ async function start() {
   // Places: the cells on screen (this frame's, names from live where known) as the ranked
   // column, the keyboard path to every place.
   const shownCells = (): MapCell[] =>
-    shownRows ? shownRows.map(([id, lat, lon, n]) => ({ id, lat, lon, n, name: live.get(id)?.name ?? '' })) : liveCells;
+    topic ? topic.cells : shownRows ? shownRows.map(([id, lat, lon, n]) => ({ id, lat, lon, n, name: live.get(id)?.name ?? '' })) : liveCells;
   const coords = (lat: number, lon: number) =>
     `${Math.abs(lat).toFixed(1)}°${lat >= 0 ? 'N' : 'S'} ${Math.abs(lon).toFixed(1)}°${lon >= 0 ? 'E' : 'W'}`;
   const placeRows = (): PlaceRow[] =>
@@ -593,7 +771,10 @@ async function start() {
   let mode: HeatMode = initialMode(heat);
 
   const redraw = () => {
-    if (shownRows) {
+    if (topic) {
+      // Only the topic's cells, sized by the topic's n against its own largest.
+      map.setCells(topic.cells, topic.max, 'articles');
+    } else if (shownRows) {
       // Replay frames carry no baseline, so a past frame borrows the live `b` of the same
       // cell. A cell absent from the live snapshot has no `b`: it keeps its absolute weight
       // and shows no ratio (DATA-CONTRACT "Baseline").
@@ -643,14 +824,34 @@ async function start() {
     settleStatus();
   }
 
+  // Topic mode ----------------------------------------------------------------------
+  const legendMax = $('legend-max');
+  /** The sentence for topic mode, over the live totals' other lines. */
+  const showTopicSentence = (t: NonNullable<typeof topic>) => {
+    sentence.textContent = `${t.name.toUpperCase()}: ${plural(t.total, 'article', 'articles')} over ${plural(t.places, 'place', 'places')}.`;
+  };
+  /** Ends topic mode's own parts (field, status, legend, brightness toggle); the caller redraws. */
+  const dropTopic = () => {
+    topic = null;
+    topicInput.value = '';
+    closeTopicList();
+    setTopicStatus('');
+    legendMax.textContent = count(liveMax);
+    modeControl.hidden = !relativeAvailable;
+    modeNote.hidden = mode !== 'normal';
+  };
+
   const showFrame = (fv: FrameView) => {
     frame = fv;
+    // A past frame ends topic mode (the topic index describes the live snapshot only).
+    if (topic && !fv.live) dropTopic();
     // Past frame: live names where the cell still exists, otherwise just counts.
     shownRows = fv.rows;
     redraw();
     refreshCol();
     if (fv.live) {
       showTotals(heat.totals, heat.generatedAt, false);
+      if (topic) showTopicSentence(topic);
       setStamp(heat.generatedAt);
     } else {
       showTotals(fv.shown.totals, fv.shown.at, true);
@@ -665,11 +866,86 @@ async function start() {
     showFrame,
   );
 
-  // An absent key means its default (Signals, live frame, no cell); an unknown value is
-  // ignored. A frame stamp implies the replay.
+  /** Topic mode on: the map, the sentence, the column, the legend and the status follow the topic. */
+  const enterTopic = (entry: TopicEntry) => {
+    // Topic mode is the live frame: a past frame on screen goes back to live first.
+    if (replay && !frame.live) replay.selectLive();
+    const cells: MapCell[] = [];
+    for (const pair of entry[2]) {
+      const [id, n] = pair;
+      const now = live.get(id);
+      if (now && typeof n === 'number' && n > 0) cells.push({ id, lat: now.lat, lon: now.lon, name: now.name, n });
+    }
+    topic = { name: entry[0], total: entry[1], places: entry[2].length, cells, max: maxOf(cells) };
+    topicInput.value = entry[0];
+    redraw();
+    refreshCol();
+    showTotals(heat.totals, heat.generatedAt, false);
+    showTopicSentence(topic);
+    legendMax.textContent = count(topic.max);
+    modeControl.hidden = true;
+    modeNote.hidden = true;
+    setTopicStatus(`topic: ${topic.name} · press Escape to clear`);
+    writeHash();
+  };
+  /** Topic mode off: everything back to the live snapshot as it was. */
+  const clearTopic = () => {
+    if (!topic) return;
+    dropTopic();
+    redraw();
+    refreshCol();
+    if (frame.live) showTotals(heat.totals, heat.generatedAt, false);
+    writeHash();
+  };
+  topicChoose = enterTopic;
+  topicClear = clearTopic;
+  if (pendingTopic) {
+    enterTopic(pendingTopic);
+    pendingTopic = null;
+  }
+  // Escape anywhere ends topic mode, unless it is closing an open place (one key, one effect).
+  // Capture phase: runs before the panel's own Escape, while it still knows the panel is open.
+  document.addEventListener(
+    'keydown',
+    (e) => {
+      if (e.key === 'Escape' && topic && !panel.isOpen() && e.target !== topicInput) clearTopicField();
+    },
+    true,
+  );
+  // Using the replay ends topic mode first (capture phase: before the replay's own handlers).
+  const scrubber = $('scrubber');
+  scrubber.addEventListener('pointerdown', (e) => {
+    if ((e.target as Element).closest('#bars')) clearTopic();
+  }, true);
+  scrubber.addEventListener('click', (e) => {
+    if ((e.target as Element).closest('button, tr')) clearTopic();
+  }, true);
+  scrubber.addEventListener('input', clearTopic, true);
+  scrubber.addEventListener('keydown', (e) => {
+    if (e.key === ' ' || e.key === 'Enter' || e.key === 'End') clearTopic();
+  }, true);
+
+  /** A shared q= link: the topic by its exact name, once topics.json is in. */
+  const openTopicByName = async (name: string) => {
+    const list = await ensureTopics().catch(() => null);
+    const entry = list?.find((t) => t[0].toLowerCase() === name);
+    // The hash may have moved on while the topics loaded.
+    if (new URLSearchParams(location.hash.slice(1)).get('q')?.trim().toLowerCase() !== name) return;
+    if (entry) enterTopic(entry);
+    else writeHash(); // an unknown topic leaves no q=
+  };
+
+  // An absent key means its default (Signals, live frame, no cell, no topic); an unknown
+  // value is ignored. A frame stamp implies the replay; a topic implies the live frame.
   const applyHash = async () => {
     const params = new URLSearchParams(location.hash.slice(1));
-    const t = params.get('t');
+    const q = params.get('q')?.trim().toLowerCase() ?? '';
+    if (q) {
+      if (q !== topic?.name.toLowerCase()) void openTopicByName(q);
+    } else if (topic) {
+      clearTopicField();
+    }
+    const t = q ? null : params.get('t');
     const nextView: View = params.has('replay') || t ? 'replay' : 'signals';
     if (nextView !== view) setView(nextView);
     if (replay && !t) {

@@ -60,6 +60,11 @@ export interface Snapshot {
   storiesMs: number;
   /** Per story: how many of its articles carry any kind (ingest-internal, for the broadcast). */
   storyTagged: Map<Story, number>;
+  /**
+   * Per story: how many of its leading `entities` are persons or organisations; the rest are
+   * theme words (ingest-internal, for topics.json).
+   */
+  storyNames: Map<Story, number>;
 }
 
 /**
@@ -99,6 +104,7 @@ export function buildSnapshot(
   const unplaced = articleUnits(unplacedRecords, keyer);
   let articles = unplaced;
   const storyTagged = new Map<Story, number>();
+  const storyNames = new Map<Story, number>();
   for (const [id, list] of byCell) {
     if (list.length < MIN_CELL_ARTICLES) {
       articles += list.length; // a 1-article cell holds no copies
@@ -115,8 +121,11 @@ export function buildSnapshot(
       const key = keyer.keyOf(r);
       return key ? copies.get(key)! - 1 : 0;
     };
-    const { stories, unclustered, tagged } = timed(() => buildStories(list, keyer, s.home));
-    stories.forEach((story, k) => storyTagged.set(story, tagged[k]));
+    const { stories, unclustered, tagged, names } = timed(() => buildStories(list, keyer, s.home));
+    stories.forEach((story, k) => {
+      storyTagged.set(story, tagged[k]);
+      storyNames.set(story, names[k]);
+    });
     cellFiles.set(id, {
       id,
       name: s.name,
@@ -156,5 +165,5 @@ export function buildSnapshot(
     totals: { articles, outlets: outlets.size, countries: countries.size, cells: heatCells.length, unplaced, reprints },
     cells: heatCells,
   };
-  return { heat, cells: heatCells.map((c) => cellFiles.get(c.id)!), storiesMs, storyTagged };
+  return { heat, cells: heatCells.map((c) => cellFiles.get(c.id)!), storiesMs, storyTagged, storyNames };
 }

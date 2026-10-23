@@ -164,3 +164,17 @@ export async function loadFrame(file: string): Promise<FrameRow[]> {
   const frame = await getJson<{ cells?: FrameRow[] }>(`data/history/${file}`);
   return Array.isArray(frame.cells) ? frame.cells : [];
 }
+
+/** One topic: [name (lowercase, as GDELT gives it), total articles, [[cellId, n], ...] largest first]. */
+export type TopicEntry = [name: string, total: number, cells: [cellId: string, n: number][]];
+
+/** data/topics.json: the stories' persons and organisations by place, largest total first. */
+export interface TopicsFile {
+  generatedAt: string;
+  topics: TopicEntry[];
+}
+
+export async function loadTopics(): Promise<TopicsFile> {
+  const file = await getJson<Partial<TopicsFile>>('data/topics.json');
+  return { generatedAt: String(file.generatedAt ?? ''), topics: Array.isArray(file.topics) ? file.topics : [] };
+}

@@ -36,12 +36,22 @@
           <svg class="globe" viewBox="0 0 24 24" width="48" height="48" shape-rendering="crispEdges" aria-hidden="true"><path d="M10 0h4v1h-4zM7 1h3v1h-3zM14 1h3v1h-3zM5 2h2v1h-2zM17 2h2v1h-2zM4 3h16v1h-16zM3 4h1v1h-1zM9 4h1v1h-1zM14 4h1v1h-1zM20 4h1v1h-1zM2 5h1v1h-1zM8 5h1v1h-1zM15 5h1v1h-1zM21 5h1v1h-1zM2 6h1v1h-1zM8 6h1v1h-1zM15 6h1v1h-1zM21 6h1v1h-1zM1 7h22v1h-22zM1 8h1v1h-1zM22 8h1v1h-1zM1 9h1v1h-1zM22 9h1v1h-1zM0 10h1v1h-1zM23 10h1v1h-1zM0 11h1v1h-1zM23 11h1v1h-1zM0 12h1v1h-1zM23 12h1v1h-1zM0 13h1v1h-1zM23 13h1v1h-1zM1 14h1v1h-1zM22 14h1v1h-1zM1 15h1v1h-1zM22 15h1v1h-1zM1 16h22v1h-22zM2 17h1v1h-1zM8 17h1v1h-1zM15 17h1v1h-1zM21 17h1v1h-1zM2 18h1v1h-1zM8 18h1v1h-1zM15 18h1v1h-1zM21 18h1v1h-1zM3 19h1v1h-1zM9 19h1v1h-1zM14 19h1v1h-1zM20 19h1v1h-1zM4 20h16v1h-16zM5 21h2v1h-2zM17 21h2v1h-2zM7 22h3v1h-3zM14 22h3v1h-3zM10 23h4v1h-4z" /><clipPath id="mark-band"><path d="M1 8h22v8H1z" /></clipPath><g clip-path="url(#mark-band)"><g class="ring"><path transform="translate(0 9)" d="M1 0h4v1h-4zM0 1h1v4h-1zM5 1h1v4h-1zM1 5h4v1h-4zM2 2h2v2h-2z" /></g></g></svg>
           <span class="wordmark">Today On Earth</span>
         </a>
+        <!-- The nav and the topic search share the top line's centre; below 1100px they stack
+             under the sentence, the search under the nav on phones. -->
+        <div class="nav-row">
         <nav class="nav" aria-label="Views">
           <button id="signals-button" class="nav-item" type="button" aria-controls="signals-col" aria-current="true">Signals</button>
           <button id="places-button" class="nav-item nav-stacked" type="button" aria-controls="places-col">Places</button>
           <button id="replay-button" class="nav-item" type="button" aria-controls="replay-col">Replay</button>
           <a class="nav-item" href="./about.html">Method</a>
         </nav>
+        <div class="topic" role="search">
+          <label class="visually-hidden" for="topic-input">Search a topic</label>
+          <input id="topic-input" class="topic-input" type="search" placeholder="SEARCH A TOPIC" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="topic-list" autocomplete="off" spellcheck="false" />
+          <ul id="topic-list" class="topic-list" role="listbox" aria-label="Topics" hidden></ul>
+          <p id="topic-note" class="topic-note" role="status" hidden></p>
+        </div>
+        </div>
         <div class="clock">
           <p class="clock-now"><span id="clock-date" class="clock-date"></span> <time id="clock" class="clock-time"></time></p>
           <p class="snapshot" id="snapshot"></p>
@@ -62,6 +72,7 @@
         <ol id="places-col-list" class="rank-list"></ol>
         <p id="places-col-empty" class="col-empty" hidden></p>
         <dl id="col-totals" class="col-totals"></dl>
+        <a class="col-link" href="./places.html">All places</a>
       </section>
 
       <div class="map-wrap">

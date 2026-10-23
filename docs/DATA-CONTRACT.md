@@ -397,6 +397,42 @@ A story's tagged share = its articles with any kind / its `n`. Records carried f
 this field existed (state version 4 and older) have no kinds and count as untagged, so
 "ordinary" may be loose during the first 24 h after the deploy that added it.
 
+## Topics (added 2026-10-23): `/data/topics.json`  (one file, written every run, fetched when the search is first used)
+
+Where each person and organisation is being talked about: for every name the stories carry,
+the places whose stories mention it and how many articles that is. The site uses it to light
+the map by topic ("where is Starlink being talked about"). Like the stories it comes from, it
+is GDELT's own tagging, counted; no model and no text of ours.
+
+```jsonc
+{
+  "generatedAt": "2026-10-23T19:14:58Z",   // == heat.json
+  "topics": [   // largest total first, ties by name; at most 5,000
+    ["donald trump", 1312, [["832aa8fffffffff", 212], ["831f8dfffffffff", 96], …]],  // [name, total, [[cellId, n], …]]
+    ["nato", 455, [["831fa4fffffffff", 80], …]]
+  ]
+}
+```
+
+- `name`: a person or organisation exactly as it appears in a story's `entities` (lowercase,
+  as GDELT spells it). Theme words, which only top up a story's `entities` when it has fewer
+  than two names, are never topics.
+- `n` of a cell: the sum of `n` over that cell's stories whose `entities` carry the name. An
+  article counts once per story, so `n` <= the cell's `n`. Articles outside every story
+  (`unclustered`) are not counted.
+- Cells: at most 60 per topic, largest `n` first, ties by cell id ascending. Every `cellId`
+  is a cell of `heat.json` (and has a cell file).
+- `total`: the sum of the listed cells' `n` (only the kept 60, not every cell). A topic needs
+  `total` >= 10.
+- Junk names are dropped before counting: shorter than 4 characters, starting with "a ",
+  "an " or "the " (GDELT's names from translated text, "a prosecution national terrorism"),
+  a single generic word from a short deny list (news, police, government, people, city,
+  state, county, court, university, company, minister, president, hotel, young), or nothing
+  but digits, punctuation and spaces. The noise that remains ranks low, because topics are
+  ordered by volume.
+- The thresholds and the deny list are constants in `ingest/src/topics.ts`. The file is
+  rebuilt from scratch every run; it describes the current snapshot only and has no history.
+
 ## Archive (GitHub Releases, added 2026-10-21)
 
 Nothing older than 24 h stays on the site, so the Snapshot workflow also uploads every

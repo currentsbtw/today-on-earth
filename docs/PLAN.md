@@ -940,6 +940,62 @@ earlier than today, and a screenshot diff between the last pre-paint frame and t
 first frame that shows only the land outlines and labels appearing, with every dot in the
 same place.
 
+## Findability: place pages and topic search (decided 2026-10-23, shipped the same day)
+
+Why: everything is one page behind a hash fragment, so search engines index nothing and a
+visitor cannot ask "where is X being talked about". Live sizing (18:30 UTC): 3,676 cells, of
+which 1,631 have 10+ articles and 576 have 50+; a cell file is up to ~170 KB (Paris, 30
+stories); story entities are GDELT persons and organisations, noisy on translated text
+("a prosecution national terrorism", "hotel of city"), so a topic index must rank by volume
+and filter the obvious junk.
+
+Decisions:
+1. **Static place pages**, generated at build time from the data already in
+   `web/public/data` by `web/scripts/build-places.mjs` (a `prebuild` step; the ingest is
+   untouched): one `place/<cellId>.html` per cell with 10+ articles (about 1,600 pages, a
+   few KB each), plus `places.html` listing every cell with 2+ articles (linking the ones
+   that have a page) and `sitemap.xml` (+ `robots.txt` pointing at it). Stable URLs by cell
+   id; the place's name lives in the title. Each page: title "<name>: <n> articles from <o>
+   outlets in the last 24 hours · Today On Earth", a description from the lead story, the
+   canonical, the site's OG image, the brand line, the name as h1, the counts sentence, the
+   snapshot time, OPEN ON THE MAP (../#c=<id>), the stories (headline linked to the outlet,
+   credit, counts, entities), the outlets, outlet countries and languages, the newest
+   articles, the method link and the attribution. The about page's reading-column register
+   (DESIGN.md), inline CSS, no JavaScript, under 20 KB. The panel head gets a PAGE link to
+   the open place's page and the Places column foot a link to the places index.
+2. **A topic index** written by the ingest: `data/topics.json` = `{ generatedAt, topics:
+   [[name, total, [[cellId, n], ...]], ...] }` from the stories' displayed persons and
+   organisations: per cell an entity's n is the sum of the n of the cell's stories that
+   carry it; entities kept when their total is 10+ and they are not junk (shorter than 4
+   characters, starting with "a ", "an ", "the ", or purely generic words on a short deny
+   list); at most 60 cells per entity (largest first) and at most 5,000 entities (largest
+   total first). Documented in DATA-CONTRACT and checked by check-contract.
+3. **Topic search on the map**: a search field in the header ("search a topic"), loading
+   topics.json on first focus; typing shows up to 8 matches (name · total · places) by
+   substring, ranked by total; choosing one enters topic mode: the map shows only that
+   topic's cells sized by the topic's n (scaled to the topic's largest), the sentence reads
+   "<NAME>: <total> articles over <places> places.", the Places column lists those cells by
+   the topic's n, and the permalink carries `q=<name>`. Clearing the field, Escape, or
+   starting replay returns to live. Opening a place in topic mode opens it as today
+   (pinning the matching story first is a follow-up). No accounts, no server.
+
+**Status 2026-10-23 ~20:00 UTC: shipped.** Built as decided with these notes: the place
+pages keep every story (a 30-story place is ~35 KB raw, ~8 KB gzipped; 26 of 890 local pages
+exceeded 20 KB); `robots.txt` under the project path is not read by crawlers (only the
+domain root is), so the sitemap must be submitted in Google Search Console (owner's action)
+or listed in a root robots.txt of a user-site repo; the topic index on a 2 h window had 340
+entities (21 KB), the bottom of the list still carries translated-text junk ("center
+hospital"), ranked out of sight by volume; the ingest passes the per-story count of name
+entities to the index so theme words never enter it; in topic mode the column-totals block
+still shows the live totals; a partial query typed over an active topic stays in the field
+on blur. The archive step does not upload topics.json.
+
+Builders: the ingest (topics.json, contract, checker, tests); the page generator (scripts,
+prebuild, panel link, robots, DESIGN.md "Place page"); the search (index.html, main.ts,
+data.ts, style.css, the places-index link). Verification: a local production build on the
+fixture data with the pages and sitemap counted and one page read in the browser, the
+search exercised end to end on the dev server, then a live check after the deploy.
+
 ## Visual redesign: Datamatics Field (shipped 2026-10-21)
 
 The web app's visual world was replaced on 2026-10-21 through the Impeccable workflow:

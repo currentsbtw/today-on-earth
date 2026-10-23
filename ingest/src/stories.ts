@@ -209,8 +209,12 @@ export function displayEntities(nameDf: Map<string, number>, themeDf: Map<string
   return out;
 }
 
-/** `core` are the clustered members (medoid candidates), `attached` the second pass's. */
-function toStory(core: Item[], attached: Item[], home: string, copies: Map<string, number>, keyer: Keyer): Story {
+/**
+ * `core` are the clustered members (medoid candidates), `attached` the second pass's.
+ * `names`: how many of the story's leading `entities` are persons or organisations (the rest
+ * are theme words).
+ */
+function toStory(core: Item[], attached: Item[], home: string, copies: Map<string, number>, keyer: Keyer): { story: Story; names: number } {
   const group = attached.length ? [...core, ...attached] : core;
   const records = group.flatMap((g) => g.unit);
   const s = cellStats(records, keyer, home);
@@ -259,7 +263,7 @@ function toStory(core: Item[], attached: Item[], home: string, copies: Map<strin
     articles.push(r);
   }
 
-  return {
+  const story: Story = {
     n: s.n,
     u: s.u,
     o: s.o,
@@ -279,6 +283,8 @@ function toStory(core: Item[], attached: Item[], home: string, copies: Map<strin
       return toCellArticle(r, keyer, key ? copies.get(key)! - 1 : 0);
     }),
   };
+  // displayEntities puts the persons and organisations first, at most STORY_ENTITIES of them.
+  return { story, names: Math.min(STORY_ENTITIES, nameDf.size) };
 }
 
 /** Second pass: attach each item outside every story to the best story by title tokens. */
@@ -318,12 +324,14 @@ function attach(items: readonly Item[], stories: readonly Item[][]): Item[][] {
  * `keyer` is the snapshot's (reprint keys, shown titles); by default one learned from `records`.
  * `tagged[k]` (ingest-internal, not part of the cell file) is how many of `stories[k]`'s article
  * units carry any kind (conflict, politics, crime, disaster), for the broadcast's "ordinary" slot.
+ * `names[k]` (ingest-internal) is how many of `stories[k].entities`, from the start, are persons or
+ * organisations; the rest are theme words (displayEntities). For the topic index.
  */
 export function buildStories(
   records: readonly ArticleRecord[],
   keyer: Keyer = createKeyer(records),
   home = homeCountry(records),
-): { stories: Story[]; unclustered: number; tagged: number[] } {
+): { stories: Story[]; unclustered: number; tagged: number[]; names: number[] } {
   const items = unitsOf(records, keyer, outletOf)
     .map((unit) => itemOf(unit, keyer))
     .sort((a, b) => oldestFirst(a.r, b.r));
@@ -339,12 +347,13 @@ export function buildStories(
   // Attachments can reorder sizes: largest first again, ties keep the order above (stable).
   const built = kept
     .map((g, k) => ({
-      story: toStory(g, attached[k], home, copies, keyer),
+      ...toStory(g, attached[k], home, copies, keyer),
       tagged: [...g, ...attached[k]].reduce((n, x) => n + (x.unit.some((r) => r.kinds) ? 1 : 0), 0),
     }))
     .sort((a, b) => b.story.n - a.story.n);
   const stories = built.map((b) => b.story);
   const tagged = built.map((b) => b.tagged);
+  const names = built.map((b) => b.names);
   const clustered = stories.reduce((sum, s) => sum + s.n, 0);
-  return { stories, unclustered: items.length - clustered, tagged };
+  return { stories, unclustered: items.length - clustered, tagged, names };
 }
