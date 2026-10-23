@@ -614,7 +614,7 @@ stepping is too slow: Playwright video recording of the in-page animation.
 Stages: (1) timeline + 30 fps + hook + readable captions + music; (2) the per-area
 coverage stack; (3) imagery and narration, after the rights check.
 
-### Clip v3 stage 1 (decided 2026-10-23, in progress)
+### Clip v3 stage 1 (decided 2026-10-23, shipped the same day)
 
 Scope: one in-page timeline at 30 fps, a hook, readable captions, a soundtrack. The
 per-area coverage stack (stage 2) and imagery or narration (stage 3) are not in it.
@@ -670,6 +670,15 @@ Contract between clip.html and the renderer:
   as stills for debugging.
 - Fewer filled slots than asked: the clip uses what there is; with none, the hook is the
   world at the last snapshot and the pull-back is the pan to the first.
+
+**Status 2026-10-23 02:17 UTC: shipped (a603084).** First CI render green, run 39888155788:
+990 frames at 30 fps, 0 bad, 6.1 min of stepping, the generated soundtrack (33 sounds),
+`clip-2026-10-22.mp4` 34.0 s (H.264 + AAC) on the `clips` release. Reviewed before the
+commit: the soundtrack's levels made absolute (the mix is only ever turned down), and the
+time-lapse keeps every index frame older than the live snapshot instead of dropping the last
+entry blind. Known: a page reload mid-run is not recovered (the 10% rule aborts the clip);
+the owner has not yet judged the soundtrack or the pacing; stage 2 (the per-area coverage
+stack) and stage 3 (imagery, narration) are open above.
 
 Builders: the page (web/src/clip.ts, a new web/src/timeline.ts for the pure plan and
 interpolation with node:test tests, clip.css, clip.html, map.ts for the tag size, DESIGN.md
