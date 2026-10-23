@@ -17,6 +17,7 @@ import {
   planCards,
   signalUrl,
   stampOf,
+  stillListed,
 } from "../src/lib.mjs";
 
 test("parseArgs: defaults, platform browser channel, validation", () => {
@@ -109,6 +110,21 @@ test("captureFrames: retry once, repeat the previous frame for a bad one, skip a
   assert.deepEqual(two.result, { written: 3, bad: 2, lastGood: "c" });
   assert.deepEqual(two.files, ["b", "c", "c"]);
   assert.equal(MAX_BAD_SHARE, 0.1);
+});
+
+test("stillListed: a frame a deploy retired is dropped before the loop, so the clip starts whole", async () => {
+  const ats = ["a", "b", "c", "d"];
+  // A deploy during the cards: "a" left the index, "e" joined it (not taken: flights start from "d").
+  const kept = stillListed(ats, ["b", "c", "d", "e"]);
+  assert.deepEqual(kept, ["b", "c", "d"]);
+  // clip.html reports a retired frame unknown on every attempt: the planned list loses it as
+  // a bad first frame, the kept list has none.
+  const retired = { a: 2 };
+  assert.deepEqual((await simulate(ats, retired)).result, { written: 3, bad: 1, lastGood: "d" });
+  assert.deepEqual((await simulate(kept, retired)).result, { written: 3, bad: 0, lastGood: "d" });
+  assert.deepEqual(stillListed(ats, ats), ats);
+  // Nothing in common: the list is kept and the frame loop reports the failures.
+  assert.deepEqual(stillListed(ats, ["x"]), ats);
 });
 
 test("card URLs and filled slots from broadcast.json", () => {

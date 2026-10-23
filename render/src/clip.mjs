@@ -29,6 +29,7 @@ import {
   parseArgs,
   planCards,
   signalUrl,
+  stillListed,
 } from "./lib.mjs";
 
 const READY_TIMEOUT_MS = 60_000;
@@ -41,6 +42,18 @@ async function fetchIndex(site) {
   const index = await res.json();
   if (!index || !Array.isArray(index.frames) || index.frames.length === 0) throw new Error(`${url} has no frames`);
   return index.frames.map((f) => f.at).filter((at) => typeof at === "string" && /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$/.test(at));
+}
+
+/** `ats` without the frames a deploy since the start has dropped from the index; unchanged if the re-read fails. */
+async function refreshFrames(site, ats) {
+  try {
+    const kept = stillListed(ats, await fetchIndex(site));
+    if (kept.length < ats.length) log(`clip: ${ats.length - kept.length} frame(s) left the index since the start (a snapshot deploy landed); shooting ${kept.length}`);
+    return kept;
+  } catch (err) {
+    log(`clip: could not re-read the index (${err.message}); shooting all ${ats.length} frames`);
+    return ats;
+  }
 }
 
 async function fetchMaxN(site) {
@@ -102,7 +115,7 @@ async function main() {
   await mkdir(framesDir, { recursive: true });
   await mkdir(cardsDir, { recursive: true });
 
-  const ats = await fetchIndex(opts.site);
+  let ats = await fetchIndex(opts.site);
   const max = await fetchMaxN(opts.site);
   // The index.html stand-in has no card modes.
   const slots = opts.page === "clip" ? await fetchSlots(opts.site) : [];
@@ -141,6 +154,8 @@ async function main() {
         log,
       });
     }
+    // The cards took about 40 s; drop any frame a deploy has since retired.
+    ats = await refreshFrames(opts.site, ats);
     result = await captureFrames(ats, {
       load: (at) => loadFrame(page, opts, at, max),
       shoot: (n) => page.screenshot({ path: png(n), type: "png" }),

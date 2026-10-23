@@ -226,6 +226,21 @@ export function maxCellN(heat) {
   return cells.reduce((m, c) => (Number.isInteger(c?.n) && c.n > m ? c.n : m), 0);
 }
 
+/**
+ * The planned frames the re-read index `listed` still has, in their order. A snapshot deploy
+ * that lands while the cards are shot drops the oldest frame from the index (and its file
+ * from the site), so clip.html would report it unknown. Frames added since are not taken:
+ * the flights already start from the last planned frame. If none are still listed, `ats`
+ * is returned unchanged and the frame loop reports the failures.
+ * @param {string[]} ats
+ * @param {string[]} listed
+ */
+export function stillListed(ats, listed) {
+  const live = new Set(listed);
+  const kept = ats.filter((at) => live.has(at));
+  return kept.length ? kept : ats;
+}
+
 /** A clip fails when more than 10% of its frames could not be rendered. */
 export const MAX_BAD_SHARE = 0.1;
 

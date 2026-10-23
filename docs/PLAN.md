@@ -473,7 +473,8 @@ Open: the newsletter; the clip's cards are static (fly-to zooms are the clip v2 
 The clip pipeline exists: `render/` + `clip.yml` render a 1080x1920 daily mp4 to the
 GitHub release `clips`. What remains:
 
-- [ ] **Clip v2.** In progress 2026-10-22; decisions below under "Clip v2".
+- [x] **Clip v2.** Committed 2026-10-22 (5209725), green in CI 2026-10-23; decisions and
+      status below under "Clip v2".
 - [ ] **Captions first.** Burned-in captions, no synthetic narration for now:
       platform rules on labelling AI voices are still moving, and captions carry the
       numbers on their own. Revisit narration (Piper, numbers and outlet headlines
@@ -529,7 +530,10 @@ no caption beyond the clock. Decisions, made before building:
 Length: 64 time-lapse frames (8 s) + up to 6 x (1.5 s flight + 3 s card) + 3 s end + 1 s
 hold, about 39 s at most.
 
-**Status 2026-10-22 (built, not committed, not yet run in CI).** clip.ts: portrait `?t=`
+**Status 2026-10-23: committed (5209725), ran green in CI.** The scheduled run at
+2026-10-23 00:24 UTC (run 39877953928) shot 94 frames, 0 bad, flew into 4 signal cards and
+wrote 262 frames + 1 s hold, 33.8 s, published as `clip-2026-10-22.mp4` on the `clips`
+release. Built on 2026-10-22: clip.ts: portrait `?t=`
 frames fill the window's height and pan with local noon (createClipMap got a `wrap` option:
 world copies on, longitude free; the live map is untouched); `?signal=<id>&from=<ref>&fly=<F>`
 opens on step 0 and `window.__clipStep(i)` steps a flyTo path ported from MapLibre 6
@@ -551,6 +555,20 @@ renderer shoots steps 1..F, so the first output flight frame is already one step
 is the page's load state; (d) the direct `--fly 0` card also gets the callout. Open: an
 encoded mp4 has not been watched (no local ffmpeg); the tag is a fixed 11px label, small at
 1080x1920 (the existing label-size follow-up).
+
+Hardening 2026-10-23, from the runs of 2026-10-22/23. (1) The "Install ffmpeg" step's apt
+install took 22 min 36 s in run 39877953928 against the 30-minute job timeout (the render
+took under 4 minutes). clip.yml now installs a pinned static build (ffmpeg 6.1.1 with
+libx264, `ffmpeg-linux-x64.gz` from the ffmpeg-static npm package's GitHub release b6.1.1,
+sha256-checked), cached across runs with actions/cache; apt is only the fallback. (2) A
+snapshot deploy landing while the cards are shot (about 40 s) drops the oldest frame from
+the index and its file from the site, so clip.html reported `unknown frame` and the clip
+started one frame short with 1 bad (runs 39818645716 and 39824969992, both dispatched by
+hand; keepalive-dispatched snapshots run every ~14 minutes all day). The renderer now
+re-reads the index after the cards and drops the frames no longer listed (`stillListed` in
+render/src/lib.mjs), so the time-lapse starts at the oldest frame still deployed with none
+bad. Frames added by that deploy are not taken: the flights already start from the last
+planned frame.
 
 ## Visual redesign: Datamatics Field (shipped 2026-10-21)
 

@@ -42,11 +42,49 @@ jobs:
           cache: npm
           cache-dependency-path: render/package-lock.json
 
-      # ffmpeg is not on the ubuntu-24.04 runner image; Chrome is.
+      # ffmpeg is not on the ubuntu-24.04 runner image; Chrome is. A pinned static build
+      # (ffmpeg 6.1.1 with libx264, from the ffmpeg-static npm package's GitHub release,
+      # checksum-checked) is cached across runs; apt, which once took 22 minutes, is only the
+      # fallback when that build cannot be fetched or run.
+      - name: Restore ffmpeg
+        uses: actions/cache/restore@v6
+        with:
+          path: ~/.cache/ffmpeg-static
+          key: ffmpeg-static-b6.1.1-linux-x64
+
       - name: Install ffmpeg
+        id: ffmpeg
+        env:
+          FFMPEG_URL: https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffmpeg-linux-x64.gz
+          FFMPEG_SHA256: bfe8a8fc511530457b528c48d77b5737527b504a3797a9bc4866aeca69c2dffa
         run: |
-          command -v ffmpeg || { sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends ffmpeg; }
+          dir="$HOME/.cache/ffmpeg-static"
+          if [ ! -x "$dir/ffmpeg" ]; then
+            mkdir -p "$dir"
+            gz="$RUNNER_TEMP/ffmpeg.gz"
+            if curl -fsSL --retry 3 --max-time 180 -o "$gz" "$FFMPEG_URL" && echo "$FFMPEG_SHA256  $gz" | sha256sum -c --quiet -; then
+              gunzip -c "$gz" > "$dir/ffmpeg" && chmod +x "$dir/ffmpeg" && fetched=1
+            else
+              echo "::warning::static ffmpeg download or checksum failed; falling back to apt"
+            fi
+          fi
+          if "$dir/ffmpeg" -version >/dev/null 2>&1; then
+            echo "$dir" >> "$GITHUB_PATH"
+            export PATH="$dir:$PATH"
+            # Only a build that runs is saved to the cache.
+            [ -n "${fetched:-}" ] && echo "fetched=1" >> "$GITHUB_OUTPUT"
+          else
+            rm -f "$dir/ffmpeg"
+            command -v ffmpeg || { sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends ffmpeg; }
+          fi
           ffmpeg -version | head -n 1
+
+      - name: Save ffmpeg
+        if: steps.ffmpeg.outputs.fetched == '1'
+        uses: actions/cache/save@v6
+        with:
+          path: ~/.cache/ffmpeg-static
+          key: ffmpeg-static-b6.1.1-linux-x64
 
       - name: Render clip
         working-directory: render
