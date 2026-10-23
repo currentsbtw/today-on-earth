@@ -742,6 +742,51 @@ Method: judge each item on a 540x960 still with the phone muted (the "mute test"
 a 3-second flip through the frames (the "flip test": every frame must say what it is).
 Out of scope for this stage: sound, narration, imagery. Rights rules unchanged.
 
+## Where to improve: the "genuinely useful" assessment (2026-10-23, not decided)
+
+Owner's question: how does this become something people genuinely use? The orchestrator
+looked at the live site as a visitor (16:57 UTC) and at the open items above. Ordered by
+what blocks real use, not by effort:
+
+1. **Trust the dots (placement and grouping).** Opening Paris today shows, as its second
+   story, a Korean domestic story from one Korean outlet (newspim.com, 277 articles) placed
+   in Paris, newspim.com as Paris's top outlet, and 2,338 of 3,920 articles "not grouped".
+   The Places list carries CALIFORNIA, TEXAS, FLORIDA and HOLLYWOOD among cities. Every
+   zoom-in is the product's promise ("here is who is covering this place"), and today it
+   disappoints often enough that a skeptical visitor leaves. Fixes, in order: per-outlet
+   placement sanity (an outlet whose articles all land in one far cell with no other outlet
+   agreeing is a geocoding artefact; cap or drop), region-only articles left unplaced or
+   marked, the Big News Network / aggregator collapse, headline suffix cleaning ("| Crime
+   News", "– Butler Eagle", "- LocalNews8.com"), and story grouping that leaves far fewer
+   than 60% ungrouped. Phase 2b's remaining items are these.
+2. **First paint.** The cold load shows LOADING for ~10-20 s. Phone visitors from a clip
+   leave in 3. Paint the heat before MapLibre (a canvas of dots from heat.json over a
+   static outline image), then swap the map in; split the bundle; preload the data.
+3. **Findability: real place pages and a topic search.** Everything today is one page with
+   a hash fragment: search engines index nothing, so "news about Paris today" never finds
+   the site. Static place pages (one HTML file per cell with the day's stories, rebuilt by
+   the ingest) make every place a landing page and a shareable link. A topic search ("where
+   is Starlink being talked about") over the entities the stories already carry lights up
+   the map by topic, which no competitor's product does and the data already supports.
+4. **A reason to return without accounts.** An RSS/JSON feed per place (static files, free),
+   a daily broadcast page with its own URL and an email (the newsletter item), and the
+   clip's end card pointing at the day's broadcast rather than the bare home page.
+5. **The signature measure: coverage gaps.** "Heard in N other countries" exists; the next
+   step is the gap: which countries' outlets covered a story and which did not, and
+   expected-versus-actual coverage per place from the baseline (quiet vs ignored). This is
+   the feature that makes the site a resource rather than a view, and it is the one axis
+   Ground News cannot occupy (see the positioning note in the session of 2026-10-23).
+6. **Distribution surfaces.** An embeddable map widget (publishers embed "where the news is
+   today" and link back), OG images per place page, and the clip linking to the place page
+   of each signal.
+7. **Launch-day gaps.** Two of six signals read "needs more days of history" until
+   2026-10-25; the clip and the broadcast should fill them with the next rule-filled slot
+   rather than show an empty slot to a first-week visitor.
+
+Not the problem: the visual world, the methodology page, the replay. They are done well.
+Recommended order: 1 and 2 first (they decide whether anyone stays), then 3, then 4 and 5
+together, then 6.
+
 ## Visual redesign: Datamatics Field (shipped 2026-10-21)
 
 The web app's visual world was replaced on 2026-10-21 through the Impeccable workflow:
