@@ -13,16 +13,20 @@ deployed site. In local dev the frontend serves `web/public/data/` at `/data/`.
   "generatedAt": "2026-10-20T19:30:00Z",   // ISO 8601 UTC, when the snapshot was written
   "windowHours": 24,                        // rolling window the counts cover
   "newestArticleAt": "2026-10-20T19:15:00Z",
-  "totals": { "articles": 183204, "outlets": 9120, "countries": 171, "cells": 6210,
-              "unplaced": 41200,  // articles whose only locations are country-level; counted here, never binned into a cell
-              "reprints": 23100 }, // sum over cells of (n - u): articles that copy another article's headline in the same cell (added 2026-10-21)
+  "totals": { "articles": 183204, // article units: one per outlet and headline, see Reprints (changed 2026-10-23)
+              "outlets": 9120,    // distinct outlets; a listed network counts once (changed 2026-10-23)
+              "countries": 171, "cells": 6210,
+              "unplaced": 41200,  // article units with no primary location: only country-level locations, or every
+                                  // city and region skipped as outlet boilerplate; counted here, never binned (changed 2026-10-23)
+              "reprints": 23100 }, // sum over cells of (n - u): articles that copy another outlet's headline in the same cell (added 2026-10-21)
   "cells": [
     {
       "id": "832830fffffffff",   // H3 cell index, resolution 3
       "lat": 48.86, "lon": 2.35, // cell centroid, 2 decimals
-      "n": 412,                  // articles whose primary location falls in this cell
+      "n": 412,                  // article units (one per outlet and headline) whose primary location falls in this cell
+                                 // (changed 2026-10-23)
       "u": 361,                  // distinct headlines: distinct reprint keys, untitled articles one each (added 2026-10-21)
-      "o": 150,                  // distinct outlets (source domains)
+      "o": 150,                  // distinct outlets: source domains, a listed network counted once (changed 2026-10-23)
       "c": 23,                   // distinct source countries (outlets' countries), 0 if unknown
       "i": 22,                   // outlet countries other than the place's own country (added 2026-10-21)
       "l": 9,                    // distinct languages
@@ -49,8 +53,9 @@ So that a quiet place lighting up can show, each cell carries its own normal:
   had no history). A cell that never appeared before but has history days available
   gets `b` = 0 (brand new).
 - The ingest keeps a carried `baseline.json.gz` next to state: per UTC day, per cell,
-  the number of placed articles first seen on that day; days older than 14 are
-  dropped. Counting happens as records are first merged, so dedupe by URL holds.
+  the number of placed article units (see Reprints) first seen on that day, so `b` is
+  in the unit of `n` (changed 2026-10-23); days older than 14 are dropped. Counting
+  happens as records are first merged, so dedupe by URL holds.
 - The frontend may show relative heat only when `baselineDays` >= 3; until then it
   shows absolute heat. Relative weight = clamp(log2((n + 1) / (max(b, 3) + 1)) / 3,
   0, 1). Cells without a live `b` (replay-only cells) use the absolute weight and
@@ -63,16 +68,28 @@ So that a quiet place lighting up can show, each cell carries its own normal:
 ### Reprints and international attention (added 2026-10-21)
 
 Two measures, computed from what GDELT already gives. Neither changes what glows: heat
-stays the article count `n`, and "Articles: distinct URLs" stays true. `n`, `o`, `c`,
-`l`, `t` are still over every URL in the cell.
+stays the article count `n`.
+
+**Article units (changed 2026-10-23).** "Articles" are distinct headlines per outlet, not
+distinct URLs: within one cell (and, for the totals, within the unplaced articles), one
+unit per (outlet, non-empty reprint key), so an outlet's copies of one headline are one
+article, plus one unit per article with an empty key. The outlet is the
+source domain, or its network's name when the domain (or a parent domain) is listed in
+`ingest/data/outlet-networks.txt`, so a network's sites are one outlet. `n`,
+`topOutlets`, `topCountries`, `languages`, `videos`, `unclustered`, `totals.articles` and
+`totals.unplaced` count units; `c`, `i` and `l` are taken over each unit's earliest copy
+(its outlet country and language). `t` is still the mean over every URL. `o` and
+`totals.outlets` count outlets with a network once; `source` on an article keeps its own
+domain.
 
 **Reprint key** of an article, from its `title` and `source`:
 1. Unicode NFKC normalisation, lowercase, whitespace collapsed and trimmed.
-2. A trailing outlet suffix is removed, once, only when it looks like an outlet name.
-   Candidate: the title ends in ` - X`, ` | X`, ` – X` or ` — X` (hyphen, pipe, en dash
-   or em dash with a space on each side; X contains no further such separator), and what
-   precedes that last separator is at least 20 characters (code points, trailing space
-   trimmed). Then:
+2. A trailing outlet suffix is removed only when it looks like an outlet name; the rule
+   is then applied again to what remains, until it no longer applies ("X - Section |
+   Outlet" loses both; changed 2026-10-23). Candidate: the title ends in ` - X`, ` | X`,
+   ` – X` or ` — X` (hyphen, pipe, en dash or em dash with a space on each side; X
+   contains no further such separator), and what precedes that last separator is at least
+   20 characters (code points, trailing space trimmed). Then:
    - `tail` = X decomposed (NFD) with every character that is not a letter or digit
      (Unicode classes L and N) removed, then a leading `the` removed
      ("The Star" → `star`, "BBC News" → `bbcnews`, "El País" → `elpais`).
@@ -84,26 +101,34 @@ stays the article count `n`, and "Articles: distinct URLs" stays true. `n`, `o`,
      3 characters, else empty.
    - The suffix is removed when (a) `label` is non-empty, `tail` is at least 3
      characters, and `tail` contains `label` or `label` contains `tail`; or (b) X has
-     at most 2 whitespace-separated words ("Reuters", "AP News"). Otherwise the whole
-     title is kept.
+     at most 2 whitespace-separated words ("Reuters", "AP News"); or (c) X, normalised
+     by steps 1 and 3, is one of the outlet's learned tails. Otherwise the whole title
+     is kept.
+   - Learned tails (added 2026-10-23): over every article in the snapshot's window, a
+     tail X (steps 1 and 3 applied) that one outlet (network-aware, as above) puts on 3
+     or more distinct heads (steps 1 and 3 applied) is that outlet's boilerplate: a
+     station name ("| Sunny 102.3 FM"), a site slogan. A tail shared by many outlets on
+     one head is a headline half and is not learned.
 3. Every Unicode punctuation and symbol character (classes P and S) is deleted;
    whitespace is collapsed and trimmed again.
 
 An empty key (no title, or punctuation only) matches nothing: such an article is its own
-item. Articles in the same cell with the same non-empty key are reprints of one another.
+item. Articles in the same cell with the same non-empty key are copies of one headline:
+copies by the same outlet are one unit, and units of different outlets are reprints of one
+another (changed 2026-10-23).
 
 - `u` (heat cell, cell file, story): distinct non-empty keys plus one per empty-key
   article, over the cell's (or story's) articles. `1 <= u <= n`.
-- `totals.reprints` = sum over cells of `n - u` (cells with `n` < 2 hold no copies, so
-  dropping them changes nothing). Only the five original totals go into
+- `totals.reprints` = sum over cells of `n - u` (cells with `n` < 2 hold no copies
+  across outlets, so dropping them changes nothing). Only the five original totals go into
   `history/index.json`.
 - `reprints` on every article object (cell `articles` and story `articles`): how many
-  other articles in the same cell share its key (0 for an empty key). Article lists keep
-  at most one article per non-empty key: the newest copy that the per-outlet caps let
-  in. The kept one carries the count.
+  other outlets' units in the same cell share its key (0 for an empty key; changed
+  2026-10-23). Article lists keep at most one article per non-empty key: the newest copy
+  that the per-outlet caps let in. The kept one carries the count.
 
 **International attention.** Each placed article has a `locationCountry` (ingest-internal):
-the CountryCode (FIPS 10-4) of its primary location entry in GKG V2Locations, as ISO
+the CountryCode (FIPS 10-4) of its primary location (see Rules) in GKG V2Locations, as ISO
 3166-1 alpha-2, "" when it has no ISO equivalent.
 
 - `home` (cell file only): the most common non-empty `locationCountry` among the cell's
@@ -121,24 +146,27 @@ the CountryCode (FIPS 10-4) of its primary location entry in GKG V2Locations, as
   "name": "Paris, France",
   "home": "FR",                       // the place's own country, "" if unknown (added 2026-10-21)
   "n": 412, "u": 361, "o": 150, "c": 23, "i": 22, "l": 9, "t": -2.1,
-  "topOutlets":  [["lemonde.fr", 31], ["bbc.co.uk", 12]],  // top 10 by article count
+  "topOutlets":  [["lemonde.fr", 31], ["bbc.co.uk", 12]],  // top 10 by article units; a listed network is one entry,
+                                                           // named by the network (changed 2026-10-23)
   "topCountries":[["FR", 190], ["GB", 40], ["US", 38]],    // ISO 3166-1 alpha-2 of outlet country, "" allowed
   "languages":   [["fr", 220], ["en", 150], ["de", 12]],   // ISO 639-1 where known
   "articles": [
     {
-      "title": "…",                     // page title, trimmed to 160 chars, may be empty
+      "title": "…",                     // shown title: the page title trimmed to 160 chars, with the suffix the
+                                        // reprint rule strips (outlet name, short label, learned tail) removed;
+                                        // nothing else changed; may be empty (changed 2026-10-23)
       "url": "https://…",
-      "source": "lemonde.fr",           // source domain (GKG SourceCommonName)
+      "source": "lemonde.fr",           // source domain (GKG SourceCommonName), never the network name
       "country": "FR",                  // outlet country, "" if unknown
       "lang": "fr",                     // "en" when GDELT gives no translation info
       "time": "2026-10-20T18:45:00Z",   // GKG DATE
       "tone": -3.4,
       "image": "https://…",             // GKG SharingImage, "" when none
       "video": "https://www.youtube.com/watch?v=…", // first YouTube URL from GKG SocialVideoEmbeds, "" when none (added 2026-10-21)
-      "reprints": 12                    // other articles in this cell with the same reprint key, 0 when none (added 2026-10-21)
+      "reprints": 12                    // other outlets' units in this cell with the same reprint key, 0 when none (added 2026-10-21)
     }
   ],
-  "videos": 7                           // number of the cell's articles (whole window) that carry a video (added 2026-10-21)
+  "videos": 7                           // number of the cell's article units (whole window) with a copy that carries a video (added 2026-10-21)
 }
 ```
 
@@ -151,7 +179,8 @@ autoplay.
 
 `articles` is the newest 50 in the cell, newest first, de-duplicated by URL. Pick a
 spread of outlets: no outlet contributes more than 5 of the 50 unless the cell has
-fewer than 10 outlets. At most one article per non-empty reprint key (added 2026-10-21).
+fewer than 10 outlets (a listed network counts once for both). At most one article per
+non-empty reprint key (added 2026-10-21).
 
 ### Stories (added 2026-10-21)
 
@@ -165,7 +194,8 @@ same thing, computed deterministically from what GDELT already tags per article
     "n": 212, "u": 150, "o": 96, "c": 21, "i": 20, "l": 7, "t": -4.1,   // same meaning as the cell counters, over the story's articles
                                                                        // (i against the cell's home; u, i added 2026-10-21)
     "first": "2026-10-21T01:15:00Z", "last": "2026-10-21T04:30:00Z",
-    "headline": "…",            // the title of the story's medoid article (max token overlap with the rest); may be empty
+    "headline": "…",            // the shown title (as `title` below) of the story's medoid article (max token overlap
+                                // with the rest); may be empty
     "headlineSource": "bbc.co.uk",
     "headlineLang": "en",
     "headlineUrl": "https://…", // URL of the article the headline comes from (the medoid); "" when none (added 2026-10-21)
@@ -178,11 +208,18 @@ same thing, computed deterministically from what GDELT already tags per article
 ```
 
 Rules:
-- Stories are sorted by `n` descending; at most 12 per cell; a story needs `n` >= 3.
+- Stories are sorted by `n` descending; at most 30 per cell (`MAX_STORIES`, changed
+  2026-10-23 from 12); a story needs `n` >= 3 units from the grouping pass.
+- Second pass (added 2026-10-23): after the cap, each unit outside every story joins the
+  story whose top-20 title tokens (counted over the story's grouped units) share 3 or more
+  tokens with its own title tokens; best = most shared, ties to the larger story, then the
+  earlier story. Attached units count in the story's counters, `first`/`last` and
+  `entities`, but are never its medoid. Stories are then re-sorted by final `n`.
 - Every article in the cell belongs to at most one story. `sum(stories[].n) +
   unclustered == n` of the cell.
-- `headline` is a verbatim title from an outlet, chosen by overlap, never written or
-  edited by us. If the medoid has no title, use the next best article that has one.
+- `headline` is an outlet's title, chosen by overlap, never written by us; the only change
+  is the shown-title suffix rule of `title` (changed 2026-10-23). If the medoid has no
+  title, use the next best article that has one.
 - The flat `articles` list stays as it is (newest 50 across the whole cell).
 - The grouping must be stable run to run for the same inputs (deterministic order of
   processing: by time, then URL).
@@ -193,7 +230,14 @@ Rules:
   articles is ignored for grouping too (otherwise Washington is one blob). Such
   entities can still appear in a story's displayed `entities`. Measured: 24h, 3,618
   cells, 5,704 stories in under 5 s; 60-70% of articles in busy cells stay
-  unclustered, partly because of the 12-story cap.
+  unclustered, partly because of the 12-story cap. Measured 2026-10-23 on 2 h of both
+  feeds: about 43% of articles were grouped with the cap at 12, about 58% with no cap;
+  hence the cap of 30 and the second pass.
+- Join rule (unchanged 2026-10-23): an article joins the best existing cluster when it
+  shares >= 2 entities with the cluster's top-10 entities, or >= 1 entity and >= 2 title
+  tokens with its top-20 tokens, or >= 4 title tokens (best = highest 2 * entities +
+  tokens, ties to the larger cluster, then the older); clusters whose top-5 entity sets
+  share >= 3 are merged. Persons, organisations and themes count alike.
 
 ## `/data/history/index.json`  (small; fetched on page load so the scrubber can show)
 
@@ -225,11 +269,13 @@ full. `newest` and `added` say what was new in the step that produced the frame.
   article in its window. The last frame's `newest` equals `heat.json`'s `newestArticleAt`.
   It can be up to about 20 minutes later than `at` (GDELT publishes a 15-minute file
   before its stamp). It is informational: `added` is not counted from it.
-- `added`: the number of articles in this frame's window, placed and unplaced (the same
-  unit as `totals.articles`), whose URL was **not in the previous run's window** (the
-  window carried in `state.json.gz` from the run before). An article is new in the step in
-  which it first enters the window, whatever its GKG time, so a translingual file that
-  arrives an hour behind the English feed counts in the step it arrives. `0` means
+- `added`: the number of article units in this frame's window, placed and unplaced (the
+  unit of `totals.articles`; changed 2026-10-23), none of whose URLs was **in the
+  previous run's window** (the window carried in `state.json.gz` from the run before).
+  A new copy of a headline its outlet already had in that place adds nothing. A unit is
+  new in the step in which it first enters the window, whatever its GKG time, so a
+  translingual file that arrives an hour behind the English feed counts in the step it
+  arrives. `0` means
   nothing arrived; it is never written by assumption. `0 <= added <= totals.articles`.
 - `added` is **absent** (unknown) when the run cold-started its window (no carried state:
   nothing to compare with), when there is no previous retained frame (the first frame
@@ -254,9 +300,9 @@ uncompressed (a full 24h window measured 127 KB, about 36 KB gzipped on the wire
 Cells with `n` < 2 are dropped, as in `heat.json`. No per-cell detail files exist for
 past frames: `cells/<id>.json` always describes the current snapshot only.
 
-`a` (added 2026-10-22): the number of the cell's articles (placed articles whose primary
-location falls in the cell) counted in the index entry's `added`, by the same rule
-(its URL was not in the previous run's window). `0 <= a <= n`,
+`a` (added 2026-10-22): the number of the cell's article units counted in the index
+entry's `added`, by the same rule (none of the unit's URLs was in the previous run's
+window; changed 2026-10-23). `0 <= a <= n`,
 and the sum of `a` over a frame is at most `added` (unplaced articles and cells with
 `n` < 2 are in `added` but have no row). Rows have five elements exactly when the index
 entry has `added`, and four (`[id, lat, lon, n]`, `a` unknown) otherwise, so frames
@@ -291,7 +337,7 @@ While `baselineDays` < 3, rising and faint wait instead:
 
 - `cell`: the cell's `id`, `name`, `lat`, `lon` as in `heat.json`, and `home` as in its cell file.
 - `story`: the story's fields exactly as in the cell file's `stories` (without `entities` and
-  `articles`). The headline is the story's medoid title, verbatim.
+  `articles`). The headline is the story's medoid's shown title (see `title`).
 - `ratio` (1 decimal) only on rising; `b` (the cell's `b` from `heat.json`) only on rising and
   faint. An unavailable slot carries no `cell`, `story`, `ratio` or `b`.
 - `reason`: `"none"` when no story meets the rule; `"baseline"` for rising and faint while
@@ -367,6 +413,12 @@ turns the step off; a failed upload never fails the snapshot.
 
 Compact per-article records for the rolling window, and the retained frames, so the
 next run can merge new files without refetching. Formats are up to the ingest side.
+`state.json.gz` is version 6 since 2026-10-23 (changed 2026-10-23): each record also
+carries `locs`, its candidate locations, up to 4 (the 3 most-mentioned cities, then the
+most-mentioned region; see Rules), each with GDELT type, name, country, lat, lon, mention
+count, first character offset and FeatureID. Placement is resolved from them at snapshot
+time, over the whole window. Version 5 records load with no candidates and keep the
+placement they were stored with; they age out of the window within 24 h.
 `history.json.gz` is version 2 since 2026-10-22: each entry records its `newest`,
 `added` and per-row `a`. Version 1 entries still load, as frames whose `newest`, `added`
 and `a` are unknown; they still count as the previous frame for the next run's `added`.
@@ -380,12 +432,21 @@ failure fails the run; that path is unused in production.
 
 - H3 resolution 3 everywhere for phase 1 (about 12,000 land cells, ~100 km across).
 - Coordinates are WGS84. `lon` in [-180, 180].
-- Primary location of an article = the first entry in GKG V2Locations whose Type is
-  not 1 (i.e. not a country-level mention). An article whose every location is
-  country-level is **not placed in any cell**: it is counted in `totals.articles` and
-  `totals.unplaced` only. A country centroid is not where anything happened, so it
-  must never glow. (Cell `name` for the rare non-country location whose name is a
-  demonym is left as GDELT gives it.)
+- Primary location of an article (changed 2026-10-23). Each GKG V2Locations entry of
+  Type 3 or 4 (city) or 2 or 5 (state or region) is one mention of its FeatureID (its
+  FullName when the FeatureID is empty); entry order is ignored, since GDELT's order is
+  not text order. Candidates: the 3 cities with the most mentions, then the 1 region with
+  the most mentions; ties go to the smallest CharOffset (the earliest mention), then the
+  name. The primary location is the first candidate that is not boilerplate for the
+  article's outlet. Boilerplate: for each outlet (network-aware, as in Reprints) with at
+  least 20 articles (URLs) with candidates in the window (`MIN_OUTLET_ARTICLES`), a
+  (place, exact mention count) pair carried by at least half of those articles
+  (`BOILERPLATE_SHARE`); a place is its FeatureID, else its name. An article whose
+  candidates are all boilerplate, or whose every location is country-level (Type 1), is
+  **not placed in any cell**: it is counted in `totals.articles` and `totals.unplaced`
+  only. A country centroid is not where anything happened, so it must never glow. (Cell
+  `name` for the rare non-country location whose name is a demonym is left as GDELT
+  gives it.)
 - `image` is always present, `""` when missing. `topCountries` and `languages` are
   capped at 10 entries like `topOutlets`. `totals.articles` counts every article in
   the window including those in dropped n < 2 cells; `totals.cells` = `cells.length`.

@@ -1,10 +1,15 @@
+import { outletOf } from "./domains.ts";
 import { titleTokens } from "./entities.ts";
-import { keyCounts, keyOf } from "./reprints.ts";
-import { cellStats, compareNewestFirst, homeCountry, toCellArticle } from "./stats.ts";
+import { createKeyer, keyCounts, unitsOf, type Keyer } from "./reprints.ts";
+import { cellStats, compareNewestFirst, homeCountry, representative, toCellArticle } from "./stats.ts";
 import type { ArticleRecord, Story } from "./types.ts";
 
 /**
  * Group one cell's articles into stories (docs/DATA-CONTRACT.md "Stories").
+ *
+ * The items grouped are article units (stats.ts articleUnits): an outlet's copies of one
+ * headline are one item, represented by its earliest copy, so a story's `n` counts units and
+ * `sum(stories.n) + unclustered` is the cell's `n`. Title tokens come from the shown title.
  *
  * Deterministic greedy single-pass clustering over GDELT's own tags (persons, organisations,
  * themes) and title tokens, in time-then-URL order:
@@ -15,11 +20,18 @@ import type { ArticleRecord, Story } from "./types.ts";
  *   or >= 4 title tokens; best = highest 2*entities + tokens, ties to the larger cluster,
  *   then the older cluster; otherwise it starts a new cluster;
  * - then clusters whose top-5 entity sets overlap by >= 3 are merged (transitively);
- * - clusters with n >= 3 become stories, largest first, at most 12.
+ * - clusters with n >= 3 become stories, largest first, at most 30 (re-sorted by final n
+ *   after the second pass, ties keeping the first order);
+ * - second pass: each item outside every story is attached to the story whose top-20 title
+ *   tokens (from the story's clustered members) share >= 3 tokens with its own; best = most
+ *   shared, ties to the larger story, then the earlier story. Attached items count in the
+ *   story's counters, dates and entities but never become its headline (medoid).
  * A story's shown articles keep one per reprint key (the newest the outlet cap lets in), and
- * each carries its reprint count over the whole cell.
+ * each carries its reprint count over the whole cell. The outlet cap counts a network once.
  */
-export const MAX_STORIES = 12;
+export const MAX_STORIES = 30;
+/** Second pass: minimum shared title tokens with a story's top-20 to attach a loose item. */
+export const ATTACH_MIN_TOKENS = 3;
 export const MIN_STORY_ARTICLES = 3;
 export const STORY_ARTICLES = 6;
 export const STORY_MAX_PER_OUTLET = 2;
@@ -31,7 +43,10 @@ const MERGE_TOP = 5;
 const MERGE_MIN_OVERLAP = 3;
 
 interface Item {
+  /** The unit's earliest record: its tags and title stand for the unit. */
   r: ArticleRecord;
+  /** Every record of the unit (one outlet's copies of one headline, or one untitled record). */
+  unit: ArticleRecord[];
   /** Entities used for grouping (the cell's background entities removed). */
   ents: string[];
   /** All of the article's entities, for the story's displayed entities. */
@@ -68,9 +83,10 @@ function topKeys(m: Map<string, number>, k: number): string[] {
     .map(([key]) => key);
 }
 
-function itemOf(r: ArticleRecord): Item {
+function itemOf(unit: ArticleRecord[], keyer: Keyer): Item {
+  const r = representative(unit);
   const allEnts = [...new Set([...r.persons, ...r.orgs, ...r.themes])];
-  return { r, ents: allEnts, allEnts, toks: titleTokens(r.title) };
+  return { r, unit, ents: allEnts, allEnts, toks: titleTokens(keyer.shownTitle(r)) };
 }
 
 /**
@@ -193,9 +209,11 @@ export function displayEntities(nameDf: Map<string, number>, themeDf: Map<string
   return out;
 }
 
-function toStory(group: Item[], home: string, copies: Map<string, number>): Story {
-  const records = group.map((g) => g.r);
-  const s = cellStats(records, home);
+/** `core` are the clustered members (medoid candidates), `attached` the second pass's. */
+function toStory(core: Item[], attached: Item[], home: string, copies: Map<string, number>, keyer: Keyer): Story {
+  const group = attached.length ? [...core, ...attached] : core;
+  const records = group.flatMap((g) => g.unit);
+  const s = cellStats(records, keyer, home);
   let first = records[0].time;
   let last = records[0].time;
   for (const r of records) {
@@ -203,18 +221,20 @@ function toStory(group: Item[], home: string, copies: Map<string, number>): Stor
     if (r.time > last) last = r.time;
   }
 
-  // Token / entity document frequencies within the story.
+  // Entity document frequencies within the story (every member); token frequencies over the
+  // clustered members only, for the medoid.
   const tokDf = new Map<string, number>();
   const nameDf = new Map<string, number>(); // persons and organisations
   const themeDf = new Map<string, number>();
   for (const g of group) {
-    for (const t of g.toks) tokDf.set(t, (tokDf.get(t) ?? 0) + 1);
     for (const e of new Set([...g.r.persons, ...g.r.orgs])) nameDf.set(e, (nameDf.get(e) ?? 0) + 1);
     for (const e of new Set(g.r.themes)) themeDf.set(e, (themeDf.get(e) ?? 0) + 1);
   }
-  // Medoid: max total token overlap with the other members = sum over its tokens of (df - 1).
-  // Articles with a title win over untitled ones; ties by earliest time, then URL.
-  const ranked = group
+  for (const g of core) for (const t of g.toks) tokDf.set(t, (tokDf.get(t) ?? 0) + 1);
+  // Medoid (clustered members only): max total token overlap with the other members = sum
+  // over its tokens of (df - 1). Articles with a title win over untitled ones; ties by
+  // earliest time, then URL.
+  const ranked = core
     .map((g) => ({ g, score: g.toks.reduce((sum, t) => sum + tokDf.get(t)! - 1, 0) }))
     .sort(
       (a, b) =>
@@ -229,11 +249,12 @@ function toStory(group: Item[], home: string, copies: Map<string, number>): Stor
   const articles: ArticleRecord[] = [];
   for (const r of [...records].sort(compareNewestFirst)) {
     if (articles.length >= STORY_ARTICLES) break;
-    const key = keyOf(r);
+    const key = keyer.keyOf(r);
     if (key && keys.has(key)) continue;
-    const k = perOutlet.get(r.source) ?? 0;
+    const outlet = outletOf(r.source);
+    const k = perOutlet.get(outlet) ?? 0;
     if (k >= STORY_MAX_PER_OUTLET) continue;
-    perOutlet.set(r.source, k + 1);
+    perOutlet.set(outlet, k + 1);
     if (key) keys.add(key);
     articles.push(r);
   }
@@ -248,38 +269,82 @@ function toStory(group: Item[], home: string, copies: Map<string, number>): Stor
     t: s.t,
     first,
     last,
-    headline: medoid.title,
+    headline: keyer.shownTitle(medoid),
     headlineSource: medoid.source,
     headlineLang: medoid.lang,
     headlineUrl: medoid.url,
     entities: displayEntities(nameDf, themeDf),
     articles: articles.map((r) => {
-      const key = keyOf(r);
-      return toCellArticle(r, key ? copies.get(key)! - 1 : 0);
+      const key = keyer.keyOf(r);
+      return toCellArticle(r, keyer, key ? copies.get(key)! - 1 : 0);
     }),
   };
 }
 
+/** Second pass: attach each item outside every story to the best story by title tokens. */
+function attach(items: readonly Item[], stories: readonly Item[][]): Item[][] {
+  const attached = stories.map((): Item[] => []);
+  const inStory = new Set(stories.flat());
+  const byTok = new Map<string, number[]>(); // token -> stories whose top-20 tokens contain it
+  stories.forEach((g, k) => {
+    const tok = new Map<string, number>();
+    for (const it of g) for (const t of it.toks) tok.set(t, (tok.get(t) ?? 0) + 1);
+    for (const t of topKeys(tok, TOP_TOKENS)) (byTok.get(t) ?? byTok.set(t, []).get(t)!).push(k);
+  });
+  for (const it of items) {
+    if (inStory.has(it) || !it.toks.length) continue;
+    const shared = new Map<number, number>();
+    for (const t of it.toks) for (const k of byTok.get(t) ?? []) shared.set(k, (shared.get(k) ?? 0) + 1);
+    let best = -1;
+    let bestShared = 0;
+    for (const [k, n] of shared) {
+      if (n < ATTACH_MIN_TOKENS) continue;
+      if (
+        best < 0 ||
+        n > bestShared ||
+        (n === bestShared && (stories[k].length > stories[best].length || (stories[k].length === stories[best].length && k < best)))
+      ) {
+        best = k;
+        bestShared = n;
+      }
+    }
+    if (best >= 0) attached[best].push(it);
+  }
+  return attached;
+}
+
 /**
  * `records` are one cell's articles; `home` is that cell's own country (for each story's `i`).
- * `tagged[k]` (ingest-internal, not part of the cell file) is how many of `stories[k]`'s articles
- * carry any kind (conflict, politics, crime, disaster), for the broadcast's "ordinary" slot.
+ * `keyer` is the snapshot's (reprint keys, shown titles); by default one learned from `records`.
+ * `tagged[k]` (ingest-internal, not part of the cell file) is how many of `stories[k]`'s article
+ * units carry any kind (conflict, politics, crime, disaster), for the broadcast's "ordinary" slot.
  */
 export function buildStories(
   records: readonly ArticleRecord[],
+  keyer: Keyer = createKeyer(records),
   home = homeCountry(records),
 ): { stories: Story[]; unclustered: number; tagged: number[] } {
-  const items = [...records].sort(oldestFirst).map(itemOf);
+  const items = unitsOf(records, keyer, outletOf)
+    .map((unit) => itemOf(unit, keyer))
+    .sort((a, b) => oldestFirst(a.r, b.r));
   removeBackground(items);
   const groups = merge(cluster(items))
     .filter((g) => g.length >= MIN_STORY_ARTICLES)
     .map((g) => ({ g, first: g.reduce((m, x) => (x.r.time < m ? x.r.time : m), g[0].r.time) }));
   // Largest first; ties by earliest article, then by order of creation (stable sort).
   groups.sort((a, b) => b.g.length - a.g.length || (a.first < b.first ? -1 : a.first > b.first ? 1 : 0));
-  const copies = keyCounts(records);
-  const kept = groups.slice(0, MAX_STORIES);
-  const stories = kept.map(({ g }) => toStory(g, home, copies));
-  const tagged = kept.map(({ g }) => g.reduce((k, x) => k + (x.r.kinds ? 1 : 0), 0));
+  const kept = groups.slice(0, MAX_STORIES).map(({ g }) => g);
+  const attached = attach(items, kept);
+  const copies = keyCounts(records, keyer, outletOf);
+  // Attachments can reorder sizes: largest first again, ties keep the order above (stable).
+  const built = kept
+    .map((g, k) => ({
+      story: toStory(g, attached[k], home, copies, keyer),
+      tagged: [...g, ...attached[k]].reduce((n, x) => n + (x.unit.some((r) => r.kinds) ? 1 : 0), 0),
+    }))
+    .sort((a, b) => b.story.n - a.story.n);
+  const stories = built.map((b) => b.story);
+  const tagged = built.map((b) => b.tagged);
   const clustered = stories.reduce((sum, s) => sum + s.n, 0);
-  return { stories, unclustered: records.length - clustered, tagged };
+  return { stories, unclustered: items.length - clustered, tagged };
 }

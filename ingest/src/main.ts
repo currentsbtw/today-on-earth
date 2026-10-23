@@ -20,11 +20,13 @@ import { fileURLToPath } from "node:url";
 import { buildSnapshot } from "./aggregate.ts";
 import { buildBroadcastSafe } from "./broadcast.ts";
 import { loadCountryLookup } from "./domains.ts";
+import { createKeyer } from "./reprints.ts";
 import { FEEDS, fileUrl, mapLimit, streamZipLines, type Feed } from "./fetch.ts";
 import { createRecordAssembler, parseGkgLine, type SkipReason } from "./gkg.ts";
 import { advanceBaseline, baselineView, encodeBaseline, loadBaseline, utcDay, type Baseline } from "./baseline.ts";
 import { CarryLoadError, resolveCarrySource } from "./carry.ts";
-import { appendFrame, arrivedArticles, buildHistoryEntry, buildIndex, encodeHistory, frameFileName, loadHistory, previousFrame, stepArrivals, toFrame, type HistoryEntry } from "./history.ts";
+import { appendFrame, arrivedUnits, buildHistoryEntry, buildIndex, encodeHistory, frameFileName, loadHistory, previousFrame, stepArrivals, toFrame, type HistoryEntry } from "./history.ts";
+import { resolvePlacement } from "./place.ts";
 import { encodeState, loadState, type IngestState } from "./state.ts";
 import type { ArticleRecord } from "./types.ts";
 import { coveredHours, mergeRecords, planSlots, pruneProcessed, type FeedProgress } from "./window.ts";
@@ -137,16 +139,29 @@ async function main(): Promise<number> {
     return 1;
   }
 
+  // Placement is resolved over the whole window (an outlet's boilerplate locations only show
+  // across many of its articles), before the baseline and history count cells, so they agree
+  // with the snapshot.
+  const placement = resolvePlacement(records);
+  log(
+    `placement: outlets checked=${placement.outletsChecked} with boilerplate=${placement.outletsWithBoilerplate} ` +
+      `pairs=${placement.pairs.length} moved=${placement.moved} unplaced by boilerplate=${placement.unplaced}`,
+  );
+
   // Baseline: count each placed article once, when it first enters the state, by its UTC day.
   const today = utcDay(now.toISOString());
+  // Arrivals are counted in article units (one per outlet and headline per place), with the
+  // snapshot's keyer, so the baseline's b and the history's `added`/`a` are in the unit of n.
+  const keyer = createKeyer(records);
   const prevUrls = new Set((prev?.records ?? []).map((r) => r.url));
-  const firstMerged = arrivedArticles(records, prevUrls);
+  const firstMerged = arrivedUnits(records, prevUrls, keyer);
   const mergedStamps: Record<string, string[]> = {};
   for (const r of ok) (mergedStamps[r.feed.name] ??= []).push(r.stamp);
   const nextBaseline = advanceBaseline({ prev: prevBaseline, stateLoaded: prev !== null, firstMerged, mergedStamps, today, log });
   const baseline = baselineView(nextBaseline, today, FEEDS.map((f) => f.name));
 
   const snapshot = buildSnapshot(records, {
+    keyer,
     now,
     windowHours: coveredHours(now.getTime(), Object.values(feedFrom), windowHours),
     baseline,
@@ -167,7 +182,7 @@ async function main(): Promise<number> {
 
   // Replay history: append this run's frame, trim, and re-emit every retained frame
   // (the Pages deploy replaces the whole site each run). The frame's arrival counts are the
-  // window articles new to the state this run (`firstMerged`); unknown after a cold start
+  // article units new to the window this run (`firstMerged`); unknown after a cold start
   // of the state or without a previous retained frame.
   const previous = previousFrame(prevHistory ?? [], snapshot.heat.generatedAt);
   const historyEntry = buildHistoryEntry(snapshot.heat, stepArrivals(firstMerged, prev !== null, previous));

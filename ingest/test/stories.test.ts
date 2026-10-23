@@ -77,8 +77,8 @@ test("stories: u, i against the cell's home, one article per reprint key", () =>
   assert.equal(story.i, 3); // GB, AU, DE; US is the place's own country
   assert.deepEqual(story.articles.map((a) => [a.url, a.reprints]), [["https://zeit.de/1", 0], ["https://abc.net.au/1", 2]]);
   // A home passed in by the cell wins over the story's own.
-  assert.equal(buildStories(records, "DE").stories[0].i, 3);
-  assert.equal(buildStories(records, "").stories[0].i, 4);
+  assert.equal(buildStories(records, undefined, "DE").stories[0].i, 3);
+  assert.equal(buildStories(records, undefined, "").stories[0].i, 4);
 });
 
 test("stories: headline prefers a titled article; all untitled gives an empty headline", () => {
@@ -103,18 +103,98 @@ test("stories: deterministic over shuffled input", () => {
   }
 });
 
-test("stories: at most 12, all n >= 3, sorted by n desc", () => {
+test("stories: at most 30, all n >= 3, sorted by n desc", () => {
   const many: ArticleRecord[] = [];
-  for (let s = 0; s < 15; s++) {
+  for (let s = 0; s < 34; s++) {
     for (let k = 0; k < 3 + (s % 4); k++) {
-      many.push(art({ url: `https://s${s}.com/${k}`, time: t(1, s * 3 + k), source: `o${k}.com`, title: `Story${s} alpha${s} bravo${s} charlie${s} delta${s}`, persons: [`person ${s}`], orgs: [`org ${s}`] }));
+      many.push(art({ url: `https://s${s}.com/${k}`, time: t(1 + Math.floor((s * 6 + k) / 60), (s * 6 + k) % 60), source: `o${k}.com`, title: `Story${s} alpha${s} bravo${s} charlie${s} delta${s}`, persons: [`person ${s}`], orgs: [`org ${s}`] }));
     }
   }
   const { stories, unclustered } = buildStories(many);
-  assert.equal(stories.length, 12);
+  assert.equal(stories.length, 30);
   for (const s of stories) assert.ok(s.n >= 3);
   for (let i = 1; i < stories.length; i++) assert.ok(stories[i - 1].n >= stories[i].n);
   assert.equal(stories.reduce((sum, s) => sum + s.n, 0) + unclustered, many.length);
+});
+
+test("stories: second pass attaches a loose article by 3 shared title tokens; it is never the headline", () => {
+  const tags = { persons: ["ann lee"], orgs: ["harbor authority"] };
+  const records = [
+    // Loose: no tags, oldest, and its title is nothing but the story's three main tokens, so
+    // it would win the medoid if it could. Three shared tokens do not join in the first pass.
+    art({ url: "https://loose.com/1", time: t(1), source: "loose.com", title: "Harbor bridge collapse" }),
+    art({ ...tags, url: "https://o1.com/1", time: t(2), source: "o1.com", title: "Harbor bridge collapse injures workers" }),
+    art({ ...tags, url: "https://o2.com/1", time: t(3), source: "o2.com", title: "Harbor bridge collapse halts traffic" }),
+    art({ ...tags, url: "https://o3.com/1", time: t(4), source: "o3.com", title: "Harbor bridge collapse inquiry opens" }),
+    art({ url: "https://o4.com/1", time: t(5), source: "o4.com", title: "Harbor festival returns this weekend" }), // 1 token: stays loose
+  ];
+  const { stories, unclustered } = buildStories(records);
+  assert.equal(stories.length, 1);
+  const [story] = stories;
+  assert.equal(story.n, 4);
+  assert.equal(story.o, 4);
+  assert.equal(story.first, t(1)); // the attached article counts in the dates
+  assert.equal(unclustered, 1);
+  assert.equal(story.headline, "Harbor bridge collapse injures workers");
+  assert.ok(story.articles.some((a) => a.url === "https://loose.com/1"));
+});
+
+test("stories: the 30-story cap comes before the second pass, so a dropped cluster's article can attach", () => {
+  const records: ArticleRecord[] = [];
+  let i = 0;
+  const at = () => t(1 + Math.floor(i / 60), i++ % 60);
+  // 31st cluster (3 articles, so dropped by the cap): shares "harbor bridge collapse" with story 29.
+  for (let k = 0; k < 3; k++) {
+    records.push(art({ url: `https://x${k}.com/x`, time: at(), source: `x${k}.com`, title: `Harbor bridge collapse ${["zebra", "yonder", "xylophone"][k]}`, persons: ["person x"], orgs: ["org x"] }));
+  }
+  // 30 clusters of 4; story 29 is the latest, so it comes last before the second pass.
+  for (let s = 0; s < 30; s++) {
+    for (let k = 0; k < 4; k++) {
+      const extra = s === 29 ? "harbor bridge collapse " : "";
+      records.push(art({ url: `https://s${s}.com/${k}`, time: at(), source: `o${k}.com`, title: `${extra}Kilo${s} lima${s} mike${s} november${s}`, persons: [`person ${s}`], orgs: [`org ${s}`] }));
+    }
+  }
+  const { stories, unclustered } = buildStories(records);
+  assert.equal(stories.length, 30);
+  assert.equal(unclustered, 0); // the 31st cluster's three articles all attached
+  assert.equal(stories[0].n, 7); // story 29 plus the three, re-sorted first
+  assert.match(stories[0].headline, /Kilo29/); // the attached articles never become the headline
+  assert.ok(stories.slice(1).every((s) => s.n === 4));
+});
+
+test("stories: re-sorted by n after the second pass when attachments change the order", () => {
+  const a = { persons: ["ann lee"], orgs: ["harbor authority"] };
+  const b = { persons: ["bob ray"], orgs: ["ferry union"] };
+  const records = [
+    ...[0, 1, 2, 3].map((k) => art({ ...a, url: `https://a${k}.com/1`, time: t(1, k), source: `a${k}.com`, title: `Harbor authority names chair ${["alpha", "bravo", "charlie", "delta"][k]}` })),
+    ...[0, 1, 2].map((k) => art({ ...b, url: `https://b${k}.com/1`, time: t(2, k), source: `b${k}.com`, title: `Ferry workers strike again ${["echo", "foxtrot", "golf"][k]}` })),
+    // Loose: 3 shared tokens with the ferry story, no tags, so only the second pass takes them.
+    art({ url: "https://l1.com/1", time: t(3), source: "l1.com", title: "Ferry workers strike Monday" }),
+    art({ url: "https://l2.com/1", time: t(3, 5), source: "l2.com", title: "Ferry workers strike Tuesday" }),
+  ];
+  const { stories } = buildStories(records);
+  assert.deepEqual(stories.map((s) => s.n), [5, 4]);
+  assert.match(stories[0].headline, /^Ferry workers strike again/);
+});
+
+test("stories: one outlet's copies of a headline are one article; the headline is the shown title", () => {
+  const tags = { persons: ["amy winehouse"], orgs: ["roundhouse"] };
+  const station = (i: number, head: string, own = tags) => art({ ...own, url: `https://s${i}.iheart.com/x`, time: t(1, i), source: "iheart.com", title: `${head} | Sunny 102.3 FM` });
+  const tribute = "Amy Winehouse tribute ends with every star singing";
+  const records = [
+    ...[0, 1, 2, 3, 4].map((i) => station(i, tribute)),
+    station(5, "Roundhouse announces new winter concert season"),
+    station(6, "Storm closes every school in the county today", { persons: [], orgs: [] }),
+    art({ ...tags, url: "https://bbc.co.uk/1", time: t(2), source: "bbc.co.uk", title: "Amy Winehouse tribute: stars sing together at Roundhouse" }),
+  ];
+  const { stories, unclustered } = buildStories(records);
+  // iheart's five copies of the tribute are one article: 2 tribute units + 1 Roundhouse unit.
+  assert.equal(stories.length, 1);
+  assert.equal(stories[0].n, 3);
+  assert.equal(stories[0].u, 3);
+  assert.equal(unclustered, 1);
+  assert.ok(!stories[0].headline.includes("Sunny"));
+  assert.ok(stories[0].articles.every((a) => !a.title.includes("Sunny")));
 });
 
 test("deny-list: generic theme families and form themes are dropped, specific ones kept", () => {
@@ -159,7 +239,7 @@ test("state v5 stores entity lists, video, location country and kinds; v4, v3, v
   const v4r = decodeState(v4).records[0];
   assert.deepEqual([v4r.locationCountry, v4r.kinds], ["US", ""]);
   assert.equal(decodeState(encodeState({ feeds: {}, records: [{ ...rec, kinds: "kc" }] }, t(6))).records[0].kinds, "");
-  assert.throws(() => decodeState(gzipSync(JSON.stringify({ v: 6, feeds: {}, records: [] }))));
+  assert.throws(() => decodeState(gzipSync(JSON.stringify({ v: 7, feeds: {}, records: [] }))));
   // A raw GDELT place name stored by older code is tidied on load.
   const raw = { ...rec, locationName: "London, London, City Of, United Kingdom" };
   assert.equal(decodeState(encodeState({ feeds: {}, records: [raw] }, t(6))).records[0].locationName, "London, United Kingdom");

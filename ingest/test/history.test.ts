@@ -6,7 +6,7 @@ import { buildSnapshot } from "../src/aggregate.ts";
 import { CarryLoadError } from "../src/carry.ts";
 import {
   appendFrame,
-  arrivedArticles,
+  arrivedUnits,
   buildHistoryEntry,
   buildIndex,
   decodeHistory,
@@ -19,6 +19,7 @@ import {
   toFrame,
   type HistoryEntry,
 } from "../src/history.ts";
+import { createKeyer } from "../src/reprints.ts";
 import type { ArticleRecord } from "../src/types.ts";
 
 const totals = { articles: 10, outlets: 5, countries: 3, cells: 2, unplaced: 1 };
@@ -147,29 +148,55 @@ const stepHeat = (records: readonly ArticleRecord[]) => buildSnapshot(records, {
 const prevFrame: HistoryEntry = { ...entry("2026-10-21T04:32:00Z"), newest: "2026-10-21T04:30:00Z" };
 
 test("arrivals: a URL in the previous carried window is not counted, a new URL is, whatever its GKG time", () => {
-  const arrived = arrivedArticles(thisWindow(), urls(previousWindow()));
+  const arrived = arrivedUnits(thisWindow(), urls(previousWindow()), createKeyer(thisWindow()));
   assert.deepEqual(arrived.map((r) => r.url), ["https://p/3", "https://p/late", "https://lonely", "https://unplaced"]);
-  assert.deepEqual(arrivedArticles(previousWindow(), urls(previousWindow())), []);
+  assert.deepEqual(arrivedUnits(previousWindow(), urls(previousWindow()), createKeyer(previousWindow())), []);
 });
 
 test("added counts arrivals placed and unplaced; `a` counts them per cell, only for cells in the frame", () => {
   const records = thisWindow();
   const heat = stepHeat(records);
-  const e = buildHistoryEntry(heat, stepArrivals(arrivedArticles(records, urls(previousWindow())), true, prevFrame));
+  const e = buildHistoryEntry(heat, stepArrivals(arrivedUnits(records, urls(previousWindow()), createKeyer(records)), true, prevFrame));
   assert.equal(e.newest, "2026-10-21T04:45:00Z"); // still the newest article time
   assert.equal(e.added, 4);
   assert.deepEqual(e.cells.map((c) => [c[0], c[3], c[4]]), [[PARIS, 4, 2], [LAGOS, 2, 0]]);
   assert.ok(e.cells.every((c) => c.length === 5));
   assert.deepEqual(toFrame(e).cells[0], [PARIS, e.cells[0][1], e.cells[0][2], 4, 2]);
   // Nothing arrived is 0, not absent.
-  const quiet = buildHistoryEntry(stepHeat(previousWindow()), stepArrivals(arrivedArticles(previousWindow(), urls(previousWindow())), true, prevFrame));
+  const quiet = buildHistoryEntry(stepHeat(previousWindow()), stepArrivals(arrivedUnits(previousWindow(), urls(previousWindow()), createKeyer(previousWindow())), true, prevFrame));
   assert.equal(quiet.added, 0);
   assert.ok(quiet.cells.every((c) => c.length === 5 && c[4] === 0));
 });
 
+test("arrived units: an outlet's later copy adds 0, another outlet's copy adds 1, a new headline adds 1", () => {
+  const wire = "Storm hits coast, thousands without power";
+  const titled = (url: string, source: string, title: string, cellId = PARIS) => ({ ...record(url, "2026-10-21T04:45:00Z", cellId), source, title });
+  const previous = [
+    { ...titled("https://a/1", "a.com", wire), time: "2026-10-21T04:00:00Z" },
+    { ...titled("https://x/1", "x.com", "Council approves the new stadium budget"), time: "2026-10-21T04:00:00Z" },
+  ];
+  const window = [
+    ...previous,
+    titled("https://a/2", "a.com", `${wire} - A`), // a.com's copy of a headline it already had: 0
+    titled("https://b/1", "b.com", wire), // a second outlet's copy: 1
+    titled("https://c/1", "c.com", "Ferry service resumes after the storm"), // a new headline: 1
+    titled("https://c/2", "c.com", "Ferry service resumes after the storm"), // its copy in the same step: still 1
+    titled("https://d/1", "d.com", wire, LAGOS), // the same headline in another place: 1 there
+    titled("https://d/2", "d.com", "Lagos port reopens after the storm", LAGOS),
+  ];
+  const keyer = createKeyer(window);
+  const arrived = arrivedUnits(window, urls(previous), keyer);
+  assert.deepEqual(arrived.map((r) => r.url).sort(), ["https://b/1", "https://c/1", "https://d/1", "https://d/2"]);
+  const heat = buildSnapshot(window, { now: new Date("2026-10-21T04:47:14Z"), windowHours: 24, keyer }).heat;
+  const e = buildHistoryEntry(heat, stepArrivals(arrived, true, prevFrame));
+  assert.equal(e.added, 4);
+  assert.deepEqual(e.cells.map((c) => [c[0], c[3], c[4]]), [[PARIS, 4, 2], [LAGOS, 2, 2]]); // a <= n
+  assert.ok(e.added! <= heat.totals.articles);
+});
+
 test("cold start of the state, or no previous frame: `added` and `a` absent, rows keep four elements", () => {
   const records = thisWindow();
-  const arrived = arrivedArticles(records, new Set()); // a cold start merges everything as new
+  const arrived = arrivedUnits(records, new Set(), createKeyer(records)); // a cold start merges everything as new
   for (const known of [stepArrivals(arrived, false, prevFrame), stepArrivals(arrived, true, null)]) {
     assert.equal(known, undefined);
     const e = buildHistoryEntry(stepHeat(records), known);
@@ -194,7 +221,7 @@ test("previousFrame: the newest retained entry before this run; a same-`at` fram
 test("index entries carry `newest` and `added` only when known", () => {
   const records = thisWindow();
   const heat = stepHeat(records);
-  const second = buildHistoryEntry(heat, stepArrivals(arrivedArticles(records, urls(previousWindow())), true, prevFrame));
+  const second = buildHistoryEntry(heat, stepArrivals(arrivedUnits(records, urls(previousWindow()), createKeyer(records)), true, prevFrame));
   const idx = buildIndex(appendFrame([entry("2026-10-21T03:45:00Z"), prevFrame], second));
   assert.deepEqual(Object.keys(idx.frames[0]), ["at", "file", "windowHours", "totals"]); // carried from version 1
   assert.deepEqual(Object.keys(idx.frames[1]), ["at", "file", "windowHours", "newest", "totals"]); // first frame after a cold start
@@ -215,7 +242,7 @@ test("version 1 history loads as unknown: no `newest`, no `added`, four-element 
   // A version 1 frame is still a previous frame: the first run after the upgrade counts arrivals.
   const records = thisWindow();
   const heat = stepHeat(records);
-  const e = buildHistoryEntry(heat, stepArrivals(arrivedArticles(records, urls(previousWindow())), true, previousFrame(decoded, heat.generatedAt)));
+  const e = buildHistoryEntry(heat, stepArrivals(arrivedUnits(records, urls(previousWindow()), createKeyer(records)), true, previousFrame(decoded, heat.generatedAt)));
   assert.equal(e.added, 4);
   // Version 2 round-trips `newest`, `added` and `a`; a version 2 entry with an unusable `added` is unknown.
   const h = appendFrame(decoded, e);

@@ -234,3 +234,86 @@ export function loadCountryLookup(path = DOMAINS_FILE): CountryLookup {
   const detailed = loadDetailedCountryLookup({ gdelt2018: path });
   return (domain: string) => detailed(domain).country;
 }
+
+/**
+ * Outlet networks (`data/outlet-networks.txt`, see ingest/data/README.md): domains that count
+ * as one outlet, named by the network. `outletOf(source)` is the network's name for a listed
+ * domain, else the domain itself; outlet counts (`o`, `topOutlets`), the per-outlet caps,
+ * "one article per outlet and headline" and learned title tails use it. Articles keep their
+ * own domain in `source`.
+ *
+ * Entry forms: a plain domain matches that domain only; a leading dot (`.iheart.com`) matches
+ * the domain and every subdomain. An exact entry wins over a dotted one; among dotted entries
+ * the longest (nearest) suffix wins.
+ */
+export const NETWORKS_FILE = dataFile("outlet-networks.txt");
+
+export interface Networks {
+  /** Plain entries: the exact domain. */
+  exact: ReadonlyMap<string, string>;
+  /** Dotted entries, stored without the dot: the domain and every subdomain. */
+  suffix: ReadonlyMap<string, string>;
+}
+
+/**
+ * Parse the networks file: `domain<TAB>network name<TAB>comment`, the domain optionally with a
+ * leading dot; `#` lines are comments. Throws on a malformed line (bad domain, no network name).
+ */
+export function parseNetworks(text: string): Networks {
+  const exact = new Map<string, string>();
+  const suffix = new Map<string, string>();
+  text.split("\n").forEach((raw, i) => {
+    const line = raw.replace(/\r$/, "");
+    if (!line.trim() || line.trimStart().startsWith("#")) return;
+    const [domain = "", network = ""] = line.split("\t");
+    let d = domain.trim().toLowerCase();
+    const dotted = d.startsWith(".");
+    if (dotted) d = d.slice(1);
+    const n = network.trim().toLowerCase();
+    if (!/^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(d) || n === "") {
+      throw new Error(`outlet networks line ${i + 1}: expected "domain or .domain<TAB>network name<TAB>comment", got ${JSON.stringify(line)}`);
+    }
+    (dotted ? suffix : exact).set(d, n);
+  });
+  return { exact, suffix };
+}
+
+export function loadNetworks(path = NETWORKS_FILE): Networks {
+  return parseNetworks(readFileSync(path, "utf8"));
+}
+
+/** The network a domain belongs to, or "" (exact entry first, then the nearest dotted one). */
+export function networkOf(networks: Networks, domain: string): string {
+  let d = domain.trim().toLowerCase().replace(/\.$/, "");
+  if (!d) return "";
+  const hit = networks.exact.get(d);
+  if (hit !== undefined) return hit;
+  for (;;) {
+    const s = networks.suffix.get(d);
+    if (s !== undefined) return s;
+    const dot = d.indexOf(".");
+    if (dot < 0) return "";
+    d = d.slice(dot + 1);
+  }
+}
+
+/** outletOf over a given networks table (memoised per source). */
+export function makeOutletOf(networks: Networks): (source: string) => string {
+  const memo = new Map<string, string>();
+  return (source: string) => {
+    let o = memo.get(source);
+    if (o === undefined) memo.set(source, (o = networkOf(networks, source) || source));
+    return o;
+  };
+}
+
+let defaultOutletOf: ((source: string) => string) | null = null;
+
+/**
+ * The outlet a source domain counts as: its network's name, else the domain unchanged.
+ * Synchronous; the networks file is read once, on the first call.
+ */
+export function outletOf(source: string): string {
+  defaultOutletOf ??= makeOutletOf(loadNetworks());
+  return defaultOutletOf(source);
+}

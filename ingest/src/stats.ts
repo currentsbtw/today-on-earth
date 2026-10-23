@@ -1,4 +1,5 @@
-import { distinctCount } from "./reprints.ts";
+import { outletOf } from "./domains.ts";
+import { distinctCount, unitsOf, type Keyer } from "./reprints.ts";
 import type { ArticleRecord, CellArticle } from "./types.ts";
 
 /** Shared counters for cells and stories. */
@@ -22,10 +23,14 @@ export function countSorted(values: Iterable<string>): [string, number][] {
   return [...m.entries()].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0));
 }
 
-/** `reprints`: how many other articles in the same cell share this one's reprint key. */
-export function toCellArticle(r: ArticleRecord, reprints = 0): CellArticle {
+/**
+ * `reprints`: how many other articles in the same cell (other outlets: an outlet's copies of
+ * one headline are one article) share this one's reprint key. `title` is the shown title:
+ * the outlet suffix the reprint key strips is removed.
+ */
+export function toCellArticle(r: ArticleRecord, keyer: Keyer, reprints = 0): CellArticle {
   return {
-    title: r.title,
+    title: keyer.shownTitle(r),
     url: r.url,
     source: r.source,
     country: r.country,
@@ -38,10 +43,28 @@ export function toCellArticle(r: ArticleRecord, reprints = 0): CellArticle {
   };
 }
 
+/**
+ * Article units: one per (outlet, reprint key), so an outlet's copies of one headline are one
+ * article, plus one per record with an empty key. The outlet is outletOf(source), so a
+ * network counts once.
+ */
+export function articleUnits(records: readonly ArticleRecord[], keyer: Keyer): number {
+  return unitsOf(records, keyer, outletOf).length;
+}
+
+/** A unit's earliest record (time, then URL): the unit's outlet country and language. */
+export function representative(unit: readonly ArticleRecord[]): ArticleRecord {
+  let best = unit[0];
+  for (const r of unit) if (r.time < best.time || (r.time === best.time && r.url < best.url)) best = r;
+  return best;
+}
+
 export interface CellStats {
+  /** Article units (articleUnits). */
   n: number;
   /** Distinct reprint keys (untitled articles count one each). */
   u: number;
+  /** Distinct non-empty outlets (outletOf: a network counts once). */
   o: number;
   c: number;
   l: number;
@@ -51,6 +74,7 @@ export interface CellStats {
   /** Most common non-empty locationCountry among the records, "" if none. */
   home: string;
   name: string;
+  /** Article units per outlet, per outlet country and per language. */
   outlets: [string, number][];
   countries: [string, number][];
   languages: [string, number][];
@@ -65,16 +89,17 @@ export function homeCountry(records: readonly ArticleRecord[]): string {
  * Counters over `records`. `home` is the place's own country for `i`; it defaults to the
  * records' own home (a story passes its cell's).
  */
-export function cellStats(records: readonly ArticleRecord[], home = homeCountry(records)): CellStats {
-  const outlets = countSorted(records.map((r) => r.source));
-  const countries = countSorted(records.map((r) => r.country));
-  const languages = countSorted(records.map((r) => r.lang));
+export function cellStats(records: readonly ArticleRecord[], keyer: Keyer, home = homeCountry(records)): CellStats {
+  const units = unitsOf(records, keyer, outletOf).map(representative);
+  const outlets = countSorted(units.map((r) => outletOf(r.source)));
+  const countries = countSorted(units.map((r) => r.country));
+  const languages = countSorted(units.map((r) => r.lang));
   const names = countSorted(records.map((r) => r.locationName).filter(Boolean));
   const toneSum = records.reduce((s, r) => s + r.tone, 0);
   const c = countries.filter(([k]) => k !== "").length;
   return {
-    n: records.length,
-    u: distinctCount(records),
+    n: units.length,
+    u: distinctCount(records, keyer),
     o: outlets.filter(([k]) => k !== "").length,
     c,
     l: languages.filter(([k]) => k !== "").length,

@@ -5,7 +5,7 @@ import { fipsToIso } from "./fips-to-iso.ts";
 import { parseKinds } from "./kinds.ts";
 import { cleanPlaceName } from "./placename.ts";
 import { langFromTranslationInfo } from "./lang.ts";
-import type { ArticleRecord } from "./types.ts";
+import type { ArticleRecord, LocationCandidate } from "./types.ts";
 
 export const H3_RES = 3;
 export const TITLE_MAX = 160;
@@ -70,25 +70,44 @@ export function extractTitle(extras: string): string {
   return chars.slice(0, TITLE_MAX - 1).join("").trimEnd() + "…";
 }
 
-export interface PrimaryLocation {
+/** Candidates kept per article: the best cities, then the best region (docs/PLAN.md "Trust the dots"). */
+export const MAX_CITY_CANDIDATES = 3;
+export const MAX_REGION_CANDIDATES = 1;
+
+interface Group {
+  type: 2 | 3 | 4 | 5;
+  /** Tidied name, as stored on the candidate. */
   name: string;
-  /** ISO 3166-1 alpha-2 from the entry's FIPS CountryCode, "" when unknown. */
-  country: string;
+  fips: string;
   lat: number;
   lon: number;
+  fid: string;
+  n: number;
+  at: number;
 }
 
+const byCountThenOffset = (a: Group, b: Group) =>
+  b.n - a.n || a.at - b.at || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+
 /**
- * Primary location (docs/DATA-CONTRACT.md): the first parseable V2Locations entry whose Type
- * is not 1 (country-level). Entry format:
+ * Candidate locations (docs/DATA-CONTRACT.md). Entry format:
  * `Type#FullName#CountryCode(FIPS)#ADM1#ADM2#Lat#Long#FeatureID#CharOffset`.
  *
- * Returns "unplaced" when the only parseable entries are country-level (a country centroid
- * is not where anything happened), and null when nothing is parseable at all.
+ * Every parseable entry of type 2-5 counts as one mention of its FeatureID (its tidied name, as
+ * stored and as place.ts identifies it, when the FeatureID is empty; entries whose name tidies
+ * to nothing are skipped, as the state file would drop them); each place keeps its mention
+ * count and smallest CharOffset. GDELT's entry order is not text order, so nothing here
+ * depends on it. Order: cities (types 3, 4) by
+ * mentions descending, then first offset ascending, then name; then regions (2, 5) the same
+ * way. The top MAX_CITY_CANDIDATES cities and the top MAX_REGION_CANDIDATES region are kept.
+ *
+ * Returns "unplaced" when entries parse but none is type 2-5 (a country centroid is not where
+ * anything happened), and null when nothing is parseable at all.
  */
-export function parsePrimaryLocation(v2Locations: string): PrimaryLocation | "unplaced" | null {
+export function parseCandidates(v2Locations: string): LocationCandidate[] | "unplaced" | null {
   if (!v2Locations) return null;
-  let sawCountry = false;
+  let sawAny = false;
+  const groups = new Map<string, Group>();
   for (const entry of v2Locations.split(";")) {
     const f = entry.split("#");
     if (f.length < 7 || f[5] === "" || f[6] === "") continue;
@@ -96,10 +115,56 @@ export function parsePrimaryLocation(v2Locations: string): PrimaryLocation | "un
     const lon = Number(f[6]);
     if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
     if (lat < -90 || lat > 90 || lon < -180 || lon > 180) continue;
-    if (f[0] !== "1") return { name: f[1], country: fipsToIso(f[2]), lat, lon };
-    sawCountry = true;
+    sawAny = true;
+    const t = f[0];
+    if (t !== "2" && t !== "3" && t !== "4" && t !== "5") continue;
+    // Names and FeatureIDs exactly as the candidate stores them, so grouping here and
+    // identity in place.ts (and after a state round trip) agree.
+    const name = candidateString(cleanPlaceName(f[1]));
+    if (!name) continue;
+    const fid = candidateString(f[7] ?? "");
+    const offset = Number(f[8]);
+    const at = f[8] && Number.isFinite(offset) && offset >= 0 ? offset : 0;
+    const key = fid !== "" ? `F:${fid}` : `N:${name}`;
+    const g = groups.get(key);
+    const type = Number(t) as 2 | 3 | 4 | 5;
+    if (!g) {
+      groups.set(key, { type, name, fips: f[2], lat, lon, fid, n: 1, at });
+      continue;
+    }
+    g.n++;
+    // The earliest mention names the place (ties: smaller name), whatever the entry order.
+    if (at < g.at || (at === g.at && name < g.name)) Object.assign(g, { type, name, fips: f[2], lat, lon, at });
   }
-  return sawCountry ? "unplaced" : null;
+  if (groups.size === 0) return sawAny ? "unplaced" : null;
+  const all = [...groups.values()];
+  const cities = all.filter((g) => g.type === 3 || g.type === 4).sort(byCountThenOffset).slice(0, MAX_CITY_CANDIDATES);
+  const regions = all.filter((g) => g.type === 2 || g.type === 5).sort(byCountThenOffset).slice(0, MAX_REGION_CANDIDATES);
+  return [...cities, ...regions].map((g) => ({
+    type: g.type,
+    name: g.name,
+    country: fipsToIso(g.fips),
+    lat: g.lat,
+    lon: g.lon,
+    n: g.n,
+    at: g.at,
+    fid: g.fid,
+  }));
+}
+
+/**
+ * A detached copy with "|" and ";" (the state file's separators for candidates) replaced and
+ * the ends trimmed ("" when nothing is left); repeated names share one string, since the same
+ * few thousand places recur across a day.
+ */
+const interned = new Map<string, string>();
+function candidateString(s: string): string {
+  const hit = interned.get(s);
+  if (hit !== undefined) return hit;
+  const clean = detach(s.replace(/[|;]/g, " ").trim());
+  if (interned.size >= 200_000) interned.clear();
+  interned.set(detach(s), clean);
+  return clean;
 }
 
 export function parseTone(v2Tone: string): number {
@@ -194,10 +259,11 @@ export function parseGkgLine(line: string, countryOf: CountryLookup): ParseResul
   if (!/^https?:\/\//i.test(url)) return { ok: false, reason: "url" };
   const time = gkgDateToIso(f[COL.DATE]);
   if (!time) return { ok: false, reason: "date" };
-  const loc = parsePrimaryLocation(f[COL.V2_LOCATIONS]);
-  if (!loc) return { ok: false, reason: "location" };
+  const locs = parseCandidates(f[COL.V2_LOCATIONS]);
+  if (!locs) return { ok: false, reason: "location" };
 
-  const placed = loc === "unplaced" ? null : loc;
+  // Placement until place.ts resolves it at snapshot time: the first candidate.
+  const placed = locs === "unplaced" ? null : locs[0];
   const source = f[COL.SOURCE_COMMON_NAME].trim().toLowerCase();
   const image = f[COL.SHARING_IMAGE];
   return {
@@ -214,13 +280,14 @@ export function parseGkgLine(line: string, countryOf: CountryLookup): ParseResul
       lat: placed?.lat ?? 0,
       lon: placed?.lon ?? 0,
       cellId: placed ? latLngToCell(placed.lat, placed.lon, H3_RES) : "",
-      locationName: detach(placed ? cleanPlaceName(placed.name) : ""),
+      locationName: placed?.name ?? "",
       locationCountry: placed?.country ?? "",
       persons: parseNames(f[COL.V2_PERSONS]).map(detach),
       orgs: parseOrgs(f[COL.V2_ORGANIZATIONS]).map(detach),
       themes: parseThemes(f[COL.V2_THEMES]).map(detach),
       video: detach(parseVideo(f[COL.SOCIAL_VIDEO_EMBEDS])),
       kinds: parseKinds(f[COL.V2_THEMES]),
+      ...(locs === "unplaced" ? {} : { locs }),
     },
   };
 }

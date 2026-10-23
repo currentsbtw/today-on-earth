@@ -1,3 +1,24 @@
+/**
+ * One place an article mentions (V2Locations entries of type 2-5 grouped by FeatureID), kept so
+ * placement can be resolved at snapshot time (place.ts). At most 4 per article.
+ */
+export interface LocationCandidate {
+  /** GDELT location type: 3 US city, 4 world city, 2 US state, 5 world state/region. */
+  type: 2 | 3 | 4 | 5;
+  /** FullName tidied by cleanPlaceName (never contains "|" or ";"). */
+  name: string;
+  /** ISO 3166-1 alpha-2 from the entry's FIPS CountryCode, "" when unknown. */
+  country: string;
+  lat: number;
+  lon: number;
+  /** Mentions: V2Locations entries with this FeatureID (FullName when it has none). */
+  n: number;
+  /** Smallest CharOffset among those entries, 0 when missing. */
+  at: number;
+  /** GDELT FeatureID, "" when the entries had none (identity then falls back to name). */
+  fid: string;
+}
+
 /** One article in the rolling window. Persisted in state.json.gz between runs. */
 export interface ArticleRecord {
   url: string;
@@ -34,6 +55,13 @@ export interface ArticleRecord {
    * c (conflict), d (disaster), k (crime), p (politics), "" when none. Ingest-internal.
    */
   kinds: string;
+  /**
+   * Candidate locations in placement order (cities by mentions, then the best region); the
+   * placement fields above are resolved from them at snapshot time (place.ts). Absent on
+   * country-only articles and on records loaded from state versions before 6, whose placement
+   * is kept as stored.
+   */
+  locs?: LocationCandidate[];
 }
 
 /** `/data/heat.json` (docs/DATA-CONTRACT.md). */

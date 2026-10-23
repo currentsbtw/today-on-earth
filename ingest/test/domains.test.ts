@@ -1,10 +1,16 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import {
   countryFromTld,
   loadCountryLookup,
   loadDetailedCountryLookup,
+  loadNetworks,
   makeDetailedCountryLookup,
+  makeOutletOf,
+  outletOf,
+  parseNetworks,
+  OVERRIDES_FILE,
   parseOverrides,
   TLD_DENY_LIST,
 } from "../src/domains.ts";
@@ -85,4 +91,44 @@ test("ccTLD: national second-level forms count even under a deny-listed TLD", ()
   assert.equal(countryFromTld("example.co"), ""); // bare deny-listed TLD stays blocked
   assert.equal(countryFromTld("example.com.ar"), "AR");
   assert.equal(countryFromTld("foo.co.uk"), "GB");
+});
+
+test("networks: Big News Network portals are one outlet, every BNN override is listed", () => {
+  for (const d of ["japanherald.com", "asiabulletin.com", "bignewsnetwork.com", "texas.statenews.net"]) assert.equal(outletOf(d), "bignewsnetwork.com", d);
+  assert.equal(outletOf("lemonde.fr"), "lemonde.fr");
+  assert.equal(outletOf(""), "");
+  const networks = loadNetworks();
+  const bnn = readFileSync(OVERRIDES_FILE, "utf8")
+    .split(/\r?\n/)
+    .filter((l) => l.endsWith("\t\tBig News Network"))
+    .map((l) => l.split("\t")[0]);
+  assert.ok(bnn.length > 300);
+  for (const d of bnn) {
+    assert.equal(networks.suffix.get(d), "bignewsnetwork.com", d);
+    assert.equal(outletOf(d), "bignewsnetwork.com", d);
+  }
+  // The network's own home domains are listed, not just matched by name.
+  assert.ok(bnn.includes("bignewsnetwork.com") && bnn.includes("bignewsnetwork.net"));
+  assert.equal(networks.suffix.get("bignewsnetwork.com"), "bignewsnetwork.com");
+  assert.equal(outletOf("bignewsnetwork.net"), "bignewsnetwork.com");
+  // iheart's station hosts are one outlet.
+  for (const d of ["iheart.com", "wkip.iheart.com", "news.kfi.iheart.com"]) assert.equal(outletOf(d), "iheart.com", d);
+  assert.equal(outletOf("iheartradio.ca"), "iheartradio.ca");
+});
+
+test("networks file parser: plain entries are exact, dotted ones cover subdomains, exact wins", () => {
+  const nets = parseNetworks("# header\n\nA.example.com\tChain\tcomment\r\n.group.com\tGroup\t\nown.group.com\tOwn\t\n.x.group.com\tX\t\n");
+  assert.deepEqual([...nets.exact], [["a.example.com", "chain"], ["own.group.com", "own"]]);
+  assert.deepEqual([...nets.suffix], [["group.com", "group"], ["x.group.com", "x"]]);
+  const outlet = makeOutletOf(nets);
+  assert.equal(outlet("a.example.com"), "chain");
+  assert.equal(outlet("www.a.example.com"), "www.a.example.com"); // plain: exact only
+  assert.equal(outlet("example.com"), "example.com");
+  assert.equal(outlet("group.com"), "group");
+  assert.equal(outlet("wkip.group.com"), "group");
+  assert.equal(outlet("own.group.com"), "own"); // an exact entry wins over the dotted one
+  assert.equal(outlet("a.x.group.com"), "x"); // the nearest dotted entry wins
+  assert.throws(() => parseNetworks(".\tchain"), /line 1/);
+  assert.throws(() => parseNetworks("not a domain\tchain"), /line 1/);
+  assert.throws(() => parseNetworks("# ok\nexample.com"), /line 2/); // no network name
 });

@@ -20,6 +20,8 @@ import {
   type BaselineSlots,
 } from "../src/baseline.ts";
 import { CarryLoadError } from "../src/carry.ts";
+import { arrivedUnits } from "../src/history.ts";
+import { createKeyer } from "../src/reprints.ts";
 import type { ArticleRecord } from "../src/types.ts";
 import { mergeRecords } from "../src/window.ts";
 
@@ -125,6 +127,20 @@ test("re-merging the same URL does not double count", () => {
   const prevUrls = new Set(prevRecords.map((r) => r.url));
   days = countNewRecords(days, merged.filter((r) => !prevUrls.has(r.url)));
   assert.deepEqual(days, { "2026-10-21": { "832aa8fffffffff": 2 } });
+});
+
+test("arrived units: an outlet's later copy of a headline adds nothing to b, another outlet's copy does", () => {
+  const titled = (url: string, time: string, source: string, title: string) => ({ ...rec(url, time), source, title });
+  const previous = [titled("https://a/1", "2026-10-21T01:00:00Z", "a.com", "Storm hits coast, thousands without power")];
+  let days = countNewRecords({}, arrivedUnits(previous, new Set(), createKeyer(previous)));
+  const window = [
+    ...previous,
+    titled("https://a/2", "2026-10-21T02:00:00Z", "a.com", "Storm hits coast, thousands without power"),
+    titled("https://b/1", "2026-10-21T02:00:00Z", "b.com", "Storm hits coast, thousands without power"),
+    titled("https://b/2", "2026-10-22T00:10:00Z", "b.com", "Ferry service resumes after the storm"),
+  ];
+  days = countNewRecords(days, arrivedUnits(window, new Set(previous.map((r) => r.url)), createKeyer(window)));
+  assert.deepEqual(days, { "2026-10-21": { "832aa8fffffffff": 2 }, "2026-10-22": { "832aa8fffffffff": 1 } });
 });
 
 test("advanceBaseline: a state that did not load discards the carried baseline", () => {

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { latLngToCell } from "h3-js";
 import { buildSnapshot, selectArticles } from "../src/aggregate.ts";
-import { reprintKey } from "../src/reprints.ts";
+import { createKeyer, learnTails, reprintKey } from "../src/reprints.ts";
 import type { ArticleRecord } from "../src/types.ts";
 import { coveredHours, mergeRecords, planSlots } from "../src/window.ts";
 
@@ -162,7 +162,7 @@ test("reprints: u counts distinct headlines, the list keeps the newest copy, unt
   ];
   const { heat, cells } = buildSnapshot(records, { now: new Date("2026-10-20T13:00:00Z"), windowHours: 24 });
   const [cell] = heat.cells;
-  assert.equal(cell.n, 6); // n still counts every URL
+  assert.equal(cell.n, 6); // every copy is from another outlet, so each counts
   assert.equal(cell.u, 4); // the wire story, the budget story, two untitled
   assert.equal(heat.totals.reprints, 2);
   assert.deepEqual(Object.keys(cell).slice(0, 5), ["id", "lat", "lon", "n", "u"]);
@@ -280,4 +280,126 @@ test("planSlots: warm start fetches new slots and retries recent gaps, never bef
   // `from` slides forward with the window.
   const dayLater = planSlots({ nowMs: Date.UTC(2026, 9, 21, 19, 37), windowHours: 24, coldStartHours: 1, retryHours: 3, progress });
   assert.equal(dayLater.from, "20261020194500");
+});
+
+test("learned tails: 3 distinct heads flag an outlet's tail, 2 do not, another outlet's tail does not apply", () => {
+  const station = (head: string, source = "iheart.com") => rec({ source, title: `${head} | Sunny 102.3 FM` });
+  const three = [station("Amy Winehouse tribute ends with one song"), station("Storm closes every school in the county"), station("Council approves the new stadium budget")];
+  assert.deepEqual([...learnTails(three)], [["iheart.com", new Set(["sunny 1023 fm"])]]);
+  const keyer = createKeyer(three);
+  assert.equal(keyer.keyOf(three[0]), "amy winehouse tribute ends with one song");
+  // The same head twice is one head: two distinct heads are not enough.
+  const two = [station("Amy Winehouse tribute ends with one song"), station("Amy Winehouse tribute ends with one song"), station("Storm closes every school in the county")];
+  assert.equal(learnTails(two).size, 0);
+  assert.equal(createKeyer(two).keyOf(two[0]), "amy winehouse tribute ends with one song sunny 1023 fm");
+  // Another outlet using the same tail once keeps it (a real headline half for that outlet).
+  const other = station("Amy Winehouse tribute ends with one song", "other.com");
+  const mixed = createKeyer([...three, other]);
+  assert.equal(mixed.keyOf(other), "amy winehouse tribute ends with one song sunny 1023 fm");
+  assert.equal(reprintKey(other.title, "other.com", new Set(["sunny 1023 fm"])), "amy winehouse tribute ends with one song");
+});
+
+test("learned tails: a network's hosts learn and strip together; their copies are one article", () => {
+  const records = [
+    rec({ source: "wkip.iheart.com", title: "Amy Winehouse tribute ends with one song | Sunny 102.3 FM" }),
+    rec({ source: "kfi.iheart.com", title: "Storm closes every school in the county | Sunny 102.3 FM" }),
+    rec({ source: "iheart.com", title: "Council approves the new stadium budget | Sunny 102.3 FM" }),
+    rec({ source: "wkip.iheart.com", title: "Amy Winehouse tribute ends with one song" }),
+    rec({ source: "local.com", title: "Local paper reports on the stadium budget" }),
+  ];
+  assert.deepEqual([...learnTails(records)], [["iheart.com", new Set(["sunny 1023 fm"])]]);
+  const { heat, cells } = buildSnapshot(records, { now: new Date("2026-10-20T13:00:00Z"), windowHours: 24 });
+  assert.equal(heat.cells[0].n, 4); // the tribute's two copies on two hosts are one article
+  assert.equal(heat.cells[0].o, 2);
+  assert.deepEqual(cells[0].topOutlets, [["iheart.com", 3], ["local.com", 1]]);
+});
+
+test("shown title drops exactly the suffix the key strips, with the original casing", () => {
+  const records = [
+    rec({ source: "iheart.com", title: "Amy Winehouse Tribute Ends With One Song | Sunny 102.3 FM" }),
+    rec({ source: "iheart.com", title: "Storm Closes Every School In The County | Sunny 102.3 FM" }),
+    rec({ source: "iheart.com", title: "Council Approves The New Stadium Budget | Sunny 102.3 FM" }),
+    rec({ source: "reuters.com", title: "Storm hits coast, thousands without power - Reuters" }),
+    rec({ source: "cbc.ca", title: "Group assisting long-planned review of firearms — including SKS — has yet to meet" }),
+    rec({ source: "a.com", title: "Short title - Reuters" }),
+    rec({ source: "a.com", title: "" }),
+  ];
+  const keyer = createKeyer(records);
+  assert.deepEqual(records.map((r) => keyer.shownTitle(r)), [
+    "Amy Winehouse Tribute Ends With One Song",
+    "Storm Closes Every School In The County",
+    "Council Approves The New Stadium Budget",
+    "Storm hits coast, thousands without power",
+    "Group assisting long-planned review of firearms — including SKS — has yet to meet",
+    "Short title - Reuters",
+    "",
+  ]);
+  for (const r of records) assert.equal(reprintKey(keyer.shownTitle(r), r.source), keyer.keyOf(r), r.title);
+  const { cells } = buildSnapshot(records, { now: new Date("2026-10-20T13:00:00Z"), windowHours: 24 });
+  assert.ok(cells[0].articles.some((a) => a.title === "Amy Winehouse Tribute Ends With One Song" && a.source === "iheart.com"));
+});
+
+test("shown title: the head minimum is measured before lowercasing, so a title is always shown", () => {
+  // "İstanbul yangını xx" is 19 code points but 20 once lowercased ("i̇"): not cut, kept whole.
+  const short = rec({ source: "hurriyet.com.tr", title: "İstanbul yangını xx - Hürriyet" });
+  const long = rec({ source: "hurriyet.com.tr", title: "İstanbul yangını xyz - Hürriyet" });
+  const keyer = createKeyer([short, long]);
+  assert.equal(keyer.shownTitle(short), "İstanbul yangını xx - Hürriyet");
+  assert.equal(keyer.keyOf(short), "i̇stanbul yangını xx hürriyet");
+  assert.equal(keyer.shownTitle(long), "İstanbul yangını xyz");
+  assert.equal(keyer.keyOf(long), "i̇stanbul yangını xyz");
+  const { cells } = buildSnapshot([short, long], { now: new Date("2026-10-20T13:00:00Z"), windowHours: 24 });
+  assert.ok(cells[0].articles.every((a) => typeof a.title === "string" && a.title !== ""));
+});
+
+test("repeated suffixes: \"X - Section | Outlet\" loses both, the same for the key and the shown title", () => {
+  const r = rec({ source: "reuters.com", title: "Storm hits coast, thousands without power - World News | Reuters" });
+  const plain = rec({ source: "b.com", title: "Storm hits coast, thousands without power" });
+  const keyer = createKeyer([r, plain]);
+  assert.equal(keyer.keyOf(r), "storm hits coast thousands without power");
+  assert.equal(keyer.shownTitle(r), "Storm hits coast, thousands without power");
+  assert.equal(reprintKey(keyer.shownTitle(r), r.source), keyer.keyOf(r));
+  assert.equal(keyer.keyOf(r), keyer.keyOf(plain)); // so the two are reprints of one headline
+});
+
+test("units: an outlet's copies of one headline are one article; two outlets are two; untitled count each", () => {
+  const wire = "Storm hits coast, thousands without power";
+  const records = [
+    rec({ url: "https://a/1", source: "a.com", title: wire, time: at(10, 0) }),
+    rec({ url: "https://a/2", source: "a.com", title: `${wire} - A`, time: at(10, 5) }),
+    rec({ url: "https://b/1", source: "b.com", title: wire, time: at(9, 0) }),
+    rec({ url: "https://c/1", source: "c.com", title: "", time: at(8, 0) }),
+    rec({ url: "https://c/2", source: "c.com", title: "", time: at(8, 5) }),
+    rec({ url: "https://d/1", cellId: "", source: "d.com", title: "Unplaced headline about the summit", time: at(8, 0) }),
+    rec({ url: "https://d/2", cellId: "", source: "d.com", title: "Unplaced headline about the summit", time: at(8, 1) }),
+  ];
+  const { heat, cells } = buildSnapshot(records, { now: new Date("2026-10-20T13:00:00Z"), windowHours: 24 });
+  const [cell] = heat.cells;
+  assert.equal(cell.n, 4); // a.com's two copies = 1, b.com = 1, two untitled
+  assert.equal(cell.u, 3);
+  assert.equal(cell.o, 3);
+  assert.deepEqual(heat.totals, { articles: 5, outlets: 4, countries: 1, cells: 1, unplaced: 1, reprints: 1 });
+  assert.deepEqual(cells[0].topOutlets, [["c.com", 2], ["a.com", 1], ["b.com", 1]]);
+  // The newest copy is shown; its reprints count the other outlet only.
+  assert.deepEqual(cells[0].articles.filter((a) => a.title === wire).map((a) => [a.url, a.reprints]), [["https://a/2", 1]]);
+  // One outlet's copies of one headline alone make a cell of n = 1, which is dropped.
+  const solo = buildSnapshot([rec({ source: "a.com", title: wire }), rec({ source: "a.com", title: wire })], { now: new Date("2026-10-20T13:00:00Z"), windowHours: 24 });
+  assert.deepEqual([solo.heat.cells.length, solo.heat.totals.articles], [0, 1]);
+});
+
+test("networks: two Big News Network portals are one outlet; articles keep their own domain", () => {
+  const records = [
+    rec({ source: "japanherald.com", country: "", title: "Wire story about the trade talks in Tokyo" }),
+    rec({ source: "asiabulletin.com", country: "", title: "Another wire story about the yen today" }),
+    rec({ source: "japantimes.co.jp", country: "JP", title: "Local story about the city budget vote" }),
+  ];
+  const { heat, cells } = buildSnapshot(records, { now: new Date("2026-10-20T13:00:00Z"), windowHours: 24 });
+  assert.equal(heat.cells[0].o, 2);
+  assert.equal(heat.cells[0].n, 3);
+  assert.equal(heat.totals.outlets, 2);
+  assert.deepEqual(cells[0].topOutlets, [["bignewsnetwork.com", 2], ["japantimes.co.jp", 1]]);
+  assert.deepEqual(cells[0].articles.map((a) => a.source).sort(), ["asiabulletin.com", "japanherald.com", "japantimes.co.jp"]);
+  // The same headline on two portals is one article of one outlet.
+  const same = buildSnapshot([records[0], { ...records[0], url: "https://asiabulletin.com/x", source: "asiabulletin.com" }, records[2]], { now: new Date("2026-10-20T13:00:00Z"), windowHours: 24 });
+  assert.equal(same.heat.cells[0].n, 2);
 });

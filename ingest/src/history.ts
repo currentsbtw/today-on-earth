@@ -1,5 +1,7 @@
 import { gzipSync } from "node:zlib";
 import { gunzipMaybe, loadCarried, type CarrySource } from "./carry.ts";
+import { outletOf } from "./domains.ts";
+import type { Keyer } from "./reprints.ts";
 import type { ArticleRecord, HeatFile } from "./types.ts";
 
 /**
@@ -8,9 +10,12 @@ import type { ArticleRecord, HeatFile } from "./types.ts";
  * than 24h before the current run, or beyond the newest 100, are dropped.
  *
  * Each frame also says what arrived in its step: `added` (index) and the fifth row element
- * `a` count window articles whose URL was not in the previous run's carried window. Both
- * are absent when that is unknown: the state was cold-started this run, or there is no
- * previous retained frame. `newest` (the frame's newest article time) is recorded too.
+ * `a` count the article units (the unit of `n` and `totals.articles`) that arrived: units
+ * of the window all of whose records have a URL that was not in the previous run's carried
+ * window (arrivedUnits). So a copy of a headline its outlet already had in the window adds
+ * 0, and `added <= totals.articles` and `a <= n` hold by construction. Both are absent
+ * when that is unknown: the state was cold-started this run, or there is no previous
+ * retained frame. `newest` (the frame's newest article time) is recorded too.
  */
 export const HISTORY_HOURS = 24;
 export const MAX_FRAMES = 100;
@@ -59,11 +64,11 @@ export function frameFileName(at: string): string {
 
 /**
  * This run's frame: heat.json's cells (already n >= 2, sorted by n desc) reduced to
- * [id, lat, lon, n], plus `newest` = heat.newestArticleAt. With `arrived` (the window
- * articles whose URL was not in the previous run's carried window) the entry also gets
- * `added` = arrived.length (placed and unplaced, the unit of totals.articles) and each row a
- * fifth element `a` = the arrived articles in that row's cell. Without it (cold start, or
- * no previous frame) both stay absent: unknown, never 0 by assumption.
+ * [id, lat, lon, n], plus `newest` = heat.newestArticleAt. With `arrived` (arrivedUnits:
+ * one record per article unit new to the window this run) the entry also gets `added` =
+ * arrived.length (placed and unplaced, the unit of totals.articles) and each row a fifth
+ * element `a` = the arrived units in that row's cell. Without it (cold start, or no
+ * previous frame) both stay absent: unknown, never 0 by assumption.
  */
 export function buildHistoryEntry(heat: HeatFile, arrived?: readonly ArticleRecord[]): HistoryEntry {
   const entry: HistoryEntry = {
@@ -81,9 +86,31 @@ export function buildHistoryEntry(heat: HeatFile, arrived?: readonly ArticleReco
   return entry;
 }
 
-/** Window articles whose URL was not in the previous run's carried window (new to the state this run). */
-export function arrivedArticles(window: readonly ArticleRecord[], previousUrls: ReadonlySet<string>): ArticleRecord[] {
-  return window.filter((r) => !previousUrls.has(r.url));
+/**
+ * The article units that arrived this run, one record each (its earliest arrived record).
+ * Units are counted per place, as `n` and `totals.articles` are: per cell (or among the
+ * unplaced records), one per (outletOf(source), reprint key), plus one per untitled record.
+ * A unit arrived when none of its records was in the previous run's carried window, i.e.
+ * units(window) minus units(window without the arrivals). `keyer` is the snapshot's. Linear.
+ */
+export function arrivedUnits(window: readonly ArticleRecord[], previousUrls: ReadonlySet<string>, keyer: Keyer): ArticleRecord[] {
+  const units = new Map<string, { old: boolean; first: ArticleRecord | null }>();
+  const out: ArticleRecord[] = [];
+  for (const r of window) {
+    const isNew = !previousUrls.has(r.url);
+    const key = keyer.keyOf(r);
+    if (!key) {
+      if (isNew) out.push(r); // an untitled record is its own unit
+      continue;
+    }
+    const id = r.cellId + "\u0000" + outletOf(r.source) + "\u0000" + key;
+    let u = units.get(id);
+    if (!u) units.set(id, (u = { old: false, first: null }));
+    if (!isNew) u.old = true;
+    else if (!u.first || r.time < u.first.time || (r.time === u.first.time && r.url < u.first.url)) u.first = r;
+  }
+  for (const u of units.values()) if (!u.old && u.first) out.push(u.first);
+  return out;
 }
 
 /**

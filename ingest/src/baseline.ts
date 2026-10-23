@@ -42,7 +42,11 @@ const dayMinus = (day: string, n: number) => new Date(Date.parse(`${day}T00:00:0
 /** "YYYYMMDDHHMMSS" file stamp -> "YYYY-MM-DD". */
 const stampDay = (stamp: string) => `${stamp.slice(0, 4)}-${stamp.slice(4, 6)}-${stamp.slice(6, 8)}`;
 
-/** Count placed records into their UTC day (from GKG time). Mutates and returns `days`. */
+/**
+ * Count placed records into their UTC day (from GKG time). Mutates and returns `days`. The
+ * ingest passes one record per arrived article unit (history.ts arrivedUnits), so `b` is in
+ * the unit of `n`: an outlet's later copy of a headline it already had adds nothing.
+ */
 export function countNewRecords(days: BaselineDays, newRecords: Iterable<ArticleRecord>): BaselineDays {
   for (const r of newRecords) {
     if (!r.cellId) continue; // unplaced articles have no cell
@@ -112,8 +116,8 @@ export function baselineView(b: Baseline, today: string, feeds: readonly string[
 }
 
 /**
- * This run's baseline: the carried one plus this run's first-merged articles and merged
- * files. When the state did not load (a cold start) the carried baseline is discarded, since
+ * This run's baseline: the carried one plus this run's arrived article units (`firstMerged`:
+ * one record per unit new to the window, history.ts arrivedUnits) and merged files. When the state did not load (a cold start) the carried baseline is discarded, since
  * the cold start re-merges articles that were already counted into existing days.
  */
 export function advanceBaseline(args: {

@@ -20,21 +20,39 @@ If GDELT saw it, it is here.
 
 ## How a place is chosen for an article
 
-GDELT lists the places each article mentions. We take the first place that is more
-specific than a whole country: a city, a region, a landmark. Articles that only
+GDELT lists the places each article mentions, once per mention. We take the city the
+article mentions most (a city or landmark, in GDELT's terms); when two cities are
+mentioned equally often, the one mentioned first in the text. An article that mentions
+no city takes the state or region it mentions most, by the same rule. Articles that only
 mention countries are counted in the totals but are not drawn anywhere, because a
 country's centre is not where anything happened. The header tells you how many
-articles were left unplaced for this reason.
+articles were left unplaced.
+
+Some outlets carry the same place in every article: a footer, a dateline, a sidebar, or
+their own name read as a place. So for each outlet (a listed network counts as one) with
+at least 20 articles in the window that name a city or region, a place that appears with
+the same number of mentions in at least half of those articles is treated as the outlet's
+fixed block and skipped. The article then takes its next place (we keep its three
+most-mentioned cities and its most-mentioned region, in that order) or, when none is
+left, is left unplaced. The same number of mentions is what separates a fixed block from
+a local outlet that really covers its city, where the count varies. The cost: a wire
+outlet whose every article carries a one-mention dateline loses that place, even in
+articles that are about it, and those of its articles that mention no other place are
+left unplaced.
 
 Places are grouped into hexagonal cells about 100 km across, so "Paris" and its
-suburbs are one dot. When an article's most specific place is a state or region
-("Texas"), its dot sits at that region's centre; that is less wrong than a country's
-centre, but it is still a centre, and the label tells you so.
+suburbs are one dot. When an article mentions no city and its place is a state or
+region ("Texas"), its dot sits at that region's centre; that is less wrong than a
+country's centre, but it is still a centre, and the label tells you so.
 
 ## What the numbers mean
 
-- **Articles**: distinct URLs in the window.
-- **Outlets**: distinct website domains.
+- **Articles**: distinct headlines per outlet in the window. An outlet that publishes the
+  same headline under several URLs counts once for it in each place (headlines match by
+  the rule under Distinct and reprints; an article with no title counts once per URL).
+  A network of sites under one owner, listed in the ingest's networks file, counts as
+  one outlet.
+- **Outlets**: distinct website domains; a listed network counts once.
 - **Outlet countries**: the countries those outlets are based in, from GDELT's own list of
   news domains by country. Unknown outlets count as unknown, not as any country.
 - **Languages**: the language the article was written in, as GDELT recorded it.
@@ -42,10 +60,15 @@ centre, but it is still a centre, and the label tells you so.
   it as a small mark, never as a word.
 - **Distinct** and **reprints**: many sites republish the same wire story under the
   same headline. Within one place, articles whose titles match after we ignore case,
-  punctuation and a trailing outlet name (" - Reuters", " | The Star") count as one
-  distinct headline; the others are reprints. Both numbers are shown and nothing is
-  hidden: the article list shows each headline once, marked with how many reprints it
-  has. Brightness still uses the article count, reprints included.
+  punctuation and a trailing outlet name or short label of one or two words
+  (" - Reuters", " | The Star", " - Politics") count as one distinct headline; the
+  copies by other outlets are reprints. A trailing label that one outlet puts on three
+  or more different headlines (a station name, a slogan) is treated like an outlet name.
+  Both numbers are shown and nothing is hidden: the article list shows each headline
+  once, marked with how many reprints it has. Brightness uses the article count,
+  reprints included. A title is shown without the trailing outlet name, short label or
+  learned label this rule ignores; the page at the link keeps its full title, and
+  nothing else in a title is changed.
 - **Heard in N other countries**: the countries of the outlets covering a place, not
   counting the place's own country (the country GDELT most often gives for the
   place's articles). Outlets with an unknown country are not counted.
@@ -70,16 +93,29 @@ with no history at all counts as new, with a normal of zero.
 ## Stories
 
 Inside a place, articles are grouped into stories using only what GDELT already
-tagged for each article: the people, organisations and themes it mentions, plus the
-words in its title. The headline shown for a story is the title of one of its
-articles, chosen because it overlaps most with the others. We never write or edit a
-headline. Articles that fit no group are listed below, unfiltered.
+tagged for each article: the people, organisations and themes it mentions (its tags),
+plus the words in its title. An outlet's copies of one headline count as one article
+here too. Articles are taken oldest first. One joins the group it matches best when it
+shares two of the group's ten most common tags, or one of those tags and two of the
+group's twenty most common title words, or four of those words; otherwise it starts a
+group. Groups whose five most common tags share three are merged. In a place with 50
+or more articles, a tag on more than 15% of them (a backdrop, such as "white house" in
+Washington) is ignored for grouping.
+
+A group of at least 3 articles is a story; a place shows at most 30, largest first.
+Then each article outside every story joins the story whose twenty most common title
+words it shares three or more of (ties go to the larger story); it counts in that
+story but never supplies its headline. The headline shown for a story is the title of
+one of its grouped articles, chosen because it overlaps most with the others, shown as
+described under Distinct and reprints. We never write a headline. Articles that fit no
+story are listed below, unfiltered.
 
 ## The daily broadcast
 
 The Signals button opens a daily broadcast: six fixed slots, each filled by one story
 from the last 24 hours under a published rule. A filled slot shows an outlet's own
-headline, verbatim, and the story's coverage numbers. Nothing in it is written or
+headline, verbatim apart from the trailing outlet name or label (see Distinct and
+reprints), and the story's coverage numbers. Nothing in it is written or
 summarised by us or by a model. The sentence above each headline is a fixed template
 filled with the story's own numbers ("One story over Nairobi: 214 articles from 61
 outlets in 19 languages."), so they count that story, not everything written about

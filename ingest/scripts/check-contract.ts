@@ -14,6 +14,7 @@ import {
   MIN_STORY_U, ORDINARY_MIN_O, PLANET_MIN_O, RISING_MIN_N, SLOT_ORDER, risingRatio, voices,
 } from "../src/broadcast.ts";
 import { reprintKey } from "../src/reprints.ts";
+import { MAX_STORIES } from "../src/stories.ts";
 import { checkStepFields } from "./history-step-check.ts";
 
 const dir = resolve(process.argv[2] ?? process.env.OUT_DIR ?? join(fileURLToPath(new URL("..", import.meta.url)), "out"));
@@ -153,7 +154,7 @@ let storiesChecked = 0;
 function checkStories(w: string, cell: Record<string, unknown>) {
   int(`${w}.unclustered`, cell.unclustered);
   const stories = Array.isArray(cell.stories) ? (cell.stories as unknown[]) : (err(`${w}.stories`, "not an array"), []);
-  if (stories.length > 12) err(`${w}.stories`, `${stories.length} stories > 12`);
+  if (stories.length > MAX_STORIES) err(`${w}.stories`, `${stories.length} stories > ${MAX_STORIES}`);
   let sum = 0;
   const shownUrls = new Set<string>();
   stories.forEach((s, i) => {

@@ -795,6 +795,75 @@ Not the problem: the visual world, the methodology page, the replay. They are do
 Recommended order: 1 and 2 first (they decide whether anyone stays), then 3, then 4 and 5
 together, then 6.
 
+## Trust the dots (decided 2026-10-23, in progress)
+
+Measured on 2 h of both feeds (2026-10-23 14:45-16:30 UTC, 28,429 parsed, 20,959 placed)
+plus 2 h of Korean daytime (01:00-02:45 UTC) for the Paris case; scripts and outputs in the
+session scratchpad (gkg-measure/). What the numbers said, and what is decided:
+
+1. **GDELT's V2Locations order is not text order.** 83% of placed articles list their
+   entries out of CharOffset order, so "the first non-country entry" (the current rule) is an
+   arbitrary pick. Choosing the non-country entry with the smallest offset moves 29% of
+   articles to another cell. **Decision: the primary location is the most-mentioned city
+   (type 3 or 4) by entry count; if the article mentions no city, the most-mentioned region
+   (type 2 or 5); ties by smallest CharOffset.** This moves 21.5% of articles against the
+   current rule and halves region-centred placement (15.6% to 8.0%); nothing becomes
+   unplaced that was placed. Region-only articles stay at the region's centre (a later
+   decision may unplace them; see 2).
+2. **The newspim case is outlet boilerplate, not ordering.** In 51 of 61 newspim.com
+   articles the locations contain the identical block France x18, French x4, Paris x2,
+   Korea x15; 49 mention no Korean city, so every mention-count rule keeps them in Paris.
+   Other outlets land on one place by their own name: razon.com.mx on "La Razon, Chiapas"
+   (60%), zol.com.cn on "Guan Cun" (70%), nuevaalcarria.com on London (69%); 26 outlets with
+   10+ articles land on one place 60%+ of the time. **Decision: placement is resolved at
+   snapshot time, not parse time.** Each record stores its candidate locations (up to 4:
+   the best cities and regions by count, each with type, name, country, lat, lon, count,
+   first offset; state version 6). At build, for every outlet with 20+ placed articles in
+   the window, a (location, exact mention count) pair shared by 50%+ of that outlet's
+   articles is that outlet's boilerplate and is skipped for placement; the article takes
+   its next candidate or becomes unplaced. The exact-count signature is what separates a
+   footer block (always x2) from a local paper that really covers its city (varying
+   counts); the rule must catch newspim, razon.com.mx, zol.com.cn and nuevaalcarria.com in
+   the samples and must leave leparisien.fr, lemonde.fr and nytimes.com alone. iheart's
+   New Jersey block ("New Jersey" x1 on station footers) is caught the same way.
+3. **One outlet, one headline, one article.** iheart.com publishes 1,070 copies across 289
+   station hosts for 37 distinct headlines (New Jersey 75% iheart, 236 articles, 6 titles);
+   index.hr had 53 URLs for one headline. **Decision: `n` and `totals.articles` count one
+   article per (outlet, reprint key); copies of a headline by the same outlet are one
+   article.** Reprints across outlets still count and still show as reprints. The
+   methodology's "Articles: distinct URLs" becomes "distinct headlines per outlet".
+4. **Suffixes the reprint rule misses are per-outlet boilerplate.** 52% of suffixed titles
+   keep their tail: station names ("| Sunny 102.3 FM"), site slogans ("Periódico
+   CiudadCCS"), dates. **Decision: learned outlet tails.** At build, for each outlet, a
+   tail (the X of the suffix rule) that occurs on 3+ distinct heads of that outlet's titles
+   is its boilerplate and is stripped by reprintKey for that outlet. Tails shared across
+   outlets with one head ("professor sees off tiddlywinks title challenger" on 25 Newsquest
+   sites) are real headline halves and stay. **Shown titles drop the stripped suffix**: the
+   cell file's `title` is the title with the outlet name, short section label or learned
+   tail removed (the reprint rule's own decision); the page title stays at the URL. The
+   methodology says so.
+5. **Stories are capped, not weak.** Every large cell sits at MAX_STORIES = 12 with 20+
+   further clusters of 3+ dropped (London: 26 clusters, 109 articles). Removing the cap
+   lifts grouped share from ~43% to ~58%; a second pass that attaches each loose article to
+   the story whose top-20 title tokens share 3+ with its title adds a little more with no
+   bleed seen; relaxing the join rule bleeds. **Decision: MAX_STORIES 30, MIN_STORY_ARTICLES
+   stays 3, the second pass is added.** Existing bleed through shared themes (a Figaro
+   Ukraine piece inside an Oregon school-shooting story) is measured with one variant
+   (themes count half toward the 2-entity join) and adopted only if grouped share drops
+   under 2 points.
+6. **Big News Network is one outlet.** Its 333 portals (already forced to unknown country)
+   are 48% of Taipei's outlets and 22% of New Delhi's. **Decision: a networks file maps
+   domains to a network name; `o`, `topOutlets`, `c`/`i` and the outlet caps count a
+   network once.** Articles keep their own domain. Only Big News Network is listed now;
+   the measured domestic chains (Newsquest, Ippen, MediaNews, Sinclair) inflate `o` at
+   home and are left for later.
+
+Builders: placement (gkg.ts, types.ts, state.ts, a new place.ts, main.ts, tests) and
+counting (reprints.ts, stats.ts, aggregate.ts, stories.ts, domains.ts + data, tests) run
+in parallel; docs (METHODOLOGY, DATA-CONTRACT, README) follow once both land. Verification:
+the ingest tests, then a local cold-start run on the measured window compared before and
+after on Paris's outlets, New Jersey's n, Taipei's o and the grouped share.
+
 ## Visual redesign: Datamatics Field (shipped 2026-10-21)
 
 The web app's visual world was replaced on 2026-10-21 through the Impeccable workflow:

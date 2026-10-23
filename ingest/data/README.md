@@ -33,8 +33,36 @@ caught. It currently holds:
   the `*news.net` sites, ...) set to unknown. They are one aggregator network republishing
   the same copy under country and city names, so counting each under the country in its
   name inflated country counts. The list comes from the network's own directory,
-  https://www.bignewsnetwork.net/ (checked 2026-10-21). Collapsing them into one outlet is
-  a follow-up.
+  https://www.bignewsnetwork.net/ (checked 2026-10-21). `outlet-networks.txt` also
+  counts them as one outlet.
+
+### `outlet-networks.txt`
+
+Not a country source: it says which domains count as **one outlet**. `src/domains.ts`
+`outletOf(source)` returns the network name for a listed domain and the domain itself
+otherwise. Outlet counts (`o`, `topOutlets`, `totals.outlets`), the per-outlet caps of the
+article and story lists, "one article per outlet and headline" (an outlet's copies of a
+headline count once in `n`) and learned title tails all use it. Articles keep their own
+domain in `source`. One entry per line, tab-separated:
+
+```
+domain<TAB>network name<TAB>comment
+```
+
+A plain domain matches that domain only. A leading dot (`.iheart.com`) matches the domain
+and every subdomain (`wkip.iheart.com`). An exact entry wins over a dotted one, and among
+dotted entries the longest suffix wins. Lines starting with `#` are comments; a malformed
+line (bad domain, no network name) makes the ingest run fail. It currently holds:
+
+- the 333 Big News Network domains of `domain-country-overrides.txt`, dotted, under the
+  network `bignewsnetwork.com` (they were 48% of Taipei's outlets and 22% of New Delhi's
+  on 2026-10-23);
+- `.iheart.com` -> `iheart.com`: iHeartMedia's radio station sites, which run the same
+  national copy with each station's name as the title tail.
+
+The Big News Network block was generated from the overrides file (every entry whose comment
+is "Big News Network"); keep the two lists in step when one changes. Domestic chains seen
+inflating `o` at home (Newsquest, Ippen, MediaNews, Sinclair) are not listed yet.
 
 ### `MASTER-GDELTDOMAINSBYCOUNTRY-MAY2018.TXT`
 
