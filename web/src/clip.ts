@@ -55,11 +55,11 @@
 import './clip.css';
 import type { FilterSpecification, GeoJSONSource, Map as MapLibreMap } from 'maplibre-gl';
 import { loadBroadcast, PLAIN_LABELS, sentenceFacts, SLOT_IDS, type Broadcast, type SignalFact, type Slot, type SlotStory } from './broadcast';
-import { loadFrame, loadHeat, loadHistoryIndex, siteUrl, type FrameRow, type Heat, type HistoryFrame, type Totals } from './data';
+import { loadFrame, loadHeat, loadHistoryIndex, mapCellUrl, PAGE_MIN, placePageUrl, siteUrl, type FrameRow, type Heat, type HistoryFrame, type Totals } from './data';
 import { flightPath, wrapLon } from './flight';
 import { count, shortName, stampOf, utcTime } from './format';
 import { createClipMap, EMPTY, FILL_LAT, fillHeightZoom, fitWorldZoom, latOf, mercY, TILE, type ClipCamera, type MapCell } from './map';
-import { bracket, buildPlan, framesFor, interpolateCells, interpolateTotals, lapseTime, pullbackFraction, readTimelineParams, segmentAt, type ClipPlan } from './timeline';
+import { bracket, buildPlan, framesFor, interpolateCells, interpolateTotals, lapseTime, pullbackFraction, readTimelineParams, segmentAt, type ClipPlan, type ClipSignal } from './timeline';
 
 const params = new URLSearchParams(location.search);
 const size = (value: string | null, fallback: number) => {
@@ -785,6 +785,18 @@ async function renderTimeline() {
   const chosen = (broadcast?.slots ?? []).filter((s): s is FilledSlot => s.available && !!s.cell && !!s.story).slice(0, options.slots);
   const cardAt = broadcast?.generatedAt ?? liveAt;
   const plan: ClipPlan = buildPlan(options, chosen.map((s) => s.id), times);
+  // A place page exists only for a cell with PAGE_MIN or more articles in the live snapshot
+  // (build-places.mjs); a signal over a smaller place links to the map with the cell selected.
+  plan.signals = chosen.map((s): ClipSignal => {
+    const live = heat.cells.find((c) => c.id === s.cell.id);
+    return {
+      slot: s.id,
+      label: PLAIN_LABELS[s.id],
+      place: shortName(s.cell.name) || s.cell.name || s.cell.id,
+      cell: s.cell.id,
+      page: live && live.n >= PAGE_MIN ? placePageUrl(s.cell.id) : mapCellUrl(s.cell.id),
+    };
+  });
 
   // Measure every layout once, with the fonts laid out: the time-lapse window (top text with
   // the clock, the article total and the key, so the hook, pull-back, time-lapse and flights

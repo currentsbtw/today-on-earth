@@ -3,7 +3,8 @@ name: Clip
 # Daily vertical clip of the last 24 hours: loads the live site's clip.html once in timeline
 # mode, steps it frame by frame at 30 fps (hook, pull-back, time-lapse, signal cards, end
 # card), adds the soundtrack generated from the timeline, encodes an H.264 + AAC mp4, and
-# publishes it as an artifact and on the rolling "clips" release. Runs after the 00:15 UTC snapshot.
+# publishes it, with caption-<date>.txt (the text to post with it: each signal's place page
+# and the broadcast page), as an artifact and on the rolling "clips" release. Runs after the 00:15 UTC snapshot.
 on:
   schedule:
     - cron: "20 0 * * *"
@@ -100,6 +101,7 @@ jobs:
           path: |
             clip-out/clip-*.mp4
             clip-out/poster.jpg
+            clip-out/caption-*.txt
           if-no-files-found: error
           retention-days: 30
 
@@ -111,4 +113,4 @@ jobs:
           gh release view clips >/dev/null 2>&1 ||
             gh release create clips --title "Daily clips" --target "$GITHUB_SHA" \
               --notes "Daily time-lapse clips of the Today On Earth map, one mp4 per day, plus poster.jpg of the latest. Updated by the Clip workflow."
-          gh release upload clips clip-out/clip-*.mp4 clip-out/poster.jpg --clobber
+          gh release upload clips clip-out/clip-*.mp4 clip-out/poster.jpg clip-out/caption-*.txt --clobber

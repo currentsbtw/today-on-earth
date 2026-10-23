@@ -1,5 +1,6 @@
 // Pure helpers for the clip renderer (kept separate so they can be unit-tested): options,
-// the timeline URL, the check of the page's plan, the frame loop and the ffmpeg arguments.
+// the timeline URL, the check of the page's plan, the caption, the frame loop and the ffmpeg
+// arguments.
 
 /** @typedef {{ site: string, out: string, w: number, h: number, fps: number, hook: number, fly: number, lapse: number, card: number, end: number, hold: number, slots: number, music: string, channel: string }} Options */
 
@@ -103,8 +104,10 @@ const SEGMENT_KINDS = new Set(["hook", "pullback", "lapse", "flight", "card", "e
  * Check the plan clip.html's `window.__clipPlan()` returned, and return it: `fps` as asked,
  * `frames` a positive integer, `date` a YYYY-MM-DD day, `poster` a frame index, `segments`
  * contiguous from frame 0 with known kinds and summing to `frames` (exactly one `lapse`), and
- * `hourMarks` increasing frame indices of the whole clip that fall inside the lapse segment.
- * Anything else throws, so a page that drifted from the contract fails the clip.
+ * `hourMarks` increasing frame indices of the whole clip that fall inside the lapse segment,
+ * and `signals`, when present (older pages have none), entries with a string slot, label and
+ * place, a 15-hex cell and an https page address. Anything else throws, so a page that
+ * drifted from the contract fails the clip.
  * @param {any} plan
  * @param {number} fps
  */
@@ -135,7 +138,47 @@ export function checkPlan(plan, fps) {
     if (!Number.isInteger(m) || m < lapse.start || m >= lapse.start + lapse.frames) fail(`hour mark ${m} outside the lapse (frames ${lapse.start}..${lapse.start + lapse.frames - 1})`);
     if (k > 0 && m <= plan.hourMarks[k - 1]) fail("hourMarks not increasing");
   });
+  if (plan.signals !== undefined) {
+    if (!Array.isArray(plan.signals)) fail("signals is not an array");
+    plan.signals.forEach((g, k) => {
+      const at = `signal ${k + 1}`;
+      if (!g || typeof g !== "object") fail(`${at} is not an object`);
+      for (const key of ["slot", "label", "place"]) if (typeof g[key] !== "string" || !g[key]) fail(`${at} has no ${key}`);
+      if (typeof g.cell !== "string" || !/^[0-9a-f]{15}$/.test(g.cell)) fail(`${at} cell ${JSON.stringify(g.cell)} is not 15 lowercase hex`);
+      if (typeof g.page !== "string" || !/^https:\/\/[^\s/]+\/\S*$/.test(g.page)) fail(`${at} page ${JSON.stringify(g.page)} is not an https address`);
+    });
+  }
   return plan;
+}
+
+/** The broadcast page's address, as the clip's end card shows it (with https://). */
+export const BROADCAST_ADDRESS = "https://currentsbtw.github.io/today-on-earth/broadcast";
+
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+/** "2026-10-23" -> "23 October 2026". */
+export const longDate = (day) => {
+  const [y, m, d] = day.split("-").map(Number);
+  return `${d} ${MONTHS[m - 1]} ${y}`;
+};
+
+/**
+ * The caption posted with the clip (caption-<date>.txt): the date line and the site's line,
+ * then per signal "1/3 · MOST COVERED STORY · Paris" with its place page's address on the next
+ * line, then the broadcast's address. Without signals (none filled, or an older page whose
+ * plan has none) the signal block is left out. LF line ends and a trailing newline.
+ * @param {{ date: string, signals?: { label: string, place: string, page: string }[] }} plan
+ * @param {{ broadcast?: string }} [opts]
+ */
+export function captionText(plan, { broadcast = BROADCAST_ADDRESS } = {}) {
+  const signals = plan.signals ?? [];
+  const lines = [`Today On Earth · ${longDate(plan.date)}`, "The last 24 hours of the world's news, one dot per place.", ""];
+  if (signals.length) {
+    signals.forEach((g, k) => lines.push(`${k + 1}/${signals.length} · ${g.label.toUpperCase()} · ${g.place}`, g.page));
+    lines.push("");
+  }
+  lines.push(`Today's broadcast: ${broadcast}`);
+  return `${lines.join("\n")}\n`;
 }
 
 /** "hook 60 · pullback 45 · lapse 210 · flight 45 · card 150 · …" */

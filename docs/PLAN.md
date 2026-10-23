@@ -1095,6 +1095,84 @@ Not in this stage: a dated broadcast archive (the ingest keeps only the current
 broadcast.json; the daily archive release holds heat.json, not broadcast.json), the email
 newsletter, and any per-topic feed.
 
+## Distribution surfaces: place share images, the clip's links, the embed (decided 2026-10-23)
+
+Why (assessment item 6): a place page shared anywhere shows the site's generic image, so
+nothing says which place or how loud it is; the clip names three places a day but no viewer
+can reach their pages; and no other site can carry the map.
+
+Decisions, in build order. All static, no server, no accounts; nothing new in the ingest.
+
+1. **A share image per place page**, `place/<cellId>.png` (1200x630), written by
+   `web/scripts/build-places.mjs` beside the page, and named by the page's `og:image`,
+   `og:image:width/height`, `og:image:alt` and `twitter:image` (the index and the broadcast
+   page keep `og.jpg`). Drawn in Node with no dependency: a pixel buffer encoded as an
+   indexed PNG (zlib is built in), so the 15-minute build carries no native module and
+   the image is deterministic for the same data. The picture: the dot grid on black; the
+   world between 84 N and 58 S fitted to the width (the map's own Web Mercator, from
+   `projection.ts`) with the country outlines from `geo/countries.json` as 1px lines in the
+   rule grey; every place of the snapshot as a flat mark in the Flat-Mark vocabulary
+   (`markStep` radius and opacity from `projection.ts`, opacity as a grey level, largest
+   last, no antialiasing); the page's own cell ringed by the map's hollow reticle, scaled so
+   it reads at a share-card size. Text in the lockup's 5x7 pixel caps (the one letterform
+   this build can draw without a font rasterizer; Silkscreen is the same family of form): the
+   wordmark TODAY ON EARTH on a black block top-left; bottom-left on a black block the
+   place's short name large, then its counts in grey, `412 ARTICLES · 150 OUTLETS ·
+   23 COUNTRIES` (the facts the place has). Letters outside A-Z, 0-9 and basic
+   punctuation are dropped after NFKD (Zürich draws as ZURICH). Palette of at most 8
+   entries, deflate at 9; the build logs the image count, total bytes and time. The alt
+   text: "The world's news coverage as dots, with <name> ringed: <counts sentence>".
+2. **The clip's signals link to their place pages.** A video cannot carry a link, so the
+   link travels beside it: the renderer writes `caption-<date>.txt` next to the mp4 (the
+   text to post with the clip): the date line, then one line per signal in the clip's own
+   words, `1/3 · MOST COVERED STORY · Paris` followed by the place page's address, then
+   `Today's broadcast: <broadcast address>`. `window.__clipPlan()`
+   gains `signals: [{ slot, label, place, cell, page }]` for the chosen slots (page is the
+   place page's address; every signal's place has 10+ articles by construction, so a page);
+   the renderer's `checkPlan` accepts it (absent on an older page: no caption). The Clip
+   workflow uploads the caption with the mp4 to the artifact and the `clips` release. The
+   frames do not change (a 15-hex cell address is unreadable on a phone); the end card keeps
+   the broadcast address.
+3. **The embed**, `embed.html`: the live map as one small page another site frames,
+   without MapLibre. It loads `heat.json`, draws the snapshot's marks on a canvas in the
+   pre-paint's way (`prepaint.ts` and `projection.ts`, the first camera fitted to the
+   frame's own size, redrawn on resize) with the country outlines under them, the wordmark
+   line and the snapshot's article count and time in the chrome register on black blocks,
+   and the whole frame is one link to the site that opens in the top window (`target="_top"`).
+   `?c=<cellId>` rings that cell with the reticle and links to its page instead. Under
+   10 KB of script, the self-hosted faces, `noindex`, not in the sitemap. The about page
+   gains an "Embed the map" section with the iframe line to copy:
+   `<iframe src="https://currentsbtw.github.io/today-on-earth/embed.html" width="600"
+   height="340" title="Today On Earth" loading="lazy" style="border:0;background:#000"></iframe>`.
+
+Verification: the place build on the local snapshot (count, bytes, time; a few images
+opened); `npm run build`; the renderer's tests plus a caption written from a local plan;
+the embed opened in the browser at 600x340 and at a phone width, with and without `c`.
+Docs after the build: DESIGN.md (share image per place, embed), README (generated files,
+the caption), METHODOLOGY unchanged.
+
+**Status 2026-10-23: shipped.** Built as decided, with these departures: the world is a
+contain fit (84 N to 58 S is 0.67 of its width tall in Mercator, so at 1200 wide it cannot
+fit 630; it stands 943 wide, centred); the PNG's zlib stream is built from 32-row bands,
+the shared picture deflated once at level 9 and only a card's own bands again (level 6,
+on the thread pool), so 890 cards take about 2 s instead of 130; the place's mark sits on a
+black disc of radius 20 so the reticle reads inside Europe's field; the name block and the
+wordmark move right when the reticle would fall under them; the marks are drawn at 2.9x
+the zoom-0 radii (the map's own scale at this width would be about 1.55x), so Europe and
+the eastern US read as fields. Local snapshot: 890 images, 27.1 MB, about 30 KB each,
+byte-identical across runs; CI with every cell file will write about 1,700 (about 52 MB,
+4 s). The embed's reticle is held 2px clear of the ringed mark with a black edge, and a
+ringed place under 10 articles links to the site root. The caption carries no totals line.
+Review fixes before the commit: a signal over a place with no page (loudest needs only 3
+headlines, faint 5 outlets) links to the map with the cell selected instead of a missing
+page; an empty cell name falls back to the id; the embed redraws after a data failure.
+
+Known and not fixed: place pages and share images are rebuilt from the live window every
+15 minutes, so a caption or share link posted for a place 404s once that place drops under
+10 articles in the last 24 hours (often within a day). A follow-up: a `404.html` that sends
+`place/<id>` to the map with the cell selected, or pages kept for the cells of recent
+broadcasts.
+
 ## Visual redesign: Datamatics Field (shipped 2026-10-21)
 
 The web app's visual world was replaced on 2026-10-21 through the Impeccable workflow:

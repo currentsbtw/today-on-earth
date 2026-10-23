@@ -4,7 +4,9 @@
 // marks and the segments hook, pull-back, time-lapse, flight + card per signal, end), then
 // steps it frame by frame (window.__clipStep(i), one screenshot per frame), builds the
 // soundtrack from the plan (audio.mjs; or `--music <file>`, or `--music none`) and encodes an
-// H.264 + AAC mp4 with ffmpeg, the last frame held `--hold` seconds.
+// H.264 + AAC mp4 with ffmpeg, the last frame held `--hold` seconds. Beside it,
+// caption-<date>.txt is the text to post with the clip: each signal's place page address and
+// the broadcast page's.
 //
 //   npm run clip -- --site <base url> --out <dir> --w 1080 --h 1920 --fps 30 --hook 2 --fly 1.5 --lapse 7 --card 5 --end 3 --hold 1 --slots 3 --music generated
 //
@@ -17,7 +19,7 @@ import { access, copyFile, mkdir, rm, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { chromium } from "playwright-core";
 import { audioEvents, renderWav, SAMPLE_RATE } from "./audio.mjs";
-import { captureTimeline, checkPlan, describeSegments, ffmpegArgs, frameName, maxCellN, parseArgs, timelineUrl } from "./lib.mjs";
+import { captionText, captureTimeline, checkPlan, describeSegments, ffmpegArgs, frameName, maxCellN, parseArgs, timelineUrl } from "./lib.mjs";
 
 const READY_TIMEOUT_MS = 60_000;
 const STEP_TIMEOUT_MS = 30_000;
@@ -102,6 +104,10 @@ async function main() {
     plan = checkPlan(await page.evaluate(() => window.__clipPlan()), opts.fps);
     log(`clip: plan for ${plan.date}: ${plan.frames} frames at ${plan.fps} fps (${(plan.frames / plan.fps).toFixed(1)}s + ${opts.hold}s hold), time-lapse ${plan.lapse.from} to ${plan.lapse.to} over ${plan.lapse.snapshots} snapshots, ${plan.hourMarks.length} hour marks, poster at frame ${plan.poster}`);
     log(`clip: segments ${describeSegments(plan.segments)}`);
+    // The text to post with the clip, written before the frames so a failed render still has it.
+    const captionPath = join(outDir, `caption-${plan.date}.txt`);
+    await writeFile(captionPath, captionText(plan), "utf8");
+    log(`clip: wrote ${captionPath} (${plan.signals ? `${plan.signals.length} signal links` : "no signals in the plan"})`);
     const png = (n) => join(framesDir, frameName(n));
     result = await captureTimeline(plan, {
       step: (i) => stepFrame(page, i),

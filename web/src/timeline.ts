@@ -26,6 +26,19 @@ export interface ClipPlan {
   /** Time-lapse frame indices at which the virtual clock first crosses a whole UTC hour. */
   hourMarks: number[];
   segments: Segment[];
+  /** The chosen slots in order, for the caption posted with the clip (absent on older pages). */
+  signals?: ClipSignal[];
+}
+
+/** One signal card of the clip: its slot, plain label, place and the place page's address. */
+export interface ClipSignal {
+  slot: string;
+  label: string;
+  /** The cell's short name (the full name when it has none). */
+  place: string;
+  cell: string;
+  /** Absolute address of the place page on the live site. */
+  page: string;
 }
 
 /** Durations in seconds (fps in frames per second), as the page's query gives them. */

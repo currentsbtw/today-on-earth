@@ -39,13 +39,15 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     chunkSizeWarningLimit: 1500,
-    // Pages: the map, the methodology page and the clip frame (paths relative to web/, where npm runs).
+    // Pages: the map, the methodology page, the clip frame and the embed (paths relative to web/, where npm runs).
     rollupOptions: {
       input: {
         main: 'index.html',
         about: 'about.html',
         // Render target for the time-lapse renderer; not linked from the site.
         clip: 'clip.html',
+        // The map for other sites to frame (no MapLibre); linked from the about page.
+        embed: 'embed.html',
       },
     },
   },

@@ -41,6 +41,7 @@
           <li><a href="#freshness">Freshness</a></li>
           <li><a href="#earthquakes">Earthquakes</a></li>
           <li><a href="#attribution">Data, code, attribution</a></li>
+          <li><a href="#embed">Embed the map</a></li>
         </ol>
       </nav>
 
@@ -319,6 +320,18 @@
         from the <a href="https://www.gdeltproject.org/" rel="noopener">GDELT Project</a>, used under its open terms
         with attribution. Earthquake data is from the
         <a href="https://earthquake.usgs.gov/" rel="noopener">USGS Earthquake Hazards Program</a>.
+      </p>
+
+      <h2 id="embed">Embed the map</h2>
+      <p>
+        The embed is this map as a small frame for another site: every dot of the latest snapshot over the country
+        outlines, with the article count and the snapshot time. The whole frame links back here, and it updates with
+        every snapshot.
+      </p>
+      <pre><code>&lt;iframe src=&quot;https://currentsbtw.github.io/today-on-earth/embed.html&quot; width=&quot;600&quot; height=&quot;340&quot; title=&quot;Today On Earth&quot; loading=&quot;lazy&quot; style=&quot;border:0;background:#000&quot;&gt;&lt;/iframe&gt;</code></pre>
+      <p>
+        Adding <code>?c=&lt;cell id&gt;</code> to the frame's address rings one place and links to its page; the cell
+        id is the one in a place page's address.
       </p>
 
       <p class="back-foot"><a href="./">Back to the map</a></p>

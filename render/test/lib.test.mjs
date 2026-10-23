@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { captureTimeline, checkPlan, describeSegments, ffmpegArgs, frameName, MAX_BAD_SHARE, maxCellN, parseArgs, timelineUrl } from "../src/lib.mjs";
+import { captionText, captureTimeline, checkPlan, describeSegments, ffmpegArgs, frameName, MAX_BAD_SHARE, maxCellN, parseArgs, timelineUrl } from "../src/lib.mjs";
 
 test("parseArgs: defaults, platform browser channel, validation", () => {
   const o = parseArgs(["--site", "https://currentsbtw.github.io/today-on-earth/", "--out", "out"], "linux");
@@ -81,6 +81,53 @@ test("checkPlan: accepts the contract's shape, rejects drift; describeSegments f
   broken((p) => (p.hourMarks = [5, 15]), /hour mark 5 outside the lapse/);
   broken((p) => (p.hourMarks = [27, 17]), /not increasing/);
   broken((p) => p.segments.splice(2, 1, { kind: "card", start: 12, frames: 30 }), /0 lapse segments/);
+});
+
+const PAGE = "https://currentsbtw.github.io/today-on-earth/place/";
+const signals = () => [
+  { slot: "loudest", label: "Most covered story", place: "Paris", cell: "831fb4fffffffff", page: `${PAGE}831fb4fffffffff.html` },
+  { slot: "planet", label: "Covered in the most countries", place: "Moscow", cell: "8311aafffffffff", page: `${PAGE}8311aafffffffff.html` },
+  { slot: "brightest", label: "The most positive story", place: "Vancouver", cell: "8328d4fffffffff", page: `${PAGE}8328d4fffffffff.html` },
+];
+
+test("checkPlan: accepts a plan's signals, rejects a malformed entry", () => {
+  const plan = { ...goodPlan(), signals: signals() };
+  assert.equal(checkPlan(plan, 30), plan);
+  assert.equal(checkPlan({ ...goodPlan(), signals: [] }, 30).signals.length, 0);
+  const broken = (change, why) => {
+    const p = { ...goodPlan(), signals: signals() };
+    change(p);
+    assert.throws(() => checkPlan(p, 30), why);
+  };
+  broken((p) => (p.signals = {}), /signals is not an array/);
+  broken((p) => (p.signals[1] = null), /signal 2 is not an object/);
+  broken((p) => delete p.signals[0].place, /signal 1 has no place/);
+  broken((p) => (p.signals[2].cell = "8328D4FFFFFFFFF"), /signal 3 cell "8328D4FFFFFFFFF" is not 15 lowercase hex/);
+  broken((p) => (p.signals[0].page = "place/831fb4fffffffff.html"), /signal 1 page .* is not an https address/);
+  broken((p) => (p.signals[0].page = "http://currentsbtw.github.io/x"), /not an https address/);
+});
+
+test("captionText: date, one line and address per signal, the broadcast line", () => {
+  const lines = (...l) => `${l.join("\n")}\n`;
+  const head = ["Today On Earth · 22 October 2026", "The last 24 hours of the world's news, one dot per place.", ""];
+  const tail = "Today's broadcast: https://currentsbtw.github.io/today-on-earth/broadcast";
+  assert.equal(
+    captionText({ ...goodPlan(), signals: signals() }),
+    lines(
+      ...head,
+      "1/3 · MOST COVERED STORY · Paris",
+      `${PAGE}831fb4fffffffff.html`,
+      "2/3 · COVERED IN THE MOST COUNTRIES · Moscow",
+      `${PAGE}8311aafffffffff.html`,
+      "3/3 · THE MOST POSITIVE STORY · Vancouver",
+      `${PAGE}8328d4fffffffff.html`,
+      "",
+      tail,
+    ),
+  );
+  assert.equal(captionText({ ...goodPlan(), signals: [] }), lines(...head, tail));
+  assert.equal(captionText(goodPlan()), lines(...head, tail));
+  assert.match(captionText({ date: "2026-01-05" }), /^Today On Earth · 5 January 2026\n/);
 });
 
 /** Run captureTimeline with a scripted page: `fails` maps step i -> number of failing attempts. */

@@ -111,6 +111,22 @@ export function siteUrl(path: string): string {
   return new URL(path, document.baseURI).href;
 }
 
+/**
+ * The live site's address, for links that leave the site (the clip's caption): the site
+ * itself builds with a relative base (siteUrl), but text posted elsewhere needs the address it
+ * is served at. The clip's end card (clip.html) shows the same address without https://.
+ */
+export const LIVE_SITE = 'https://currentsbtw.github.io/today-on-earth/';
+
+/** A place page's absolute address on the live site. */
+export const placePageUrl = (cellId: string): string => new URL(`place/${cellId}.html`, LIVE_SITE).href;
+
+/** The live map with a cell selected, for a place that has no page (under PAGE_MIN articles). */
+export const mapCellUrl = (cellId: string): string => `${LIVE_SITE}#c=${cellId}`;
+
+/** Places with this many articles get a static page (scripts/build-places.mjs, PAGE_MIN). */
+export const PAGE_MIN = 10;
+
 async function getJson<T>(path: string, request?: Promise<Response>): Promise<T> {
   // no-cache: revalidate with the server so a new snapshot shows up on reload.
   const res = await (request ?? fetch(siteUrl(path), { cache: 'no-cache' }));

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="robots" content="noindex" />
+    <title>Today On Earth · embed</title>
+    <!-- The embed: the live map's marks on a canvas, for other sites to frame (src/embed.ts).
+         Everything is inline but the script, the fonts and the two data files. -->
+    <style>
+      @font-face {
+        font-family: 'Azeret Mono';
+        font-style: normal;
+        font-weight: 400 500;
+        font-display: swap;
+        src: url('/fonts/azeret-mono-latin.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Silkscreen';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url('/fonts/silkscreen-latin.woff2') format('woff2');
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #000;
+      }
+      body {
+        background: radial-gradient(circle at 0.5px 0.5px, rgba(255, 255, 255, 0.18) 0.5px, transparent 0.75px) 0 0 / 8px 8px, #000;
+        color: #fff;
+        -webkit-font-smoothing: antialiased;
+        font-variant-numeric: tabular-nums;
+      }
+      .frame {
+        position: fixed;
+        inset: 0;
+        display: block;
+        color: #fff;
+        text-decoration: none;
+      }
+      .frame:focus-visible {
+        outline: 1px solid #fff;
+        outline-offset: -1px;
+      }
+      canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+      }
+      .brand {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 4px 8px;
+        background: #000;
+        color: #fff;
+      }
+      .globe {
+        display: block;
+        fill: currentColor;
+      }
+      /* The mark's ring orbit, as on every page that carries the mark (DESIGN.md Motion). */
+      .globe .ring {
+        transform: translateX(12px);
+        animation: mark-ring 2s steps(30, end) infinite;
+      }
+      @keyframes mark-ring {
+        from {
+          transform: translateX(-6px);
+        }
+        to {
+          transform: translateX(24px);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .globe .ring {
+          animation: none;
+        }
+      }
+      .wordmark {
+        font: 400 13px/1 'Silkscreen', monospace;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      /* The one hover state: the wordmark block inverts. */
+      .frame:hover .brand,
+      .frame:focus-visible .brand {
+        background: #fff;
+        color: #000;
+      }
+      .line {
+        position: absolute;
+        bottom: 12px;
+        left: 12px;
+        max-width: calc(100% - 24px);
+        padding: 6px 8px;
+        background: #000;
+        font: 500 11px/1 'Azeret Mono', ui-monospace, monospace;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .line[hidden] {
+        display: none;
+      }
+      .line.muted {
+        color: #9a9a9a;
+      }
+    </style>
+  </head>
+  <body>
+    <a id="frame" class="frame" href="./" target="_top" rel="noopener" aria-label="Today On Earth: open the map">
+      <canvas id="canvas" aria-hidden="true"></canvas>
+      <span class="brand">
+        <svg class="globe" viewBox="0 0 24 24" width="24" height="24" shape-rendering="crispEdges" aria-hidden="true"><path d="M10 0h4v1h-4zM7 1h3v1h-3zM14 1h3v1h-3zM5 2h2v1h-2zM17 2h2v1h-2zM4 3h16v1h-16zM3 4h1v1h-1zM9 4h1v1h-1zM14 4h1v1h-1zM20 4h1v1h-1zM2 5h1v1h-1zM8 5h1v1h-1zM15 5h1v1h-1zM21 5h1v1h-1zM2 6h1v1h-1zM8 6h1v1h-1zM15 6h1v1h-1zM21 6h1v1h-1zM1 7h22v1h-22zM1 8h1v1h-1zM22 8h1v1h-1zM1 9h1v1h-1zM22 9h1v1h-1zM0 10h1v1h-1zM23 10h1v1h-1zM0 11h1v1h-1zM23 11h1v1h-1zM0 12h1v1h-1zM23 12h1v1h-1zM0 13h1v1h-1zM23 13h1v1h-1zM1 14h1v1h-1zM22 14h1v1h-1zM1 15h1v1h-1zM22 15h1v1h-1zM1 16h22v1h-22zM2 17h1v1h-1zM8 17h1v1h-1zM15 17h1v1h-1zM21 17h1v1h-1zM2 18h1v1h-1zM8 18h1v1h-1zM15 18h1v1h-1zM21 18h1v1h-1zM3 19h1v1h-1zM9 19h1v1h-1zM14 19h1v1h-1zM20 19h1v1h-1zM4 20h16v1h-16zM5 21h2v1h-2zM17 21h2v1h-2zM7 22h3v1h-3zM14 22h3v1h-3zM10 23h4v1h-4z" /><clipPath id="mark-band"><path d="M1 8h22v8H1z" /></clipPath><g clip-path="url(#mark-band)"><g class="ring"><path transform="translate(0 9)" d="M1 0h4v1h-4zM0 1h1v4h-1zM5 1h1v4h-1zM1 5h4v1h-4zM2 2h2v2h-2z" /></g></g></svg>
+        <span class="wordmark">Today On Earth</span>
+      </span>
+      <span id="line" class="line" hidden></span>
+    </a>
+    <script type="module" src="./src/embed.ts"></script>
+  </body>
+</html>

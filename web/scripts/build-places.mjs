@@ -3,7 +3,8 @@
 // broadcast.json, docs/DATA-CONTRACT.md). No JavaScript in the output; one inline sheet in
 // the about page's reading-column register (DESIGN.md "Place page"). Deterministic for the
 // same data. Usage: node scripts/build-places.mjs [--data <dir>] [--out <dir>] (defaults:
-// public/data and public).
+// public/data and public). Each place page gets its share image, place/<id>.png
+// (scripts/share-image.mjs).
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
@@ -12,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 // The site's own display rules (Node 24 strips the types; format.ts and projection.ts import nothing).
 import { codeName, count, host, LARGEST_SHOWN, normalLine, plural, safeHref, shortName, silentAmong, utcDayTime } from '../src/format.ts';
 import { relativeRatio } from '../src/projection.ts';
+import { sharePng } from './share-image.mjs';
 
 const SITE = 'https://currentsbtw.github.io/today-on-earth/';
 const TAG = 'tag:currentsbtw.github.io,2026:';
@@ -360,9 +362,10 @@ h3 a:hover,.art a:hover{text-decoration:underline;text-decoration-style:solid}
 
 /**
  * The document around `body`: head, brand line (MAP to the map), the column, the foot.
- * `feed`: { href, title } for the page's Atom feed; `css`: rules only this page needs.
+ * `feed`: { href, title } for the page's Atom feed; `css`: rules only this page needs;
+ * `image`: { url, alt } for the share image (the site's og.jpg, without alt, by default).
  */
-function page({ root, title, description, canonical, body, feed = null, css = '' }) {
+function page({ root, title, description, canonical, body, feed = null, css = '', image = { url: `${SITE}og.jpg`, alt: '' } }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -378,11 +381,12 @@ ${feed ? `<link rel="alternate" type="application/atom+xml" href="${esc(feed.hre
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${esc(canonical)}">
-<meta property="og:image" content="${SITE}og.jpg">
+<meta property="og:image" content="${esc(image.url)}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="${SITE}og.jpg">
+${image.alt ? `<meta property="og:image:alt" content="${esc(image.alt)}">
+` : ''}<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="${esc(image.url)}">
 <link rel="icon" type="image/svg+xml" href="${root}favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="${root}favicon-32.png">
 <link rel="apple-touch-icon" href="${root}apple-touch-icon.png">
@@ -502,6 +506,7 @@ function placePage(cell, heat, live) {
     description,
     canonical: `${SITE}place/${cell.id}.html`,
     feed: { href: `${cell.id}.xml`, title: `${d.name} · Today On Earth` },
+    image: { url: `${SITE}place/${cell.id}.png`, alt: `The world's news coverage as dots, with ${d.name} ringed: ${countsSentence(d)}` },
     body: [
       `<h1>${esc(d.name)}</h1>`,
       `<p class="lede">${esc(countsSentence(d))}</p>`,
@@ -511,6 +516,18 @@ function placePage(cell, heat, live) {
       ...sections,
     ].join('\n'),
   });
+}
+
+/** The share image's counts line, "412 articles · 150 outlets · 23 countries": the facts the place has. */
+function cardCounts(cell) {
+  return [
+    [num(cell.n), 'article', 'articles'],
+    [num(cell.o), 'outlet', 'outlets'],
+    [num(cell.c), 'country', 'countries'],
+  ]
+    .filter(([v]) => v > 0)
+    .map(([v, one, many]) => plural(v, one, many))
+    .join(' · ');
 }
 
 function indexPage(listed, paged, heat) {
@@ -695,12 +712,25 @@ const cells = arr(heat.cells)
   .filter((c) => c && typeof c.id === 'string' && /^[0-9a-f]{15}$/.test(c.id))
   .sort((a, b) => num(b.n) - num(a.n) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 
+// The country outlines under the share images' marks; without them the images still draw.
+let geo = null;
+try {
+  geo = JSON.parse(await readFile(join(web, 'public', 'geo', 'countries.json'), 'utf8'));
+} catch {
+  geo = null;
+}
+
 await rm(placeDir, { recursive: true, force: true });
 await mkdir(placeDir, { recursive: true });
 
 const candidates = cells.filter((c) => num(c.n) >= PAGE_MIN);
 let missing = 0;
 let largest = { bytes: 0, id: '' };
+let images = 0;
+let imageBytes = 0;
+// The per-place step writes the page, its feed and its share image; the images are most of its
+// time (their deflate runs on libuv's thread pool), so the log gives the step's time with them.
+const placesStarted = performance.now();
 const written = await pool(candidates, CONCURRENCY, async (c) => {
   let cell;
   try {
@@ -712,9 +742,18 @@ const written = await pool(candidates, CONCURRENCY, async (c) => {
   const html = placePage({ ...cell, id: c.id }, heat, c);
   const bytes = Buffer.byteLength(html);
   if (bytes > largest.bytes) largest = { bytes, id: c.id };
-  await Promise.all([writeFile(join(placeDir, `${c.id}.html`), html), writeFile(join(placeDir, `${c.id}.xml`), placeFeed({ ...cell, id: c.id }, heat))]);
+  const name = str(cell.name) || c.id;
+  const png = await sharePng({ heat, cell: c, geo, names: [shortName(name), name, c.id], counts: cardCounts(cell) });
+  images++;
+  imageBytes += png.length;
+  await Promise.all([
+    writeFile(join(placeDir, `${c.id}.html`), html),
+    writeFile(join(placeDir, `${c.id}.xml`), placeFeed({ ...cell, id: c.id }, heat)),
+    writeFile(join(placeDir, `${c.id}.png`), png),
+  ]);
   return c.id;
 });
+const placesMs = Math.round(performance.now() - placesStarted);
 const paged = new Set(written.filter(Boolean));
 const pagedInOrder = candidates.filter((c) => paged.has(c.id));
 
@@ -745,5 +784,6 @@ console.log(
   `build-places: ${paged.size} place pages and ${paged.size} feeds (n >= ${PAGE_MIN}${missing ? `; ${missing} skipped, no cell file` : ''}), ` +
     `${listed.length} index rows, ${urls.length} sitemap URLs; largest page ${(largest.bytes / 1024).toFixed(1)} KB (${largest.id || 'none'}), ` +
     `index ${(Buffer.byteLength(index) / 1024).toFixed(1)} KB; ` +
-    `broadcast page ${(Buffer.byteLength(broadcastHtml) / 1024).toFixed(1)} KB and feed (${broadcast ? `${filledSlots} of 6 slots filled` : 'no broadcast.json: empty slots, no entry'}); ${ms} ms`,
+    `broadcast page ${(Buffer.byteLength(broadcastHtml) / 1024).toFixed(1)} KB and feed (${broadcast ? `${filledSlots} of 6 slots filled` : 'no broadcast.json: empty slots, no entry'}); ` +
+    `${images} share images, ${(imageBytes / 1e6).toFixed(1)} MB, ${placesMs} ms (with the pages and feeds); ${ms} ms`,
 );
