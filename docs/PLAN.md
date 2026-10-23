@@ -1166,6 +1166,11 @@ ringed place under 10 articles links to the site root. The caption carries no to
 Review fixes before the commit: a signal over a place with no page (loudest needs only 3
 headlines, faint 5 outlets) links to the map with the cell selected instead of a missing
 page; an empty cell name falls back to the id; the embed redraws after a data failure.
+Live after the deploy (run 40039455060, 9f0f41b): `embed.html` 200 (3.8 KB, fonts relative),
+`about.html` 200 with the EMBED THE MAP section, Paris's `place/831fb4fffffffff.png` 200
+(29.7 KB, image/png) and named by that page's `og:image`. Not verified live: a social
+preview fetch of a place page (open one in a card validator), and the next Clip run writing
+`caption-<date>.txt` (first due 2026-10-24 00:20 UTC).
 
 Known and not fixed: place pages and share images are rebuilt from the live window every
 15 minutes, so a caption or share link posted for a place 404s once that place drops under
