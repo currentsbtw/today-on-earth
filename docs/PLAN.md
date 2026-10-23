@@ -988,7 +988,10 @@ entities (21 KB), the bottom of the list still carries translated-text junk ("ce
 hospital"), ranked out of sight by volume; the ingest passes the per-story count of name
 entities to the index so theme words never enter it; in topic mode the column-totals block
 still shows the live totals; a partial query typed over an active topic stays in the field
-on blur. The archive step does not upload topics.json.
+on blur. The archive step does not upload topics.json. Live after the deploy (run 40016016891): 1,636
+place pages, 3,671 index rows, 1,639 sitemap URLs, the largest page 39 KB raw; topics.json
+hit the 5,000-entity cap at 426 KB raw (loaded on the field's first focus only), and
+"trump" resolves to DONALD TRUMP: 5,941 articles over 60 places.
 
 Builders: the ingest (topics.json, contract, checker, tests); the page generator (scripts,
 prebuild, panel link, robots, DESIGN.md "Place page"); the search (index.html, main.ts,
