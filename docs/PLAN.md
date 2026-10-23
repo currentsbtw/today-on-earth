@@ -795,7 +795,7 @@ Not the problem: the visual world, the methodology page, the replay. They are do
 Recommended order: 1 and 2 first (they decide whether anyone stays), then 3, then 4 and 5
 together, then 6.
 
-## Trust the dots (decided 2026-10-23, in progress)
+## Trust the dots (decided 2026-10-23, shipped the same day in d771181)
 
 Measured on 2 h of both feeds (2026-10-23 14:45-16:30 UTC, 28,429 parsed, 20,959 placed)
 plus 2 h of Korean daytime (01:00-02:45 UTC) for the Paris case; scripts and outputs in the
@@ -857,6 +857,28 @@ session scratchpad (gkg-measure/). What the numbers said, and what is decided:
    network once.** Articles keep their own domain. Only Big News Network is listed now;
    the measured domestic chains (Newsquest, Ippen, MediaNews, Sinclair) inflate `o` at
    home and are left for later.
+
+**Status 2026-10-23 17:57 UTC: shipped (d771181).** 126 ingest tests, typecheck, the contract
+checker on a local run and the site build all pass. Measured on the main sample before and
+after: totals.articles 28,429 -> 26,772; New Jersey n 316 -> 81 with iheart's share 74.7% ->
+3.7%; Taipei o 56 -> 30; London's largest story 93 copies of one item -> a 51-article story
+from 47 outlets; grouped share over the same six cells 43.7% -> 50.7%; newspim.com gone from
+Paris. Built as decided, with these departures: suffix stripping repeats until no rule
+applies (one strip often uncovered a second and the same headline showed twice); the
+theme-half join variant was measured (-4.2 points grouped) and rejected; `reprints` on an
+article counts other outlets' copies; placement and learned tails group by network. Review
+fixes before the commit: a shown title could be null when lowercasing changed a title's
+length; empty-name candidates were placed at parse time but dropped on reload; FeatureID-less
+spellings were grouped by raw name but identified by cleaned name. Known costs and open
+items: a wire outlet's one-mention dateline (Moscow x1 on ria.ru, interfax.ru, aif.ru; Manila
+x1; Jakarta x1) is skipped, so articles that mention nothing else are unplaced; outlets whose
+block count varies (nuevaalcarria.com, razon.com.mx) are not caught; the two-word suffix rule
+cuts quote attributions ("– says Mickoski"); region-only articles still sit at region
+centres; domestic chains (Newsquest, Ippen, MediaNews, Sinclair) still inflate `o`. The live
+window turns over within 24 h of the deploy (old records keep their stored placement). First
+live run 40000620445 (18:07 UTC) green: v5 state loaded, unit counting applied to the
+existing window (totals.articles 268,934 -> 242,679), placement checks 0 outlets until new
+records carry candidates.
 
 Builders: placement (gkg.ts, types.ts, state.ts, a new place.ts, main.ts, tests) and
 counting (reprints.ts, stats.ts, aggregate.ts, stories.ts, domains.ts + data, tests) run
