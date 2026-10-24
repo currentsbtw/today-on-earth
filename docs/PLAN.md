@@ -1688,9 +1688,10 @@ aloud by the newscast it is a false claim with the site's name on it.
    House, Pentagon, Kremlin, Downing Street, Élysée...) and a prefix match for inflected city
    names, accepting that a right story that names nothing is skipped (the list has slack);
    (2) the site itself shows no "unconfirmed" label until the signal's recall is up; (3) the
-   path to recall is local-language place names: GDELT's FeatureID for non-US places is the
-   GeoNames id, so a one-time build table of GeoNames alternate names for the cells we see is
-   item (g) of trust pass two. Built the same day as (1); status below.
+   path to recall is local-language place names from GeoNames, item (g) of trust pass two.
+   (Corrected 2026-10-24: GDELT's FeatureID is the NGA GNS or USGS GNIS id, NOT a GeoNames
+   id; Paris is GNS -1456928 and GeoNames 2988507. The table is keyed by FeatureID through a
+   name-and-distance crosswalk, 30 km, same country.) Built the same day as (1); status below.
    **Status: built 2026-10-24 (8c3041d).** `stories.json` entries now need confirmation
    (contract "Top stories", Confirmation): the headline or a saved title names the city, a
    region, the country (also in the title's language) or a capital metonym from the published
@@ -1714,7 +1715,7 @@ aloud by the newscast it is a false claim with the site's name on it.
    "SãPaulo"; the home-country mismatch behind "Leitrim, United Kingdom"); (f) **single-outlet
    stories** marked as one outlet's report and sorted after multi-outlet stories everywhere
    they show (5 of the 8 in the sample were wrong), never hidden.
-   **Status 1e (2026-10-24): built, not committed.** Cause of the garbling: GDELT itself. The
+   **Status 1e (2026-10-24): shipped (9e6004b). Live 03:43 UTC (run 40059412351): names with a non-ASCII or code part fell from 283 to 84 of 3,602 cells on the first run; the rest turn over with the window.** Cause of the garbling: GDELT itself. The
    raw V2Locations bytes already read `Sao Paulo, SãPaulo, Brazil` (valid UTF-8 "ã" followed by
    "Paulo"); nothing in our pipeline drops characters (the "?" rule only removes "?" and
    lowercases the letter after it). GDELT transliterates the place (first part) and writes the
@@ -1747,7 +1748,7 @@ aloud by the newscast it is a false claim with the site's name on it.
    "-ský" regions, 39 entries; "NariñO", 89). Names are
    stored on the records' candidates at parse time (state), so live labels change as the 24 h
    window turns over; the state version is unchanged (the stored shape is the same).
-   **Status 1f (2026-10-24): built, not committed.** Display only, from the `o` each story
+   **Status 1f (2026-10-24): shipped (4bdd36f). Live 03:43 UTC: the San Francisco page (832830fffffffff) carries two ONE OUTLET tags and its feed two "One outlet's report" entries.** Display only, from the `o` each story
    already carries; no ingest change. The map's panel, the place page and the place feed list
    stories from two or more outlets first, then single-outlet stories, each group in its own
    order (the feed: newest first within each); a signal's pinned story still leads. A story
