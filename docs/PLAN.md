@@ -2009,7 +2009,7 @@ aloud by the newscast it is a false claim with the site's name on it.
    (tail scaled by live n): Washington and New Delhi reach the 200 ceiling, about 200 to 210 KB
    raw and 61 to 64 KB gz; under the 250 / 80 KB budget, so the ceiling stays 200. All cells:
    1,111 to 2,176 stories (941 with n = 2), 9.6 to 10.8 MB of cell files. Not judged: the tail's
-   own precision (it uses the current join rule, 22% wrong in its sample).
+   own precision (it uses the current join rule, 22% wrong in its sample). **Live 06:3x UTC (run 40069845592, 6a53524): the six cells 62.0% grouped (9,226 of 14,888), from 40.5%: Paris 67.0 (200 stories, 170 compact, 41 pairs), London 52.7 (200), Washington 65.7 (200), New Jersey 37.0, Taipei 44.6 (63 stories), New Delhi 68.3 (184). Files 203 to 211 KB raw, 60 to 70 KB gzipped, under the 250/80 budget. The 200 ceiling binds in three cells on a 24 h window; raising it is a size decision, not a rule one.**
 
    **Status 3B (web) (2026-10-24): compact stories shown; built, not yet on live data.** The
    site reads the uncapped `stories[]` (up to 200; after the first 30 `compact: true`, at most 3
