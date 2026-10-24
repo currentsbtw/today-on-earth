@@ -2027,6 +2027,27 @@ aloud by the newscast it is a false claim with the site's name on it.
    150.4 KB; Paris (188 appended) 25.7 to 112.2 KB, feed 12.4 to 183.7 KB. The feeds' growth
    (about 1 KB an entry) is the open question: an entry cap is the owner's call.
 
+   **Status 3D (2026-10-24): AllNames measured, NOT built.** GKG 2.1's AllNames (names from the
+   English translation) joins 100% of the 6 h state's records (English feed 98.9% with names,
+   10.5 per record; translated feed 97.8%, 8.3). As a grouping signal it fails both terms of the
+   bar: adding names to the join lifts the six cells from 60.5% to 66.1% (69.1% with names in
+   pairs and in the second pass), and every variant judges 19 to 32% wrong on 100-item samples
+   against the base's 24% (95% interval 16.7 to 33.2); what the names ADD is wrong 37 to 88% of
+   the time (170 second-pass attachments: 2 right, 35 wrong, 3 unclear of 40). Two causes: the
+   translated feed's names are machine-translation artefacts ("states attached" for Estados
+   Unidos, "before body parts", "east friday", "home white", "laminate jamal") that stay under a
+   per-cell frequency cut because translated items are a minority in most cells and then glue
+   unrelated other-language items together (Washington's Spanish coverage collapses into the
+   Mexico-tariffs story); and broad English names (president donald trump, new york times, fox
+   news, supreme court) carry the rest. Dropping themes in favour of names splits Paris's protest
+   story into pieces of 55: themes are what hold its other-language members. A global 1% cut
+   removes 15 junk names and costs 3 points, so part of the gain is the junk. Conclusion for the
+   program: the base rule's wrong-merge rate (about 24%) is the bottleneck and no cheap signal
+   fixes it; a usable names signal needs English-feed names only (or a stop-list of translation
+   artefacts) with document-frequency weighting of broad names, a separate measurement. Until
+   then grouping stands at 62% live with its error rate published by the audit's grouping row.
+   Raw files and judged samples lived in the session scratchpad (allnames/).
+
 4. The headline rule (bar 3), which also fixes what the voice reads.
 5. Then the newscast: the voice prototype, the audio-driven timeline, the clip.
 Items 1a and 2 start today; status lines follow each. Live 02:45 UTC (run 40055474611): 12 stories, every entry with its `confirmed` level (5 city, 5 country, 1 metonym, 1 region or city), no Athens, Greece and no Petersburg, Russia; new at the tail Edinburgh (Storm Boelo), Kherson, Gaza, Amman. The Accuracy section is live on the about page. Visible label bug for item 1e: "Amman, (Jo11), Jordan". Live 05:24 UTC (run 40065153518, ba09fdd): regionOnly=6,920 of 7,205 unplaced in the run; totals.unplaced 64,483 to 65,269; cells 3,597 to 3,555. The state-named cells did NOT vanish live at once: "New York, United States" (832a16fffffffff) kept 1,463 records. Measured and explained (not a rule gap): no city-typed New York entry exists at the state centroid (0 of 930 raw entries in the 16 files; the exact-coordinate class is not clean anyway, it catches Andalusia and DC landmarks); the records left are the half of the window ingested before the v6 state shipped (2026-10-23 18:07 UTC), which carry no candidates and keep their stored placement until they age out by about 18:07 UTC on 2026-10-24. Re-read the cell after 18:30 UTC: expected renamed for a Hudson Valley place with n in the low hundreds or fewer. The before/after unplaced totals are also confounded by the chains change shipped in the same commit. Live 05:24 UTC: totals.outlets 10,480 to 9,711, reprints 25,425 to 12,948; Washington o 2,426 to 2,029, Paris 1,944 to 1,550; postmedia.com and townsquaremedia.com appear as single outlets in cells' topOutlets.
