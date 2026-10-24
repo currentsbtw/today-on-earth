@@ -458,3 +458,20 @@ test("topOutletCountries: placed and unplaced units, a network is one outlet, co
   assert.deepEqual(top[0], ["VX", 22]);
   assert.deepEqual(top.at(-1), ["CX", 3]);
 });
+
+test("buildSnapshot: a cell's fid is the most common FeatureID among the records carrying its name", () => {
+  const records: ArticleRecord[] = [];
+  // 7 records named Paris (fid A x4, B x3) and 6 named Montrouge (fid C): the name is Paris,
+  // so the fid is A, though C is the most common FeatureID in the cell.
+  for (let i = 0; i < 4; i++) records.push(rec({ source: `a${i}.fr`, locationFid: "-1456928" }));
+  for (let i = 0; i < 3; i++) records.push(rec({ source: `b${i}.fr`, locationFid: "-1456930" }));
+  for (let i = 0; i < 6; i++) records.push(rec({ source: `c${i}.fr`, locationName: "Montrouge, France", locationFid: "-1449130" }));
+  // A cell whose records carry no FeatureID writes none.
+  for (let i = 0; i < 3; i++) records.push(rec({ cellId: LAGOS, source: `d${i}.ng`, locationName: "Lagos, Nigeria" }));
+  const { cells } = buildSnapshot(records, { now: new Date("2026-10-20T13:00:00Z"), windowHours: 24 });
+  const paris = cells.find((c) => c.id === PARIS)!;
+  assert.equal(paris.name, "Paris, France");
+  assert.equal(paris.fid, "-1456928");
+  assert.deepEqual(Object.keys(paris).slice(0, 4), ["id", "name", "home", "fid"]);
+  assert.ok(!("fid" in cells.find((c) => c.id === LAGOS)!));
+});

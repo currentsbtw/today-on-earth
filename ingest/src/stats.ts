@@ -82,6 +82,8 @@ export interface CellStats {
   /** Most common non-empty locationCountry among the records, "" if none. */
   home: string;
   name: string;
+  /** The place's GDELT FeatureID (placeFid), "" if none. */
+  fid: string;
   /** Article units per outlet, per outlet country and per language. */
   outlets: [string, number][];
   countries: [string, number][];
@@ -91,6 +93,18 @@ export interface CellStats {
 /** Most common non-empty location country (ties by code), "" if none. */
 export function homeCountry(records: readonly ArticleRecord[]): string {
   return countSorted(records.map((r) => r.locationCountry).filter(Boolean))[0]?.[0] ?? "";
+}
+
+/**
+ * The FeatureID of the place named `name`: the most common non-empty locationFid among the
+ * records whose locationName is `name` (ties by id), "" if none. Tied to the name, not taken
+ * over all records, because a cell can hold several features and its fid must be the place
+ * its name says: a cell named "Hebron, Israel" whose most common feature is Karak, Jordan
+ * (same cell, across the border) gets Hebron's id, not Karak's.
+ */
+export function placeFid(records: readonly ArticleRecord[], name: string): string {
+  if (!name) return "";
+  return countSorted(records.filter((r) => r.locationName === name).map((r) => r.locationFid ?? "").filter(Boolean))[0]?.[0] ?? "";
 }
 
 /**
@@ -115,6 +129,7 @@ export function cellStats(records: readonly ArticleRecord[], keyer: Keyer, home 
     i: home ? countries.filter(([k]) => k !== "" && k !== home).length : c,
     home,
     name: names[0]?.[0] ?? "",
+    fid: placeFid(records, names[0]?.[0] ?? ""),
     outlets,
     countries,
     languages,

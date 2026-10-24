@@ -159,6 +159,7 @@ kept or dropped, plus the unplaced units), so no entry exceeds `totals.articles`
   "id": "832830fffffffff",
   "name": "Paris, France",
   "home": "FR",                       // the place's own country, "" if unknown (added 2026-10-21)
+  "fid": "-1456928",                  // the place's GDELT FeatureID; absent when none (added 2026-10-24, see below)
   "n": 412, "u": 361, "o": 150, "c": 23, "i": 22, "l": 9, "t": -2.1,
   "topOutlets":  [["lemonde.fr", 31], ["bbc.co.uk", 12]],  // top 10 by article units; a listed network is one entry,
                                                            // named by the network (changed 2026-10-23)
@@ -192,6 +193,14 @@ and user links (about two thirds of GDELT's YouTube embeds) and other hosts are
 dropped. Measured 2026-10-21: ~9% of placed articles carry a video. The frontend
 derives the id itself and embeds via youtube-nocookie.com, click-to-load, never
 autoplay.
+
+`fid` (added 2026-10-24) is GDELT's FeatureID of the place the cell is named for: among the
+cell's articles whose chosen location (see Rules) is the cell's `name`, the most common
+FeatureID of that location, ties by id. It is tied to the name, so a cell named "Hebron,
+Israel" that also holds more articles placed at Karak, Jordan carries Hebron's id. GDELT's
+FeatureID is an NGA GNS id (most places outside the US, often negative), a USGS GNIS id (US
+places) or an ADM1 code for some regions ("CA", "KS13"); it is not a GeoNames id. The key is left
+out when none of those articles has one. Top-stories confirmation uses it (Confirmation below).
 
 `articles` is the newest 50 in the cell, newest first, de-duplicated by URL. Pick a
 spread of outlets: no outlet contributes more than 5 of the 50 unless the cell has
@@ -510,6 +519,56 @@ city in the cell name is English, so that rarely fires, but the country's own-la
 does ("日本" in a `ja` title for home JP). The name in the title's language depends on the ICU
 data of Node; the checker runs in the same Node as the ingest.
 
+**Local-language names (added 2026-10-24).** The `city` and `region` levels also try the
+place's names in other languages, from the place-names table, by the cell file's `fid`: the
+entry's `n` names at the `city` level (after the city in the cell name), its `r` names at the
+`region` level (after the regions), matched by the rules above, except that a table name
+written all in capitals (NSW, CDMX) is matched in capitals only and never by prefix, as a
+metonym is. So "под Купянском" confirms Kupyansk (`n` holds Купянск, prefix form), "重庆市委"
+Chongqing (substring) and "向西藏增调" a cell in Xizang (`r` holds 西藏). A cell without
+`fid`, or whose `fid` is not in the table, is confirmed by its English names alone, as is
+every cell when the table file is missing or malformed (the ingest logs it once).
+
+The table is `ingest/data/placenames.json`, committed, built by `npm run placenames`
+(`ingest/scripts/build-placenames.ts`, the crosswalk in `placenames-crosswalk.ts`) from
+GeoNames (geonames.org), licensed CC BY 4.0, and refreshed by hand about monthly:
+
+```jsonc
+{ "source": "GeoNames (geonames.org)", "licence": "CC BY 4.0", "built": "2026-10-24",
+  "langs": ["ar", "bg", …],                       // the languages kept (below)
+  "fid": { "-1044158": { "g": 703656,             // the GeoNames id the names come from
+                         "n": ["Kupiansk", "Купянск", …],    // city names
+                         "r": ["Kharkiv Oblast", "Харківська Область", …] } } }  // region names
+```
+
+- **Which places.** The FeatureIDs of the largest cells (`--top`, default 500, of a carried
+  state, each by the `fid` rule above) or a listed set (`--fids`). The first build (2026-10-24)
+  holds the 515 cells of the 2026-10-24 02:01 UTC audit snapshot's 500 largest plus its
+  audited cells: 476 FeatureIDs with names, 19,312 names, 419 KB raw, 141 KB gzipped.
+- **Crosswalk.** GDELT's FeatureID is not a GeoNames id, so a feature is matched by name and
+  place. A city (GDELT type 3 or 4) matches the GeoNames `cities500` row in its country
+  (Israel and Palestine count as one: GDELT writes "Gaza, Israel") within 30 km of GDELT's
+  coordinate whose name, ASCII name or one of its alternate names equals the feature's first
+  name part (diacritics stripped, case-folded); the most populous wins, then the nearest. Its
+  `r` are the names of that city's admin1 region. A city not found is tried as a region,
+  because GDELT types some regions as cities ("Andalusia, Spain"), but only when each of its
+  middle name parts names the same admin1 ("Guangdong, Jilin, China" does not become
+  Guangdong); failing that, the admin1 its own middle part names gives `r` only (Nagqu,
+  Xizang: GDELT's coordinate is 900 km from Nagqu). A region (type 2 or 5) matches the one
+  admin1 of its country whose name, ASCII name or an alternate name equals its first name
+  part, else a middle part; its names go in `r`.
+- **Filter.** From GeoNames `alternateNamesV2`, plus each place's own main and ASCII names:
+  names in the languages seen in GDELT's translated feed (`langs`: the article languages of
+  the audit snapshot, with nb and nn for no), and unlabelled, abbreviation, short and
+  colloquial names in any language; never historic names, links or codes (the link, wkdt,
+  post, iata, icao, faac, unlc, tcid, fr_1793, phon and piny labels). An unlabelled,
+  abbreviation, short or colloquial name of 4 letters or fewer in a script with word spaces is
+  kept only when written in capitals (so Rio, Wash, Man. and mass are not, NSW is). Every name
+  has at least 3 letters or 2 characters of a script without word spaces; names are
+  deduplicated by folded form (a spelling not in capitals kept first), without the English
+  name already in the feature's name (`r` also without the `n` names), and sorted, so the file
+  is deterministic.
+
 Metonyms (`CAPITAL_METONYMS` in `ingest/src/top-stories.ts`; change both together), keyed by
 `home` and city:
 
@@ -526,9 +585,10 @@ Metonyms (`CAPITAL_METONYMS` in `ingest/src/top-stories.ts`; change both togethe
 | VA, Vatican; VA, Vatican City; IT, Rome | Vatican, Holy See |
 | CH, Geneva | WHO, UNHCR |
 
-`npm run check` recomputes each entry's level from its cell file and fails when an entry is
-unconfirmed or its `confirmed` is not the first level that matches, and recomputes the whole
-list with unconfirmed stories skipped.
+`npm run check` recomputes each entry's level from its cell file (with the committed
+place-names table, by the cell's `fid`) and fails when an entry is unconfirmed or its
+`confirmed` is not the first level that matches, and recomputes the whole list with
+unconfirmed stories skipped.
 
 ## Topics (added 2026-10-23): `/data/topics.json`  (one file, written every run, fetched when the search is first used)
 

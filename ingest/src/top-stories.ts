@@ -1,4 +1,5 @@
 import { MIN_STORY_U, slotCell, slotStory, tieBreak } from "./broadcast.ts";
+import { placeNames, type PlaceNamesTable } from "./placenames-table.ts";
 import { reprintKey } from "./reprints.ts";
 import type { CellFile, HeatCell, HeatFile, Story, TopStoriesFile, TopStory } from "./types.ts";
 
@@ -14,6 +15,8 @@ import type { CellFile, HeatCell, HeatFile, Story, TopStoriesFile, TopStory } fr
  * or one of its saved article titles names the cell's city, a region of the cell's name, its
  * country, or a metonym of the capital (CAPITAL_METONYMS). The clip reads these aloud naming
  * the place, so a story GDELT placed at a same-name town elsewhere must not be read there.
+ * The city and region may also be named in a local language (Купянск, 重庆): the place-names
+ * table (placenames-table.ts, from GeoNames) adds names by the cell's FeatureID `fid`.
  */
 
 /** At most this many entries. The clip reads the first 6 to 8 it can voice; the rest is slack. */
@@ -122,7 +125,7 @@ export function placeParts(name: string): { city: string; regions: string[]; cou
 
 export interface ConfirmMatch {
   level: Confirmation;
-  /** The name that matched, as written in the cell name, in CAPITAL_METONYMS or by Intl.DisplayNames. */
+  /** The name that matched, as written in the cell name, in the place-names table, in CAPITAL_METONYMS or by Intl.DisplayNames. */
   name: string;
   /** The text it was found in: the headline or an article title. */
   text: string;
@@ -134,32 +137,38 @@ type ConfirmText = { title: string; lang: string };
  * Whether a story's own text names its place, and the first level that does; null when none.
  * The texts are the story's `headline` (in `headlineLang`) and the `title` of each of its
  * `articles` as written to the cell file (in its `lang`). Each level is tried over every text
- * before the next level.
+ * before the next level. The city and region levels also try the names `table` holds for the
+ * cell's `fid` (`n` and `r`) by the same rules, except that a table name written all in
+ * capitals is matched in capitals only and never by prefix, as a metonym is.
  */
 export function confirmStory(
-  cell: { name: string; home: string },
+  cell: { name: string; home: string; fid?: string },
   story: { headline: string; headlineLang: string; articles: readonly ConfirmText[] },
+  table: PlaceNamesTable = placeNames(),
 ): ConfirmMatch | null {
   const texts = [{ title: story.headline, lang: story.headlineLang }, ...story.articles]
     .filter((t) => typeof t.title === "string" && t.title !== "")
     .map((t) => ({ text: t.title, lang: typeof t.lang === "string" ? t.lang : "", folded: foldText(t.title), unmarked: stripMarks(t.title), noSpace: NO_SPACE_SCRIPT.test(t.title) }));
   const { city, regions, country } = placeParts(cell.name);
   const metonyms = CAPITAL_METONYMS[`${cell.home}|${city}`] ?? [];
+  const local = cell.fid ? table.get(cell.fid) : undefined;
+  const localNames = new Set([...(local?.n ?? []), ...(local?.r ?? [])]);
   const names = (level: Confirmation, lang: string): readonly string[] => {
-    if (level === "city") return city === "" ? [] : [city];
-    if (level === "region") return regions;
+    if (level === "city") return [...(city === "" ? [] : [city]), ...(local?.n ?? [])];
+    if (level === "region") return [...regions, ...(local?.r ?? [])];
     if (level === "country") return [country, countryNameIn(lang, cell.home)].filter((n) => n !== "");
     return metonyms;
   };
   for (const level of CONFIRMATION_LEVELS) {
     for (const t of texts) {
       for (const name of names(level, t.lang)) {
-        // A metonym written in capitals (WHO) is matched in capitals; everything else case-folded.
-        const caps = level === "metonym" && name === name.toUpperCase() && name !== name.toLowerCase();
+        // A metonym or table name written in capitals (WHO, NYC) is matched in capitals and never
+        // by prefix; everything else case-folded.
+        const caps = (level === "metonym" || localNames.has(name)) && name === name.toUpperCase() && name !== name.toLowerCase();
         const needle = caps ? stripMarks(name) : foldText(name);
         const hay = caps ? t.unmarked : t.folded;
         if (needle === "") continue;
-        if (t.noSpace ? hay.includes(needle) : wordRe(needle, level !== "metonym").test(hay)) return { level, name, text: t.text };
+        if (t.noSpace ? hay.includes(needle) : wordRe(needle, level !== "metonym" && !caps).test(hay)) return { level, name, text: t.text };
       }
     }
   }

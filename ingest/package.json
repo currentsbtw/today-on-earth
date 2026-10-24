@@ -13,7 +13,8 @@
     "test": "node --import tsx --test \"test/*.test.ts\"",
     "typecheck": "tsc --noEmit",
     "audit-sample": "tsx scripts/audit-sample.ts",
-    "audit-tally": "tsx scripts/audit-tally.ts"
+    "audit-tally": "tsx scripts/audit-tally.ts",
+    "placenames": "tsx scripts/build-placenames.ts"
   },
   "dependencies": {
     "fflate": "^0.8.3",

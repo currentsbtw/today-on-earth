@@ -94,6 +94,22 @@ above, and write `domain<TAB>FIPS<TAB>country name` lines sorted by domain.
 No newer GDELT outlet-country list was found (searched 2026-10-21).
 GDELT data is free and open; cite The GDELT Project.
 
+## `placenames.json` (not outlet data)
+
+Local-language names of the site's largest places, keyed by GDELT FeatureID, which
+`src/top-stories.ts` confirmStory accepts besides the English names in a cell's name.
+Generated from GeoNames (geonames.org, CC BY 4.0) by `npm run placenames`
+(`scripts/build-placenames.ts`); the crosswalk, filter and shape are in
+docs/DATA-CONTRACT.md "Top stories", Confirmation. Refresh by hand about monthly:
+
+```
+cd ingest
+npm run placenames -- --state <carry dir or state.json.gz>                 # downloads the dumps to a temp dir
+npm run placenames -- --state <...> --geonames <dir with the extracted dumps>
+```
+
+Do not edit it by hand; rebuild it.
+
 ## Finding unknown outlets
 
 ```

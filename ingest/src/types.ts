@@ -42,6 +42,12 @@ export interface ArticleRecord {
   locationName: string;
   /** Country of the primary location (V2Locations CountryCode, FIPS -> ISO 3166-1 alpha-2); "" when unknown or unplaced. */
   locationCountry: string;
+  /**
+   * GDELT FeatureID of the chosen candidate, set by place.ts resolvePlacement ("" when it has
+   * none or the record is unplaced). Derived at snapshot time from `locs`, never stored in
+   * the state; absent on records placement has not resolved (no candidates).
+   */
+  locationFid?: string;
   /** Up to 6 most-mentioned GKG V2Persons, lowercase. */
   persons: string[];
   /** Up to 6 most-mentioned GKG V2Organizations, lowercase. */
@@ -119,6 +125,11 @@ export interface CellFile {
   name: string;
   /** The place's own country: most common article location country, "" if none. */
   home: string;
+  /**
+   * GDELT FeatureID of the place: the most common non-empty locationFid among the cell's
+   * records whose locationName is `name` (ties by id; stats.ts placeFid). Absent when none has one.
+   */
+  fid?: string;
   n: number;
   u: number;
   o: number;

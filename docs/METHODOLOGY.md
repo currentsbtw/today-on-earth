@@ -262,4 +262,6 @@ by magnitude; they are not part of the news heat and never affect it.
 
 The site is open source. Map outlines are from Natural Earth (public domain). News
 data is from the GDELT Project, used under its open terms with attribution.
-Earthquake data is from the USGS Earthquake Hazards Program.
+Earthquake data is from the USGS Earthquake Hazards Program. Local-language place names
+from GeoNames (geonames.org), CC BY 4.0 (creativecommons.org/licenses/by/4.0/), filtered
+to this site's places and languages.

@@ -248,7 +248,9 @@ for (const f of files) {
   const id = f.slice(0, -5);
   const w = `cells/${f}`;
   const cell = JSON.parse(readFileSync(join(cellsDir, f), "utf8")) as Record<string, unknown>;
-  exactKeys(w, cell, ["id", "name", "home", "n", "u", "o", "c", "i", "l", "t", "topOutlets", "topCountries", "languages", "articles", "videos", "stories", "unclustered"]);
+  exactKeys(w, cell, ["id", "name", "home", "n", "u", "o", "c", "i", "l", "t", "topOutlets", "topCountries", "languages", "articles", "videos", "stories", "unclustered"], ["fid"]);
+  // The place's GDELT FeatureID (added 2026-10-24): absent, or a non-empty id without "|", ";" or spaces.
+  if ("fid" in cell && (typeof cell.fid !== "string" || !/^[^|;\s]+$/.test(cell.fid))) err(`${w}.fid`, `not a FeatureID: ${JSON.stringify(cell.fid)}`);
   int(`${w}.videos`, cell.videos);
   if (typeof cell.videos === "number" && typeof cell.n === "number" && cell.videos > cell.n) err(`${w}.videos`, "more than n");
   if (Array.isArray(cell.articles) && typeof cell.videos === "number") {
@@ -523,7 +525,8 @@ if (!existsSync(topStoriesPath)) {
   const confirmedLevel = (cell: Record<string, unknown>, s: Record<string, unknown>) => {
     const articles = (Array.isArray(s.articles) ? (s.articles as unknown[]) : []).filter(isObj).map((a) => ({ title: String(a.title ?? ""), lang: String(a.lang ?? "") }));
     const text = { headline: String(s.headline ?? ""), headlineLang: String(s.headlineLang ?? ""), articles };
-    return confirmStory({ name: String(cell.name ?? ""), home: String(cell.home ?? "") }, text)?.level ?? null;
+    // With the committed place-names table (ingest/data/placenames.json), as the ingest uses it.
+    return confirmStory({ name: String(cell.name ?? ""), home: String(cell.home ?? ""), fid: typeof cell.fid === "string" ? cell.fid : undefined }, text)?.level ?? null;
   };
   const homes = new Map<string, number>();
   const ids = new Set<string>();

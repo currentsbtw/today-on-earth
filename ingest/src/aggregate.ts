@@ -142,6 +142,7 @@ export function buildSnapshot(
       id,
       name: s.name,
       home: s.home,
+      ...(s.fid ? { fid: s.fid } : {}),
       n: s.n,
       u: s.u,
       o: s.o,

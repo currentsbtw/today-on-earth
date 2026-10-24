@@ -42,7 +42,7 @@ const pairKey = (c: LocationCandidate) => `${identity(c)}\n${c.n}`;
 
 /**
  * Resolve each record's placement from its candidates (docs/PLAN.md "Trust the dots", item 2),
- * writing cellId, lat, lon, locationName and locationCountry in place.
+ * writing cellId, lat, lon, locationName, locationCountry and locationFid in place.
  *
  * Some outlets carry the same location block in every article (a footer, a sidebar, their own
  * name read as a place). Outlets are outletOf(source), so a network's hosts are checked as one.
@@ -112,13 +112,13 @@ export function resolvePlacement(records: ArticleRecord[], opts: PlacementOption
     const i = skip ? r.locs.findIndex((c) => !skip.has(pairKey(c))) : 0;
     if (i < 0) {
       unplaced++;
-      Object.assign(r, { cellId: "", lat: 0, lon: 0, locationName: "", locationCountry: "" });
+      Object.assign(r, { cellId: "", lat: 0, lon: 0, locationName: "", locationCountry: "", locationFid: "" });
       continue;
     }
     if (i > 0) moved++;
     const c = r.locs[i];
     const cellId = r.cellId && r.lat === c.lat && r.lon === c.lon ? r.cellId : latLngToCell(c.lat, c.lon, H3_RES);
-    Object.assign(r, { cellId, lat: c.lat, lon: c.lon, locationName: c.name, locationCountry: c.country });
+    Object.assign(r, { cellId, lat: c.lat, lon: c.lon, locationName: c.name, locationCountry: c.country, locationFid: c.fid });
   }
 
   return { outletsChecked, outletsWithBoilerplate: boilerplate.size, pairs, moved, unplaced };

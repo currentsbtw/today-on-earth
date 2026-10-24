@@ -17,6 +17,8 @@ import type { FeedProgress } from "./window.ts";
  * version 5 (18 fields, no locs) gets no candidates, so its stored placement is kept as is; version 4 (17 fields, no kinds) gets kinds ""; version 3 (16 fields, no locationCountry) also gets
  * locationCountry ""; version 2 (15 fields, no video) also gets video ""; version 1 (12 fields)
  * also gets empty lists.
+ * A record's locationFid is not stored: place.ts resolves it from `locs` with the rest of the
+ * placement at snapshot time (added 2026-10-24, the version unchanged).
  * `feeds` holds, per GDELT feed, the 15-minute file stamps already merged into `records`
  * (so files are never counted twice) and the first stamp ever planned (so late files can be
  * retried without widening the window backwards).

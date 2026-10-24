@@ -1761,6 +1761,48 @@ aloud by the newscast it is a false claim with the site's name on it.
    and Vancouver opened from MOST POSITIVE TONE still leads with that story, its single-outlet
    story twelfth. The page description's lead, when a larger single-outlet story is passed
    over, reads "Largest story from more than one outlet".
+   From the text signal, one more: (g) **local-language place names** for the top stories'
+   confirmation: GeoNames alternate names of the cell's city and region, keyed by GDELT
+   FeatureID through the name-and-distance crosswalk (30 km, same country).
+   **Status 1g (2026-10-24): built, not committed.** `npm run placenames`
+   (`ingest/scripts/build-placenames.ts`, the crosswalk in `placenames-crosswalk.ts`) writes
+   `ingest/data/placenames.json` (GeoNames, CC BY 4.0; refreshed by hand about monthly, the
+   download or `--geonames <dir>`); cell files carry `fid`; `confirmStory` tries the table's
+   `n` names at the city level and `r` at the region level by the same rules (a name in
+   capitals only in capitals, never by prefix); `npm run check` recomputes with the committed
+   table; contract (cell `fid`, Confirmation), METHODOLOGY and about.html (attribution) say so.
+   First build: the 515 cells of the research's list (the 500 largest of the 02:01 UTC audit
+   snapshot plus the audited cells), FeatureIDs from the 01:14 UTC carried state by the cell
+   rule (513; 2 from the research's GKG crosswalk): 350 cities, 82 regions, 44 cities by their
+   region only, 39 not found (seas, GDELT misreads such as "Guangdong, Jilin", a coordinate far
+   from the name: Brooklyn NY at an upstate point, Chapel Hill at the western NC one, Culiacan
+   95 km off; ADM2 places: Orange County, West Midlands, Merseyside). 476 FeatureIDs with
+   names, 19,312 names, 419 KB raw, **141 KB gzipped**; 10 s with the extracted dumps on disk
+   (the download path, 220 MB of zips, was exercised offline on the same files). **Effect** on
+   the 128 audited stories (the shipped rule, each audited cell's FeatureID from the 01:14
+   state): right confirmed 53 → 57 of 81, wrong 4 of 19 unchanged (the known 4: the Brussels
+   story, Obregón, La Verrière twice), unclear 9 of 28 unchanged; of the 39
+   right-but-unconfirmed, the English rule already confirmed 11, the table makes it 15:
+   Kupyansk ("под Купянском"), Chongqing (重庆), Tibet (西藏, region) and Nagqu ("Tibet", region).
+   The research's fifth was a country name from GeoNames; country names stay Intl.DisplayNames.
+   8 confirmed stories move up a level (7 to city, 1 from country to region). On a local cold
+   start (a 2-hour window at 2026-10-23 05:00 UTC, 14 GKG files served from disk, no network;
+   11,663 articles) every one of 793 cells carries `fid`, 310 of them in the table; 113 of the
+   202 candidate stories confirm instead of 102, none lost (Bruksela, Теннесси, 上海, 서울시, Hà
+   Nội, 台北...); `npm run check` OK. Two departures from the brief, both measured: (1) the
+   cell's `fid` is the most common FeatureID among the records **carrying the cell's name**,
+   not over all records: the Hebron cell's most common FeatureID is Karak, Jordan (same res-3
+   cell, across the border), which put الكرك on Hebron and confirmed a wrong story (5 of 19
+   wrong); tied to the name it is 4 of 19. (2) unlabelled, abbreviation, short and colloquial
+   names of 4 letters or fewer are kept only in capitals (NSW, CDMX), because the dump's short
+   forms include common words (Rio, Wash, Man., mass, The D, Tan); names in a feed language of
+   that length stay (Wien, Roma, Kyiv). Also: a city GDELT types as a city but GeoNames has as
+   a region (Andalusia, Quebec, Veneto) resolves to the admin1 when its middle parts agree;
+   Israel and Palestine count as one country (GDELT's "Gaza, Israel"). Weak spots: some
+   feed-language short names are common words in another language (Anh, Vietnamese for England,
+   is "brother"; Bon, Galician for Bonn; Deli; Mel), a candidate stop-list; the table covers
+   one day's 500 largest cells, so a place that rises later is confirmed in English only until
+   the next refresh.
 2. The Accuracy section in METHODOLOGY with the first audit's table, and the weekly routine
    written down (a checklist in docs/).
    **Status (2026-10-24): done, not committed.** METHODOLOGY has an "Accuracy" section (the

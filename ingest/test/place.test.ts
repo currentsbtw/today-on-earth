@@ -47,8 +47,9 @@ test("an outlet's fixed block (same place, same count, half its articles) is ski
   const seoul = records.find((r) => r.locationName === "Seoul, South Korea")!;
   assert.equal(seoul.cellId, latLngToCell(37.5664, 127, 3));
   assert.equal(seoul.locationCountry, "KR");
+  assert.equal(seoul.locationFid, "-716583"); // the chosen candidate's FeatureID
   const gone = records[0];
-  assert.deepEqual([gone.cellId, gone.lat, gone.lon, gone.locationName, gone.locationCountry], ["", 0, 0, "", ""]);
+  assert.deepEqual([gone.cellId, gone.lat, gone.lon, gone.locationName, gone.locationCountry, gone.locationFid], ["", 0, 0, "", "", ""]);
   // Resolving again (the next run, on carried records) gives the same answer.
   const before = JSON.stringify(records);
   resolvePlacement(records);
