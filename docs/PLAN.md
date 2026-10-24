@@ -2049,6 +2049,26 @@ aloud by the newscast it is a false claim with the site's name on it.
    Raw files and judged samples lived in the session scratchpad (allnames/).
 
 4. The headline rule (bar 3), which also fixes what the voice reads.
+   **Status 4 (2026-10-24): measured and judged, NOT built; the measure re-scoped.** Today on
+   the 6 h state the six cells' 289 story headlines come 58% from a top-500 outlet by window
+   records (median rank 353); 32.5% carry a title reprinted by 2+ outlets; 1.4% are all-caps-led.
+   The live top 12 is worse (4 of 12; newsday, winknews, viveresanbenedetto.it, wamc...). Among
+   the medoid's near-equals (overlap at least 0.8 of the medoid's), ranking by the outlet's window
+   size reaches 81% top-500 with 4 of 60 judged headlines worse, so it clears the literal bar, and
+   it is wrong: `outletOf` gives a network's whole size to whichever member site carried the
+   story, so the rule credits kenyastar.com (Big News Network) with Washington's top story,
+   bracknellnews.co.uk (Newsquest) with London's, and prefers aol.co.uk to the Guardian, drimble.nl
+   to nos.nl, zazoom.it to Il Fatto Quotidiano. Recognition gained only 5 net of 60. The audit
+   confirms the measure is weak: of 66 sources judged recognisable 39 are top-500; of 62 judged
+   small or aggregator, 28 are (59% against 45%). The "worse" cases are loose stories (medoid
+   score under 6) whose near-equal is an off-topic member. **Decisions:** (1) bar 3's measure
+   becomes outlet breadth (the distinct places and countries an outlet publishes about in the
+   window), to be tested against the audit's `source_known` before adoption; (2) no near-equal
+   rule on stories whose medoid score is under 6; (3) the safe subset (among copies of the same
+   title, credit the outlet with the greatest breadth) ships only once breadth separates
+   recognisable from small outlets; (4) cheap title fixes found on the way ship now: the suffix
+   rule learns the separators "::", "_", "｜", "•" and " -Xinhua"-style tails, and the all-caps
+   test needs a minimum of cased letters (it fires on CJK titles with one Latin acronym).
 5. Then the newscast: the voice prototype, the audio-driven timeline, the clip.
 Items 1a and 2 start today; status lines follow each. Live 02:45 UTC (run 40055474611): 12 stories, every entry with its `confirmed` level (5 city, 5 country, 1 metonym, 1 region or city), no Athens, Greece and no Petersburg, Russia; new at the tail Edinburgh (Storm Boelo), Kherson, Gaza, Amman. The Accuracy section is live on the about page. Visible label bug for item 1e: "Amman, (Jo11), Jordan". Live 05:24 UTC (run 40065153518, ba09fdd): regionOnly=6,920 of 7,205 unplaced in the run; totals.unplaced 64,483 to 65,269; cells 3,597 to 3,555. The state-named cells did NOT vanish live at once: "New York, United States" (832a16fffffffff) kept 1,463 records. Measured and explained (not a rule gap): no city-typed New York entry exists at the state centroid (0 of 930 raw entries in the 16 files; the exact-coordinate class is not clean anyway, it catches Andalusia and DC landmarks); the records left are the half of the window ingested before the v6 state shipped (2026-10-23 18:07 UTC), which carry no candidates and keep their stored placement until they age out by about 18:07 UTC on 2026-10-24. Re-read the cell after 18:30 UTC: expected renamed for a Hudson Valley place with n in the low hundreds or fewer. The before/after unplaced totals are also confounded by the chains change shipped in the same commit. Live 05:24 UTC: totals.outlets 10,480 to 9,711, reprints 25,425 to 12,948; Washington o 2,426 to 2,029, Paris 1,944 to 1,550; postmedia.com and townsquaremedia.com appear as single outlets in cells' topOutlets.
 
