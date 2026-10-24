@@ -1714,6 +1714,52 @@ aloud by the newscast it is a false claim with the site's name on it.
    "SãPaulo"; the home-country mismatch behind "Leitrim, United Kingdom"); (f) **single-outlet
    stories** marked as one outlet's report and sorted after multi-outlet stories everywhere
    they show (5 of the 8 in the sample were wrong), never hidden.
+   **Status 1e (2026-10-24): built, not committed.** Cause of the garbling: GDELT itself. The
+   raw V2Locations bytes already read `Sao Paulo, SãPaulo, Brazil` (valid UTF-8 "ã" followed by
+   "Paulo"); nothing in our pipeline drops characters (the "?" rule only removes "?" and
+   lowercases the letter after it). GDELT transliterates the place (first part) and writes the
+   country (last part) in English, but its region names lose letters after every non-ASCII
+   letter, sometimes with a code fragment appended: "RegióEtropolitana", "Baden-WüBerg",
+   "AndalucíSp", "GoiáBr", "Paysandú12", "Genè" (Genève), "ÇNkiri" (Çankırı); every
+   non-ASCII character in the 16 GKG files sits in a middle part. The letters cannot be
+   recovered from the string, so the planned casing rule (lowercase a capital after a
+   non-ASCII letter) was not built: it would print "Sãpaulo". Rules (`cleanPlaceName`): a
+   middle part with a non-ASCII character or a "?" is dropped (first and last parts never
+   are), and a part that is a parenthesised code with a digit ("(Jo11)", "(Pl67)", 9 codes in
+   the files) or digits alone ("00" for Serbian, Tunisian and Caribbean places, "92") is
+   dropped. The cell-name side was not changed: a home-country rule (when `home` is known
+   and a name whose own record country is `home` has at least a third of the top name's
+   records, the most common such name wins) was built, measured and **rejected**. On the
+   01:14 UTC state it changed 21 of 2,607 cell names (8 of 1,564 on the 16 GKG files), most
+   of them 1-to-1 ties in border cells of 2 to 8 records, and it made the border cells that
+   matter worse: "Damascus, Dimashq, Syria" to "Elon, Israel" (home IL), Skopje to
+   "Presevo, Serbia" (17 records to 13, home RS), Vaduz to Appenzell, Budva to Fishta; in
+   those cells `home` is itself the questionable input. It would have fixed the audit's
+   Leitrim cell ("Newtownbutler, Fermanagh, United Kingdom" to "Jamestown, Ireland", 3 to 2);
+   "Leitrim, United Kingdom" stays a known border-cell label for now.
+   "Saskatchewan, Manitoba, Canada" is GDELT's data as sent (feature -575075, FIPS CA03, at
+   52.15, -97.72, in Manitoba): kept; that it is the province's word read as a Manitoba
+   feature is a placement question. Measured: the audit snapshot's 3,612 cell names, 298
+   change (278 garbled regions, 20 codes); the 16 GKG files, 2,551 of 58,633 type 2-5
+   entries (1,696 non-ASCII parts, 692 "?" parts such as "Ha Ni" for Ha Noi on 444, 163
+   codes), 137 of 1,564 cells; the 01:14 UTC state (48,446 records, 2,607 cells), 228 cells.
+   Lost: readable regions that happen to carry a non-ASCII letter (the Czech and Slovak
+   "-ský" regions, 39 entries; "NariñO", 89). Names are
+   stored on the records' candidates at parse time (state), so live labels change as the 24 h
+   window turns over; the state version is unchanged (the stored shape is the same).
+   **Status 1f (2026-10-24): built, not committed.** Display only, from the `o` each story
+   already carries; no ingest change. The map's panel, the place page and the place feed list
+   stories from two or more outlets first, then single-outlet stories, each group in its own
+   order (the feed: newest first within each); a signal's pinned story still leads. A story
+   with `o` = 1 carries ONE OUTLET above its headline in the FROM SIGNALS tag register (after
+   that tag, " · " between, when pinned); the place page has the same tag (`.tag`), and the
+   feed entry's summary opens "One outlet's report.". Counts and SHOW N MORE are unchanged.
+   METHODOLOGY (Stories), about.html and DESIGN.md say so. On the local snapshot (2026-10-22
+   data) 47 of the 890 place pages have at least one single-outlet story (68 of 479 stories
+   across 971 cell files); Paris lists its one (Charli XCX, 51 articles from iheart.com) last,
+   and Vancouver opened from MOST POSITIVE TONE still leads with that story, its single-outlet
+   story twelfth. The page description's lead, when a larger single-outlet story is passed
+   over, reads "Largest story from more than one outlet".
 2. The Accuracy section in METHODOLOGY with the first audit's table, and the weekly routine
    written down (a checklist in docs/).
    **Status (2026-10-24): done, not committed.** METHODOLOGY has an "Accuracy" section (the

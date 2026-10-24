@@ -49,4 +49,38 @@ test("cleanPlaceName: GDELT's \"?\" encoding artefacts are removed", () => {
   }
   // A transliteration variant in the admin-1 part is not a duplicate: kept.
   assert.equal(cleanPlaceName("Moscow, Moskva, Russia"), "Moscow, Moskva, Russia");
+  // A "?" in a middle part is GDELT's lossy region name: the part goes ("Ha N?I" is Ha Noi).
+  assert.equal(cleanPlaceName("Hanoi, Ha N?I, Vietnam, Republic Of"), "Hanoi, Vietnam, Republic Of");
+});
+
+test("cleanPlaceName: garbled region names are dropped (raw GDELT strings)", () => {
+  // GDELT's region names lose letters after a non-ASCII letter; the raw files say "SãPaulo".
+  assert.equal(cleanPlaceName("Sao Paulo, SãPaulo, Brazil"), "Sao Paulo, Brazil");
+  assert.equal(cleanPlaceName("Santiago, RegióEtropolitana, Chile"), "Santiago, Chile");
+  assert.equal(cleanPlaceName("Tucuman, TucumáAs, Argentina"), "Tucuman, Argentina");
+  assert.equal(cleanPlaceName("Geneva, Genè, Switzerland"), "Geneva, Switzerland");
+  assert.equal(cleanPlaceName("Prague, Praha, HlavníEsto, Czech Republic"), "Prague, Praha, Czech Republic");
+  // Only middle parts: a first or last part with a non-ASCII letter is kept as written.
+  assert.equal(cleanPlaceName("Çankırı, Turkey"), "Çankırı, Turkey");
+  assert.equal(cleanPlaceName("Zürich"), "Zürich");
+  // ASCII middle parts are kept, acronyms and hyphenated names included.
+  assert.equal(cleanPlaceName("Washington, DC, United States"), "Washington, DC, United States");
+  assert.equal(cleanPlaceName("Marseille, Provence-Alpes-Cote D'azur, France"), "Marseille, Provence-Alpes-Cote D'azur, France");
+  assert.equal(cleanPlaceName("Durres, Qarku I Durresit, Albania"), "Durres, Qarku I Durresit, Albania");
+  // Idempotent.
+  const once = cleanPlaceName("Ho Chi Minh City, H? ChíInh, Vietnam, Republic Of");
+  assert.equal(once, "Ho Chi Minh City, Vietnam, Republic Of");
+  assert.equal(cleanPlaceName(once), once);
+});
+
+test("cleanPlaceName: bare ADM1 codes are dropped", () => {
+  assert.equal(cleanPlaceName("Amman, (Jo11), Jordan"), "Amman, Jordan");
+  assert.equal(cleanPlaceName("Warsaw, (Pl67), Poland"), "Warsaw, Poland");
+  assert.equal(cleanPlaceName("Zajecar, 00, Serbia"), "Zajecar, Serbia");
+  // A parenthesised word is not a code; a name with a code inside it is not a bare code.
+  assert.equal(cleanPlaceName("Yakutsk, (Sakha), Russia"), "Yakutsk, (Sakha), Russia");
+  assert.equal(cleanPlaceName("Yakutsk, Sakha (Yakutiya), Russia"), "Yakutsk, Sakha (Yakutiya), Russia");
+  assert.equal(cleanPlaceName("Route 66, United States"), "Route 66, United States");
+  // Never empty.
+  assert.equal(cleanPlaceName("(Jo11)"), "(Jo11)");
 });

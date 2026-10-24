@@ -51,11 +51,11 @@ test("translingual line: language from srclc, entities decoded, location from th
   assert.equal(a.title, "Gobernador de Oruro propone nacionalizar «chutos» y arancel cero contra el contrabando");
   // La Paz (offset 876) and Potosi (811) are mentioned once each: the earlier mention wins,
   // whatever GDELT's entry order (La Paz is listed first).
-  assert.equal(a.locationName, "Potosi, PotosíL, Bolivia");
+  assert.equal(a.locationName, "Potosi, Bolivia");
   assert.equal(a.lat, -19.5836);
   assert.equal(a.lon, -65.7531);
   assert.equal(a.cellId, latLngToCell(-19.5836, -65.7531, 3));
-  assert.deepEqual(a.locs?.map((c) => c.name), ["Potosi, PotosíL, Bolivia", "La Paz, Bolivia"]); // tidied by cleanPlaceName
+  assert.deepEqual(a.locs?.map((c) => c.name), ["Potosi, Bolivia", "La Paz, Bolivia"]); // tidied by cleanPlaceName ("PotosíL" is a garbled region)
   assert.ok(isValidCell(a.cellId));
   assert.equal(getResolution(a.cellId), 3);
   assert.equal(a.tone, -4.56);

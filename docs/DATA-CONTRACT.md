@@ -37,6 +37,9 @@ deployed site. In local dev the frontend serves `web/public/data/` at `/data/`.
       "name": "Paris, France"    // most common location full name in the cell, with GDELT artefacts removed
                                  // ("(General)", "City Of", repeated parts): "Washington, Washington, United States" -> "Washington, United States"
                                  // and the "?" GDELT writes for characters it could not encode: "Ad Daw?Ah" -> "Ad Dawah" (added 2026-10-22)
+                                 // and, between the first and last parts, a region name GDELT garbled (a non-ASCII character
+                                 // or a "?": "Sao Paulo, SãPaulo, Brazil" -> "Sao Paulo, Brazil") or a bare code
+                                 // ("Amman, (Jo11), Jordan" -> "Amman, Jordan", "Zajecar, 00, Serbia" -> "Zajecar, Serbia") (added 2026-10-24)
     }
   ]
 }
