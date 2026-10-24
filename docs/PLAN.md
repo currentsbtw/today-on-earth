@@ -1614,7 +1614,9 @@ model is a measuring instrument whose calibration is published.
    not about (the "wrong" label of the audit below) under 2%, with the 95% interval's upper
    bound under 4%. Baseline: the first audit (2026-10-24, below).
 2. **Grouping.** The grouped share over the six measured cells (Paris, London, Washington,
-   New Jersey, Taipei and one more from "Trust the dots") at 70% or more (50.7% on 2026-10-23).
+   New Jersey, Taipei, New Delhi) at 70% or more, with wrong merges at 5% or less of a judged
+   40-item sample of grouped items (restated 2026-10-24: 40.5% grouped and 22% wrong merges
+   measured live; the 50.7% of 2026-10-23 was a 2 h sample).
 3. **Headlines.** A shown headline comes from an outlet a reader would recognise where the
    story has one: the headline rule prefers, among the medoid's near-equals, the outlet with
    the most articles in the window (rule to be written; measured as the share of top-12
@@ -1897,6 +1899,49 @@ aloud by the newscast it is a false claim with the site's name on it.
    outlets 66 of 128. The snapshot is `audit-20261024T020154Z.tar.gz` on the release
    archive-2026-10-24, not in the repo.
 3. Grouping to 70%: the second pass on story grouping (entities plus title tokens today).
+   **Status 3 (2026-10-24): measured; the bar restated; nothing built yet.** Live (05:24 UTC,
+   24 h window) the six cells group **40.5%** (Paris 48.6, London 28.6, Washington 43.8, New
+   Jersey 25.9 now that region-only records are gone, Taipei 37.6, New Delhi 39.2); the 50.7%
+   of 2026-10-23 was a 2 h sample, and over a day MAX_STORIES = 30 binds in five of the six
+   cells. On a 6 h state (47.4% grouped) the ungrouped mass is: 41% shares something with a
+   story but below every threshold, 19% shares nothing, 18% sits in a two-member cluster, 12%
+   in a 3+ cluster cut by the cap, 5% shares exactly two tokens, 4% is another language with
+   a shared person or organisation; 54% of ungrouped units are not in the cell's main
+   language (37% of grouped ones). Variants of a looser second pass were judged by eye on 40
+   newly grouped items each: entities after the cap 9 right / 29 wrong; two tokens with one
+   rare 17 / 22; cross-language by one person or organisation and the day 6 / 31; strict
+   pairs from two outlets (2+ persons or organisations, or 3+ tokens) 24 / 3 of 29 but only
+   +0.9 points. Removing the cap alone gives +6.6 points at the current rule's precision;
+   with strict pairs 60.5% at 6 wrong of 40. **And the current join rule's own output judges
+   9 wrong of 40 (22%)**: a Figaro Ukraine piece in a school-shooting story is the pattern,
+   broad themes and broad entities (Trump, Iran, BJP) carrying items across.
+
+   **The bar, restated.** Grouped share alone was the wrong bar; it rewards merging. Bar 2
+   becomes: grouped share over the six cells at 70% or more **with wrong merges at 5% or less**
+   of a 40-item judged sample of grouped items (the current rule: 22%). The weekly audit gains
+   a grouping row (the same seed, 40 grouped items from the six cells, right / wrong).
+
+   **Design, in order (the orchestrator's; A is being built now, B and C need the owner).**
+   A. **Precision first (ingest only).** Measure which rule each of the wrong merges used, then:
+      themes never count toward the 2-entity join on their own (persons and organisations do;
+      a theme counts only beside a person or organisation); the 4-token join requires at least
+      one token rare in the cell (under 5% of titles); the cluster merge overlaps on persons
+      and organisations, not themes. Accept if wrong merges fall to 2 of 40 or fewer at a cost
+      of at most 3 points grouped; otherwise report the trade-off and stop.
+   B. **The cap (product decision).** Stories beyond the first 30 are the largest lever
+      (+6.6 points alone, +13 with strict pairs). Proposal: no cap on stories with n >= 3, but
+      stories after the 30th are carried compactly (headline, source, language, URL, the counts,
+      first and last; no articles, at most 3 entities), shown on the site under SHOW N MORE
+      STORIES as headline-only entries; the six cells' files grow from 268 KB to about 530 KB
+      on 6 h, more on 24 h, so measure the 24 h size and the panel's load before deciding.
+   C. **Strict pairs** (two outlets, 2+ persons or organisations or 3+ tokens) become stories:
+      +0.9 points at 3 wrong of 29. Cheap; build with B.
+   D. **Cross-language (parse and state change).** 60% of what stays ungrouped shares nothing
+      or too little by title tokens and is disproportionately not in the cell's main language;
+      GKG 2.1's AllNames (names extracted from the English translation) is the signal that
+      works across languages. A separate measurement before any build.
+   With A, B and C the six cells should land near 60 to 65% at under 10% wrong; 70% needs D.
+
 4. The headline rule (bar 3), which also fixes what the voice reads.
 5. Then the newscast: the voice prototype, the audio-driven timeline, the clip.
 Items 1a and 2 start today; status lines follow each. Live 02:45 UTC (run 40055474611): 12 stories, every entry with its `confirmed` level (5 city, 5 country, 1 metonym, 1 region or city), no Athens, Greece and no Petersburg, Russia; new at the tail Edinburgh (Storm Boelo), Kherson, Gaza, Amman. The Accuracy section is live on the about page. Visible label bug for item 1e: "Amman, (Jo11), Jordan". Live 05:24 UTC (run 40065153518, ba09fdd): regionOnly=6,920 of 7,205 unplaced in the run; totals.unplaced 64,483 to 65,269; cells 3,597 to 3,555. The state-named cells did NOT vanish live at once: "New York, United States" (832a16fffffffff) kept 1,463 records. Measured and explained (not a rule gap): no city-typed New York entry exists at the state centroid (0 of 930 raw entries in the 16 files; the exact-coordinate class is not clean anyway, it catches Andalusia and DC landmarks); the records left are the half of the window ingested before the v6 state shipped (2026-10-23 18:07 UTC), which carry no candidates and keep their stored placement until they age out by about 18:07 UTC on 2026-10-24. Re-read the cell after 18:30 UTC: expected renamed for a Hudson Valley place with n in the low hundreds or fewer. The before/after unplaced totals are also confounded by the chains change shipped in the same commit. Live 05:24 UTC: totals.outlets 10,480 to 9,711, reprints 25,425 to 12,948; Washington o 2,426 to 2,029, Paris 1,944 to 1,550; postmedia.com and townsquaremedia.com appear as single outlets in cells' topOutlets.
