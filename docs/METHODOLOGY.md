@@ -122,6 +122,11 @@ one of its grouped articles, chosen because it overlaps most with the others, sh
 described under Distinct and reprints. We never write a headline. Articles that fit no
 story are listed below, unfiltered.
 
+A story written by one outlet alone comes after the stories from two or more outlets and
+is marked ONE OUTLET; it is never hidden. One outlet's placement has no second source to
+check it against, and the first audit (see Accuracy) found 5 of 8 such stories at the
+wrong place.
+
 ## The daily broadcast
 
 The Signals button opens a daily broadcast: six fixed slots, each filled by one story

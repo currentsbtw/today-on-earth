@@ -212,15 +212,19 @@ let storySeq = 0;
 /**
  * One story: the outlet's own headline, its counts, time span, entities and newest articles.
  * `pin` is the slot label of the signal it was opened from: a mono tag above the headline.
+ * A story from one outlet carries ONE OUTLET in the same tag, after the signal's when both apply.
  */
 function storyCard(story: Story, now: number, pin = '', home = ''): HTMLElement {
   const card = el('article', 'story');
   const id = `story-${++storySeq}`;
   card.setAttribute('aria-labelledby', `${id}-h`);
+  const tags: string[] = [];
   if (pin) {
     card.classList.add('is-pinned');
-    card.append(el('p', 'story-pin', `From signals · ${pin}`));
+    tags.push(`From signals · ${pin}`);
   }
+  if (story.o === 1) tags.push('One outlet');
+  if (tags.length) card.append(el('p', 'story-pin', tags.join(' · ')));
 
   const head = el('h4', 'story-headline');
   head.id = `${id}-h`;
@@ -410,9 +414,18 @@ function pinnedIndex(groups: Story[], pin: StoryPin): number {
 }
 
 /**
+ * Stories from two or more outlets first, then single-outlet stories, each group in its file
+ * order: one outlet's placement has no second source, so it is shown last, never hidden.
+ */
+function byOutlets(groups: Story[]): Story[] {
+  return [...groups.filter((st) => st.o !== 1), ...groups.filter((st) => st.o === 1)];
+}
+
+/**
  * The stories, when the cell file has them; the flat list keeps its own heading
- * (#panel-list-head). With a pin, the signal's story comes first under a FROM SIGNALS tag and
- * counts as one of the three shown. Returns whether the pinned story was found.
+ * (#panel-list-head). Single-outlet stories come last (byOutlets). With a pin, the signal's
+ * story comes first under a FROM SIGNALS tag and counts as one of the three shown. Returns
+ * whether the pinned story was found.
  */
 function renderStories(detail: CellDetail | null, now: number, pin: StoryPin | null = null): boolean {
   let groups = detail?.stories ?? [];
@@ -421,6 +434,7 @@ function renderStories(detail: CellDetail | null, now: number, pin: StoryPin | n
     stories.hidden = true;
     return false;
   }
+  groups = byOutlets(groups);
   const at = pin ? pinnedIndex(groups, pin) : -1;
   if (at > 0) groups = [groups[at], ...groups.slice(0, at), ...groups.slice(at + 1)];
   const cards = groups.map((s, i) => storyCard(s, now, at >= 0 && i === 0 && pin ? pin.label : '', detail.home));

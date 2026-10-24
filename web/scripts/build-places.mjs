@@ -235,7 +235,18 @@ function atomEntry({ id, title, link, published, updated, summary, content }) {
   );
 }
 
-/** The place's feed: one entry per story, newest `last` first (file order breaks ties). */
+/**
+ * Stories from two or more outlets first, then single-outlet stories, each group in its order:
+ * one outlet's placement has no second source, so its story is shown last and marked, never hidden.
+ */
+function byOutlets(stories) {
+  return [...stories.filter((s) => num(s.o) !== 1), ...stories.filter((s) => num(s.o) === 1)];
+}
+
+/**
+ * The place's feed: one entry per story, multi-outlet stories before single-outlet ones (byOutlets),
+ * newest `last` first within each (file order breaks ties).
+ */
 function placeFeed(cell, heat) {
   const name = str(cell.name) || cell.id;
   const home = str(cell.home);
@@ -244,8 +255,8 @@ function placeFeed(cell, heat) {
   const updated = rfc(heat.generatedAt) || EPOCH;
   const stories = arr(cell.stories)
     .filter((s) => s && typeof s === 'object')
-    .map((s, i) => ({ s, i, last: rfc(s.last) }))
-    .sort((a, b) => (a.last < b.last ? 1 : a.last > b.last ? -1 : a.i - b.i));
+    .map((s, i) => ({ s, i, last: rfc(s.last), one: num(s.o) === 1 ? 1 : 0 }))
+    .sort((a, b) => a.one - b.one || (a.last < b.last ? 1 : a.last > b.last ? -1 : a.i - b.i));
   const seen = new Set();
   const entries = stories.map(({ s, last }) => {
     const text = str(s.headline).trim();
@@ -259,8 +270,10 @@ function placeFeed(cell, heat) {
     const heard = heardIn(num(s.i), num(s.c), home);
     const counts = `${plural(num(s.n), 'article', 'articles')} from ${plural(num(s.o), 'outlet', 'outlets')} in ${plural(num(s.l), 'language', 'languages')}${heard ? `, ${heard}` : ''}.`;
     const silent = silentSentence(codesOf(s.countries), largest, home);
-    const summary = [counts, silent].filter(Boolean).join(' ');
+    const one = num(s.o) === 1 ? "One outlet's report." : '';
+    const summary = [one, counts, silent].filter(Boolean).join(' ');
     const content =
+      (one ? `<p>${esc(one)}</p>` : '') +
       `<p>${esc(counts)}</p>` +
       (silent ? `<p>${esc(silent)}</p>` : '') +
       (source ? `<p>Headline from ${esc(source)}.</p>` : '') +
@@ -334,6 +347,7 @@ h1{margin:0 0 16px;font:600 clamp(36px,5vw,56px)/1.06 var(--hum);letter-spacing:
 h2{margin:40px 0 0;padding:6px 0;border-bottom:1px solid #fff;font-size:11px;font-weight:500;line-height:1;letter-spacing:.1em}
 ol,ul{margin:0;padding:0;list-style:none}
 .story{margin-top:14px;padding-left:12px;border-left:1px solid rgba(255,255,255,.4)}
+.tag{margin:0 0 6px;font:500 11px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase}
 h3{margin:0;font:400 18px/1.35 var(--hum);overflow-wrap:anywhere}
 h3 a,.art a{text-decoration:none}
 h3 a:hover,.art a:hover{text-decoration:underline;text-decoration-style:solid}
@@ -433,6 +447,7 @@ function storyItem(s, home, largest) {
   const silent = silentNames(codesOf(s.countries), largest, home);
   return (
     '<li class="story">' +
+    (num(s.o) === 1 ? '<p class="tag">One outlet</p>' : '') +
     (text ? `<h3>${titleLink(text, s.headlineUrl, s.headlineLang)}</h3>` : '') +
     (source ? `<p class="credit">${esc(source)}</p>` : '') +
     (parts.length ? `<p class="counts">${esc(parts.join(' · '))}</p>` : '') +
@@ -483,13 +498,17 @@ function placePage(cell, heat, live) {
   const win = num(heat.windowHours) || 24;
   const largest = largestOf(heat);
   const gapLines = [silentSentence(codesOf(cell.topCountries), largest, d.home), normalSentence(live?.b, num(live?.n), heat.baselineDays)].filter(Boolean);
-  const stories = arr(cell.stories).filter((s) => s && typeof s === 'object');
+  const filed = arr(cell.stories).filter((s) => s && typeof s === 'object');
+  const stories = byOutlets(filed);
   const lead = stories.find((s) => str(s.headline).trim());
+  // Stories are filed largest first: when a single-outlet story outsizes the lead, say which largest.
+  const outsized = lead && num(lead.o) !== 1 && filed.slice(0, filed.indexOf(lead)).some((s) => num(s.o) === 1);
+  const leadLabel = outsized ? 'Largest story from more than one outlet' : 'Largest story';
   const counts = `${plural(d.n, 'article', 'articles')} from ${plural(d.o, 'outlet', 'outlets')}`;
   let description = `${d.name} in the last ${hours(win)}: ${countsSentence(d)}`;
   if (lead) {
     const h = str(lead.headline).trim();
-    description += ` Largest story: “${h.length > 160 ? `${h.slice(0, 159)}…` : h}”${str(lead.headlineSource) ? ` (${lead.headlineSource})` : ''}.`;
+    description += ` ${leadLabel}: “${h.length > 160 ? `${h.slice(0, 159)}…` : h}”${str(lead.headlineSource) ? ` (${lead.headlineSource})` : ''}.`;
   }
   const sections = [];
   if (stories.length) sections.push(`<h2>Stories</h2>\n<ol>${stories.map((s) => storyItem(s, d.home, largest)).join('\n')}</ol>`);
