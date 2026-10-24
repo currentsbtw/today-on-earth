@@ -1764,7 +1764,7 @@ aloud by the newscast it is a false claim with the site's name on it.
    From the text signal, one more: (g) **local-language place names** for the top stories'
    confirmation: GeoNames alternate names of the cell's city and region, keyed by GDELT
    FeatureID through the name-and-distance crosswalk (30 km, same country).
-   **Status 1g (2026-10-24): built, not committed.** `npm run placenames`
+   **Status 1g (2026-10-24): built, not committed. Live 04:26 UTC (run 40061373885, eb734a2): cell files carry `fid` (Paris -1456928), stories.json 12 entries all confirmed (6 city, 4 country, 1 region, 1 metonym).** `npm run placenames`
    (`ingest/scripts/build-placenames.ts`, the crosswalk in `placenames-crosswalk.ts`) writes
    `ingest/data/placenames.json` (GeoNames, CC BY 4.0; refreshed by hand about monthly, the
    download or `--geonames <dir>`); cell files carry `fid`; `confirmStory` tries the table's
