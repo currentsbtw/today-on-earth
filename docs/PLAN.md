@@ -756,6 +756,102 @@ Method: judge each item on a 540x960 still with the phone muted (the "mute test"
 a 3-second flip through the frames (the "flip test": every frame must say what it is).
 Out of scope for this stage: sound, narration, imagery. Rights rules unchanged.
 
+### Clip drawing board: a first viewing (2026-10-24, not decided)
+
+Owner's verdict on 2026-10-23: the clips are terrible as a viewer; before any more items are
+built, start over from what a stranger sees. The orchestrator watched `clip-2026-10-23.mp4`
+(1080x1920, 34.0 s, from the `clips` release; its caption file was published beside it and
+reads as decided) as contact sheets of 8 frames per segment and single frames at phone size,
+sound off. The measured shape of the clip: hook 2.0 s, pull-back 1.5 s, time-lapse 7 s, three
+cards at 6.5 s each (flight 1.5 + hold 5), end card 3 s + 1 s hold. The cards are 57% of it.
+
+**What fails in the first 3 seconds.**
+- Frame 0 is a hold, and it holds for 2 s. Frames at 0, 0.33, 0.67, 1.0 and 1.5 s are the same
+  picture. On a feed, a still is a scroll.
+- The picture is a data dump: Europe at the card zoom with about a hundred 9px place labels
+  (ROUEN, SAARBRUCKEN, HERTFORDSHIRE...) over a dot field. At phone size the labels are grey
+  noise and the dots a texture. The only large text is "242,540 articles in 24 hours." at the
+  bottom-left: a count with no claim. 242,540 what, so what. Nothing in the frame says what the
+  viewer is looking at or why Paris is ringed; the hexagon and the PARIS tag are one more label
+  among a hundred.
+- The top third of the frame is an empty black band holding the wordmark and the date. The eye
+  lands on nothing; the brand is the first thing read and it means nothing to a stranger.
+- The first motion, at 2.0 s, is a zoom OUT: the clip retreats from the only thing with detail
+  into a grey world outline. By 2.5 s the frame is a map of nothing in particular. A hook moves
+  toward its subject.
+- No face, no image, no headline, no question, no sound. There is nothing to want.
+
+**What fails after that.**
+- The time-lapse (3.5 to 10.3 s, a fifth of the clip) is a chart that does not change. Frames at
+  4.5, 6, 7.5 and 9 s are indistinguishable at thumbnail size: Europe and the eastern US are
+  bright in all of them. The "day" has no visible day: no terminator, no wave of light following
+  the sun. What does move is a clock (00:31 to 23:33), a progress square and an article total
+  that goes DOWN (270,458 to 242,744), which reads as wrong. The foot's 3,699 PLACES · 10,870
+  OUTLETS · 196 COUNTRIES are statistics nobody asked for.
+- The cards are the one unit that reads at full size (header, Paris, 520 ARTICLES · 410 OUTLETS
+  · 38 LANGUAGES, the headline, the outlet), but three of them in a row are the same frame with
+  different words, 19.5 s of reading with nothing to look at: the map window above each card
+  shows the same grey dots at the same zoom. The ledger carries the actual claim (410 outlets
+  wrote about one city) and the card never says it in words; the viewer must infer the point.
+- The headline is the wrong voice for the claim. "Most covered story" is represented by
+  theyeshivaworld.com's "FRANCE BRACES: Macron Restricts Protests As Shopkeepers Arm
+  Themselves...": an all-caps tabloid lead from a small outlet. The second card is a Pentagon
+  AI story from kansaspublicradio.org, the third Rosalía at the Billboard Latinos from
+  telemundopr.com (23 articles, 23 outlets). To a stranger these are three random headlines, not
+  "what the world's press looked at". The site's rule picks the first headline found, not the
+  one that best represents the story.
+- The end card is 4 s of a logo over a 46-character mono address nobody will type, with the
+  four totals shown for the third time and no verb. The caption file now carries every link, so
+  the clip no longer needs to.
+- The flip test fails everywhere: any four frames 3 s apart look alike (lapse), or identical
+  (cards at thumbnail, the end card for 4 s). The visual world (black, white, mono, pixel) is
+  consistent and that is the problem on video: without imagery or motion, every frame is the
+  same frame.
+
+**What the clip should be for.** Today it tries to be four things in 34 s with no sound: a brand
+ident, a data visualisation, a news digest and a call to action, and does each at a third.
+Pick one. The orchestrator's recommendation: a 12 to 15 s trailer for the broadcast page, one
+claim, one place, one move, in that order:
+1. Open on the claim in words, large, on the first frame: "410 outlets in 38 languages wrote
+   about one city today." (the loudest slot's own facts; the number is the hook, the sentence
+   is the question).
+2. The reveal is the pull-back inverted: the world with its dots for half a second, then one
+   flight INTO the place in about a second, the dots pulsing once on arrival, the place name
+   large. Motion toward the subject, within the first 2 s.
+3. One card, 3 s: the place, the one number that is the claim, the headline of a LARGE outlet
+   covering the story (pick by the outlet's own article count in the story, or a known-outlet
+   list), the outlet name. The other two signals go to the broadcast page, where the caption
+   already sends people.
+4. A 1 s sting: the lockup, then one verb (SEE TODAY'S BROADCAST) and nothing else. No address,
+   no totals.
+The alternative purpose, a 45 to 60 s explainer with narration and imagery, is a different
+product; it needs stage 3 (public-domain imagery, a voice) and should not be attempted silent.
+
+**Open questions for the board.**
+- Does the time-lapse survive at all? Only if it can show a day: the terminator sweeping across
+  the map with news lighting up behind the sun (the parking-lot idea) in 3 s, or not at all.
+- Imagery: the rights rules forbid article images, but a public-domain satellite tile of the
+  place under the card (NASA, Sentinel) is the one thing that would make a card look different
+  from the last one. Decide whether stage 3's imagery is now a precondition rather than a
+  later stage.
+- Headline choice rule for the cards (above), which also affects the site's Signals column.
+- Sound stays parked by the owner's decision; note that "silent-first" is about legibility,
+  not a ban, and a second channel (even a generated voice reading the one claim) is the
+  cheapest fix for every frame looking the same. Reopen only if the owner wants to.
+- Acceptance tests to adopt before building: the first frame must carry the claim in words
+  readable at 270 px; any four frames 3 s apart must be distinguishable at 270 px; the clip
+  must make sense muted and end inside 15 s.
+
+**What survives.**
+- The card as a reading unit (header, place, ledger row, headline, outlet) and the N/M header.
+- The flight between a place and the world, used in the other direction.
+- The brand chrome and the lockup, as a half-second sting.
+- The caption file and its place links; the renderer's contract (`__clipPlan`, `__clipStep`,
+  frames to mp4, the daily workflow, the release); the deterministic pipeline. Any new clip is
+  a new timeline on the same machinery.
+- The methodology behind the slots. The slot sentences in the site's voice; the clip just
+  shows fewer of them.
+
 ## Where to improve: the "genuinely useful" assessment (2026-10-23, not decided)
 
 Owner's question: how does this become something people genuinely use? The orchestrator
