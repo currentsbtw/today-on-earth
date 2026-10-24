@@ -1691,7 +1691,7 @@ aloud by the newscast it is a false claim with the site's name on it.
    path to recall is local-language place names: GDELT's FeatureID for non-US places is the
    GeoNames id, so a one-time build table of GeoNames alternate names for the cells we see is
    item (g) of trust pass two. Built the same day as (1); status below.
-   **Status: built 2026-10-24, not committed.** `stories.json` entries now need confirmation
+   **Status: built 2026-10-24 (8c3041d).** `stories.json` entries now need confirmation
    (contract "Top stories", Confirmation): the headline or a saved title names the city, a
    region, the country (also in the title's language) or a capital metonym from the published
    `CAPITAL_METONYMS`; unconfirmed stories are skipped before the cell, event and country
@@ -1732,7 +1732,7 @@ aloud by the newscast it is a false claim with the site's name on it.
 3. Grouping to 70%: the second pass on story grouping (entities plus title tokens today).
 4. The headline rule (bar 3), which also fixes what the voice reads.
 5. Then the newscast: the voice prototype, the audio-driven timeline, the clip.
-Items 1a and 2 start today; status lines follow each.
+Items 1a and 2 start today; status lines follow each. Live 02:45 UTC (run 40055474611): 12 stories, every entry with its `confirmed` level (5 city, 5 country, 1 metonym, 1 region or city), no Athens, Greece and no Petersburg, Russia; new at the tail Edinburgh (Storm Boelo), Kherson, Gaza, Amman. The Accuracy section is live on the about page. Visible label bug for item 1e: "Amman, (Jo11), Jordan".
 
 ## Open questions
 
