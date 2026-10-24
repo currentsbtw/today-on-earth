@@ -1617,10 +1617,12 @@ model is a measuring instrument whose calibration is published.
    New Jersey, Taipei, New Delhi) at 70% or more, with wrong merges at 5% or less of a judged
    40-item sample of grouped items (restated 2026-10-24: 40.5% grouped and 22% wrong merges
    measured live; the 50.7% of 2026-10-23 was a 2 h sample).
-3. **Headlines.** A shown headline comes from an outlet a reader would recognise where the
-   story has one: the headline rule prefers, among the medoid's near-equals, the outlet with
-   the most articles in the window (rule to be written; measured as the share of top-12
-   stories whose source is in the top 500 outlets of the window).
+3. **Headlines.** The share of story headlines credited to an outlet a reader would recognise,
+   judged by a person in the weekly audit's sample (restated 2026-10-24: 50% on the six cells, 52%
+   in the first audit; no ordering from the feed's own data, by volume, breadth or copy order,
+   prefers recognisable outlets, see Status 4 and 4b). Target 80%; the lever is undecided: either
+   a public list of newsrooms (an editorial act the rules so far avoid) or accepting that the
+   site credits whoever GDELT saw first and saying so.
 4. **Calibration published.** METHODOLOGY gets an "Accuracy" section: the audit method, the
    seed, and a dated table of results, updated weekly; corrections and rule changes dated.
 5. **Track record.** The broadcast page, the feeds and the clip every day for 60 days without
@@ -2069,6 +2071,56 @@ aloud by the newscast it is a false claim with the site's name on it.
    recognisable from small outlets; (4) cheap title fixes found on the way ship now: the suffix
    rule learns the separators "::", "_", "｜", "•" and " -Xinhua"-style tails, and the all-caps
    test needs a minimum of cased letters (it fires on CJK titles with one Latin acronym).
+
+   **Status 4b (2026-10-24): breadth and copy order measured; NOT built; bar 3 needs a judged
+   measure.** Breadth, on the 6 h state (2026-10-23 19:15 to 2026-10-24 01:15 UTC): for each
+   outlet, by `outletOf` and by domain, the distinct cells it placed records in and the distinct
+   countries (cell `home`) among them, tested against the audit's 128 `source_known` labels (66
+   known, 62 small or aggregator). Target: known above 75%, small below 35%. No cut reaches it:
+
+   | measure (6 h) | known above | small above |
+   |---|---|---|
+   | outlet, 2+ countries | 85% | 53% |
+   | outlet, 5+ cells (also its top 1,000 by cells) | 80% | 53% |
+   | domain, 5+ cells | 76% | 48% |
+   | domain, top 500 by records | 53% | 26% |
+   | domain, 4+ countries | 56% | 32% |
+   | outlet, top 500 by countries | 62% | 40% |
+   | (bar 3 as written) outlet, top 500 by records | 59% | 45% |
+
+   Syndicators and portals are the broadest outlets there are: by domain econotimes.com is #2 by
+   countries (31), bignewsnetwork.com #4, zazoom.it #5, aol.com #15, indiatimes.com #1 by cells;
+   by `outletOf`, Big News Network is #1 on both. A Newsquest weekly is pushed down
+   (bracknellnews.co.uk #827 by cells), but the Guardian is not lifted: 12 cells, as many as
+   kenyastar.com, and 5 countries, below andoveradvertiser.co.uk's 6. Reuters, AP, the New York
+   Times, CNN, France 24 and Le Monde have no records in GDELT at all. The 6 h window is thin for
+   mid-size outlets (the Guardian has 19 records); a 24 h window might separate a little more,
+   but the aggregators would still lead.
+
+   **Copy order.** Among the clustered members carrying the medoid's reprint key (the same
+   title), credit the earliest copy (GDELT time, then URL) or the latest. On the six cells' 289
+   stories, 98 have two or more such copies. **Earliest changes 0 of 289**: today's medoid
+   already is the earliest copy, because identical titles have identical token sets, hence
+   equal overlap scores, and the medoid's tie-break is the oldest article (and a unit stands for
+   its outlet's earliest copy). The 6 h top 12 is identical too. GDELT's time is when it saw the
+   article, not when it was published, so the earliest copy is often a small station that
+   carried the wire fastest (ktbs.com, wqcs.org, cedarrepublican.com), not the newsroom.
+   **Latest changes 98 of 289** (text identical except for punctuation in 3). Judged on a
+   60-story sample of all six-cell headlines (seed 20261024, the audit's standard: an outlet a
+   reader would recognise), **30 of 60 (50%) are credited to a recognisable outlet today and with
+   earliest, 28 of 60 (47%) with latest**. Of the 25 sampled headlines latest changes, 4 move to a
+   known outlet (aol.com to nikkei.com, aol.co.uk to mirror.co.uk, bignewsnetwork to Xinhua,
+   nzcity.co.nz to abc.net.au), 6 move away from one (the Guardian to aol.co.uk, nos.nl to
+   drimble.nl, Xinhua to bignewsnetwork, townhall to wcbm, Winnipeg Free Press to netscape.com,
+   Okinawa Times to Too Nippo), and 15 stay in the same class. Copy order is noise
+   for recognition, as are volume and breadth. **Conclusion for bar 3:** no data-only ordering
+   among the window's own signals (records, cells, countries, copy order) prefers recognisable
+   outlets, because the most prolific, widest and quickest outlets in GDELT are syndicators. Bar 3
+   needs a measure that people judge, such as the share of story headlines credited to a
+   recognisable outlet, judged in the weekly audit's sample (today 50% on the six cells, 52% in
+   the first audit). Any ordering rule would need an outside list of outlets, which the program
+   has ruled out as editorial. The near-equal rule stays unbuilt. Scratch files stayed outside
+   the repo.
 5. Then the newscast: the voice prototype, the audio-driven timeline, the clip.
 Items 1a and 2 start today; status lines follow each. Live 02:45 UTC (run 40055474611): 12 stories, every entry with its `confirmed` level (5 city, 5 country, 1 metonym, 1 region or city), no Athens, Greece and no Petersburg, Russia; new at the tail Edinburgh (Storm Boelo), Kherson, Gaza, Amman. The Accuracy section is live on the about page. Visible label bug for item 1e: "Amman, (Jo11), Jordan". Live 05:24 UTC (run 40065153518, ba09fdd): regionOnly=6,920 of 7,205 unplaced in the run; totals.unplaced 64,483 to 65,269; cells 3,597 to 3,555. The state-named cells did NOT vanish live at once: "New York, United States" (832a16fffffffff) kept 1,463 records. Measured and explained (not a rule gap): no city-typed New York entry exists at the state centroid (0 of 930 raw entries in the 16 files; the exact-coordinate class is not clean anyway, it catches Andalusia and DC landmarks); the records left are the half of the window ingested before the v6 state shipped (2026-10-23 18:07 UTC), which carry no candidates and keep their stored placement until they age out by about 18:07 UTC on 2026-10-24. Re-read the cell after 18:30 UTC: expected renamed for a Hudson Valley place with n in the low hundreds or fewer. The before/after unplaced totals are also confounded by the chains change shipped in the same commit. Live 05:24 UTC: totals.outlets 10,480 to 9,711, reprints 25,425 to 12,948; Washington o 2,426 to 2,029, Paris 1,944 to 1,550; postmedia.com and townsquaremedia.com appear as single outlets in cells' topOutlets.
 
