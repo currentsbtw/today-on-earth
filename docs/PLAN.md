@@ -746,6 +746,12 @@ baseline. The shared window puts the map top ~100px lower in the hook, pull-back
 flights than before, and the card's window top jumps up on arrival (a one-step layout
 change at a cut). Items 4-6 open.
 
+**Owner's verdict 2026-10-23 night: items 4-6 are ON HOLD.** Watching the clips as a viewer,
+the owner finds them terrible; the next clip session starts at the drawing board (what a
+stranger should feel and do in the first 3 s, what the clip is for, whether the time-lapse,
+the cards and the end card survive at all) before any more items are built on the current
+structure. The captions and the renderer contract stay as they are.
+
 Method: judge each item on a 540x960 still with the phone muted (the "mute test"), and on
 a 3-second flip through the frames (the "flip test": every frame must say what it is).
 Out of scope for this stage: sound, narration, imagery. Rights rules unchanged.
