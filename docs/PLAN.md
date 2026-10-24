@@ -951,6 +951,25 @@ volume), else the voice says the outlet's name and "in <language>" and the headl
 on screen unread. Numbers are read as words by the TTS; the script writes "410 outlets"
 and checks the voice says it right.
 
+**The voice, prototyped (2026-10-24; owner to pick by ear).** Both engines ran offline here on
+the four script lines (opening, the Paris card, the Milan card in Spanish and Italian, the
+close), loudness-matched; the owner has the files. Kokoro (kokoro-js 1.2.1, the 325 MB fp32
+ONNX model, Apache 2.0 weights, 54 voices in the package): byte-identical on repeat without
+any setting, about 0.37x real time here (1 to 3 min per clip on a 4-vCPU runner), node_modules
+411 MB and the model cacheable; Spanish and Italian voices exist (ef_dora, if_sara) but the
+Node port phonemises English only, so other languages need the Python front end (misaki via
+uv, a 10 MB wheel) as a step in the workflow. Piper (2023.11.14, 26 MB Linux tarball, 63 MB
+per voice): faster (0.1x real time) and lighter, deterministic only with noise off, which
+flattens it; and its voice licences are mixed (lessac under the Blizzard licence, ryan
+CC BY-NC-SA, others "see URL"), with the MIT repo archived and its successor GPL-3. Both read
+numbers correctly through espeak-ng ("242,540" as two hundred forty-two thousand five hundred
+forty); Spanish "121 artículos" reads "ciento veintiuno". Found: the address must be written
+"currents B T W dot github dot I O slash today on earth" or every voice mangles it; proper
+nouns follow English rules ("MAK-ron"); the builder could not listen, so naturalness is the
+owner's call. **Recommendation: Kokoro** (quality grades, languages, determinism, Apache 2.0),
+Piper as the fallback if CI weight matters more. Determinism across runner CPUs is untested:
+cache the audio by a hash of the script text.
+
 **What changes in the machinery.** The audio drives the timeline, not the other way round:
 the renderer (or a new step before it) synthesises every line first, measures each line's
 duration, and asks clip.html for a plan whose segments match those durations (a `script`
