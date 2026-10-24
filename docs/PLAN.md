@@ -1600,6 +1600,56 @@ Follow-ups noticed during the build (not blockers):
   shows "Washington". Could special-case later.
 - Main JS bundle is ~1 MB (289 KB gzipped), nearly all MapLibre.
 
+## World-class: the program (decided 2026-10-24)
+
+Owner's standard, stated on 2026-10-24 after asking whether the site is close to being a
+reputable source: a world-class platform; let's get there. The orchestrator's reading of
+"reputable" for an instrument with no editorial voice: it states its own error bar, it is
+right often enough that a skeptic cannot fault it in five minutes, and it shows up correct
+every day for months. Ground News is not the model (ratings, summaries, paid tiers); the
+model is a measuring instrument whose calibration is published.
+
+**The bar (measurable; each line has a number the methodology page will carry).**
+1. **Placement.** Among the stories the site shows, the share placed somewhere the story is
+   not about (the "wrong" label of the audit below) under 2%, with the 95% interval's upper
+   bound under 4%. Baseline: the first audit (2026-10-24, below).
+2. **Grouping.** The grouped share over the six measured cells (Paris, London, Washington,
+   New Jersey, Taipei and one more from "Trust the dots") at 70% or more (50.7% on 2026-10-23).
+3. **Headlines.** A shown headline comes from an outlet a reader would recognise where the
+   story has one: the headline rule prefers, among the medoid's near-equals, the outlet with
+   the most articles in the window (rule to be written; measured as the share of top-12
+   stories whose source is in the top 500 outlets of the window).
+4. **Calibration published.** METHODOLOGY gets an "Accuracy" section: the audit method, the
+   seed, and a dated table of results, updated weekly; corrections and rule changes dated.
+5. **Track record.** The broadcast page, the feeds and the clip every day for 60 days without
+   a missed day; the snapshot's longest gap under 30 minutes (the keepalive's figure).
+6. **Identity (owner).** A domain of its own; the sitemap in Search Console; the presence
+   Worker deployed so the observers count is real.
+
+**The audit (the instrument's calibration).** A deterministic sample: the cells with 10+
+articles, 60 drawn with seed 20261024 weighted by `n` plus the 20 largest, the largest story
+of each and one more at random with `u` >= 3, about 120 stories; each judged "is this story
+plausibly about, or datelined from, this place" as right / wrong / unclear, with the wrong
+cases grouped by cause. Run weekly by the maintainers (not by a model in CI: nothing in the
+pipeline judges text), published as a dated row. The first run is in progress as this is
+written; its result goes under "Accuracy, first audit" below.
+
+**Order of work.** Accuracy before voice: a misplaced story on the map is a wrong dot; read
+aloud by the newscast it is a false claim with the site's name on it.
+1. Placement, trust pass two: (a) **country consensus**, the Athens/Ohio class: a city
+   candidate whose country disagrees with the article's other locations loses to a candidate
+   in the article's majority country; (b) region-only articles no longer at region centres
+   (shown as the region, not as a dot at its centroid, or left unplaced); (c) dateline x1
+   outlets (ria.ru, interfax.ru) keep their single-mention articles; (d) domestic chains
+   (Newsquest, Ippen, MediaNews, Sinclair) counted as one outlet for `o`. Each measured on
+   a sample before and after, as "Trust the dots" was.
+2. The Accuracy section in METHODOLOGY with the first audit's table, and the weekly routine
+   written down (a checklist in docs/).
+3. Grouping to 70%: the second pass on story grouping (entities plus title tokens today).
+4. The headline rule (bar 3), which also fixes what the voice reads.
+5. Then the newscast: the voice prototype, the audio-driven timeline, the clip.
+Items 1a and 2 start today; status lines follow each.
+
 ## Open questions
 
 - Name/domain availability for "Today On Earth" (check trademark and domains before
