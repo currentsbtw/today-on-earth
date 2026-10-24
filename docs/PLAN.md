@@ -1634,6 +1634,22 @@ cases grouped by cause. Run weekly by the maintainers (not by a model in CI: not
 pipeline judges text), published as a dated row. The first run is in progress as this is
 written; its result goes under "Accuracy, first audit" below.
 
+**Accuracy, first audit (2026-10-24, snapshot 02:01:54 UTC, seed 20261024; 68 cells, 128
+stories, judged by the orchestrator's auditor, four articles read in full).** Wrong 19 of 128:
+**14.8%, 95% Wilson 9.7 to 22.0%** (right 81, unclear 28; among the 20 largest cells 4 of 40
+wrong, 10.0%). Headlines from an outlet a reader would recognise: 52%. Headline text garbled or
+carrying a missed site suffix: 13 of 128. Causes of the 19: same-name place in another country 7
+(Athens/Ohio; Guarantã; São Pedro read as St Peter's; La Verrière in Auvergne; St George in
+Karak read as Grenada), an outlet's boilerplate location 4 (livehindustan's own name as a place
+twice; yam.md's 22 Moldovan articles in New Jersey; an Ippen cell), other 8 (two border cells
+named for a place across the line; a cell whose GDELT coordinate is 1,900 km from its name;
+a German storm warning in Mulhouse; a Taiwan typhoon in Dalian; three secondary mentions).
+Region-only articles and national stories at non-capitals: 0 in this sample. Of the 8 stories
+written by one outlet, 5 were wrong (all four boilerplate cases among them). Also seen: garbled
+region names in cell labels ("SãPaulo", "TucumáAs", "YucatáMx", "RegióEtropolitana"),
+"Leitrim, United Kingdom" with home IE, "Saskatchewan, Manitoba". The per-story CSV, the
+saved snapshot and the sampler are to be committed under docs/audits/ (item 2 below).
+
 **Order of work.** Accuracy before voice: a misplaced story on the map is a wrong dot; read
 aloud by the newscast it is a false claim with the site's name on it.
 1. Placement, trust pass two: (a) **country consensus**, the Athens/Ohio class: a city
@@ -1643,6 +1659,26 @@ aloud by the newscast it is a false claim with the site's name on it.
    outlets (ria.ru, interfax.ru) keep their single-mention articles; (d) domestic chains
    (Newsquest, Ippen, MediaNews, Sinclair) counted as one outlet for `o`. Each measured on
    a sample before and after, as "Trust the dots" was.
+   **Status 1a (2026-10-24): measured, NOT built.** On 16 GKG files (2026-10-23 03:00 to
+   04:45 UTC, 13,969 records, 9,433 placed at a city) a city candidate disagrees with the
+   article's mention-majority country in 5.1% of city placements at a 0.6 share, and 2.3%
+   also have a candidate in the majority country to move to. Judged by eye on 30 moves per
+   variant: the plain 0.6 rule 19 right / 3 wrong / 8 unclear; excluding zh/ja/ko text and
+   requiring 3 majority mentions 14 / 7 / 9 (the exclusion removes the Kyodo errors and most
+   of the right Taiwan and China moves alike); preferring the region when it out-mentions the
+   city 15 / 6 / 9 (the Ohio story goes to the Ohio region); region dominance alone 5 / 5 / 20
+   (unusable: "California" from Baja California pulls Mexican weather to the US); the
+   strictest variant 21 / 3 / 6 but 13 of its 30 rows are one dpa crab story (9 / 3 / 6 by
+   distinct story, a pool of 35 articles). The wrong moves land on junk one-mention places
+   (Pechersk read as Russia, "Georgian" as the US state, Hollywood). Conclusion: the
+   candidate list GDELT gives us is wrong too often for a vote over it to be a world-class
+   rule; the same-name class needs a signal from the text (next: does the story's headline or
+   any of its titles name the place, its region or its country, measured on the 128 audited
+   stories). Scripts and full outputs lived in the session scratchpad (consensus/).
+   From the audit, two more: (e) **cell labels** cleaned (the accented-name bug behind
+   "SãPaulo"; the home-country mismatch behind "Leitrim, United Kingdom"); (f) **single-outlet
+   stories** marked as one outlet's report and sorted after multi-outlet stories everywhere
+   they show (5 of the 8 in the sample were wrong), never hidden.
 2. The Accuracy section in METHODOLOGY with the first audit's table, and the weekly routine
    written down (a checklist in docs/).
 3. Grouping to 70%: the second pass on story grouping (entities plus title tokens today).
