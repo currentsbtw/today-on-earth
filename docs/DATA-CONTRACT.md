@@ -239,9 +239,9 @@ same thing, computed deterministically from what GDELT already tags per article
     "first": "2026-10-21T01:15:00Z", "last": "2026-10-21T04:30:00Z",
     "headline": "…",            // the shown title (as `title` below) of the story's medoid article (max token overlap
                                 // with the rest); may be empty
-    "headlineSource": "bbc.co.uk",
-    "headlineLang": "en",
-    "headlineUrl": "https://…", // URL of the article the headline comes from (the medoid); "" when none (added 2026-10-21)
+    "headlineSource": "bbc.co.uk", // the credited copy of the headline (see Rules: credit; changed 2026-10-24)
+    "headlineLang": "en",          // the credited copy's language
+    "headlineUrl": "https://…", // URL of the credited copy (the medoid, unless credit picks another identical copy); "" when none (added 2026-10-21)
     "entities": ["donald trump", "nato", "brussels"],  // up to 5 most shared persons/orgs, lowercase as GDELT spells them;
                                                        // themes only top up when fewer than 2, rendered as words ("climatechange");
                                                        // a compact story keeps the first 3
@@ -280,6 +280,17 @@ Rules:
 - `headline` is an outlet's title, chosen by overlap, never written by us; the only change
   is the shown-title suffix rule of `title` (changed 2026-10-23). If the medoid has no
   title, use the next best article that has one.
+- **Credit** (added 2026-10-24): `headlineSource`, `headlineUrl` and `headlineLang` name the
+  credited copy. Among the story's grouped units (not the second pass's) whose reprint key is
+  the medoid's (copies of the same title), it is the earliest (GDELT time, then URL) whose
+  `source` is not a republisher; when every copy is a republisher's, the earliest. A headline
+  with one copy, or an untitled medoid, is credited to the medoid. `headline` (the text) is
+  always the medoid's shown title. Republishers are listed in `ingest/data/republishers.txt`
+  (portals, news aggregators and syndication networks that re-host other outlets' articles,
+  each with what the site is; an entry naming a network of `outlet-networks.txt` covers its
+  domains); a newsroom that also runs wire copy is not listed. Measured on a 6 h window over the
+  six reference cells: 11 of 289 headlines change credit, all from a republisher to another
+  copy of the same title.
 - The flat `articles` list stays as it is (newest 50 across the whole cell).
 - The grouping must be stable run to run for the same inputs (deterministic order of
   processing: by time, then URL).

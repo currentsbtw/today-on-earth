@@ -1,0 +1,26 @@
+# Republishers: sites that re-host or list other outlets' articles under the original title
+# instead of writing their own (portals, news aggregators, syndication networks). Used only to
+# choose which of several identical copies of a story's headline is credited (headlineSource,
+# headlineUrl, headlineLang; docs/DATA-CONTRACT.md "Stories"); it changes no text and no count.
+# See ingest/data/README.md for the criterion. A newsroom that also runs wire copy (a local
+# paper or station carrying AP, Reuters or its chain's stories) is NOT a republisher.
+# Format: one entry per line, tab-separated: domain<TAB>what the site is
+# A plain domain matches that domain only; a leading dot (.yahoo.com) matches the domain and every
+# subdomain. An entry that is a network name of outlet-networks.txt (bignewsnetwork.com) also
+# covers every domain of that network. Lines starting with # are comments; a malformed line fails
+# the ingest run. Each entry was checked by hand on 2026-10-24.
+
+.bignewsnetwork.com	Big News Network: its portals (kenyastar.com, indiagazette.com, ...) re-host agency and partner copy (ANI, Xinhua, IANS); the network entry covers all of them
+.vietnamtribune.com	Big News Network portal not yet in outlet-networks.txt: same /news/<article id>/ URLs and ids as the network's other portals (checked 2026-10-24)
+aol.com	AOL: portal re-hosting partner publishers' articles
+aol.co.uk	AOL UK: portal re-hosting partner publishers' articles
+netscape.com	Netscape: AOL-run portal carrying the same partner feed as aol.com
+.yahoo.com	Yahoo News and Yahoo Finance: portal re-hosting partner publishers' articles
+.msn.com	MSN: Microsoft portal re-hosting partner publishers' articles
+drimble.nl	Drimble: Dutch news aggregator listing other sites' articles
+zazoom.it	Zazoom: Italian news aggregator listing other sites' articles
+haberler.com	Haberler.com: Turkish news portal re-publishing agency and other sites' copy
+naslovi.net	Naslovi.net: Serbian news aggregator listing other sites' articles
+onenewspage.com	One News Page: news aggregator listing other sites' articles
+miragenews.com	Mirage News: re-publishes organisations' media releases
+finanznachrichten.de	finanznachrichten.de: German financial news aggregator (agency copy and press releases)

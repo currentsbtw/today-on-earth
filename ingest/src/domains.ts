@@ -318,3 +318,52 @@ export function outletOf(source: string): string {
   defaultOutletOf ??= makeOutletOf(loadNetworks());
   return defaultOutletOf(source);
 }
+
+/**
+ * Republishers (`data/republishers.txt`, see ingest/data/README.md): portals, news aggregators
+ * and syndication networks that re-host other outlets' articles under the original title.
+ * Used only to choose which identical copy of a story's headline is credited (stories.ts).
+ * Same entry forms as the networks file (plain or dotted domain); an entry that names a
+ * network also covers every domain of that network (`outletOf`).
+ */
+export const REPUBLISHERS_FILE = dataFile("republishers.txt");
+
+/** Parse the republishers file: `domain<TAB>comment`, optionally dotted; throws on a malformed line. */
+export function parseRepublishers(text: string): Networks {
+  const exact = new Map<string, string>();
+  const suffix = new Map<string, string>();
+  text.split("\n").forEach((raw, i) => {
+    const line = raw.replace(/\r$/, "");
+    if (!line.trim() || line.trimStart().startsWith("#")) return;
+    const [domain = "", comment = ""] = line.split("\t");
+    let d = domain.trim().toLowerCase();
+    const dotted = d.startsWith(".");
+    if (dotted) d = d.slice(1);
+    if (!/^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(d) || comment.trim() === "") {
+      throw new Error(`republishers line ${i + 1}: expected "domain or .domain<TAB>what the site is", got ${JSON.stringify(line)}`);
+    }
+    (dotted ? suffix : exact).set(d, d);
+  });
+  return { exact, suffix };
+}
+
+/** isRepublisher over given tables (memoised per source). */
+export function makeIsRepublisher(republishers: Networks, outletOfSource: (source: string) => string = outletOf): (source: string) => boolean {
+  const memo = new Map<string, boolean>();
+  return (source: string) => {
+    let hit = memo.get(source);
+    if (hit === undefined) {
+      hit = source !== "" && (networkOf(republishers, source) !== "" || networkOf(republishers, outletOfSource(source)) !== "");
+      memo.set(source, hit);
+    }
+    return hit;
+  };
+}
+
+let defaultIsRepublisher: ((source: string) => boolean) | null = null;
+
+/** Whether a source domain is a listed republisher (itself, a parent domain, or its network). */
+export function isRepublisher(source: string): boolean {
+  defaultIsRepublisher ??= makeIsRepublisher(parseRepublishers(readFileSync(REPUBLISHERS_FILE, "utf8")));
+  return defaultIsRepublisher(source);
+}

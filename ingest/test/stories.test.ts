@@ -2,7 +2,9 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { isDeniedTheme, parseNames, parseOrgs, parseThemes, titleTokens } from "../src/entities.ts";
 import { decodeState, encodeState } from "../src/state.ts";
-import { FULL_STORIES, MAX_STORIES, buildStories, themeWords } from "../src/stories.ts";
+import { isRepublisher, makeIsRepublisher, parseRepublishers } from "../src/domains.ts";
+import { createKeyer } from "../src/reprints.ts";
+import { FULL_STORIES, MAX_STORIES, buildStories, creditedCopy, themeWords } from "../src/stories.ts";
 import type { ArticleRecord } from "../src/types.ts";
 import { gzipSync } from "node:zlib";
 
@@ -267,6 +269,52 @@ test("stories: one outlet's copies of a headline are one article; the headline i
   assert.equal(unclustered, 1);
   assert.ok(!stories[0].headline.includes("Sunny"));
   assert.ok(stories[0].articles!.every((a) => !a.title.includes("Sunny")));
+});
+
+// Headline credit (added 2026-10-24): identical copies credit the earliest newsroom copy.
+const ceasefire = "Melania Trump helps forge a ceasefire deal in a Russian-occupied Ukrainian city";
+const copy = (source: string, h: number, title = ceasefire) =>
+  art({ url: `https://${source}/${h}`, time: t(h), source, title, persons: ["melania trump"], orgs: ["white house"] });
+
+test("headline credit: a republisher's earlier copy loses to a newsroom's identical copy; the text is the medoid's", () => {
+  const records = [copy("kenyastar.com", 1), copy("aol.com", 2), copy("wral.com", 3), copy("newsday.com", 4)];
+  const [s] = buildStories(records).stories;
+  assert.equal(s.headline, ceasefire);
+  assert.equal(s.headlineSource, "wral.com"); // the earliest copy that is not a republisher
+  assert.equal(s.headlineUrl, "https://wral.com/3");
+});
+
+test("headline credit: when every copy is a republisher's, the earliest is credited", () => {
+  const records = [copy("aol.com", 2), copy("kenyastar.com", 1), copy("netscape.com", 3)];
+  const [s] = buildStories(records).stories;
+  assert.equal(s.headlineSource, "kenyastar.com");
+  assert.equal(s.headlineUrl, "https://kenyastar.com/1");
+});
+
+test("headline credit: a title with one copy keeps it, even from a republisher", () => {
+  const records = [
+    copy("aol.com", 1),
+    copy("wral.com", 2, "First lady says she brokered a temporary ceasefire in a Ukrainian town"),
+    copy("newsday.com", 3, "White House says Melania Trump secured a ceasefire for a Ukrainian city"),
+  ];
+  const [s] = buildStories(records).stories;
+  const keyer = createKeyer(records);
+  const medoid = records.find((r) => r.url === s.headlineUrl)!;
+  assert.equal(s.headline, keyer.shownTitle(medoid));
+  assert.equal(creditedCopy(records[0], records.map((r) => ({ r })), keyer), records[0]); // its only copy
+});
+
+test("republishers: listed domains, dotted subdomains and every domain of a listed network", () => {
+  assert.equal(isRepublisher("aol.com"), true);
+  assert.equal(isRepublisher("uk.news.yahoo.com"), true); // dotted entry
+  assert.equal(isRepublisher("kenyastar.com"), true); // a Big News Network portal, via outlet-networks.txt
+  assert.equal(isRepublisher("wral.com"), false);
+  assert.equal(isRepublisher(""), false);
+  const list = parseRepublishers("# header\nportal.com\ta portal\n.agg.net\tan aggregator\nnet.com\ta network\n");
+  const outlet = (d: string) => (d.endsWith(".site.org") || d === "site.org" ? "net.com" : d);
+  const is = makeIsRepublisher(list, outlet);
+  assert.deepEqual(["portal.com", "x.portal.com", "agg.net", "a.agg.net", "site.org", "b.site.org", "own.com"].map(is), [true, false, true, true, true, true, false]);
+  assert.throws(() => parseRepublishers("portal.com"), /line 1/); // no comment
 });
 
 test("deny-list: generic theme families and form themes are dropped, specific ones kept", () => {

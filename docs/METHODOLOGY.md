@@ -126,7 +126,10 @@ its numbers, largest first. Then each article outside every story joins the stor
 words it shares three or more of (ties go to the larger story); it counts in that
 story but never supplies its headline. The headline shown for a story is the title of
 one of its grouped articles, chosen because it overlaps most with the others, shown as
-described under Distinct and reprints. We never write a headline. Articles that fit no
+described under Distinct and reprints. We never write a headline. The headline is credited to
+the earliest copy GDELT saw from an outlet that writes its own stories; sites that re-host other
+outlets' articles (a public list, ingest/data/republishers.txt) are credited only when no one else
+carried the title. Articles that fit no
 story are listed below, unfiltered.
 
 A story written by one outlet alone comes after the stories from two or more outlets and
@@ -239,9 +242,10 @@ the next audit measures it.
 Rule changes since the first audit, 24 October 2026: a top story must name its place in
 its own text; a story from one outlet is shown last and marked; garbled region parts and bare
 codes are dropped from place names; an article that names no city is not drawn; a listed chain
-of local sites counts as one outlet; local-language place names from GeoNames confirm places. 25 October 2026 (UTC; the
-same session): every group of three or more articles is a story, the first 30 in full and the
-rest as a headline, and two outlets on the same names count as a story.
+of local sites counts as one outlet; local-language place names from GeoNames confirm places. 24 October 2026, 06:09 UTC: every group of three or more articles is a story, the first 30 in full and the
+rest as a headline, and two outlets on the same names count as a story. 24 October 2026, 17:00
+UTC: a headline is credited to the earliest copy from an outlet that writes its own stories, not to
+a site that re-hosts it.
 
 The record is the table of results in docs/audits/README.md, one dated row per audit,
 with each audit's per-story labels beside it and its snapshot in the archive.

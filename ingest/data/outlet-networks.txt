@@ -342,6 +342,7 @@
 .zambianews.net	bignewsnetwork.com	Big News Network
 .zimbabwenews.net	bignewsnetwork.com	Big News Network
 .zimbabwestar.com	bignewsnetwork.com	Big News Network
+.vietnamtribune.com	bignewsnetwork.com	Big News Network
 
 # --- iHeartMedia ---
 # Radio station sites under iheart.com hosts (wkip.iheart.com, ...) running the same national copy

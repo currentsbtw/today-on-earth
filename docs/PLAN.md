@@ -1620,9 +1620,9 @@ model is a measuring instrument whose calibration is published.
 3. **Headlines.** The share of story headlines credited to an outlet a reader would recognise,
    judged by a person in the weekly audit's sample (restated 2026-10-24: 50% on the six cells, 52%
    in the first audit; no ordering from the feed's own data, by volume, breadth or copy order,
-   prefers recognisable outlets, see Status 4 and 4b). Target 80%; the lever is undecided: either
-   a public list of newsrooms (an editorial act the rules so far avoid) or accepting that the
-   site credits whoever GDELT saw first and saying so.
+   prefers recognisable outlets, see Status 4 and 4b). Target 80%. The owner chose the lever on
+   2026-10-24: no list of newsrooms; a public list of republishers decides only which identical
+   copy is credited (Status 4c), which lifts the six cells' sample from 50% to 55%.
 4. **Calibration published.** METHODOLOGY gets an "Accuracy" section: the audit method, the
    seed, and a dated table of results, updated weekly; corrections and rule changes dated.
 5. **Track record.** The broadcast page, the feeds and the clip every day for 60 days without
@@ -2121,6 +2121,35 @@ aloud by the newscast it is a false claim with the site's name on it.
    the first audit). Any ordering rule would need an outside list of outlets, which the program
    has ruled out as editorial. The near-equal rule stays unbuilt. Scratch files stayed outside
    the repo.
+
+   **Status 4c (2026-10-24): headline credit built, not committed; the owner's decision.** The
+   owner ruled out a list of newsrooms and allowed a list of **republishers**: sites that re-host
+   other outlets' articles under the original title, used only to choose which identical copy of
+   a headline is credited. `ingest/data/republishers.txt` (14 entries, each saying what the site
+   is; criterion in ingest/data/README.md): the Big News Network (its entry covers every portal
+   of the network in outlet-networks.txt) and vietnamtribune.com, a portal of it that file lacks;
+   aol.com, aol.co.uk, netscape.com, .yahoo.com, .msn.com; the aggregators drimble.nl, zazoom.it,
+   haberler.com, naslovi.net, onenewspage.com, finanznachrichten.de; miragenews.com (re-publishes
+   media releases). Candidates by data (6 h state: domains with 20+ titled records and 90%+ of
+   their titles also carried by another domain) were 20 domains, and only the Big News Network
+   portals among them are republishers; the rest are chain newsrooms (MediaNews Group, Ippen, Nine,
+   Torstar sites) and wire-heavy local papers (rockymounttelegram.com), not listed. econotimes.com
+   and indiatimes.com were checked and not listed (they write their own). **Rule**
+   (`stories.ts` `creditedCopy`): among the clustered members carrying the medoid's reprint key,
+   `headlineSource`, `headlineUrl` and `headlineLang` come from the earliest copy whose source is
+   not a republisher; a republisher is credited only when every copy is one; a single copy and
+   the headline text never change. **Measured** on the six cells (289 stories): text changes 0,
+   credit changes 11, headlines credited to a republisher fall from 30 to 19 (the rest have no
+   other copy). The 11: naslovi.net to danas.rs, zazoom.it to quotidiano.net, parisguardian.com
+   (BNN) to jcnnewswire.com (the release's own wire), aol.co.uk to theguardian.com, aol.co.uk to
+   mirror.co.uk, bignewsnetwork.com to english.news.cn, aol.com to hawaiitribune-herald.com,
+   aol.com to nikkei.com, bignewsnetwork.com to webindia123.com, bignewsnetwork.com to
+   aninews.in twice; by the audit's standard 8 move from small to recognisable, 3 stay small, none
+   move away from recognisable. The 60-story sample (seed 20261024): **30 of 60 (50%) credited to
+   a recognisable outlet before, 33 of 60 (55%) after**. The 6 h top 12 is unchanged (its
+   republisher headlines, e.g. bignewsnetwork's "1st LD Writethru", have no identical
+   newsroom copy). Bar 3 above is restated to the judged measure; its number is 55% on the six
+   cells today.
 5. Then the newscast: the voice prototype, the audio-driven timeline, the clip.
 Items 1a and 2 start today; status lines follow each. Live 02:45 UTC (run 40055474611): 12 stories, every entry with its `confirmed` level (5 city, 5 country, 1 metonym, 1 region or city), no Athens, Greece and no Petersburg, Russia; new at the tail Edinburgh (Storm Boelo), Kherson, Gaza, Amman. The Accuracy section is live on the about page. Visible label bug for item 1e: "Amman, (Jo11), Jordan". Live 05:24 UTC (run 40065153518, ba09fdd): regionOnly=6,920 of 7,205 unplaced in the run; totals.unplaced 64,483 to 65,269; cells 3,597 to 3,555. The state-named cells did NOT vanish live at once: "New York, United States" (832a16fffffffff) kept 1,463 records. Measured and explained (not a rule gap): no city-typed New York entry exists at the state centroid (0 of 930 raw entries in the 16 files; the exact-coordinate class is not clean anyway, it catches Andalusia and DC landmarks); the records left are the half of the window ingested before the v6 state shipped (2026-10-23 18:07 UTC), which carry no candidates and keep their stored placement until they age out by about 18:07 UTC on 2026-10-24. Re-read the cell after 18:30 UTC: expected renamed for a Hudson Valley place with n in the low hundreds or fewer. The before/after unplaced totals are also confounded by the chains change shipped in the same commit. Live 05:24 UTC: totals.outlets 10,480 to 9,711, reprints 25,425 to 12,948; Washington o 2,426 to 2,029, Paris 1,944 to 1,550; postmedia.com and townsquaremedia.com appear as single outlets in cells' topOutlets.
 

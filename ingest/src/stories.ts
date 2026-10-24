@@ -1,4 +1,4 @@
-import { outletOf } from "./domains.ts";
+import { isRepublisher as defaultIsRepublisher, outletOf } from "./domains.ts";
 import { titleTokens } from "./entities.ts";
 import { createKeyer, keyCounts, unitsOf, type Keyer } from "./reprints.ts";
 import { cellStats, compareNewestFirst, homeCountry, knownCountries, representative, toCellArticle } from "./stats.ts";
@@ -29,6 +29,8 @@ import type { ArticleRecord, Story } from "./types.ts";
  *   whose top-20 title tokens (from the story's clustered members) share >= 3 tokens with its
  *   own; best = most shared, ties to the larger story, then the earlier story. Attached items
  *   count in the story's counters, dates and entities but never become its headline (medoid);
+ * - the headline is the medoid's shown title, credited to the earliest identical copy from an
+ *   outlet that is not a republisher (creditedCopy);
  * - stories are re-sorted by final n (ties keeping the order above); the first 30
  *   (FULL_STORIES) are full, every later one is compact: the same object with at most 3
  *   entities, no `articles`, and `compact: true`.
@@ -119,6 +121,28 @@ function removeBackground(items: Item[]): void {
   for (const it of items) for (const e of it.allEnts) df.set(e, (df.get(e) ?? 0) + 1);
   const limit = BACKGROUND_SHARE * items.length;
   for (const it of items) it.ents = it.allEnts.filter((e) => df.get(e)! <= limit);
+}
+
+/**
+ * Headline credit (added 2026-10-24): the story's headline TEXT is always the medoid's; the
+ * article it is credited to (`headlineSource`, `headlineUrl`, `headlineLang`) is, among the
+ * clustered members carrying the medoid's reprint key (the same title), the earliest copy
+ * (GDELT time, then URL) from an outlet that is not a republisher (data/republishers.txt: portals,
+ * aggregators and syndication networks that re-host other outlets' articles). A republisher is
+ * credited only when every copy is one; a title with one copy keeps it. The members' records are
+ * their units' earliest copies (representative).
+ */
+export function creditedCopy(
+  medoid: ArticleRecord,
+  core: readonly { r: ArticleRecord }[],
+  keyer: Keyer,
+  isRepublisher: (source: string) => boolean = defaultIsRepublisher,
+): ArticleRecord {
+  const key = keyer.keyOf(medoid);
+  if (!key) return medoid;
+  const copies = core.map((g) => g.r).filter((r) => keyer.keyOf(r) === key).sort(oldestFirst);
+  if (copies.length < 2) return medoid;
+  return copies.find((r) => !isRepublisher(r.source)) ?? copies[0];
 }
 
 function oldestFirst(a: ArticleRecord, b: ArticleRecord): number {
@@ -262,6 +286,7 @@ function toStory(core: Item[], attached: Item[], home: string, copies: Map<strin
         oldestFirst(a.g.r, b.g.r),
     );
   const medoid = ranked[0].g.r;
+  const credited = creditedCopy(medoid, core, keyer);
 
   const perOutlet = new Map<string, number>();
   const keys = new Set<string>();
@@ -290,9 +315,9 @@ function toStory(core: Item[], attached: Item[], home: string, copies: Map<strin
     first,
     last,
     headline: keyer.shownTitle(medoid),
-    headlineSource: medoid.source,
-    headlineLang: medoid.lang,
-    headlineUrl: medoid.url,
+    headlineSource: credited.source,
+    headlineLang: credited.lang,
+    headlineUrl: credited.url,
     entities: displayEntities(nameDf, themeDf),
   };
   if (compact) {

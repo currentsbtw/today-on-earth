@@ -75,6 +75,38 @@ windows and checked by name, plus a few well-known titles added by name and mark
 chain's site the windows did not show is not listed; add it by hand when it shows up. A
 domain may be listed once only (a test checks).
 
+### `republishers.txt` (added 2026-10-24)
+
+Not a country source either: the sites that **re-host other outlets' articles** under the
+original title instead of writing their own, i.e. portals (AOL, Yahoo, MSN, Netscape), news
+aggregators (Drimble, Zazoom, Naslovi.net, One News Page, finanznachrichten.de, Haberler.com)
+and syndication networks (Big News Network), plus Mirage News, which re-publishes
+organisations' media releases. `src/domains.ts` `isRepublisher(source)` reads it, and it is used
+for one thing only: when several identical copies of a story's headline exist, the story is
+credited to the earliest copy from a source that is not listed (`src/stories.ts`
+`creditedCopy`; docs/DATA-CONTRACT.md "Stories", Credit). It changes no text and no count.
+One entry per line, tab-separated:
+
+```
+domain<TAB>what the site is
+```
+
+A plain domain matches that domain only; a leading dot (`.yahoo.com`) matches the domain and
+every subdomain. An entry that is a network name of `outlet-networks.txt`
+(`bignewsnetwork.com`) also covers every domain of that network. A malformed line (bad
+domain, no description) makes the ingest run fail.
+
+**Criterion.** A site is listed only when what it is can be stated as a fact about the site
+(it is a portal, an aggregator, a syndication network), checked by hand, never because of
+how prolific or how broad it is. The candidates came from the data: on the 6 h state of
+2026-10-24, domains with 20+ titled records whose reprint keys appear from another domain 90%+
+of the time, plus the known portals and aggregators. Most data candidates were **not** listed:
+chain newsrooms (MediaNews Group, Nine, Torstar sites) and wire-heavy local papers and stations
+share their copy but write their own stories, so a wire-heavy local paper is not a
+republisher. `econotimes.com` (0% of its titles shared) and `indiatimes.com` (the Times of
+India's own copy) were checked and not listed. `vietnamtribune.com` is listed as a Big News
+Network portal that `outlet-networks.txt` does not have yet (same `/news/<id>/` article ids).
+
 ### `MASTER-GDELTDOMAINSBYCOUNTRY-MAY2018.TXT`
 
 GDELT's "Mapping The Media" outlet-country list, May 2018 update, vendored unchanged:
