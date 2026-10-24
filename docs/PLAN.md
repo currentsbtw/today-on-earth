@@ -852,6 +852,84 @@ product; it needs stage 3 (public-domain imagery, a voice) and should not be att
 - The methodology behind the slots. The slot sentences in the site's voice; the clip just
   shows fewer of them.
 
+### Clip v4: the newscast (owner's direction 2026-10-24, not yet decided in detail)
+
+Owner's direction, on reading the first viewing above: not a trailer. The clip should be like a
+newscaster reading out the events happening around the world that day, with the video
+following each topic: the headline on screen, the camera zooming into the area, and so on.
+The voice leads; the map follows. This reopens narration (parked under "Captions first" on
+2026-10-21 and again on 2026-10-23); it does not reopen the no-editorial-voice rule.
+
+**What is fixed by the project's rules (not up for debate in the design).**
+- Nothing written by us or an AI. The narration is the site's fixed sentences and the outlets'
+  own headlines, read aloud: "Paris. 520 articles from 410 outlets in 38 languages. The
+  Yeshiva World: France braces: Macron restricts protests as shopkeepers arm themselves ahead
+  of renewed unrest." The voice never summarises, links, or comments. The script is a
+  template over the data, published in the methodology like the slot sentences.
+- Rights: no outlet footage, stills or audio; headlines are read as short quotes with the
+  outlet named every time. Public-domain imagery only, after the rights check (stage 3).
+- The synthetic voice is labelled as such in the end card and the caption file (platform
+  rules on AI voices), in the fixed voice: "Read by a synthetic voice from the outlets' own
+  headlines."
+
+**Proposed shape (the orchestrator's proposal for the board; durations to tune by ear).**
+1. **Opening, about 6 s.** The world at the live snapshot, the dots in. Voice: "Today on Earth,
+   Friday the twenty-fourth of October. 242,540 articles from 10,568 outlets in 195 countries.
+   Here is where the world's press pointed." The on-screen text is the same sentence in the
+   hook caption's register, line by line as spoken.
+2. **Stories, 6 to 8 of them, about 7 s each.** For each: a flight into the place (1 to 1.5 s,
+   the voice already saying the place name as the camera moves), then the card as it is today
+   (header, place, ledger row, headline, outlet) while the voice reads the counts and the
+   headline; the headline's words are highlighted or revealed as spoken (the viewer with sound
+   off reads along). The map window shows the place's own dots with the reticle. Between
+   stories the camera flies place to place, never back to the world.
+3. **Closing, about 4 s.** Pull back to the world. Voice: "That was today on Earth. The full
+   broadcast, every place and every outlet, at today on earth dot ... " (the address spoken
+   once, shown as the end card does today) and the voice label line. The lockup as the sting.
+   Total about 55 to 70 s: inside Shorts and Reels limits, over TikTok's 60 s preference
+   when 8 stories are read; 6 stories keep it under a minute.
+
+**Which stories, by rule (an open decision).** Two candidate rules, both editorial-free:
+- (a) **The six signals**, as the broadcast page shows them, in slot order. Already computed,
+  already explained in the methodology, already the broadcast. Weak days give 3 or 4 stories.
+- (b) **The day's largest stories around the world**: the top N stories by distinct outlets
+  across all cells, at most one per cell and at most two per country, so the cast moves
+  around the planet. Needs a new ingest output (a small `stories.json` of the top 30 stories
+  with their cell ids), since today's data only has stories per cell file.
+  The orchestrator's recommendation: (b) for the body, because "events happening around the
+  world" is what the owner asked for and the six slots are a different idea (rules over the
+  whole map); the six slots stay on the broadcast page. Open to the owner.
+
+**The voice (an open decision; to verify before building).** $0, offline, runs in the Clip
+workflow on the Ubuntu runner, deterministic for the same text:
+- **Kokoro** (Apache 2.0, about 82M parameters; a Node port, `kokoro-js`, runs on ONNX on
+  the CPU). Natural English voices; a handful of other languages. Model download roughly
+  300 MB, cacheable in Actions. The quality candidate.
+- **Piper** (MIT, a C++ binary with per-language ONNX voices of 20 to 60 MB each). Fast,
+  flatter voices, many languages. The fallback and the choice for non-English headlines.
+- Not Edge's online voices or any cloud TTS: terms and cost.
+Non-English headlines: read in the headline's language when a voice exists for it
+(Spanish, French, German, Portuguese, Italian, Japanese, Chinese cover most of GDELT's
+volume), else the voice says the outlet's name and "in <language>" and the headline stays
+on screen unread. Numbers are read as words by the TTS; the script writes "410 outlets"
+and checks the voice says it right.
+
+**What changes in the machinery.** The audio drives the timeline, not the other way round:
+the renderer (or a new step before it) synthesises every line first, measures each line's
+duration, and asks clip.html for a plan whose segments match those durations (a `script`
+parameter or a posted plan), so the camera arrives as the voice says the name and the card
+holds as long as the line takes. The generated soundtrack (bed, clicks, glides) becomes a
+quiet underlay under the voice or goes. `render/src/audio.mjs` mixes voice + underlay to one
+WAV; ffmpeg unchanged. The caption file gains the spoken script (it is also the transcript).
+
+**Acceptance (before building).** A stranger with sound on understands within 3 s that a voice
+is reading today's news from the world's press and where the first story is. With sound off,
+the words on screen carry the same. Any four frames 3 s apart differ at 270 px. One story read
+in a non-English language passes the rights and pronunciation check by ear.
+
+**Not in v4.** Imagery (stage 3) stays separate; music stays parked; the six-slot clip
+(v3) is retired once v4 ships, not run in parallel.
+
 ## Where to improve: the "genuinely useful" assessment (2026-10-23, not decided)
 
 Owner's question: how does this become something people genuinely use? The orchestrator
