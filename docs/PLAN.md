@@ -1647,8 +1647,9 @@ a German storm warning in Mulhouse; a Taiwan typhoon in Dalian; three secondary 
 Region-only articles and national stories at non-capitals: 0 in this sample. Of the 8 stories
 written by one outlet, 5 were wrong (all four boilerplate cases among them). Also seen: garbled
 region names in cell labels ("SãPaulo", "TucumáAs", "YucatáMx", "RegióEtropolitana"),
-"Leitrim, United Kingdom" with home IE, "Saskatchewan, Manitoba". The per-story CSV, the
-saved snapshot and the sampler are to be committed under docs/audits/ (item 2 below).
+"Leitrim, United Kingdom" with home IE, "Saskatchewan, Manitoba". The per-story CSV is
+docs/audits/2026-10-24-placement.csv, the sampler and tally are ingest/scripts/audit-*.ts, and the
+snapshot is audit-20261024T020154Z.tar.gz on the archive-2026-10-24 release (item 2 below).
 
 **Order of work.** Accuracy before voice: a misplaced story on the map is a wrong dot; read
 aloud by the newscast it is a false claim with the site's name on it.
@@ -1696,6 +1697,19 @@ aloud by the newscast it is a false claim with the site's name on it.
    they show (5 of the 8 in the sample were wrong), never hidden.
 2. The Accuracy section in METHODOLOGY with the first audit's table, and the weekly routine
    written down (a checklist in docs/).
+   **Status (2026-10-24): done, not committed.** METHODOLOGY has an "Accuracy" section (the
+   method, the first result with its interval, the three causes, the bar, the record) after
+   "What this site does not do", and about.html the matching short section and contents entry.
+   docs/audits/ holds the routine (README.md: labels, causes, judging standards, the seed as
+   the audit's UTC date, file naming, the results table with the first row) and the first
+   audit's CSV (byte-order mark removed). Two scripts in ingest/: `npm run audit-sample`
+   (draws the sample from a snapshot directory, `--fetch` saves the live snapshot first) and
+   `npm run audit-tally` (counts a filled CSV with the Wilson interval). The sampler
+   reimplements Python's random.Random (MT19937 with CPython's seeding), so on the saved
+   snapshot with seed 20261024 it draws the first audit's 68 cells and 128 stories exactly,
+   row for row; the tally gives 81 / 19 / 28, 14.8% (9.7 to 22.0%), top 20 4 of 40, known
+   outlets 66 of 128. The snapshot is `audit-20261024T020154Z.tar.gz` on the release
+   archive-2026-10-24, not in the repo.
 3. Grouping to 70%: the second pass on story grouping (entities plus title tokens today).
 4. The headline rule (bar 3), which also fixes what the voice reads.
 5. Then the newscast: the voice prototype, the audio-driven timeline, the clip.

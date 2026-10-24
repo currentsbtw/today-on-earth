@@ -1,4 +1,4 @@
-﻿idx,cell_id,name,home,sample,pick,cell_n,headline,source,lang,source_known,label,quality,cause,note
+idx,cell_id,name,home,sample,pick,cell_n,headline,source,lang,source_known,label,quality,cause,note
 0,832aa8fffffffff,"Washington, United States",US,top20+weighted,first,6137,"Melania Trump helps forge a ceasefire deal in a Russian-occupied Ukrainian city, White House says",newsday.com,en,known,right,ok,,White House dateline
 1,832aa8fffffffff,"Washington, United States",US,top20+weighted,random,6137,Трамп исключил участие своей жены в трехсторонних переговорах по Украине,ria.ru,ru,known,right,ok,,US president; national story at capital
 2,8311aafffffffff,"Moscow, Moskva, Russia",RU,top20+weighted,first,4513,Melania Trump announces Russia-Ukraine ceasefire in occupied city of Oleshky,bgnes.com,en,small/aggregator,right,ok,,Russia; Peskov/Gerasimov

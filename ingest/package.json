@@ -11,7 +11,9 @@
     "ingest": "tsx src/main.ts",
     "check": "tsx scripts/check-contract.ts",
     "test": "node --import tsx --test \"test/*.test.ts\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "audit-sample": "tsx scripts/audit-sample.ts",
+    "audit-tally": "tsx scripts/audit-tally.ts"
   },
   "dependencies": {
     "fflate": "^0.8.3",

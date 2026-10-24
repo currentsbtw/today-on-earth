@@ -198,6 +198,35 @@ final one.
   coverage was found, which is not the same as nothing happening.
 - It has no editor and no feed. What you see is the same for everyone.
 
+## Accuracy
+
+How often a story is drawn at a place it is not about is measured by hand, weekly, by
+the maintainers; no model takes part. Each audit draws a fixed sample from one snapshot:
+the 20 places with the most articles and 60 more drawn at random, weighted by their
+article count, with the audit's date as the seed, so anyone with the snapshot draws the
+same sample again; in each place, its largest story and one more at random. For each
+story a person asks one question: is this story plausibly about, or datelined from, this
+place? The answer is right, wrong or unclear. A national story placed at the seat of
+government counts as right.
+
+The first audit, on 24 October 2026 (the snapshot of 02:01:54 UTC), judged 128 stories in
+68 places: 81 right, 19 wrong, 28 unclear. That is 14.8% wrong, with a 95% interval of 9.7
+to 22.0%. Among the 20 largest places, 4 of 40 were wrong. The causes of the 19:
+
+- **Same name** (7): a place of the same name in another country, such as Athens, Ohio,
+  for an article about Athens.
+- **An outlet's fixed location** (4): an outlet's own name or standing location read as a
+  place, in cases the fixed-block rule above does not catch.
+- **Other** (8): a cell on a border named for a place across the line, a place the
+  article only mentions in passing, or a GDELT coordinate far from the place it names.
+
+The bar we have set is under 2% wrong, with the interval's upper bound under 4%. The site
+is not there yet. A rule change that comes from an audit is dated here when it ships, and
+the next audit measures it.
+
+The record is the table of results in docs/audits/README.md, one dated row per audit,
+with each audit's per-story labels beside it and its snapshot in the archive.
+
 ## Replay
 
 The Replay section (the right column on wide screens, below the map on narrower ones) replays the last 24 hours in 15-minute steps. Each step
