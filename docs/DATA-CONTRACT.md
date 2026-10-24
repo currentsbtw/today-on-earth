@@ -414,6 +414,55 @@ A story's tagged share = its articles with any kind / its `n`. Records carried f
 this field existed (state version 4 and older) have no kinds and count as untagged, so
 "ordinary" may be loose during the first 24 h after the deploy that added it.
 
+## Top stories (added 2026-10-24): `/data/stories.json`  (one small file, written every run)
+
+The day's largest stories around the world, by a published, deterministic rule: the stories
+with the most distinct outlets across every place, one per place and at most two per country,
+so a reading of them moves around the planet. It feeds the narrated daily clip, which reads
+the first 6 to 8 entries it can voice (docs/PLAN.md "Clip v4: the newscast"). No text of ours:
+an entry carries an outlet's own headline plus the story's numbers.
+
+```jsonc
+{
+  "generatedAt": "2026-10-26T19:14:58Z", "windowHours": 24,   // == heat.json
+  "stories": [   // at most 12, rank 1 first
+    { "rank": 1,
+      "cell": { "id": "832aa8fffffffff", "name": "Washington, United States", "lat": 38.96, "lon": -76.55, "home": "US" },
+      "story": { "headline": "…", "headlineSource": "bbc.co.uk", "headlineLang": "en", "headlineUrl": "https://…",
+                 "n": 212, "u": 150, "o": 96, "c": 21, "i": 20, "l": 7, "t": -4.1,
+                 "first": "2026-10-26T01:15:00Z", "last": "2026-10-26T04:30:00Z" } },
+    { "rank": 2, "cell": { … }, "story": { … } }
+  ]
+}
+```
+
+- `rank`: 1, 2, 3, … in list order, contiguous.
+- `cell` and `story`: exactly as a broadcast slot's `cell` and `story` (see Broadcast; the
+  same code shapes both): the cell's `id`, `name`, `lat`, `lon` as in `heat.json` and `home`
+  as in its cell file; the story's fields exactly as in the cell file's `stories`, without
+  `entities` and `articles`.
+- If building the list fails, the run logs the error and still writes the file, with
+  `"stories": []`: the map snapshot is never held back by it.
+
+**Rule.** Candidates are every story of every cell in this snapshot (the cell files'
+`stories`), each with its cell, as for the broadcast. A candidate needs `u` >= 3
+(`MIN_STORY_U`) and a non-empty `headline`, as every broadcast slot does. Candidates are
+ranked by distinct outlets `o`, most first; ties go to the higher `n`, then the earlier
+`first`, then the cell id ascending, then the story's position in its cell (the broadcast's
+tie order). The list is the ranking walked from the top, taking a story when:
+
+- its cell has no entry yet (one story per place), and
+- its country has fewer than `TOP_STORIES_PER_COUNTRY` = 2 entries, where the country is the
+  cell's `home`. Cells whose `home` is unknown (`""`) share one bucket of their own, apart
+  from every country, and take at most `TOP_STORIES_UNKNOWN_HOME_MAX` = 1 entry in total (an
+  unknown home may be a country already taken twice).
+
+The walk stops at `TOP_STORIES_MAX` = 12 entries, or when the ranking runs out. Twelve gives
+the clip slack to skip a story it cannot voice. The constants are in
+`ingest/src/top-stories.ts`. The file is rebuilt from scratch every run; it describes the
+current snapshot only and has no history. It is independent of `broadcast.json`: a story may
+fill a slot there and be listed here.
+
 ## Topics (added 2026-10-23): `/data/topics.json`  (one file, written every run, fetched when the search is first used)
 
 Where each person and organisation is being talked about: for every name the stories carry,

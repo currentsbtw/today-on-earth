@@ -1,6 +1,6 @@
 import { BASELINE_MIN_DAYS } from "./baseline.ts";
 import { round } from "./stats.ts";
-import type { BroadcastFile, CellFile, HeatCell, HeatFile, Slot, SlotId, Story } from "./types.ts";
+import type { BroadcastFile, CellFile, HeatCell, HeatFile, Slot, SlotCell, SlotId, SlotStory, Story } from "./types.ts";
 
 /**
  * The daily broadcast (docs/DATA-CONTRACT.md "Broadcast"): six fixed slots, each filled by a
@@ -66,8 +66,18 @@ const isRealDay = (day: string) => {
 };
 const cmpStr =(a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
 
-/** Shared tie-break: higher n, then earlier first, then cell id ascending, then story position. */
-function tieBreak(a: Candidate, b: Candidate): number {
+/** What the tie order reads of a candidate: its cell's id, its story's n and first, its position. */
+export interface Ranked {
+  cell: { id: string };
+  story: { n: number; first: string };
+  pos: number;
+}
+
+/**
+ * Shared tie-break: higher n, then earlier first, then cell id ascending, then story position.
+ * Also the tie order of the top stories (top-stories.ts).
+ */
+export function tieBreak(a: Ranked, b: Ranked): number {
   return b.story.n - a.story.n || cmpStr(a.story.first, b.story.first) || cmpStr(a.cell.id, b.cell.id) || a.pos - b.pos;
 }
 
@@ -96,6 +106,15 @@ export function availableFrom(since: string, today: string, baselineDays: number
   const fromToday = addDays(today, Math.max(1, BROADCAST_MIN_BASELINE_DAYS - baselineDays));
   return fromSince > fromToday ? fromSince : fromToday;
 }
+
+/** A slot's `cell`: id, name, lat, lon as in heat.json, home as in the cell file. Also used by stories.json. */
+export const slotCell = (cell: CellFile, h: HeatCell): SlotCell => ({ id: cell.id, name: cell.name, lat: h.lat, lon: h.lon, home: cell.home });
+
+/** A slot's `story`: the story's fields as in the cell file, without entities and articles. Also used by stories.json. */
+export const slotStory = (s: Story): SlotStory => ({
+  headline: s.headline, headlineSource: s.headlineSource, headlineLang: s.headlineLang, headlineUrl: s.headlineUrl,
+  n: s.n, u: s.u, o: s.o, c: s.c, i: s.i, l: s.l, t: s.t, first: s.first, last: s.last,
+});
 
 /** Rising ratio of a cell: n / max(b, 3), 1 decimal. */
 export const risingRatio = (n: number, b: number) => round(n / Math.max(b, RISING_B_FLOOR), 1);
@@ -126,17 +145,7 @@ export function buildBroadcast(args: {
   const fill = (id: SlotId, pick: Candidate | null, extra: Partial<Slot> = {}): Slot => {
     if (!pick) return { id, available: false, reason: "none" };
     used.add(pick);
-    const { cell, heat: h, story: s } = pick;
-    return {
-      id,
-      available: true,
-      cell: { id: cell.id, name: cell.name, lat: h.lat, lon: h.lon, home: cell.home },
-      story: {
-        headline: s.headline, headlineSource: s.headlineSource, headlineLang: s.headlineLang, headlineUrl: s.headlineUrl,
-        n: s.n, u: s.u, o: s.o, c: s.c, i: s.i, l: s.l, t: s.t, first: s.first, last: s.last,
-      },
-      ...extra,
-    };
+    return { id, available: true, cell: slotCell(pick.cell, pick.heat), story: slotStory(pick.story), ...extra };
   };
   const waiting = (id: SlotId): Slot => ({ id, available: false, reason: "baseline", availableFrom: availableFrom(args.baselineSince, today, heat.baselineDays) });
 

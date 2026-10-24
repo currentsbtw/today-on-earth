@@ -15,6 +15,7 @@ import {
 } from "../src/broadcast.ts";
 import { reprintKey } from "../src/reprints.ts";
 import { MAX_STORIES } from "../src/stories.ts";
+import { TOP_STORIES_MAX, TOP_STORIES_PER_COUNTRY, TOP_STORIES_UNKNOWN_HOME_MAX } from "../src/top-stories.ts";
 import { MAX_TOPICS, TOPIC_MAX_CELLS, TOPIC_MIN_TOTAL, isJunkTopic } from "../src/topics.ts";
 import { checkStepFields } from "./history-step-check.ts";
 
@@ -505,6 +506,75 @@ if (!existsSync(broadcastPath)) {
   broadcastSummary = `${filled.length}/6 slots filled (${filled.join(", ") || "none"})`;
 }
 
+// ---- stories.json (contract section "Top stories") ----
+let topStoriesSummary = "missing";
+const topStoriesPath = join(dir, "stories.json");
+if (!existsSync(topStoriesPath)) {
+  err("stories", "missing stories.json");
+} else {
+  const tsBytes = readFileSync(topStoriesPath);
+  const tf = JSON.parse(tsBytes.toString("utf8")) as Record<string, unknown>;
+  exactKeys("stories", tf, ["generatedAt", "windowHours", "stories"]);
+  for (const k of ["generatedAt", "windowHours"]) if (tf[k] !== heat[k]) err(`stories.${k}`, `differs from heat.json (${String(tf[k])} vs ${String(heat[k])})`);
+  const list = Array.isArray(tf.stories) ? (tf.stories as unknown[]) : (err("stories.stories", "not an array"), []);
+  if (list.length > TOP_STORIES_MAX) err("stories.stories", `${list.length} > ${TOP_STORIES_MAX}`);
+  const n = (o: Record<string, unknown>, k: string) => (typeof o[k] === "number" ? (o[k] as number) : NaN);
+  const homes = new Map<string, number>();
+  const ids = new Set<string>();
+  const got: string[] = [];
+  list.forEach((e, i) => {
+    const w = `stories.stories[${i}]`;
+    if (!isObj(e)) return err(w, "not an object");
+    exactKeys(w, e, ["rank", "cell", "story"]);
+    if (e.rank !== i + 1) err(`${w}.rank`, `expected ${i + 1}, got ${JSON.stringify(e.rank)}`);
+    const cell = isObj(e.cell) ? e.cell : (err(`${w}.cell`, "not an object"), {});
+    const story = isObj(e.story) ? e.story : (err(`${w}.story`, "not an object"), {});
+    exactKeys(`${w}.cell`, cell, ["id", "name", "lat", "lon", "home"]);
+    exactKeys(`${w}.story`, story, ["headline", "headlineSource", "headlineLang", "headlineUrl", "n", "u", "o", "c", "i", "l", "t", "first", "last"]);
+    const id = String(cell.id);
+    if (ids.has(id)) err(`${w}.cell.id`, `duplicate cell ${id} (one story per place)`);
+    ids.add(id);
+    const home = String(cell.home);
+    homes.set(home, (homes.get(home) ?? 0) + 1);
+    const h = heatById.get(id);
+    if (!h) return err(`${w}.cell.id`, `${id} is not a cell of heat.json`);
+    for (const k of ["lat", "lon", "name"]) if (cell[k] !== h[k]) err(`${w}.cell.${k}`, `differs from heat.json (${String(cell[k])} vs ${String(h[k])})`);
+    if (n(story, "u") < MIN_STORY_U) err(`${w}.story.u`, `${String(story.u)} < ${MIN_STORY_U}`);
+    if (typeof story.headline !== "string" || story.headline === "") err(`${w}.story.headline`, "empty; an entry must carry an outlet's headline");
+    const match = allStories.find((c) => c.cell.id === id && Object.keys(story).every((k) => c.s[k] === story[k]));
+    if (!match) return err(`${w}.story`, "no story in that cell file matches it field for field");
+    if (cell.home !== match.cell.home) err(`${w}.cell.home`, "differs from the cell file");
+    got.push(`${id}#${match.pos}`);
+  });
+  for (const [home, k] of homes) {
+    const cap = home === "" ? TOP_STORIES_UNKNOWN_HOME_MAX : TOP_STORIES_PER_COUNTRY;
+    if (k > cap) err("stories.stories", `home ${JSON.stringify(home)} appears ${k} times, more than ${cap}`);
+  }
+  // The rule, recomputed from the cell files: rank by o desc, then n desc, first asc, cell id,
+  // position; one per cell, at most two per country, one for all unknown homes, at most 12.
+  const cmp = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
+  const ranked = allStories
+    .filter((c) => heatById.has(c.cell.id as string) && n(c.s, "u") >= MIN_STORY_U && typeof c.s.headline === "string" && c.s.headline !== "")
+    .sort((a, b) => n(b.s, "o") - n(a.s, "o") || n(b.s, "n") - n(a.s, "n") || cmp(String(a.s.first), String(b.s.first)) || cmp(String(a.cell.id), String(b.cell.id)) || a.pos - b.pos);
+  const want: string[] = [];
+  const wantCells = new Set<string>();
+  const wantHomes = new Map<string, number>();
+  for (const c of ranked) {
+    if (want.length >= TOP_STORIES_MAX) break;
+    const home = String(c.cell.home);
+    const had = wantHomes.get(home) ?? 0;
+    if (wantCells.has(String(c.cell.id)) || had >= (home === "" ? TOP_STORIES_UNKNOWN_HOME_MAX : TOP_STORIES_PER_COUNTRY)) continue;
+    wantCells.add(String(c.cell.id));
+    wantHomes.set(home, had + 1);
+    want.push(`${String(c.cell.id)}#${c.pos}`);
+  }
+  if (got.length === list.length && got.join(",") !== want.join(",")) {
+    const k = want.findIndex((x, j) => x !== got[j]);
+    err("stories.stories", `does not follow the rule: entry ${k + 1} is ${got[k] ?? "(none)"}, expected ${want[k] ?? "(none)"} (${want.length} expected, ${got.length} given)`);
+  }
+  topStoriesSummary = `${tsBytes.length} bytes, ${list.length} stories`;
+}
+
 // ---- topics.json (contract section "Topics") ----
 let topicsSummary = "missing";
 const topicsPath = join(dir, "topics.json");
@@ -571,6 +641,7 @@ console.log(`  heat.json: ${bytes} bytes, ${cells.length} cells`);
 console.log(`  cell files: ${files.length}, articles checked: ${articlesChecked}, stories checked: ${storiesChecked}`);
 console.log(`  history: ${frameCount} frames, largest frame ${largestFrame} bytes`);
 console.log(`  broadcast: ${broadcastSummary}`);
+console.log(`  stories: ${topStoriesSummary}`);
 console.log(`  topics: ${topicsSummary}`);
 for (const w of warnings) console.log(`  WARN ${w}`);
 if (errors.length) {
@@ -578,4 +649,4 @@ if (errors.length) {
   for (const e of errors) console.log(`  - ${e}`);
   process.exit(1);
 }
-console.log("OK: heat.json, every cell file, history/index.json, every frame, broadcast.json and topics.json match docs/DATA-CONTRACT.md");
+console.log("OK: heat.json, every cell file, history/index.json, every frame, broadcast.json, stories.json and topics.json match docs/DATA-CONTRACT.md");

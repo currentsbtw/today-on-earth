@@ -213,3 +213,17 @@ export interface TopicsFile {
   generatedAt: string;
   topics: [string, number, [string, number][]][];
 }
+
+/** `/data/stories.json` (docs/DATA-CONTRACT.md "Top stories"): the day's largest stories, one per place. */
+export interface TopStory {
+  /** 1-based, contiguous. */
+  rank: number;
+  cell: SlotCell;
+  story: SlotStory;
+}
+
+export interface TopStoriesFile {
+  generatedAt: string;
+  windowHours: number;
+  stories: TopStory[];
+}

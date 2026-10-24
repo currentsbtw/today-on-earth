@@ -900,6 +900,28 @@ The voice leads; the map follows. This reopens narration (parked under "Captions
   world" is what the owner asked for and the six slots are a different idea (rules over the
   whole map); the six slots stay on the broadcast page. Open to the owner.
 
+**Decided 2026-10-24 (owner): rule (b).** The voice reads the day's largest stories around the
+world: the top stories by distinct outlets (`o`) across every place, one story per place (cell),
+at most two per country (the cell's `home`; cells with an unknown home count as their own
+country and take at most one), 6 to 8 of them. The ingest writes `/data/stories.json` every run
+(docs/DATA-CONTRACT.md "Top stories"): the top 12 by that rule so the clip has slack to skip a
+story it cannot voice, each with its cell and story as the broadcast carries them, requiring
+`u` >= 3 and a headline as every slot does, ties by the broadcast's order (higher `n`, earlier
+`first`, cell id, position). Built the same day; status below.
+
+**Status (2026-10-24): built, not yet deployed.** `ingest/src/top-stories.ts` writes
+`/data/stories.json` every run beside `broadcast.json`, shaping each entry's `cell` and `story`
+with the broadcast's own helpers and tie order; a failure logs and writes an empty list
+(`buildTopStoriesSafe`). The summary log line gains `stories=<n> stories.json=<bytes>B`; the
+contract check recomputes the rule from the cell files; `test/top-stories.test.ts` covers the
+rule. Measured on a local cold start (6 h of files, 43,473 articles, 1,699 cells, 959
+candidates): 12 entries in 6,504 bytes across 9 countries (France, the US twice, Russia, the
+UK, Ukraine, Germany twice, Italy, Mexico twice, and Karak, Jordan, whose `home` is IL), `o`
+from 154 down to 25. One-per-place skipped 21 higher stories (11 of them Washington's); the
+two-per-country cap skipped 10 US stories with `o` 27 to 68. Seen by eye: one event can sit in
+two cells (the Alaska Senate story in both "Alaska" and "Anchorage"; here the US cap dropped
+the second), and a cell's `home` can differ from the country in its name. To judge on a 24 h window before the clip reads them: a cell's `home` can differ from the country in its name (Karak, Jordan carried home IL in the test run; a spoken country should follow the name, not `home`), and one event can sit in two cells (the Alaska Senate story in the Alaska state cell and in Anchorage), which the one-per-place rule does not catch when the cells are in different countries.
+
 **The voice (an open decision; to verify before building).** $0, offline, runs in the Clip
 workflow on the Ubuntu runner, deterministic for the same text:
 - **Kokoro** (Apache 2.0, about 82M parameters; a Node port, `kokoro-js`, runs on ONNX on
