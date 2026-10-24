@@ -99,11 +99,16 @@ export interface Story {
   headline: string;
   headlineSource: string;
   headlineLang: string;
+  /** URL of the headline's article (the medoid); "" when none. Absent in files before 2026-10-21. */
+  headlineUrl?: string;
+  /** At most 3 on a compact story. */
   entities: string[];
   /** Every outlet country of the story with its units, by units then code. Absent in older files. */
   countries?: [string, number][];
-  /** Newest 6, at most 2 per outlet. */
-  articles: Article[];
+  /** Newest 6, at most 2 per outlet. Absent on a compact story. */
+  articles?: Article[];
+  /** Set on every story after a file's first 30: headline and counts only, no articles. */
+  compact?: true;
 }
 
 /** Resolves a path against the page so the site works under any base path. */

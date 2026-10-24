@@ -237,21 +237,38 @@ same thing, computed deterministically from what GDELT already tags per article
     "headlineLang": "en",
     "headlineUrl": "https://…", // URL of the article the headline comes from (the medoid); "" when none (added 2026-10-21)
     "entities": ["donald trump", "nato", "brussels"],  // up to 5 most shared persons/orgs, lowercase as GDELT spells them;
-                                                       // themes only top up when fewer than 2, rendered as words ("climatechange")
-    "articles": [ { …same article object as above… } ] // newest 6, outlet-spread (max 2 per outlet), one per reprint key
+                                                       // themes only top up when fewer than 2, rendered as words ("climatechange");
+                                                       // a compact story keeps the first 3
+    "articles": [ { …same article object as above… } ] // full stories only: newest 6, outlet-spread (max 2 per outlet),
+                                                       // one per reprint key
+    // "compact": true         // instead of "articles" on every story after the first 30 (added 2026-10-24)
   }
 ],
-"unclustered": 140        // articles in the cell that belong to no story with n >= 3
+"unclustered": 140        // articles in the cell that belong to no story
 ```
 
 Rules:
-- Stories are sorted by `n` descending; at most 30 per cell (`MAX_STORIES`, changed
-  2026-10-23 from 12); a story needs `n` >= 3 units from the grouping pass.
-- Second pass (added 2026-10-23): after the cap, each unit outside every story joins the
-  story whose top-20 title tokens (counted over the story's grouped units) share 3 or more
-  tokens with its own title tokens; best = most shared, ties to the larger story, then the
-  earlier story. Attached units count in the story's counters, `first`/`last` and
-  `entities`, but are never its medoid. Stories are then re-sorted by final `n`.
+- A story is a cluster of the grouping pass with `n` >= 3 units, or a **strict pair**
+  (added 2026-10-24): exactly 2 units from two different outlets (a listed network or
+  chain counts once) that share >= 2 persons or organisations among their grouping
+  entities (background entities excluded, themes never count) or >= 3 title tokens. So a
+  story with `n` == 2 always has `o` == 2. Clusters are ranked largest first (ties by
+  earliest article, then creation order) and at most 200 per cell become stories
+  (`MAX_STORIES`, a file-size ceiling; changed 2026-10-24 from a cap of 30); clusters
+  beyond it stay unclustered.
+- Second pass (added 2026-10-23): over every story, full and compact, each unit outside
+  every story joins the story whose top-20 title tokens (counted over the story's grouped
+  units) share 3 or more tokens with its own title tokens; best = most shared, ties to the
+  larger story, then the earlier story. Attached units count in the story's counters,
+  `first`/`last` and `entities`, but are never its medoid. Stories are then re-sorted by
+  final `n` descending (ties keep the order above).
+- **Full and compact** (added 2026-10-24): the first 30 stories in that order
+  (`FULL_STORIES`) are full; every later one is compact: the same object with `entities`
+  cut to the first 3, no `articles` key, and `"compact": true`. A full story has no
+  `compact` key. Every other field (`countries` included, length == `c`) is as for a full
+  story. Measured on a 6 h window: a full story is about 2.3 to 3.0 KB, a compact one about
+  0.48 KB; cutting a compact story's `countries` to 5 saved nothing (no compact story had
+  more than 5), so it is not cut.
 - Every article in the cell belongs to at most one story. `sum(stories[].n) +
   unclustered == n` of the cell.
 - `headline` is an outlet's title, chosen by overlap, never written by us; the only change
@@ -269,7 +286,12 @@ Rules:
   cells, 5,704 stories in under 5 s; 60-70% of articles in busy cells stay
   unclustered, partly because of the 12-story cap. Measured 2026-10-23 on 2 h of both
   feeds: about 43% of articles were grouped with the cap at 12, about 58% with no cap;
-  hence the cap of 30 and the second pass.
+  hence the cap of 30 and the second pass. Measured 2026-10-24 on a 6 h window over the six
+  reference cells: 47.4% grouped with the cap of 30, 60.5% with the compact tail and strict
+  pairs (judged 24 right / 3 wrong of 29 pairs); the largest cell file (Washington) went
+  from 115 to 168 KB raw, 34 to 50 KB gzipped. Projected for 24 h at the ceiling: about 200
+  to 210 KB raw and 64 to 68 KB gzipped for the largest cells (budget: 250 KB raw, 80 KB
+  gzipped).
 - Join rule (unchanged 2026-10-23): an article joins the best existing cluster when it
   shares >= 2 entities with the cluster's top-10 entities, or >= 1 entity and >= 2 title
   tokens with its top-20 tokens, or >= 4 title tokens (best = highest 2 * entities +
@@ -469,7 +491,7 @@ an entry carries an outlet's own headline plus the story's numbers.
   `"stories": []`: the map snapshot is never held back by it.
 
 **Rule.** Candidates are every story of every cell in this snapshot (the cell files'
-`stories`), each with its cell, as for the broadcast. A candidate needs `u` >= 3
+`stories`, compact ones included since 2026-10-24), each with its cell, as for the broadcast. A candidate needs `u` >= 3
 (`MIN_STORY_U`) and a non-empty `headline`, as every broadcast slot does. Candidates are
 ranked by distinct outlets `o`, most first; ties go to the higher `n`, then the earlier
 `first`, then the cell id ascending, then the story's position in its cell (the broadcast's
@@ -498,7 +520,9 @@ fill a slot there and be listed here.
 GDELT sometimes places a story at a same-name place elsewhere (a story about Athens, Ohio in
 Athens, Greece). So a story is listed only when its own text names its place. The texts are
 the story's `headline` and the `title` of each of its `articles` exactly as written to the
-cell file (the newest 6, outlet-spread), so the list can be recomputed from the cell file.
+cell file (the newest 6, outlet-spread), so the list can be recomputed from the cell file. A
+compact story (after the 30th in its cell, see Stories) has no `articles`, so its headline
+alone confirms it (added 2026-10-24).
 The cell's `name` is split on commas: the **city** is the first part, the **regions** are the
 middle parts, the **country** is the last part (a name with one part has a city only). The
 levels, tried in this order (each over every text before the next), and the first that

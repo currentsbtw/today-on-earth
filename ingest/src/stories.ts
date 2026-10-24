@@ -20,16 +20,31 @@ import type { ArticleRecord, Story } from "./types.ts";
  *   or >= 4 title tokens; best = highest 2*entities + tokens, ties to the larger cluster,
  *   then the older cluster; otherwise it starts a new cluster;
  * - then clusters whose top-5 entity sets overlap by >= 3 are merged (transitively);
- * - clusters with n >= 3 become stories, largest first, at most 30 (re-sorted by final n
- *   after the second pass, ties keeping the first order);
- * - second pass: each item outside every story is attached to the story whose top-20 title
- *   tokens (from the story's clustered members) share >= 3 tokens with its own; best = most
- *   shared, ties to the larger story, then the earlier story. Attached items count in the
- *   story's counters, dates and entities but never become its headline (medoid).
- * A story's shown articles keep one per reprint key (the newest the outlet cap lets in), and
- * each carries its reprint count over the whole cell. The outlet cap counts a network once.
+ * - clusters with n >= 3 become stories, and so does a strict pair: a cluster of exactly 2
+ *   items from two outlets that share >= 2 persons or organisations (grouping entities, so
+ *   background ones excluded; themes never count) or >= 3 title tokens; largest first, ties
+ *   by earliest article, then creation order; at most 200 (MAX_STORIES, a file-size ceiling:
+ *   clusters beyond it stay unclustered);
+ * - second pass, over all of them: each item outside every story is attached to the story
+ *   whose top-20 title tokens (from the story's clustered members) share >= 3 tokens with its
+ *   own; best = most shared, ties to the larger story, then the earlier story. Attached items
+ *   count in the story's counters, dates and entities but never become its headline (medoid);
+ * - stories are re-sorted by final n (ties keeping the order above); the first 30
+ *   (FULL_STORIES) are full, every later one is compact: the same object with at most 3
+ *   entities, no `articles`, and `compact: true`.
+ * A full story's shown articles keep one per reprint key (the newest the outlet cap lets in),
+ * and each carries its reprint count over the whole cell. The outlet cap counts a network once.
  */
-export const MAX_STORIES = 30;
+/** Stories carried in full (with `articles`); every later story is compact. */
+export const FULL_STORIES = 30;
+/** Ceiling on a cell's stories, full and compact, for file size. */
+export const MAX_STORIES = 200;
+/** Entities a compact story keeps (its first, most shared). */
+export const COMPACT_ENTITIES = 3;
+/** A strict pair shares at least this many persons or organisations... */
+export const PAIR_MIN_NAMES = 2;
+/** ...or at least this many title tokens. */
+export const PAIR_MIN_TOKENS = 3;
 /** Second pass: minimum shared title tokens with a story's top-20 to attach a loose item. */
 export const ATTACH_MIN_TOKENS = 3;
 export const MIN_STORY_ARTICLES = 3;
@@ -214,7 +229,7 @@ export function displayEntities(nameDf: Map<string, number>, themeDf: Map<string
  * `names`: how many of the story's leading `entities` are persons or organisations (the rest
  * are theme words).
  */
-function toStory(core: Item[], attached: Item[], home: string, copies: Map<string, number>, keyer: Keyer): { story: Story; names: number } {
+function toStory(core: Item[], attached: Item[], home: string, copies: Map<string, number>, keyer: Keyer, compact: boolean): { story: Story; names: number } {
   const group = attached.length ? [...core, ...attached] : core;
   const records = group.flatMap((g) => g.unit);
   const s = cellStats(records, keyer, home);
@@ -251,7 +266,7 @@ function toStory(core: Item[], attached: Item[], home: string, copies: Map<strin
   const perOutlet = new Map<string, number>();
   const keys = new Set<string>();
   const articles: ArticleRecord[] = [];
-  for (const r of [...records].sort(compareNewestFirst)) {
+  for (const r of compact ? [] : [...records].sort(compareNewestFirst)) {
     if (articles.length >= STORY_ARTICLES) break;
     const key = keyer.keyOf(r);
     if (key && keys.has(key)) continue;
@@ -279,13 +294,40 @@ function toStory(core: Item[], attached: Item[], home: string, copies: Map<strin
     headlineLang: medoid.lang,
     headlineUrl: medoid.url,
     entities: displayEntities(nameDf, themeDf),
-    articles: articles.map((r) => {
+  };
+  if (compact) {
+    story.entities = story.entities.slice(0, COMPACT_ENTITIES);
+    story.compact = true;
+  } else {
+    story.articles = articles.map((r) => {
       const key = keyer.keyOf(r);
       return toCellArticle(r, keyer, key ? copies.get(key)! - 1 : 0);
-    }),
-  };
+    });
+  }
   // displayEntities puts the persons and organisations first, at most STORY_ENTITIES of them.
-  return { story, names: Math.min(STORY_ENTITIES, nameDf.size) };
+  return { story, names: Math.min(story.entities.length, STORY_ENTITIES, nameDf.size) };
+}
+
+/**
+ * A strict pair: exactly 2 items from two outlets (a network counts once) sharing >= 2
+ * persons or organisations among their grouping entities, or >= 3 title tokens.
+ */
+function strictPair(g: readonly Item[]): boolean {
+  if (g.length !== 2) return false;
+  const [a, b] = g;
+  if (outletOf(a.r.source) === outletOf(b.r.source)) return false;
+  const names = (it: Item) => {
+    const own = new Set([...it.r.persons, ...it.r.orgs]);
+    return new Set(it.ents.filter((e) => own.has(e)));
+  };
+  const na = names(a);
+  let shared = 0;
+  for (const e of names(b)) if (na.has(e)) shared++;
+  if (shared >= PAIR_MIN_NAMES) return true;
+  const ta = new Set(a.toks);
+  let tokens = 0;
+  for (const t of new Set(b.toks)) if (ta.has(t)) tokens++;
+  return tokens >= PAIR_MIN_TOKENS;
 }
 
 /** Second pass: attach each item outside every story to the best story by title tokens. */
@@ -338,20 +380,22 @@ export function buildStories(
     .sort((a, b) => oldestFirst(a.r, b.r));
   removeBackground(items);
   const groups = merge(cluster(items))
-    .filter((g) => g.length >= MIN_STORY_ARTICLES)
+    .filter((g) => g.length >= MIN_STORY_ARTICLES || strictPair(g))
     .map((g) => ({ g, first: g.reduce((m, x) => (x.r.time < m ? x.r.time : m), g[0].r.time) }));
   // Largest first; ties by earliest article, then by order of creation (stable sort).
   groups.sort((a, b) => b.g.length - a.g.length || (a.first < b.first ? -1 : a.first > b.first ? 1 : 0));
   const kept = groups.slice(0, MAX_STORIES).map(({ g }) => g);
   const attached = attach(items, kept);
   const copies = keyCounts(records, keyer, outletOf);
-  // Attachments can reorder sizes: largest first again, ties keep the order above (stable).
-  const built = kept
-    .map((g, k) => ({
-      ...toStory(g, attached[k], home, copies, keyer),
-      tagged: [...g, ...attached[k]].reduce((n, x) => n + (x.unit.some((r) => r.kinds) ? 1 : 0), 0),
-    }))
-    .sort((a, b) => b.story.n - a.story.n);
+  // Attachments can reorder sizes: largest first again, ties keep the order above (stable);
+  // the first FULL_STORIES are full, the rest compact.
+  const order = kept
+    .map((g, k) => ({ k, n: g.length + attached[k].length }))
+    .sort((a, b) => b.n - a.n);
+  const built = order.map(({ k }, rank) => ({
+    ...toStory(kept[k], attached[k], home, copies, keyer, rank >= FULL_STORIES),
+    tagged: [...kept[k], ...attached[k]].reduce((n, x) => n + (x.unit.some((r) => r.kinds) ? 1 : 0), 0),
+  }));
   const stories = built.map((b) => b.story);
   const tagged = built.map((b) => b.tagged);
   const names = built.map((b) => b.names);

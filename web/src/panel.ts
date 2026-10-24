@@ -210,7 +210,8 @@ const STORIES_SHOWN = 3;
 let storySeq = 0;
 
 /**
- * One story: the outlet's own headline, its counts, time span, entities and newest articles.
+ * One story: the outlet's own headline, its counts, time span, entities and newest articles
+ * (a compact story, after the file's first 30, has no articles: a headline-only entry).
  * `pin` is the slot label of the signal it was opened from: a mono tag above the headline.
  * A story from one outlet carries ONE OUTLET in the same tag, after the signal's when both apply.
  */
@@ -228,9 +229,11 @@ function storyCard(story: Story, now: number, pin = '', home = ''): HTMLElement 
 
   const head = el('h4', 'story-headline');
   head.id = `${id}-h`;
-  // The headline is an outlet's title, verbatim; link it to that article when we have it.
-  const source = story.articles.find((a) => a.title === story.headline && a.source === story.headlineSource);
-  const href = source ? safeHref(source.url) : null;
+  // The headline is an outlet's title, verbatim; link it to that article when we have it (a
+  // compact story has no articles, only the headline's own URL).
+  const articles = story.articles ?? [];
+  const source = articles.find((a) => a.title === story.headline && a.source === story.headlineSource);
+  const href = source ? safeHref(source.url) : safeHref(story.headlineUrl ?? '');
   const text = story.headline.trim();
   if (text) {
     const words = href ? el('a', 'story-link', text) : el('span', '', text);
@@ -239,6 +242,7 @@ function storyCard(story: Story, now: number, pin = '', home = ''): HTMLElement 
       words.href = href;
       words.target = '_blank';
       words.rel = 'noopener';
+      if (/^[a-z]{2,3}$/.test(story.headlineLang)) words.hreflang = story.headlineLang;
     }
     head.append(words);
   }
@@ -266,16 +270,18 @@ function storyCard(story: Story, now: number, pin = '', home = ''): HTMLElement 
     card.append(chips);
   }
 
+  // A compact story (after the file's first 30) is headline-only: no article list, no button.
+  if (!articles.length) return card;
   const items = el('ol', 'articles story-articles');
   items.id = `${id}-list`;
-  story.articles.forEach((a, i) => {
+  articles.forEach((a, i) => {
     const item = articleItem(a, now);
     item.hidden = i >= STORY_PREVIEW;
     items.append(item);
   });
   card.append(items);
 
-  const extra = story.articles.length - STORY_PREVIEW;
+  const extra = articles.length - STORY_PREVIEW;
   if (extra > 0) {
     const label = `show ${plural(extra, 'more article', 'more articles')}`;
     const more = el('button', 'story-more', label);
@@ -310,7 +316,7 @@ interface Clip {
 
 /** Distinct videos in the cell's articles and story articles, newest first. */
 function collectClips(detail: CellDetail): Clip[] {
-  const all = [...detail.articles, ...(detail.stories ?? []).flatMap((st) => st.articles)];
+  const all = [...detail.articles, ...(detail.stories ?? []).flatMap((st) => st.articles ?? [])];
   all.sort((a, b) => Date.parse(b.time) - Date.parse(a.time));
   const seen = new Map<string, Clip>();
   for (const a of all) {
@@ -406,7 +412,7 @@ export interface StoryPin {
 /** The cell's story a signal named: by the headline's article URL, else by the headline text; -1 when absent. */
 function pinnedIndex(groups: Story[], pin: StoryPin): number {
   if (pin.url) {
-    const at = groups.findIndex((st) => st.articles.some((a) => a.url === pin.url));
+    const at = groups.findIndex((st) => st.headlineUrl === pin.url || (st.articles ?? []).some((a) => a.url === pin.url));
     if (at >= 0) return at;
   }
   const text = pin.headline.trim();
@@ -437,18 +443,21 @@ function renderStories(detail: CellDetail | null, now: number, pin: StoryPin | n
   groups = byOutlets(groups);
   const at = pin ? pinnedIndex(groups, pin) : -1;
   if (at > 0) groups = [groups[at], ...groups.slice(0, at), ...groups.slice(at + 1)];
-  const cards = groups.map((s, i) => storyCard(s, now, at >= 0 && i === 0 && pin ? pin.label : '', detail.home));
-  const rest = cards.slice(STORIES_SHOWN);
-  const nodes: HTMLElement[] = [el('h3', 'panel-section', 'Stories'), ...cards];
-  if (rest.length) {
-    for (const card of rest) card.hidden = true;
-    const more = el('button', 'stories-more', `show ${rest.length} more ${rest.length === 1 ? 'story' : 'stories'}`);
+  const card = (s: Story, i: number) => storyCard(s, now, at >= 0 && i === 0 && pin ? pin.label : '', detail.home);
+  const shown = groups.slice(0, STORIES_SHOWN).map(card);
+  // A file can hold up to 200 stories (the ones after 30 compact): the rest are built only
+  // when SHOW N MORE STORIES is pressed, not with every place opened.
+  const restStories = groups.slice(STORIES_SHOWN);
+  const nodes: HTMLElement[] = [el('h3', 'panel-section', 'Stories'), ...shown];
+  if (restStories.length) {
+    const more = el('button', 'stories-more', `show ${restStories.length} more ${restStories.length === 1 ? 'story' : 'stories'}`);
     more.type = 'button';
     more.setAttribute('aria-controls', stories.id);
     // One step: the rest appear in place and the button goes. Focus moves to the first
     // revealed story (its headline link, else its heading) so it is not lost with the button.
     more.addEventListener('click', () => {
-      for (const card of rest) card.hidden = false;
+      const rest = restStories.map((s, i) => card(s, i + STORIES_SHOWN));
+      more.before(...rest);
       const first = rest[0];
       let target = first.querySelector<HTMLElement>('.story-link');
       if (!target) {

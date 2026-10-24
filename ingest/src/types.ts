@@ -168,8 +168,12 @@ export interface Story {
   headlineLang: string;
   /** URL of the article the headline comes from, "" when none. */
   headlineUrl: string;
+  /** Up to 5; a compact story keeps at most 3. */
   entities: string[];
-  articles: CellArticle[];
+  /** Newest 6, outlet-spread; absent on a compact story. */
+  articles?: CellArticle[];
+  /** Present (true) on every story after the first 30 (FULL_STORIES): no `articles`, at most 3 entities. */
+  compact?: true;
 }
 
 /** `/data/broadcast.json` (docs/DATA-CONTRACT.md "Broadcast"); mirrors web/src/broadcast.ts. */

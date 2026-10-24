@@ -119,8 +119,10 @@ group. Groups whose five most common tags share three are merged. In a place wit
 or more articles, a tag on more than 15% of them (a backdrop, such as "white house" in
 Washington) is ignored for grouping.
 
-A group of at least 3 articles is a story; a place shows at most 30, largest first.
-Then each article outside every story joins the story whose twenty most common title
+A group of at least 3 articles is a story, and so is a pair of articles from two
+different outlets that share two names (people or organisations) or three title words.
+A place shows its 30 largest stories in full and the rest, up to 200, as a headline with
+its numbers, largest first. Then each article outside every story joins the story whose twenty most common title
 words it shares three or more of (ties go to the larger story); it counts in that
 story but never supplies its headline. The headline shown for a story is the title of
 one of its grouped articles, chosen because it overlaps most with the others, shown as
@@ -237,7 +239,9 @@ the next audit measures it.
 Rule changes since the first audit, 24 October 2026: a top story must name its place in
 its own text; a story from one outlet is shown last and marked; garbled region parts and bare
 codes are dropped from place names; an article that names no city is not drawn; a listed chain
-of local sites counts as one outlet; local-language place names from GeoNames confirm places.
+of local sites counts as one outlet; local-language place names from GeoNames confirm places. 25 October 2026 (UTC; the
+same session): every group of three or more articles is a story, the first 30 in full and the
+rest as a headline, and two outlets on the same names count as a story.
 
 The record is the table of results in docs/audits/README.md, one dated row per audit,
 with each audit's per-story labels beside it and its snapshot in the archive.

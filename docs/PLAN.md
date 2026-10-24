@@ -1996,6 +1996,37 @@ aloud by the newscast it is a false claim with the site's name on it.
    1 to 17%, so certifying the 5% bar takes about 200 judged items (10 wrong: 3 to 9%).
    The scratch scripts and the judged samples stay outside the repo.
 
+   **Status 3B/3C (2026-10-24): built (ingest), the owner's decision.** The 30-story cap is now
+   `FULL_STORIES`: every further cluster with n >= 3 is a compact story (no `articles`, 3
+   entities, `compact: true`) up to a ceiling of `MAX_STORIES` = 200; strict pairs (two outlets
+   sharing 2+ persons or organisations or 3+ title tokens) are stories; the second pass runs over
+   all of them. Measured first on the 6 h state: 3+ clusters beyond the 30th per cell (P L W NJ T
+   D) 0 3 59 0 0 0, strict pairs 24 26 50 1 2 12. Six cells grouped **47.4% to 60.5%**
+   (Washington 52.1 to 70.0, London 34.1 to 44.5, Paris 54.6 to 61.0); Paris's and London's
+   largest stories keep their headline (Paris 138 to 136 units: two items its second pass took
+   now go to pair or tail stories). Largest file, Washington, 115 to 168 KB raw, 34 to 50 KB gz; a
+   compact story is about 0.48 KB (cutting its countries to 5 saved nothing). 24 h projection
+   (tail scaled by live n): Washington and New Delhi reach the 200 ceiling, about 200 to 210 KB
+   raw and 61 to 64 KB gz; under the 250 / 80 KB budget, so the ceiling stays 200. All cells:
+   1,111 to 2,176 stories (941 with n = 2), 9.6 to 10.8 MB of cell files. Not judged: the tail's
+   own precision (it uses the current join rule, 22% wrong in its sample).
+
+   **Status 3B (web) (2026-10-24): compact stories shown; built, not yet on live data.** The
+   site reads the uncapped `stories[]` (up to 200; after the first 30 `compact: true`, at most 3
+   entities, no `articles`). Story type: `articles?`, `compact?`, `headlineUrl?`; every reader
+   of `story.articles` handles its absence (panel card, video collection, the signal pin, which
+   now also matches on `headlineUrl`). Panel: a compact story is a headline-only entry (the
+   left-rule card with its linked headline, source line, meta line and chips, no article list or
+   button); the first three cards and SHOW N MORE STORIES count all stories, single-outlet last as
+   before. The cards past the first three are now built when SHOW N MORE STORIES is pressed, not
+   with every place opened; on a 200-story Paris fixture (12 full + 188 compact) the reveal,
+   build plus forced layout, took 34 to 50 ms in four runs, so it stays one step (the old
+   build-everything-hidden path took 50 ms for the reveal alone, on top of building 200 cards
+   at open). Place pages and feeds needed no code change (storyItem never listed articles).
+   Sizes with 150 compact stories appended: Washington's page 26.2 to 94.2 KB and feed 12.2 to
+   150.4 KB; Paris (188 appended) 25.7 to 112.2 KB, feed 12.4 to 183.7 KB. The feeds' growth
+   (about 1 KB an entry) is the open question: an entry cap is the owner's call.
+
 4. The headline rule (bar 3), which also fixes what the voice reads.
 5. Then the newscast: the voice prototype, the audio-driven timeline, the clip.
 Items 1a and 2 start today; status lines follow each. Live 02:45 UTC (run 40055474611): 12 stories, every entry with its `confirmed` level (5 city, 5 country, 1 metonym, 1 region or city), no Athens, Greece and no Petersburg, Russia; new at the tail Edinburgh (Storm Boelo), Kherson, Gaza, Amman. The Accuracy section is live on the about page. Visible label bug for item 1e: "Amman, (Jo11), Jordan". Live 05:24 UTC (run 40065153518, ba09fdd): regionOnly=6,920 of 7,205 unplaced in the run; totals.unplaced 64,483 to 65,269; cells 3,597 to 3,555. The state-named cells did NOT vanish live at once: "New York, United States" (832a16fffffffff) kept 1,463 records. Measured and explained (not a rule gap): no city-typed New York entry exists at the state centroid (0 of 930 raw entries in the 16 files; the exact-coordinate class is not clean anyway, it catches Andalusia and DC landmarks); the records left are the half of the window ingested before the v6 state shipped (2026-10-23 18:07 UTC), which carry no candidates and keep their stored placement until they age out by about 18:07 UTC on 2026-10-24. Re-read the cell after 18:30 UTC: expected renamed for a Hudson Valley place with n in the low hundreds or fewer. The before/after unplaced totals are also confounded by the chains change shipped in the same commit. Live 05:24 UTC: totals.outlets 10,480 to 9,711, reprints 25,425 to 12,948; Washington o 2,426 to 2,029, Paris 1,944 to 1,550; postmedia.com and townsquaremedia.com appear as single outlets in cells' topOutlets.

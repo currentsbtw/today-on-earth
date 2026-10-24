@@ -22,6 +22,7 @@ const CLIPS = 'https://github.com/currentsbtw/today-on-earth/releases/tag/clips'
 const PAGE_MIN = 10; // a cell gets a page at 10+ articles
 const INDEX_MIN = 2; // the index lists every cell with 2+
 const NEWEST = 20; // newest articles on a page
+const FEED_ENTRIES = 30; // a place feed carries its 30 newest stories (stories are no longer capped at 30)
 const CONCURRENCY = 32;
 
 const web = resolve(fileURLToPath(new URL('..', import.meta.url)));
@@ -258,7 +259,7 @@ function placeFeed(cell, heat) {
     .map((s, i) => ({ s, i, last: rfc(s.last), one: num(s.o) === 1 ? 1 : 0 }))
     .sort((a, b) => a.one - b.one || (a.last < b.last ? 1 : a.last > b.last ? -1 : a.i - b.i));
   const seen = new Set();
-  const entries = stories.map(({ s, last }) => {
+  const entries = stories.slice(0, FEED_ENTRIES).map(({ s, last }) => {
     const text = str(s.headline).trim();
     const href = safeHref(str(s.headlineUrl));
     const source = str(s.headlineSource);

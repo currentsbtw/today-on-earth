@@ -14,7 +14,7 @@ import {
   MIN_STORY_U, ORDINARY_MIN_O, PLANET_MIN_O, RISING_MIN_N, SLOT_ORDER, risingRatio, voices,
 } from "../src/broadcast.ts";
 import { reprintKey } from "../src/reprints.ts";
-import { MAX_STORIES } from "../src/stories.ts";
+import { COMPACT_ENTITIES, FULL_STORIES, MAX_STORIES } from "../src/stories.ts";
 import { CONFIRMATION_LEVELS, TOP_STORIES_MAX, TOP_STORIES_PER_COUNTRY, TOP_STORIES_UNKNOWN_HOME_MAX, confirmStory } from "../src/top-stories.ts";
 import { MAX_TOPICS, TOPIC_MAX_CELLS, TOPIC_MIN_TOTAL, isJunkTopic } from "../src/topics.ts";
 import { checkStepFields } from "./history-step-check.ts";
@@ -183,8 +183,13 @@ function checkStories(w: string, cell: Record<string, unknown>) {
     const sw = `${w}.stories[${i}]`;
     if (!isObj(s)) return err(sw, "not an object");
     storiesChecked++;
-    exactKeys(sw, s, ["n", "u", "o", "c", "i", "l", "t", "countries", "first", "last", "headline", "headlineSource", "headlineLang", "headlineUrl", "entities", "articles"]);
-    int(`${sw}.n`, s.n, 3);
+    // The first FULL_STORIES are full (with `articles`), every later one compact (added 2026-10-24).
+    const compact = i >= FULL_STORIES;
+    exactKeys(sw, s, ["n", "u", "o", "c", "i", "l", "t", "countries", "first", "last", "headline", "headlineSource", "headlineLang", "headlineUrl", "entities", compact ? "compact" : "articles"]);
+    if (compact && s.compact !== true) err(`${sw}.compact`, `expected true after the ${FULL_STORIES}th story, got ${JSON.stringify(s.compact)}`);
+    // n >= 3, or a strict pair: 2 units from two outlets (the shared names or tokens are not in the file).
+    int(`${sw}.n`, s.n, 2);
+    if (s.n === 2 && s.o !== 2) err(sw, `n = 2 but o = ${JSON.stringify(s.o)} (a pair needs two outlets)`);
     int(`${sw}.u`, s.u, 1);
     int(`${sw}.o`, s.o);
     int(`${sw}.c`, s.c);
@@ -209,11 +214,12 @@ function checkStories(w: string, cell: Record<string, unknown>) {
     if (s.headlineUrl === "" && s.headline !== "") err(`${sw}.headlineUrl`, "empty while the headline is not");
     if (typeof s.headline === "string" && Array.from(s.headline).length > 160) err(`${sw}.headline`, "longer than 160 chars");
     const ents = Array.isArray(s.entities) ? (s.entities as unknown[]) : (err(`${sw}.entities`, "not an array"), []);
-    if (ents.length > 5) err(`${sw}.entities`, `${ents.length} > 5`);
+    const maxEnts = compact ? COMPACT_ENTITIES : 5;
+    if (ents.length > maxEnts) err(`${sw}.entities`, `${ents.length} > ${maxEnts}`);
     for (const e of ents) if (typeof e !== "string" || e === "" || e !== e.toLowerCase()) err(`${sw}.entities`, `not a lowercase string: ${JSON.stringify(e)}`);
-    const arts = Array.isArray(s.articles) ? (s.articles as unknown[]) : (err(`${sw}.articles`, "not an array"), []);
+    const arts = compact ? [] : Array.isArray(s.articles) ? (s.articles as unknown[]) : (err(`${sw}.articles`, "not an array"), []);
     if (arts.length > 6) err(`${sw}.articles`, `${arts.length} > 6`);
-    if (arts.length === 0) err(`${sw}.articles`, "empty");
+    if (!compact && arts.length === 0) err(`${sw}.articles`, "empty");
     if (typeof s.n === "number" && arts.length > s.n) err(`${sw}.articles`, "more articles than n");
     const perOutlet = new Map<string, number>();
     const keys = new Set<string>();

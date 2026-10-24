@@ -12,7 +12,7 @@ import type { CellFile, HeatCell, HeatFile, Story, TopStoriesFile, TopStory } fr
  * contract quotes them.
  *
  * A story is listed only when its own text confirms its place (added 2026-10-24): its headline
- * or one of its saved article titles names the cell's city, a region of the cell's name, its
+ * or one of its saved article titles (a compact story has none) names the cell's city, a region of the cell's name, its
  * country, or a metonym of the capital (CAPITAL_METONYMS). The clip reads these aloud naming
  * the place, so a story GDELT placed at a same-name town elsewhere must not be read there.
  * The city and region may also be named in a local language (Купянск, 重庆): the place-names
@@ -136,17 +136,18 @@ type ConfirmText = { title: string; lang: string };
 /**
  * Whether a story's own text names its place, and the first level that does; null when none.
  * The texts are the story's `headline` (in `headlineLang`) and the `title` of each of its
- * `articles` as written to the cell file (in its `lang`). Each level is tried over every text
+ * `articles` as written to the cell file (in its `lang`); a compact story has no `articles`,
+ * so its headline alone confirms it. Each level is tried over every text
  * before the next level. The city and region levels also try the names `table` holds for the
  * cell's `fid` (`n` and `r`) by the same rules, except that a table name written all in
  * capitals is matched in capitals only and never by prefix, as a metonym is.
  */
 export function confirmStory(
   cell: { name: string; home: string; fid?: string },
-  story: { headline: string; headlineLang: string; articles: readonly ConfirmText[] },
+  story: { headline: string; headlineLang: string; articles?: readonly ConfirmText[] },
   table: PlaceNamesTable = placeNames(),
 ): ConfirmMatch | null {
-  const texts = [{ title: story.headline, lang: story.headlineLang }, ...story.articles]
+  const texts = [{ title: story.headline, lang: story.headlineLang }, ...(story.articles ?? [])]
     .filter((t) => typeof t.title === "string" && t.title !== "")
     .map((t) => ({ text: t.title, lang: typeof t.lang === "string" ? t.lang : "", folded: foldText(t.title), unmarked: stripMarks(t.title), noSpace: NO_SPACE_SCRIPT.test(t.title) }));
   const { city, regions, country } = placeParts(cell.name);

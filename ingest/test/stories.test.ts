@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { isDeniedTheme, parseNames, parseOrgs, parseThemes, titleTokens } from "../src/entities.ts";
 import { decodeState, encodeState } from "../src/state.ts";
-import { buildStories, themeWords } from "../src/stories.ts";
+import { FULL_STORIES, MAX_STORIES, buildStories, themeWords } from "../src/stories.ts";
 import type { ArticleRecord } from "../src/types.ts";
 import { gzipSync } from "node:zlib";
 
@@ -53,12 +53,12 @@ test("stories: two obvious stories plus noise", () => {
   assert.equal(a.headlineSource, "wire.com");
   assert.equal(a.headlineLang, "en");
   // Newest first, at most 2 per outlet: wire.com's oldest article is left out.
-  assert.deepEqual(a.articles.map((x) => x.url), ["https://zeit.de/a5", "https://daily.co.uk/a4", "https://wire.com/a3", "https://wire.com/a2"]);
+  assert.deepEqual(a.articles!.map((x) => x.url), ["https://zeit.de/a5", "https://daily.co.uk/a4", "https://wire.com/a3", "https://wire.com/a2"]);
 
   assert.equal(b.n, 4);
   assert.deepEqual(b.entities, ["john roe", "natural disaster flood"]); // 1 person, so a theme tops up, as words
   assert.equal(b.headline, "Riverton flood forces evacuation of downtown");
-  assert.equal(b.articles.length, 4);
+  assert.equal(b.articles!.length, 4);
 });
 
 test("stories: u, i against the cell's home, one article per reprint key", () => {
@@ -75,7 +75,7 @@ test("stories: u, i against the cell's home, one article per reprint key", () =>
   assert.equal(story.u, 2);
   assert.equal(story.c, 4);
   assert.equal(story.i, 3); // GB, AU, DE; US is the place's own country
-  assert.deepEqual(story.articles.map((a) => [a.url, a.reprints]), [["https://zeit.de/1", 0], ["https://abc.net.au/1", 2]]);
+  assert.deepEqual(story.articles!.map((a) => [a.url, a.reprints]), [["https://zeit.de/1", 0], ["https://abc.net.au/1", 2]]);
   // A home passed in by the cell wins over the story's own.
   assert.equal(buildStories(records, undefined, "DE").stories[0].i, 3);
   assert.equal(buildStories(records, undefined, "").stories[0].i, 4);
@@ -103,18 +103,88 @@ test("stories: deterministic over shuffled input", () => {
   }
 });
 
-test("stories: at most 30, all n >= 3, sorted by n desc", () => {
-  const many: ArticleRecord[] = [];
-  for (let s = 0; s < 34; s++) {
-    for (let k = 0; k < 3 + (s % 4); k++) {
-      many.push(art({ url: `https://s${s}.com/${k}`, time: t(1 + Math.floor((s * 6 + k) / 60), (s * 6 + k) % 60), source: `o${k}.com`, title: `Story${s} alpha${s} bravo${s} charlie${s} delta${s}`, persons: [`person ${s}`], orgs: [`org ${s}`] }));
+/** `count` clusters, cluster s with `size(s)` articles from distinct outlets, 2 persons and 2 organisations of its own. */
+function clusters(count: number, size: (s: number) => number, from = 0): ArticleRecord[] {
+  const out: ArticleRecord[] = [];
+  let i = from;
+  for (let s = 0; s < count; s++) {
+    for (let k = 0; k < size(s); k++, i++) {
+      out.push(art({ url: `https://s${s}.com/${k}`, time: t(1 + Math.floor(i / 60), i % 60), source: `o${k}.com`, title: `Story${s} alpha${s} bravo${s} charlie${s} delta${s}`, persons: [`person ${s}`, `second ${s}`], orgs: [`org ${s}`, `agency ${s}`] }));
     }
   }
+  return out;
+}
+
+test("stories: the first 30 are full, the rest compact (no articles, at most 3 entities); sorted by n desc", () => {
+  const many = clusters(34, (s) => 3 + (s % 4));
   const { stories, unclustered } = buildStories(many);
-  assert.equal(stories.length, 30);
+  assert.equal(stories.length, 34);
+  assert.equal(unclustered, 0);
   for (const s of stories) assert.ok(s.n >= 3);
   for (let i = 1; i < stories.length; i++) assert.ok(stories[i - 1].n >= stories[i].n);
+  stories.forEach((s, i) => {
+    if (i < FULL_STORIES) {
+      assert.ok(!("compact" in s));
+      assert.equal(s.entities.length, 4);
+      assert.ok(s.articles && s.articles.length > 0);
+    } else {
+      assert.equal(s.compact, true);
+      assert.ok(!("articles" in s));
+      assert.equal(s.entities.length, 3);
+      assert.ok(s.headline.startsWith("Story"));
+    }
+  });
   assert.equal(stories.reduce((sum, s) => sum + s.n, 0) + unclustered, many.length);
+});
+
+test("stories: at most 200; clusters beyond the ceiling stay unclustered", () => {
+  const many = clusters(MAX_STORIES + 5, () => 3);
+  const { stories, unclustered } = buildStories(many);
+  assert.equal(stories.length, MAX_STORIES);
+  assert.equal(unclustered, 15);
+  assert.equal(stories.filter((s) => s.compact).length, MAX_STORIES - FULL_STORIES);
+  // Ties by earliest article: the last five clusters created are the ones left out.
+  assert.ok(stories.every((s) => !/^Story20[0-4] /.test(s.headline)));
+});
+
+test("stories: a strict pair (two outlets, 2 shared names or 3 shared tokens) is a story", () => {
+  const names = { persons: ["ann lee"], orgs: ["harbor authority"] };
+  const byNames = buildStories([
+    art({ ...names, url: "https://a.com/1", time: t(1), source: "a.com", title: "Port chief resigns after audit" }),
+    art({ ...names, url: "https://b.com/1", time: t(2), source: "b.com", title: "Lee steps down from harbor board" }),
+  ]);
+  assert.equal(byNames.stories.length, 1);
+  assert.equal(byNames.stories[0].n, 2);
+  assert.equal(byNames.stories[0].o, 2);
+  assert.equal(byNames.unclustered, 0);
+  // One shared name and three shared title tokens.
+  const byTokens = buildStories([
+    art({ persons: ["ann lee"], url: "https://a.com/1", time: t(1), source: "a.com", title: "Harbor bridge collapse injures workers" }),
+    art({ persons: ["ann lee"], url: "https://b.com/1", time: t(2), source: "b.com", title: "Harbor bridge collapse halts traffic" }),
+  ]);
+  assert.equal(byTokens.stories.length, 1);
+  assert.equal(byTokens.stories[0].n, 2);
+});
+
+test("stories: a loose pair (one outlet, or 1 shared name and 2 tokens, or themes only) is not a story", () => {
+  const names = { persons: ["ann lee"], orgs: ["harbor authority"] };
+  const sameOutlet = buildStories([
+    art({ ...names, url: "https://a.com/1", time: t(1), source: "a.com", title: "Port chief resigns after audit" }),
+    art({ ...names, url: "https://a.com/2", time: t(2), source: "a.com", title: "Lee steps down from harbor board" }),
+  ]);
+  assert.equal(sameOutlet.stories.length, 0);
+  assert.equal(sameOutlet.unclustered, 2);
+  const oneName = buildStories([
+    art({ persons: ["ann lee"], url: "https://a.com/1", time: t(1), source: "a.com", title: "Harbor bridge reopens" }),
+    art({ persons: ["ann lee"], url: "https://b.com/1", time: t(2), source: "b.com", title: "Harbor bridge tolls rise" }),
+  ]);
+  assert.equal(oneName.stories.length, 0);
+  const themes = { themes: ["natural_disaster_flood", "env_climatechange"] };
+  const byThemes = buildStories([
+    art({ ...themes, url: "https://a.com/1", time: t(1), source: "a.com", title: "Rain closes schools" }),
+    art({ ...themes, url: "https://b.com/1", time: t(2), source: "b.com", title: "Farmers count losses" }),
+  ]);
+  assert.equal(byThemes.stories.length, 0);
 });
 
 test("stories: second pass attaches a loose article by 3 shared title tokens; it is never the headline", () => {
@@ -136,30 +206,32 @@ test("stories: second pass attaches a loose article by 3 shared title tokens; it
   assert.equal(story.first, t(1)); // the attached article counts in the dates
   assert.equal(unclustered, 1);
   assert.equal(story.headline, "Harbor bridge collapse injures workers");
-  assert.ok(story.articles.some((a) => a.url === "https://loose.com/1"));
+  assert.ok(story.articles!.some((a) => a.url === "https://loose.com/1"));
 });
 
-test("stories: the 30-story cap comes before the second pass, so a dropped cluster's article can attach", () => {
+test("stories: the second pass reaches a compact story", () => {
   const records: ArticleRecord[] = [];
   let i = 0;
   const at = () => t(1 + Math.floor(i / 60), i++ % 60);
-  // 31st cluster (3 articles, so dropped by the cap): shares "harbor bridge collapse" with story 29.
+  // A loose article, oldest, with no tags: only the second pass can place it.
+  records.push(art({ url: "https://loose.com/1", time: at(), source: "loose.com", title: "Harbor bridge collapse" }));
+  // 30 clusters of 5 (the full stories), then a 31st of 3 sharing "harbor bridge collapse".
+  for (let s = 0; s < 30; s++) {
+    for (let k = 0; k < 5; k++) {
+      records.push(art({ url: `https://s${s}.com/${k}`, time: at(), source: `o${k}.com`, title: `Kilo${s} lima${s} mike${s} november${s}`, persons: [`person ${s}`], orgs: [`org ${s}`] }));
+    }
+  }
   for (let k = 0; k < 3; k++) {
     records.push(art({ url: `https://x${k}.com/x`, time: at(), source: `x${k}.com`, title: `Harbor bridge collapse ${["zebra", "yonder", "xylophone"][k]}`, persons: ["person x"], orgs: ["org x"] }));
   }
-  // 30 clusters of 4; story 29 is the latest, so it comes last before the second pass.
-  for (let s = 0; s < 30; s++) {
-    for (let k = 0; k < 4; k++) {
-      const extra = s === 29 ? "harbor bridge collapse " : "";
-      records.push(art({ url: `https://s${s}.com/${k}`, time: at(), source: `o${k}.com`, title: `${extra}Kilo${s} lima${s} mike${s} november${s}`, persons: [`person ${s}`], orgs: [`org ${s}`] }));
-    }
-  }
   const { stories, unclustered } = buildStories(records);
-  assert.equal(stories.length, 30);
-  assert.equal(unclustered, 0); // the 31st cluster's three articles all attached
-  assert.equal(stories[0].n, 7); // story 29 plus the three, re-sorted first
-  assert.match(stories[0].headline, /Kilo29/); // the attached articles never become the headline
-  assert.ok(stories.slice(1).every((s) => s.n === 4));
+  assert.equal(stories.length, 31);
+  assert.equal(unclustered, 0);
+  const tail = stories[30];
+  assert.equal(tail.compact, true);
+  assert.equal(tail.n, 4); // its three plus the loose article
+  assert.equal(tail.first, t(1)); // the attached article counts in the dates
+  assert.match(tail.headline, /^Harbor bridge collapse [a-z]+$/); // never the attached article
 });
 
 test("stories: re-sorted by n after the second pass when attachments change the order", () => {
@@ -194,7 +266,7 @@ test("stories: one outlet's copies of a headline are one article; the headline i
   assert.equal(stories[0].u, 3);
   assert.equal(unclustered, 1);
   assert.ok(!stories[0].headline.includes("Sunny"));
-  assert.ok(stories[0].articles.every((a) => !a.title.includes("Sunny")));
+  assert.ok(stories[0].articles!.every((a) => !a.title.includes("Sunny")));
 });
 
 test("deny-list: generic theme families and form themes are dropped, specific ones kept", () => {
