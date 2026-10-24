@@ -262,8 +262,10 @@ export function parseGkgLine(line: string, countryOf: CountryLookup): ParseResul
   const locs = parseCandidates(f[COL.V2_LOCATIONS]);
   if (!locs) return { ok: false, reason: "location" };
 
-  // Placement until place.ts resolves it at snapshot time: the first candidate.
-  const placed = locs === "unplaced" ? null : locs[0];
+  // Placement until place.ts resolves it at snapshot time: the first candidate when it is a
+  // city; a region-only article is unplaced, as place.ts leaves it (its region stays in locs).
+  const first = locs === "unplaced" ? null : locs[0];
+  const placed = first && (first.type === 3 || first.type === 4) ? first : null;
   const source = f[COL.SOURCE_COMMON_NAME].trim().toLowerCase();
   const image = f[COL.SHARING_IMAGE];
   return {

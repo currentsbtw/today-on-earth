@@ -25,8 +25,13 @@ export interface PlacementSummary {
   pairs: BoilerplatePair[];
   /** Records placed at a later candidate because an earlier one was boilerplate. */
   moved: number;
-  /** Records left with no candidate once boilerplate is skipped. */
+  /**
+   * Records left unplaced by placement: no candidate left once boilerplate is skipped, or only
+   * a region left (regionOnly).
+   */
   unplaced: number;
+  /** Of unplaced, the records whose first candidate left after the boilerplate skip is a region. */
+  regionOnly: number;
 }
 
 export interface PlacementOptions {
@@ -51,6 +56,9 @@ const pairKey = (c: LocationCandidate) => `${identity(c)}\n${c.n}`;
  * outlet's boilerplate: the exact count is what separates a fixed block (always x2) from a
  * local outlet that really covers its city (counts vary). A record takes its first candidate
  * that is not boilerplate for its outlet, or becomes unplaced (cellId "") when none is left.
+ * Only a city is a place to put a dot (docs/PLAN.md, World-class item 1b): when the first
+ * candidate left is a region (type 2 or 5, so no city survived the skip), the record is unplaced
+ * and counted in regionOnly; the region stays in its candidates, so the rule can be revisited.
  * Records without candidates (state versions before 6, or country-only) are left as they are.
  * Deterministic: depends only on the set of records, not their order.
  */
@@ -106,12 +114,15 @@ export function resolvePlacement(records: ArticleRecord[], opts: PlacementOption
 
   let moved = 0;
   let unplaced = 0;
+  let regionOnly = 0;
   for (const r of records) {
     if (!r.locs?.length) continue;
     const skip = boilerplate.get(outlet(r.source));
     const i = skip ? r.locs.findIndex((c) => !skip.has(pairKey(c))) : 0;
-    if (i < 0) {
+    const region = i >= 0 && (r.locs[i].type === 2 || r.locs[i].type === 5);
+    if (i < 0 || region) {
       unplaced++;
+      if (region) regionOnly++;
       Object.assign(r, { cellId: "", lat: 0, lon: 0, locationName: "", locationCountry: "", locationFid: "" });
       continue;
     }
@@ -121,5 +132,5 @@ export function resolvePlacement(records: ArticleRecord[], opts: PlacementOption
     Object.assign(r, { cellId, lat: c.lat, lon: c.lon, locationName: c.name, locationCountry: c.country, locationFid: c.fid });
   }
 
-  return { outletsChecked, outletsWithBoilerplate: boilerplate.size, pairs, moved, unplaced };
+  return { outletsChecked, outletsWithBoilerplate: boilerplate.size, pairs, moved, unplaced, regionOnly };
 }

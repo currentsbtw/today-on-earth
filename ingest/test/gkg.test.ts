@@ -107,6 +107,15 @@ test("placement at parse: a city beats a region mentioned earlier", () => {
   assert.notEqual(r.record.cellId, latLngToCell(39.828175, -98.5795, 3));
 });
 
+test("placement at parse: a region-only article is unplaced and carries its region", () => {
+  const f = lines[0].split("	");
+  f[10] = "1#American#US#US##39.828175#-98.5795#US#10;2#Texas, United States#US#USTX##31.106#-97.6475#TX#5";
+  const r = parseGkgLine(f.join("	"), countryOf);
+  assert.ok(r.ok, "still an article in the window");
+  assert.deepEqual([r.record.cellId, r.record.lat, r.record.lon, r.record.locationName, r.record.locationCountry], ["", 0, 0, "", ""]);
+  assert.deepEqual(r.record.locs?.map((c) => [c.name, c.type, c.n]), [["Texas, United States", 2, 1]]);
+});
+
 test("rule 1: an article with only country-level locations is unplaced", () => {
   const f = lines[0].split("	");
   f[10] = "1#American#US#US##39.828175#-98.5795#US#10";
@@ -204,7 +213,10 @@ test("placement is the same before and after a state round trip", () => {
   const placement = (r: (typeof records)[number]) => [r.cellId, r.lat, r.lon, r.locationName, r.locationCountry];
   assert.deepEqual(reloaded.map(placement), records.map(placement));
   assert.deepEqual(reloaded.map((r) => r.locs), records.map((r) => r.locs));
-  assert.deepEqual(records.map((r) => r.locationName), ["Lyon, France", "Paris, France", "Texas, United States"]);
+  // A region-only article is unplaced (World-class item 1b) but keeps its region candidate.
+  assert.deepEqual(records.map((r) => r.locationName), ["Lyon, France", "Paris, France", ""]);
+  assert.deepEqual([records[2].cellId, reloaded[2].cellId], ["", ""]);
+  assert.deepEqual(reloaded[2].locs?.map((c) => [c.name, c.type]), [["Texas, United States", 2]]);
 });
 
 test("parsed record: placement starts at the first candidate and carries the candidates", () => {

@@ -14,10 +14,12 @@ deployed site. In local dev the frontend serves `web/public/data/` at `/data/`.
   "windowHours": 24,                        // rolling window the counts cover
   "newestArticleAt": "2026-10-20T19:15:00Z",
   "totals": { "articles": 183204, // article units: one per outlet and headline, see Reprints (changed 2026-10-23)
-              "outlets": 9120,    // distinct outlets; a listed network counts once (changed 2026-10-23)
+              "outlets": 9120,    // distinct outlets; a listed network or domestic chain counts once (changed 2026-10-23;
+                                  // chains since 2026-10-24)
               "countries": 171, "cells": 6210,
-              "unplaced": 41200,  // article units with no primary location: only country-level locations, or every
-                                  // city and region skipped as outlet boilerplate; counted here, never binned (changed 2026-10-23)
+              "unplaced": 41200,  // article units with no primary location: only country-level locations, no city
+                                  // left once outlet boilerplate is skipped (only a region, or nothing), counted here,
+                                  // never binned (changed 2026-10-23; region-only articles since 2026-10-24)
               "reprints": 23100 }, // sum over cells of (n - u): articles that copy another outlet's headline in the same cell (added 2026-10-21)
   "topOutletCountries": [["US", 52000], ["GB", 18100], ["IN", 12400]], // the 20 outlet countries with the most article units in the
                                   // window, placed and unplaced (the unit of totals.articles), by units desc then code, "" excluded;
@@ -29,7 +31,8 @@ deployed site. In local dev the frontend serves `web/public/data/` at `/data/`.
       "n": 412,                  // article units (one per outlet and headline) whose primary location falls in this cell
                                  // (changed 2026-10-23)
       "u": 361,                  // distinct headlines: distinct reprint keys, untitled articles one each (added 2026-10-21)
-      "o": 150,                  // distinct outlets: source domains, a listed network counted once (changed 2026-10-23)
+      "o": 150,                  // distinct outlets: source domains, a listed network or domestic chain counted once
+                                 // (changed 2026-10-23; chains since 2026-10-24)
       "c": 23,                   // distinct source countries (outlets' countries), 0 if unknown
       "i": 22,                   // outlet countries other than the place's own country (added 2026-10-21)
       "l": 9,                    // distinct languages
@@ -81,7 +84,11 @@ distinct URLs: within one cell (and, for the totals, within the unplaced article
 unit per (outlet, non-empty reprint key), so an outlet's copies of one headline are one
 article, plus one unit per article with an empty key. The outlet is the
 source domain, or its network's name when the domain (or a parent domain) is listed in
-`ingest/data/outlet-networks.txt`, so a network's sites are one outlet. `n`,
+`ingest/data/outlet-networks.txt`, so a network's sites are one outlet. The file lists
+aggregator networks (Big News Network, iHeartMedia) and, since 2026-10-24, domestic chains
+whose local sites run the same copy (Newsquest, Ippen, MediaNews Group with Tribune
+Publishing, Sinclair, Australian Community Media and others; the file names each, with how
+its members were found). `n`,
 `topOutlets`, `topCountries`, `languages`, `videos`, `unclustered`, `totals.articles` and
 `totals.unplaced` count units; `c`, `i` and `l` are taken over each unit's earliest copy
 (its outlet country and language). `t` is still the mean over every URL. `o` and
@@ -161,8 +168,9 @@ kept or dropped, plus the unplaced units), so no entry exceeds `totals.articles`
   "home": "FR",                       // the place's own country, "" if unknown (added 2026-10-21)
   "fid": "-1456928",                  // the place's GDELT FeatureID; absent when none (added 2026-10-24, see below)
   "n": 412, "u": 361, "o": 150, "c": 23, "i": 22, "l": 9, "t": -2.1,
-  "topOutlets":  [["lemonde.fr", 31], ["bbc.co.uk", 12]],  // top 10 by article units; a listed network is one entry,
-                                                           // named by the network (changed 2026-10-23)
+  "topOutlets":  [["lemonde.fr", 31], ["bbc.co.uk", 12]],  // top 10 by article units; a listed network or chain is one
+                                                           // entry, named by the network ("newsquest.co.uk"), not
+                                                           // its domains (changed 2026-10-23; chains since 2026-10-24)
   "topCountries":[["FR", 190], ["GB", 40], ["US", 38]],    // every outlet country (ISO 3166-1 alpha-2) with its article units,
                                                            // by units desc then code; no cap and no "": length == c; for the
                                                            // site's "silent among the largest news countries" line (changed 2026-10-23)
@@ -667,13 +675,16 @@ failure fails the run; that path is unused in production.
   not text order. Candidates: the 3 cities with the most mentions, then the 1 region with
   the most mentions; ties go to the smallest CharOffset (the earliest mention), then the
   name. The primary location is the first candidate that is not boilerplate for the
-  article's outlet. Boilerplate: for each outlet (network-aware, as in Reprints) with at
-  least 20 articles (URLs) with candidates in the window (`MIN_OUTLET_ARTICLES`), a
-  (place, exact mention count) pair carried by at least half of those articles
-  (`BOILERPLATE_SHARE`); a place is its FeatureID, else its name. An article whose
-  candidates are all boilerplate, or whose every location is country-level (Type 1), is
-  **not placed in any cell**: it is counted in `totals.articles` and `totals.unplaced`
-  only. A country centroid is not where anything happened, so it must never glow. (Cell
+  article's outlet, when that candidate is a city (changed 2026-10-24: a region is never a
+  primary location; the region candidate stays in `locs`). Boilerplate: for each outlet
+  (network-aware, as in Reprints) with at least 20 articles (URLs) with candidates in the
+  window (`MIN_OUTLET_ARTICLES`), a (place, exact mention count) pair carried by at least
+  half of those articles (`BOILERPLATE_SHARE`); a place is its FeatureID, else its name.
+  An article whose candidates are all boilerplate, whose first candidate left after the
+  boilerplate skip is a region (Type 2 or 5: it mentions no city, or every city it mentions
+  is boilerplate), or whose every location is country-level (Type 1), is **not placed in
+  any cell**: it is counted in `totals.articles` and `totals.unplaced` only. A country
+  or region centroid is not where anything happened, so it must never glow. (Cell
   `name` for the rare non-country location whose name is a demonym is left as GDELT
   gives it.)
 - `image` is always present, `""` when missing. `languages` is capped at 10 entries like

@@ -147,7 +147,7 @@ async function main(): Promise<number> {
   const placement = resolvePlacement(records);
   log(
     `placement: outlets checked=${placement.outletsChecked} with boilerplate=${placement.outletsWithBoilerplate} ` +
-      `pairs=${placement.pairs.length} moved=${placement.moved} unplaced by boilerplate=${placement.unplaced}`,
+      `pairs=${placement.pairs.length} moved=${placement.moved} unplaced=${placement.unplaced} (by boilerplate=${placement.unplaced - placement.regionOnly} regionOnly=${placement.regionOnly})`,
   );
 
   // Baseline: count each placed article once, when it first enters the state, by its UTC day.

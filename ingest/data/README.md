@@ -58,11 +58,22 @@ line (bad domain, no network name) makes the ingest run fail. It currently holds
   network `bignewsnetwork.com` (they were 48% of Taipei's outlets and 22% of New Delhi's
   on 2026-10-23);
 - `.iheart.com` -> `iheart.com`: iHeartMedia's radio station sites, which run the same
-  national copy with each station's name as the title tail.
+  national copy with each station's name as the title tail;
+- 785 domains of 19 domestic chains (added 2026-10-24), dotted, each under the chain's
+  corporate domain: Newsquest (`newsquest.co.uk`), Ippen (`ippen.media`), MediaNews Group
+  with Tribune Publishing (`medianewsgroup.com`), Sinclair (`sbgi.net`), Australian
+  Community Media (`acm.media`), Hearst Television, Scripps, Townsquare Media, NBCUniversal
+  and Fox owned stations, Cox Media Group, Graham Media, Forum Communications, Postmedia,
+  Black Press, Funke, EBRA, Keskisuomalainen and Nine.
 
 The Big News Network block was generated from the overrides file (every entry whose comment
-is "Big News Network"); keep the two lists in step when one changes. Domestic chains seen
-inflating `o` at home (Newsquest, Ippen, MediaNews, Sinclair) are not listed yet.
+is "Big News Network"); keep the two lists in step when one changes. The chain blocks were
+found by data (docs/PLAN.md, item 1d): domains whose headlines equal another same-country
+domain's in 80%+ of their records form candidate groups; members were then taken by the
+chain's CMS fingerprint (a URL or image-host pattern, named in each block's comment) on two
+windows and checked by name, plus a few well-known titles added by name and marked so. A
+chain's site the windows did not show is not listed; add it by hand when it shows up. A
+domain may be listed once only (a test checks).
 
 ### `MASTER-GDELTDOMAINSBYCOUNTRY-MAY2018.TXT`
 

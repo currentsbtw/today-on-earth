@@ -8,6 +8,7 @@ import {
   loadNetworks,
   makeDetailedCountryLookup,
   makeOutletOf,
+  NETWORKS_FILE,
   outletOf,
   parseNetworks,
   OVERRIDES_FILE,
@@ -114,6 +115,36 @@ test("networks: Big News Network portals are one outlet, every BNN override is l
   // iheart's station hosts are one outlet.
   for (const d of ["iheart.com", "wkip.iheart.com", "news.kfi.iheart.com"]) assert.equal(outletOf(d), "iheart.com", d);
   assert.equal(outletOf("iheartradio.ca"), "iheartradio.ca");
+});
+
+test("networks: domestic chains are one outlet each, by the chain's name", () => {
+  const cases: [string, string][] = [
+    ["northwichguardian.co.uk", "newsquest.co.uk"],
+    ["www.burytimes.co.uk", "newsquest.co.uk"], // dotted: subdomains too
+    ["hamhigh.co.uk", "newsquest.co.uk"], // ex-Archant, on Newsquest's CMS
+    ["merkur.de", "ippen.media"],
+    ["fr.de", "ippen.media"],
+    ["mercurynews.com", "medianewsgroup.com"],
+    ["orlandosentinel.com", "medianewsgroup.com"], // Tribune Publishing, also Alden
+    ["wjla.com", "sbgi.net"],
+    ["canberratimes.com.au", "acm.media"],
+    ["kcra.com", "hearsttelevision.com"],
+    ["torontosun.com", "postmedia.com"],
+  ];
+  for (const [d, n] of cases) assert.equal(outletOf(d), n, d);
+  // Left out on purpose: other owners that share wire copy with a chain, and a chain's rivals.
+  for (const d of ["baltimoresun.com", "pressdemocrat.com", "kpbs.org", "welt.de", "manchestereveningnews.co.uk"]) assert.equal(outletOf(d), d, d);
+});
+
+test("networks file: no domain is listed twice (a later line would silently win)", () => {
+  const seen = new Map<string, number>();
+  readFileSync(NETWORKS_FILE, "utf8").split(/\r?\n/).forEach((line, i) => {
+    if (!line.trim() || line.trimStart().startsWith("#")) return;
+    const d = line.split("\t")[0].trim().toLowerCase().replace(/^\./, "");
+    assert.ok(!seen.has(d), `${d} on lines ${seen.get(d)} and ${i + 1}`);
+    seen.set(d, i + 1);
+  });
+  assert.ok(seen.size > 1000);
 });
 
 test("networks file parser: plain entries are exact, dotted ones cover subdomains, exact wins", () => {

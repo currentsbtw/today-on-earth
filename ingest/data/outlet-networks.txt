@@ -347,3 +347,856 @@
 # Radio station sites under iheart.com hosts (wkip.iheart.com, ...) running the same national copy
 # with each station's name as the title tail.
 .iheart.com	iheart.com	iHeartMedia station sites
+
+# ===== Domestic chains (added 2026-10-24, PLAN item 1d) =====
+# Local and regional sites of one owner that run the same copy count as one outlet, as the
+# networks above do. Found by data on two windows (16 GKG files 2026-10-23 03:00-04:45 UTC and a
+# 6 h state 2026-10-23 19:15 to 10-24 01:15 UTC): a domain whose reprint keys equal another
+# same-country domain's in 80%+ of its records (2+ shared headlines) joins that domain's group.
+# Members were then taken by the chain's own CMS fingerprint (a URL or image-host pattern on
+# 50%+ of a domain's records, in the chain's country) and checked by name; a few well-known
+# titles of a chain that the windows did not show are added by name and marked so.
+# Rejected: NPR member stations (independent owners sharing NPR copy, like a wire), groups
+# joined only by AP or dpa copy, aggregators (zazoom.it, inewsgr.com).
+
+# --- Newsquest ---
+# Newsquest Media Group (UK): URL /<8 digits>.<slug>/ and /resources/images/ og-image, GB.
+.andoveradvertiser.co.uk	newsquest.co.uk	Newsquest
+.asianimage.co.uk	newsquest.co.uk	Newsquest
+.barryanddistrictnews.co.uk	newsquest.co.uk	Newsquest
+.basingstokegazette.co.uk	newsquest.co.uk	Newsquest
+.bicesteradvertiser.net	newsquest.co.uk	Newsquest
+.bordertelegraph.com	newsquest.co.uk	Newsquest
+.borehamwoodtimes.co.uk	newsquest.co.uk	Newsquest
+.bournemouthecho.co.uk	newsquest.co.uk	Newsquest
+.bracknellnews.co.uk	newsquest.co.uk	Newsquest
+.braintreeandwithamtimes.co.uk	newsquest.co.uk	Newsquest
+.brentwoodlive.co.uk	newsquest.co.uk	Newsquest
+.bridgwatermercury.co.uk	newsquest.co.uk	Newsquest
+.bridportnews.co.uk	newsquest.co.uk	Newsquest
+.bromsgroveadvertiser.co.uk	newsquest.co.uk	Newsquest
+.bucksfreepress.co.uk	newsquest.co.uk	Newsquest
+.burnhamandhighbridgeweeklynews.co.uk	newsquest.co.uk	Newsquest
+.burytimes.co.uk	newsquest.co.uk	Newsquest
+.cambstimes.co.uk	newsquest.co.uk	Newsquest
+.chardandilminsternews.co.uk	newsquest.co.uk	Newsquest
+.chelmsfordcitynews.co.uk	newsquest.co.uk	Newsquest
+.chesterstandard.co.uk	newsquest.co.uk	Newsquest
+.clactonandfrintongazette.co.uk	newsquest.co.uk	Newsquest
+.clydebankpost.co.uk	newsquest.co.uk	Newsquest
+.cotswoldjournal.co.uk	newsquest.co.uk	Newsquest
+.countypress.co.uk	newsquest.co.uk	Newsquest
+.countytimes.co.uk	newsquest.co.uk	Newsquest
+.cravenherald.co.uk	newsquest.co.uk	Newsquest
+.dailyecho.co.uk	newsquest.co.uk	Newsquest
+.darlingtonandstocktontimes.co.uk	newsquest.co.uk	Newsquest
+.denbighshirefreepress.co.uk	newsquest.co.uk	Newsquest
+.dorsetecho.co.uk	newsquest.co.uk	Newsquest
+.dudleynews.co.uk	newsquest.co.uk	Newsquest
+.dumbartonreporter.co.uk	newsquest.co.uk	Newsquest
+.dunfermlinepress.com	newsquest.co.uk	Newsquest
+.dunmowbroadcast.co.uk	newsquest.co.uk	Newsquest
+.eadt.co.uk	newsquest.co.uk	Newsquest
+.ealingtimes.co.uk	newsquest.co.uk	Newsquest
+.eastlondonadvertiser.co.uk	newsquest.co.uk	Newsquest
+.eastlothiancourier.com	newsquest.co.uk	Newsquest
+.echo-news.co.uk	newsquest.co.uk	Newsquest
+.edp24.co.uk	newsquest.co.uk	Newsquest
+.elystandard.co.uk	newsquest.co.uk	Newsquest
+.enfieldindependent.co.uk	newsquest.co.uk	Newsquest
+.eppingforestguardian.co.uk	newsquest.co.uk	Newsquest
+.eveningnews24.co.uk	newsquest.co.uk	Newsquest
+.eveshamjournal.co.uk	newsquest.co.uk	Newsquest
+.falmouthpacket.co.uk	newsquest.co.uk	Newsquest
+.freepressseries.co.uk	newsquest.co.uk	Newsquest
+.gazette-news.co.uk	newsquest.co.uk	Newsquest
+.gazetteandherald.co.uk	newsquest.co.uk	Newsquest
+.gazetteherald.co.uk	newsquest.co.uk	Newsquest
+.gazetteseries.co.uk	newsquest.co.uk	Newsquest
+.glasgowtimes.co.uk	newsquest.co.uk	Newsquest
+.greenocktelegraph.co.uk	newsquest.co.uk	Newsquest
+.guardian-series.co.uk	newsquest.co.uk	Newsquest
+.hackneygazette.co.uk	newsquest.co.uk	Newsquest
+.halesowennews.co.uk	newsquest.co.uk	Newsquest
+.halsteadgazette.co.uk	newsquest.co.uk	Newsquest
+.hamhigh.co.uk	newsquest.co.uk	Newsquest
+.hampshirechronicle.co.uk	newsquest.co.uk	Newsquest
+.harrowtimes.co.uk	newsquest.co.uk	Newsquest
+.harwichandmanningtreestandard.co.uk	newsquest.co.uk	Newsquest
+.heraldscotland.com	newsquest.co.uk	Newsquest
+.heraldseries.co.uk	newsquest.co.uk	Newsquest
+.herefordtimes.com	newsquest.co.uk	Newsquest
+.hertsad.co.uk	newsquest.co.uk	Newsquest
+.hexham-courant.co.uk	newsquest.co.uk	Newsquest
+.hillingdontimes.co.uk	newsquest.co.uk	Newsquest
+.huntspost.co.uk	newsquest.co.uk	Newsquest
+.ilfordrecorder.co.uk	newsquest.co.uk	Newsquest
+.impartialreporter.com	newsquest.co.uk	Newsquest
+.ipswichstar.co.uk	newsquest.co.uk	Newsquest
+.irvinetimes.com	newsquest.co.uk	Newsquest
+.islingtongazette.co.uk	newsquest.co.uk	Newsquest
+.keighleynews.co.uk	newsquest.co.uk	Newsquest
+.kidderminstershuttle.co.uk	newsquest.co.uk	Newsquest
+.kilburntimes.co.uk	newsquest.co.uk	Newsquest
+.lancashiretelegraph.co.uk	newsquest.co.uk	Newsquest
+.leaderlive.co.uk	newsquest.co.uk	Newsquest
+.ledburyreporter.co.uk	newsquest.co.uk	Newsquest
+.leighjournal.co.uk	newsquest.co.uk	Newsquest
+.london-now.co.uk	newsquest.co.uk	Newsquest
+.ludlowadvertiser.co.uk	newsquest.co.uk	Newsquest
+.maldonandburnhamstandard.co.uk	newsquest.co.uk	Newsquest
+.malverngazette.co.uk	newsquest.co.uk	Newsquest
+.messengernewspapers.co.uk	newsquest.co.uk	Newsquest
+.midweekherald.co.uk	newsquest.co.uk	Newsquest
+.milfordmercury.co.uk	newsquest.co.uk	Newsquest
+.newhamrecorder.co.uk	newsquest.co.uk	Newsquest
+.newsandstar.co.uk	newsquest.co.uk	Newsquest
+.newsshopper.co.uk	newsquest.co.uk	Newsquest
+.northsomersettimes.co.uk	newsquest.co.uk	Newsquest
+.northwaleschronicle.co.uk	newsquest.co.uk	Newsquest
+.northwalespioneer.co.uk	newsquest.co.uk	Newsquest
+.northwichguardian.co.uk	newsquest.co.uk	Newsquest
+.nwemail.co.uk	newsquest.co.uk	Newsquest
+.oxfordmail.co.uk	newsquest.co.uk	Newsquest
+.peeblesshirenews.com	newsquest.co.uk	Newsquest
+.penarthtimes.co.uk	newsquest.co.uk	Newsquest
+.readingchronicle.co.uk	newsquest.co.uk	Newsquest
+.redditchadvertiser.co.uk	newsquest.co.uk	Newsquest
+.rhyljournal.co.uk	newsquest.co.uk	Newsquest
+.richmondandtwickenhamtimes.co.uk	newsquest.co.uk	Newsquest
+.romfordrecorder.co.uk	newsquest.co.uk	Newsquest
+.royston-crow.co.uk	newsquest.co.uk	Newsquest
+.runcornandwidnesworld.co.uk	newsquest.co.uk	Newsquest
+.salisburyjournal.co.uk	newsquest.co.uk	Newsquest
+.sloughobserver.co.uk	newsquest.co.uk	Newsquest
+.somersetcountygazette.co.uk	newsquest.co.uk	Newsquest
+.southwalesargus.co.uk	newsquest.co.uk	Newsquest
+.southwalesguardian.co.uk	newsquest.co.uk	Newsquest
+.sthelensstar.co.uk	newsquest.co.uk	Newsquest
+.stourbridgenews.co.uk	newsquest.co.uk	Newsquest
+.stroudnewsandjournal.co.uk	newsquest.co.uk	Newsquest
+.surreycomet.co.uk	newsquest.co.uk	Newsquest
+.swindonadvertiser.co.uk	newsquest.co.uk	Newsquest
+.theargus.co.uk	newsquest.co.uk	Newsquest
+.theboltonnews.co.uk	newsquest.co.uk	Newsquest
+.thecomet.net	newsquest.co.uk	Newsquest
+.thenational.scot	newsquest.co.uk	Newsquest
+.thenorthernecho.co.uk	newsquest.co.uk	Newsquest
+.thetelegraphandargus.co.uk	newsquest.co.uk	Newsquest
+.thetottenhamindependent.co.uk	newsquest.co.uk	Newsquest
+.thewestmorlandgazette.co.uk	newsquest.co.uk	Newsquest
+.thewestonmercury.co.uk	newsquest.co.uk	Newsquest
+.thisisoxfordshire.co.uk	newsquest.co.uk	Newsquest
+.thisiswiltshire.co.uk	newsquest.co.uk	Newsquest
+.thurrockgazette.co.uk	newsquest.co.uk	Newsquest
+.times-series.co.uk	newsquest.co.uk	Newsquest
+.timesandstar.co.uk	newsquest.co.uk	Newsquest
+.tivysideadvertiser.co.uk	newsquest.co.uk	Newsquest
+.wandsworthguardian.co.uk	newsquest.co.uk	Newsquest
+.warringtonguardian.co.uk	newsquest.co.uk	Newsquest
+.watfordobserver.co.uk	newsquest.co.uk	Newsquest
+.westerntelegraph.co.uk	newsquest.co.uk	Newsquest
+.wharfedaleobserver.co.uk	newsquest.co.uk	Newsquest
+.whtimes.co.uk	newsquest.co.uk	Newsquest
+.wiltsglosstandard.co.uk	newsquest.co.uk	Newsquest
+.wiltshiretimes.co.uk	newsquest.co.uk	Newsquest
+.wimbledonguardian.co.uk	newsquest.co.uk	Newsquest
+.wirralglobe.co.uk	newsquest.co.uk	Newsquest
+.wisbechstandard.co.uk	newsquest.co.uk	Newsquest
+.witneygazette.co.uk	newsquest.co.uk	Newsquest
+.worcesternews.co.uk	newsquest.co.uk	Newsquest
+.yorkpress.co.uk	newsquest.co.uk	Newsquest
+.yourlocalguardian.co.uk	newsquest.co.uk	Newsquest
+
+# --- Ippen ---
+# Ippen Media (DE): URL -<8 digits>.html or -zr-<8 digits>.html. Not in the windows, added by name: fr.de ruhr24.de rosenheim24.de chiemgau24.de bgland24.de wasserburg24.de mangfall24.de innsalzach24.de giessener-allgemeine.de wetterauer-zeitung.de extratipp.com 24hamburg.de hallo-muenchen.de hersfelder-zeitung.de werra-rundschau.de.
+.24hamburg.de	ippen.media	Ippen
+.az-online.de	ippen.media	Ippen
+.bgland24.de	ippen.media	Ippen
+.chiemgau24.de	ippen.media	Ippen
+.come-on.de	ippen.media	Ippen
+.costanachrichten.com	ippen.media	Ippen
+.extratipp.com	ippen.media	Ippen
+.fnp.de	ippen.media	Ippen
+.fr.de	ippen.media	Ippen
+.giessener-allgemeine.de	ippen.media	Ippen
+.hallo-muenchen.de	ippen.media	Ippen
+.hersfelder-zeitung.de	ippen.media	Ippen
+.hna.de	ippen.media	Ippen
+.innsalzach24.de	ippen.media	Ippen
+.kreisbote.de	ippen.media	Ippen
+.kreiszeitung.de	ippen.media	Ippen
+.mangfall24.de	ippen.media	Ippen
+.merkur.de	ippen.media	Ippen
+.op-online.de	ippen.media	Ippen
+.ovb-online.de	ippen.media	Ippen
+.rosenheim24.de	ippen.media	Ippen
+.ruhr24.de	ippen.media	Ippen
+.schwaebische-post.de	ippen.media	Ippen
+.soester-anzeiger.de	ippen.media	Ippen
+.tz.de	ippen.media	Ippen
+.wa.de	ippen.media	Ippen
+.wasserburg24.de	ippen.media	Ippen
+.werra-rundschau.de	ippen.media	Ippen
+.wetterauer-zeitung.de	ippen.media	Ippen
+.wlz-online.de	ippen.media	Ippen
+
+# --- MediaNews Group ---
+# MediaNews Group and Tribune Publishing (both Alden Global Capital; they run each other's copy): the title group plus WordPress photo slugs like CTC-L-. Left out of the title group: baltimoresun.com and capitalgazette.com (sold in 2024), pressdemocrat.com, and BLOX sites joined by AP copy.
+.advocate-news.com	medianewsgroup.com	MediaNews Group
+.akronnewsreporter.com	medianewsgroup.com	MediaNews Group
+.bostonherald.com	medianewsgroup.com	MediaNews Group
+.canoncitydailyrecord.com	medianewsgroup.com	MediaNews Group
+.chicagotribune.com	medianewsgroup.com	MediaNews Group
+.chicoer.com	medianewsgroup.com	MediaNews Group
+.citizensvoice.com	medianewsgroup.com	MediaNews Group
+.coloradohometownweekly.com	medianewsgroup.com	MediaNews Group
+.courant.com	medianewsgroup.com	MediaNews Group
+.dailybreeze.com	medianewsgroup.com	MediaNews Group
+.dailybulletin.com	medianewsgroup.com	MediaNews Group
+.dailycamera.com	medianewsgroup.com	MediaNews Group
+.dailyfreeman.com	medianewsgroup.com	MediaNews Group
+.dailylocal.com	medianewsgroup.com	MediaNews Group
+.dailynews.com	medianewsgroup.com	MediaNews Group
+.dailypress.com	medianewsgroup.com	MediaNews Group
+.denverpost.com	medianewsgroup.com	MediaNews Group
+.eastbaytimes.com	medianewsgroup.com	MediaNews Group
+.fortmorgantimes.com	medianewsgroup.com	MediaNews Group
+.greeleytribune.com	medianewsgroup.com	MediaNews Group
+.journal-advocate.com	medianewsgroup.com	MediaNews Group
+.mainlinemedianews.com	medianewsgroup.com	MediaNews Group
+.marinij.com	medianewsgroup.com	MediaNews Group
+.mendocinobeacon.com	medianewsgroup.com	MediaNews Group
+.mercurynews.com	medianewsgroup.com	MediaNews Group
+.montereyherald.com	medianewsgroup.com	MediaNews Group
+.morningjournal.com	medianewsgroup.com	MediaNews Group
+.ocregister.com	medianewsgroup.com	MediaNews Group
+.oneidadispatch.com	medianewsgroup.com	MediaNews Group
+.orlandosentinel.com	medianewsgroup.com	MediaNews Group
+.orovillemr.com	medianewsgroup.com	MediaNews Group
+.paradisepost.com	medianewsgroup.com	MediaNews Group
+.pasadenastarnews.com	medianewsgroup.com	MediaNews Group
+.pilotonline.com	medianewsgroup.com	MediaNews Group
+.pottsmerc.com	medianewsgroup.com	MediaNews Group
+.presstelegram.com	medianewsgroup.com	MediaNews Group
+.readingeagle.com	medianewsgroup.com	MediaNews Group
+.redbluffdailynews.com	medianewsgroup.com	MediaNews Group
+.redlandsdailyfacts.com	medianewsgroup.com	MediaNews Group
+.reporterherald.com	medianewsgroup.com	MediaNews Group
+.sandiegouniontribune.com	medianewsgroup.com	MediaNews Group
+.santacruzsentinel.com	medianewsgroup.com	MediaNews Group
+.saratogian.com	medianewsgroup.com	MediaNews Group
+.sbsun.com	medianewsgroup.com	MediaNews Group
+.sgvtribune.com	medianewsgroup.com	MediaNews Group
+.siliconvalley.com	medianewsgroup.com	MediaNews Group
+.sun-sentinel.com	medianewsgroup.com	MediaNews Group
+.thereporter.com	medianewsgroup.com	MediaNews Group
+.thereporteronline.com	medianewsgroup.com	MediaNews Group
+.thetimes-tribune.com	medianewsgroup.com	MediaNews Group
+.timescall.com	medianewsgroup.com	MediaNews Group
+.troyrecord.com	medianewsgroup.com	MediaNews Group
+.whittierdailynews.com	medianewsgroup.com	MediaNews Group
+
+# --- Sinclair ---
+# Sinclair (US TV stations): /resources/media2/16x9/ images or /news/<section>/<slug> URLs, minus Scripps and Forum hosts.
+.13wham.com	sbgi.net	Sinclair
+.abc3340.com	sbgi.net	Sinclair
+.abc6onyourside.com	sbgi.net	Sinclair
+.abc7amarillo.com	sbgi.net	Sinclair
+.abcnews4.com	sbgi.net	Sinclair
+.bakersfieldnow.com	sbgi.net	Sinclair
+.cbs12.com	sbgi.net	Sinclair
+.cbs2iowa.com	sbgi.net	Sinclair
+.cbs4local.com	sbgi.net	Sinclair
+.cbs6albany.com	sbgi.net	Sinclair
+.cnycentral.com	sbgi.net	Sinclair
+.fox11online.com	sbgi.net	Sinclair
+.fox17.com	sbgi.net	Sinclair
+.fox23.com	sbgi.net	Sinclair
+.fox23maine.com	sbgi.net	Sinclair
+.fox42kptm.com	sbgi.net	Sinclair
+.fox4beaumont.com	sbgi.net	Sinclair
+.fox56.com	sbgi.net	Sinclair
+.foxbaltimore.com	sbgi.net	Sinclair
+.foxreno.com	sbgi.net	Sinclair
+.foxrochester.com	sbgi.net	Sinclair
+.foxsanantonio.com	sbgi.net	Sinclair
+.katu.com	sbgi.net	Sinclair
+.katv.com	sbgi.net	Sinclair
+.kcby.com	sbgi.net	Sinclair
+.kfdm.com	sbgi.net	Sinclair
+.kfoxtv.com	sbgi.net	Sinclair
+.komonews.com	sbgi.net	Sinclair
+.kpic.com	sbgi.net	Sinclair
+.krcgtv.com	sbgi.net	Sinclair
+.krcrtv.com	sbgi.net	Sinclair
+.ktul.com	sbgi.net	Sinclair
+.ktxs.com	sbgi.net	Sinclair
+.kval.com	sbgi.net	Sinclair
+.local12.com	sbgi.net	Sinclair
+.local21news.com	sbgi.net	Sinclair
+.midmichigannow.com	sbgi.net	Sinclair
+.myfox28columbus.com	sbgi.net	Sinclair
+.mynews4.com	sbgi.net	Sinclair
+.nbc16.com	sbgi.net	Sinclair
+.nbc24.com	sbgi.net	Sinclair
+.nbcmontana.com	sbgi.net	Sinclair
+.nebraska.tv	sbgi.net	Sinclair
+.news3lv.com	sbgi.net	Sinclair
+.news4sanantonio.com	sbgi.net	Sinclair
+.newschannel9.com	sbgi.net	Sinclair
+.okcfox.com	sbgi.net	Sinclair
+.siouxlandnews.com	sbgi.net	Sinclair
+.turnto10.com	sbgi.net	Sinclair
+.upnorthlive.com	sbgi.net	Sinclair
+.wach.com	sbgi.net	Sinclair
+.wchstv.com	sbgi.net	Sinclair
+.wcti12.com	sbgi.net	Sinclair
+.wcyb.com	sbgi.net	Sinclair
+.weartv.com	sbgi.net	Sinclair
+.wgme.com	sbgi.net	Sinclair
+.wgxa.tv	sbgi.net	Sinclair
+.wjactv.com	sbgi.net	Sinclair
+.wjla.com	sbgi.net	Sinclair
+.wlos.com	sbgi.net	Sinclair
+.wpde.com	sbgi.net	Sinclair
+.wsbt.com	sbgi.net	Sinclair
+.wset.com	sbgi.net	Sinclair
+.wtov9.com	sbgi.net	Sinclair
+.wwmt.com	sbgi.net	Sinclair
+
+# --- Australian Community Media ---
+# Australian Community Media: URL /story/<7 digits>/, AU.
+.areanews.com.au	acm.media	Australian Community Media
+.armidaleexpress.com.au	acm.media	Australian Community Media
+.batemansbaypost.com.au	acm.media	Australian Community Media
+.begadistrictnews.com.au	acm.media	Australian Community Media
+.bendigoadvertiser.com.au	acm.media	Australian Community Media
+.blayneychronicle.com.au	acm.media	Australian Community Media
+.bluemountainsgazette.com.au	acm.media	Australian Community Media
+.bordermail.com.au	acm.media	Australian Community Media
+.braidwoodtimes.com.au	acm.media	Australian Community Media
+.bunburymail.com.au	acm.media	Australian Community Media
+.camdencourier.com.au	acm.media	Australian Community Media
+.canberratimes.com.au	acm.media	Australian Community Media
+.centralwesterndaily.com.au	acm.media	Australian Community Media
+.cessnockadvertiser.com.au	acm.media	Australian Community Media
+.cootamundraherald.com.au	acm.media	Australian Community Media
+.crookwellgazette.com.au	acm.media	Australian Community Media
+.dailyadvertiser.com.au	acm.media	Australian Community Media
+.dailyliberal.com.au	acm.media	Australian Community Media
+.dungogchronicle.com.au	acm.media	Australian Community Media
+.easternriverinachronicle.com.au	acm.media	Australian Community Media
+.edenmagnet.com.au	acm.media	Australian Community Media
+.examiner.com.au	acm.media	Australian Community Media
+.farmweekly.com.au	acm.media	Australian Community Media
+.gleninnesexaminer.com.au	acm.media	Australian Community Media
+.gloucesteradvocate.com.au	acm.media	Australian Community Media
+.goulburnpost.com.au	acm.media	Australian Community Media
+.greatlakesadvocate.com.au	acm.media	Australian Community Media
+.hardenexpress.com.au	acm.media	Australian Community Media
+.hepburnadvocate.com.au	acm.media	Australian Community Media
+.illawarramercury.com.au	acm.media	Australian Community Media
+.inverelltimes.com.au	acm.media	Australian Community Media
+.irrigator.com.au	acm.media	Australian Community Media
+.juneesoutherncross.com.au	acm.media	Australian Community Media
+.katherinetimes.com.au	acm.media	Australian Community Media
+.lithgowmercury.com.au	acm.media	Australian Community Media
+.macleayargus.com.au	acm.media	Australian Community Media
+.maitlandmercury.com.au	acm.media	Australian Community Media
+.mandurahmail.com.au	acm.media	Australian Community Media
+.manningrivertimes.com.au	acm.media	Australian Community Media
+.merimbulanewsweekly.com.au	acm.media	Australian Community Media
+.moreechampion.com.au	acm.media	Australian Community Media
+.mudgeeguardian.com.au	acm.media	Australian Community Media
+.muswellbrookchronicle.com.au	acm.media	Australian Community Media
+.naroomanewsonline.com.au	acm.media	Australian Community Media
+.narrominenewsonline.com.au	acm.media	Australian Community Media
+.newcastleherald.com.au	acm.media	Australian Community Media
+.northerndailyleader.com.au	acm.media	Australian Community Media
+.northqueenslandregister.com.au	acm.media	Australian Community Media
+.northweststar.com.au	acm.media	Australian Community Media
+.nvi.com.au	acm.media	Australian Community Media
+.nynganobserver.com.au	acm.media	Australian Community Media
+.oberonreview.com.au	acm.media	Australian Community Media
+.portnews.com.au	acm.media	Australian Community Media
+.portstephensexaminer.com.au	acm.media	Australian Community Media
+.queanbeyanage.com.au	acm.media	Australian Community Media
+.queenslandcountrylife.com.au	acm.media	Australian Community Media
+.redlandcitybulletin.com.au	acm.media	Australian Community Media
+.sconeadvocate.com.au	acm.media	Australian Community Media
+.singletonargus.com.au	acm.media	Australian Community Media
+.southcoastregister.com.au	acm.media	Australian Community Media
+.southernhighlandnews.com.au	acm.media	Australian Community Media
+.standard.net.au	acm.media	Australian Community Media
+.stockandland.com.au	acm.media	Australian Community Media
+.stockjournal.com.au	acm.media	Australian Community Media
+.tenterfieldstar.com.au	acm.media	Australian Community Media
+.theadvocate.com.au	acm.media	Australian Community Media
+.thecourier.com.au	acm.media	Australian Community Media
+.theland.com.au	acm.media	Australian Community Media
+.theleader.com.au	acm.media	Australian Community Media
+.therural.com.au	acm.media	Australian Community Media
+.ulladullatimes.com.au	acm.media	Australian Community Media
+.wellingtontimes.com.au	acm.media	Australian Community Media
+.westernadvocate.com.au	acm.media	Australian Community Media
+.yasstribune.com.au	acm.media	Australian Community Media
+
+# --- Hearst Television ---
+# Hearst Television stations: images on kubrick.htvapps.com.
+.4029tv.com	hearsttelevision.com	Hearst Television
+.gulfcoastnewsnow.com	hearsttelevision.com	Hearst Television
+.kcci.com	hearsttelevision.com	Hearst Television
+.kcra.com	hearsttelevision.com	Hearst Television
+.ketv.com	hearsttelevision.com	Hearst Television
+.kmbc.com	hearsttelevision.com	Hearst Television
+.koat.com	hearsttelevision.com	Hearst Television
+.koco.com	hearsttelevision.com	Hearst Television
+.ksbw.com	hearsttelevision.com	Hearst Television
+.mynbc5.com	hearsttelevision.com	Hearst Television
+.wapt.com	hearsttelevision.com	Hearst Television
+.wbaltv.com	hearsttelevision.com	Hearst Television
+.wcvb.com	hearsttelevision.com	Hearst Television
+.wdsu.com	hearsttelevision.com	Hearst Television
+.wesh.com	hearsttelevision.com	Hearst Television
+.wgal.com	hearsttelevision.com	Hearst Television
+.wisn.com	hearsttelevision.com	Hearst Television
+.wjcl.com	hearsttelevision.com	Hearst Television
+.wlky.com	hearsttelevision.com	Hearst Television
+.wlwt.com	hearsttelevision.com	Hearst Television
+.wmtw.com	hearsttelevision.com	Hearst Television
+.wmur.com	hearsttelevision.com	Hearst Television
+.wpbf.com	hearsttelevision.com	Hearst Television
+.wtae.com	hearsttelevision.com	Hearst Television
+.wvtm13.com	hearsttelevision.com	Hearst Television
+.wxii12.com	hearsttelevision.com	Hearst Television
+.wyff4.com	hearsttelevision.com	Hearst Television
+
+# --- Scripps ---
+# E.W. Scripps stations: images on ewscripps-brightspot.
+.10news.com	scripps.com	Scripps
+.abc15.com	scripps.com	Scripps
+.fox13now.com	scripps.com	Scripps
+.fox17online.com	scripps.com	Scripps
+.kbzk.com	scripps.com	Scripps
+.kjrh.com	scripps.com	Scripps
+.koaa.com	scripps.com	Scripps
+.kpax.com	scripps.com	Scripps
+.kristv.com	scripps.com	Scripps
+.krtv.com	scripps.com	Scripps
+.ksby.com	scripps.com	Scripps
+.kshb.com	scripps.com	Scripps
+.ktvh.com	scripps.com	Scripps
+.ktvq.com	scripps.com	Scripps
+.kxlf.com	scripps.com	Scripps
+.kxlh.com	scripps.com	Scripps
+.kxxv.com	scripps.com	Scripps
+.kztv10.com	scripps.com	Scripps
+.lex18.com	scripps.com	Scripps
+.newschannel5.com	scripps.com	Scripps
+.turnto23.com	scripps.com	Scripps
+.wcpo.com	scripps.com	Scripps
+.wkbw.com	scripps.com	Scripps
+.wptv.com	scripps.com	Scripps
+.wtkr.com	scripps.com	Scripps
+.wtvr.com	scripps.com	Scripps
+.wtxl.com	scripps.com	Scripps
+.wxyz.com	scripps.com	Scripps
+
+# --- Townsquare Media ---
+# Townsquare Media radio station and music sites: images on townsquare.media/site/.
+.1019therock.com	townsquaremedia.com	Townsquare Media
+.101theeagle.com	townsquaremedia.com	Townsquare Media
+.1025kiss.com	townsquaremedia.com	Townsquare Media
+.1027kord.com	townsquaremedia.com	Townsquare Media
+.1035kissfmboise.com	townsquaremedia.com	Townsquare Media
+.1037theloon.com	townsquaremedia.com	Townsquare Media
+.103gbfrocks.com	townsquaremedia.com	Townsquare Media
+.103kkcn.com	townsquaremedia.com	Townsquare Media
+.103wjod.com	townsquaremedia.com	Townsquare Media
+.1045theteam.com	townsquaremedia.com	Townsquare Media
+.1057thehawk.com	townsquaremedia.com	Townsquare Media
+.1063thebuzz.com	townsquaremedia.com	Townsquare Media
+.1079ishot.com	townsquaremedia.com	Townsquare Media
+.107jamz.com	townsquaremedia.com	Townsquare Media
+.1470kyyw.com	townsquaremedia.com	Townsquare Media
+.710keel.com	townsquaremedia.com	Townsquare Media
+.929nin.com	townsquaremedia.com	Townsquare Media
+.929thebull.com	townsquaremedia.com	Townsquare Media
+.929thelake.com	townsquaremedia.com	Townsquare Media
+.929theticket.com	townsquaremedia.com	Townsquare Media
+.92moose.fm	townsquaremedia.com	Townsquare Media
+.943thepoint.com	townsquaremedia.com	Townsquare Media
+.949whom.com	townsquaremedia.com	Townsquare Media
+.953thebear.com	townsquaremedia.com	Townsquare Media
+.95rockfm.com	townsquaremedia.com	Townsquare Media
+.961theeagle.com	townsquaremedia.com	Townsquare Media
+.963theblaze.com	townsquaremedia.com	Townsquare Media
+.965kvki.com	townsquaremedia.com	Townsquare Media
+.965therock.com	townsquaremedia.com	Townsquare Media
+.967theeagle.net	townsquaremedia.com	Townsquare Media
+.973thedawg.com	townsquaremedia.com	Townsquare Media
+.975kgkl.com	townsquaremedia.com	Townsquare Media
+.979kickfm.com	townsquaremedia.com	Townsquare Media
+.97rockonline.com	townsquaremedia.com	Townsquare Media
+.97zokonline.com	townsquaremedia.com	Townsquare Media
+.983thesnake.com	townsquaremedia.com	Townsquare Media
+.987jack.com	townsquaremedia.com	Townsquare Media
+.991thewhale.com	townsquaremedia.com	Townsquare Media
+.999ktdy.com	townsquaremedia.com	Townsquare Media
+.999thepoint.com	townsquaremedia.com	Townsquare Media
+.awesome98.com	townsquaremedia.com	Townsquare Media
+.b100quadcities.com	townsquaremedia.com	Townsquare Media
+.b1027.com	townsquaremedia.com	Townsquare Media
+.b105country.com	townsquaremedia.com	Townsquare Media
+.b93.net	townsquaremedia.com	Townsquare Media
+.b985.fm	townsquaremedia.com	Townsquare Media
+.banana1015.com	townsquaremedia.com	Townsquare Media
+.bigcountry969.com	townsquaremedia.com	Townsquare Media
+.bigfrog104.com	townsquaremedia.com	Townsquare Media
+.catcountry1029.com	townsquaremedia.com	Townsquare Media
+.catcountry1073.com	townsquaremedia.com	Townsquare Media
+.classicrock961.com	townsquaremedia.com	Townsquare Media
+.club937.com	townsquaremedia.com	Townsquare Media
+.cnynews.com	townsquaremedia.com	Townsquare Media
+.cool987fm.com	townsquaremedia.com	Townsquare Media
+.diffuser.fm	townsquaremedia.com	Townsquare Media
+.gator995.com	townsquaremedia.com	Townsquare Media
+.hot1047.com	townsquaremedia.com	Townsquare Media
+.hot975fm.com	townsquaremedia.com	Townsquare Media
+.hudsonvalleycountry.com	townsquaremedia.com	Townsquare Media
+.i95rock.com	townsquaremedia.com	Townsquare Media
+.i95rocks.com	townsquaremedia.com	Townsquare Media
+.k96fm.com	townsquaremedia.com	Townsquare Media
+.k99.com	townsquaremedia.com	Townsquare Media
+.katsfm.com	townsquaremedia.com	Townsquare Media
+.kbat.com	townsquaremedia.com	Townsquare Media
+.kcrr.com	townsquaremedia.com	Townsquare Media
+.kdhlradio.com	townsquaremedia.com	Townsquare Media
+.keyj.com	townsquaremedia.com	Townsquare Media
+.keyw.com	townsquaremedia.com	Townsquare Media
+.kffm.com	townsquaremedia.com	Townsquare Media
+.kfilradio.com	townsquaremedia.com	Townsquare Media
+.kfmx.com	townsquaremedia.com	Townsquare Media
+.kfox95.com	townsquaremedia.com	Townsquare Media
+.kfyo.com	townsquaremedia.com	Townsquare Media
+.khak.com	townsquaremedia.com	Townsquare Media
+.kickam1530.com	townsquaremedia.com	Townsquare Media
+.kicks105.com	townsquaremedia.com	Townsquare Media
+.kikn.com	townsquaremedia.com	Townsquare Media
+.kingfm.com	townsquaremedia.com	Townsquare Media
+.kisscasper.com	townsquaremedia.com	Townsquare Media
+.kissfm1053.com	townsquaremedia.com	Townsquare Media
+.kixs.com	townsquaremedia.com	Townsquare Media
+.kkyr.com	townsquaremedia.com	Townsquare Media
+.klaq.com	townsquaremedia.com	Townsquare Media
+.klaw.com	townsquaremedia.com	Townsquare Media
+.klubtejano.com	townsquaremedia.com	Townsquare Media
+.kmhk.com	townsquaremedia.com	Townsquare Media
+.knue.com	townsquaremedia.com	Townsquare Media
+.koel.com	townsquaremedia.com	Townsquare Media
+.kool1017.com	townsquaremedia.com	Townsquare Media
+.kool1079.com	townsquaremedia.com	Townsquare Media
+.koolam.com	townsquaremedia.com	Townsquare Media
+.koolfmabilene.com	townsquaremedia.com	Townsquare Media
+.kpel965.com	townsquaremedia.com	Townsquare Media
+.kpq.com	townsquaremedia.com	Townsquare Media
+.kqvt.com	townsquaremedia.com	Townsquare Media
+.krforadio.com	townsquaremedia.com	Townsquare Media
+.krna.com	townsquaremedia.com	Townsquare Media
+.kroc.com	townsquaremedia.com	Townsquare Media
+.krocnews.com	townsquaremedia.com	Townsquare Media
+.ksenam.com	townsquaremedia.com	Townsquare Media
+.ksfa860.com	townsquaremedia.com	Townsquare Media
+.ksisradio.com	townsquaremedia.com	Townsquare Media
+.kw3.com	townsquaremedia.com	Townsquare Media
+.kwcdcountry.com	townsquaremedia.com	Townsquare Media
+.kxkx.com	townsquaremedia.com	Townsquare Media
+.kygl.com	townsquaremedia.com	Townsquare Media
+.kyssfm.com	townsquaremedia.com	Townsquare Media
+.lite987.com	townsquaremedia.com	Townsquare Media
+.liteonline.com	townsquaremedia.com	Townsquare Media
+.live959.com	townsquaremedia.com	Townsquare Media
+.lonestar995fm.com	townsquaremedia.com	Townsquare Media
+.loudwire.com	townsquaremedia.com	Townsquare Media
+.mega993online.com	townsquaremedia.com	Townsquare Media
+.mix1043fm.com	townsquaremedia.com	Townsquare Media
+.mix106radio.com	townsquaremedia.com	Townsquare Media
+.mix108.com	townsquaremedia.com	Townsquare Media
+.mix931fm.com	townsquaremedia.com	Townsquare Media
+.mix941kmxj.com	townsquaremedia.com	Townsquare Media
+.mix949.com	townsquaremedia.com	Townsquare Media
+.myb106.com	townsquaremedia.com	Townsquare Media
+.mycountry955.com	townsquaremedia.com	Townsquare Media
+.mykisscountry937.com	townsquaremedia.com	Townsquare Media
+.myq1075.com	townsquaremedia.com	Townsquare Media
+.newsradio1310.com	townsquaremedia.com	Townsquare Media
+.newstalk1280.com	townsquaremedia.com	Townsquare Media
+.newstalkkgvo.com	townsquaremedia.com	Townsquare Media
+.nj1015.com	townsquaremedia.com	Townsquare Media
+.power96radio.com	townsquaremedia.com	Townsquare Media
+.q1057.com	townsquaremedia.com	Townsquare Media
+.q1065.fm	townsquaremedia.com	Townsquare Media
+.q1077.com	townsquaremedia.com	Townsquare Media
+.q961.com	townsquaremedia.com	Townsquare Media
+.q985online.com	townsquaremedia.com	Townsquare Media
+.quickcountry.com	townsquaremedia.com	Townsquare Media
+.rivergrandrapids.com	townsquaremedia.com	Townsquare Media
+.rock967online.com	townsquaremedia.com	Townsquare Media
+.shark1053.com	townsquaremedia.com	Townsquare Media
+.sojo1049.com	townsquaremedia.com	Townsquare Media
+.squatchrocks.com	townsquaremedia.com	Townsquare Media
+.supertalk1270.com	townsquaremedia.com	Townsquare Media
+.talkradio960.com	townsquaremedia.com	Townsquare Media
+.tasteofcountry.com	townsquaremedia.com	Townsquare Media
+.theboot.com	townsquaremedia.com	Townsquare Media
+.therockofrochester.com	townsquaremedia.com	Townsquare Media
+.ultimateclassicrock.com	townsquaremedia.com	Townsquare Media
+.us105fm.com	townsquaremedia.com	Townsquare Media
+.wbkr.com	townsquaremedia.com	Townsquare Media
+.wblk.com	townsquaremedia.com	Townsquare Media
+.wblm.com	townsquaremedia.com	Townsquare Media
+.wcyy.com	townsquaremedia.com	Townsquare Media
+.wfnt.com	townsquaremedia.com	Townsquare Media
+.wgna.com	townsquaremedia.com	Townsquare Media
+.wgrd.com	townsquaremedia.com	Townsquare Media
+.wibx950.com	townsquaremedia.com	Townsquare Media
+.witl.com	townsquaremedia.com	Townsquare Media
+.wjbq.com	townsquaremedia.com	Townsquare Media
+.wjon.com	townsquaremedia.com	Townsquare Media
+.wkdq.com	townsquaremedia.com	Townsquare Media
+.wkfr.com	townsquaremedia.com	Townsquare Media
+.wmmq.com	townsquaremedia.com	Townsquare Media
+.wnaw.com	townsquaremedia.com	Townsquare Media
+.wnbf.com	townsquaremedia.com	Townsquare Media
+.wokq.com	townsquaremedia.com	Townsquare Media
+.wpdh.com	townsquaremedia.com	Townsquare Media
+.wpst.com	townsquaremedia.com	Townsquare Media
+.wrkr.com	townsquaremedia.com	Townsquare Media
+.wtug.com	townsquaremedia.com	Townsquare Media
+.wupe.com	townsquaremedia.com	Townsquare Media
+.wyrk.com	townsquaremedia.com	Townsquare Media
+.wzozfm.com	townsquaremedia.com	Townsquare Media
+.xlcountry.com	townsquaremedia.com	Townsquare Media
+.y105fm.com	townsquaremedia.com	Townsquare Media
+.y105music.com	townsquaremedia.com	Townsquare Media
+.y95country.com	townsquaremedia.com	Townsquare Media
+.z100missoula.com	townsquaremedia.com	Townsquare Media
+.z94.com	townsquaremedia.com	Townsquare Media
+
+# --- NBCUniversal stations ---
+# NBC and Telemundo owned stations: images on media.nbc*.com / media.telemundo*.com.
+.nbcbayarea.com	nbcuniversal.com	NBCUniversal stations
+.nbcchicago.com	nbcuniversal.com	NBCUniversal stations
+.nbcconnecticut.com	nbcuniversal.com	NBCUniversal stations
+.nbcdfw.com	nbcuniversal.com	NBCUniversal stations
+.nbclosangeles.com	nbcuniversal.com	NBCUniversal stations
+.nbcmiami.com	nbcuniversal.com	NBCUniversal stations
+.nbcnewyork.com	nbcuniversal.com	NBCUniversal stations
+.nbcphiladelphia.com	nbcuniversal.com	NBCUniversal stations
+.nbcsandiego.com	nbcuniversal.com	NBCUniversal stations
+.nbcwashington.com	nbcuniversal.com	NBCUniversal stations
+.telemundo47.com	nbcuniversal.com	NBCUniversal stations
+.telemundo51.com	nbcuniversal.com	NBCUniversal stations
+.telemundo52.com	nbcuniversal.com	NBCUniversal stations
+.telemundoareadelabahia.com	nbcuniversal.com	NBCUniversal stations
+.telemundochicago.com	nbcuniversal.com	NBCUniversal stations
+.telemundodallas.com	nbcuniversal.com	NBCUniversal stations
+.telemundodenver.com	nbcuniversal.com	NBCUniversal stations
+.telemundohouston.com	nbcuniversal.com	NBCUniversal stations
+.telemundolasvegas.com	nbcuniversal.com	NBCUniversal stations
+.telemundopr.com	nbcuniversal.com	NBCUniversal stations
+
+# --- Fox Television Stations ---
+# Fox owned stations: images on images.foxtv.com.
+.fox10phoenix.com	foxtv.com	Fox Television Stations
+.fox13news.com	foxtv.com	Fox Television Stations
+.fox13seattle.com	foxtv.com	Fox Television Stations
+.fox26houston.com	foxtv.com	Fox Television Stations
+.fox29.com	foxtv.com	Fox Television Stations
+.fox2detroit.com	foxtv.com	Fox Television Stations
+.fox32chicago.com	foxtv.com	Fox Television Stations
+.fox35orlando.com	foxtv.com	Fox Television Stations
+.fox4news.com	foxtv.com	Fox Television Stations
+.fox5atlanta.com	foxtv.com	Fox Television Stations
+.fox5dc.com	foxtv.com	Fox Television Stations
+.fox5ny.com	foxtv.com	Fox Television Stations
+.fox6now.com	foxtv.com	Fox Television Stations
+.fox7austin.com	foxtv.com	Fox Television Stations
+.fox9.com	foxtv.com	Fox Television Stations
+.foxla.com	foxtv.com	Fox Television Stations
+.ktvu.com	foxtv.com	Fox Television Stations
+
+# --- Cox Media Group ---
+# Cox Media Group stations: images on cmg-cmg-tv-*.
+.actionnewsjax.com	coxmediagroup.com	Cox Media Group
+.kiro7.com	coxmediagroup.com	Cox Media Group
+.wftv.com	coxmediagroup.com	Cox Media Group
+.whio.com	coxmediagroup.com	Cox Media Group
+.wpxi.com	coxmediagroup.com	Cox Media Group
+.wsbtv.com	coxmediagroup.com	Cox Media Group
+.wsoctv.com	coxmediagroup.com	Cox Media Group
+
+# --- Graham Media Group ---
+# Graham Media Group stations: images on bc.gmg.io.
+.click2houston.com	grahammedia.com	Graham Media Group
+.clickondetroit.com	grahammedia.com	Graham Media Group
+.clickorlando.com	grahammedia.com	Graham Media Group
+.ksat.com	grahammedia.com	Graham Media Group
+.news4jax.com	grahammedia.com	Graham Media Group
+.wsls.com	grahammedia.com	Graham Media Group
+
+# --- Forum Communications ---
+# Forum Communications (US Upper Midwest): images on forum-communications-production-web.
+.bemidjipioneer.com	forumcomm.com	Forum Communications
+.brainerddispatch.com	forumcomm.com	Forum Communications
+.capjournal.com	forumcomm.com	Forum Communications
+.dglobe.com	forumcomm.com	Forum Communications
+.dl-online.com	forumcomm.com	Forum Communications
+.duluthnewstribune.com	forumcomm.com	Forum Communications
+.echopress.com	forumcomm.com	Forum Communications
+.grandforksherald.com	forumcomm.com	Forum Communications
+.inforum.com	forumcomm.com	Forum Communications
+.jamestownsun.com	forumcomm.com	Forum Communications
+.mitchellrepublic.com	forumcomm.com	Forum Communications
+.newscenter1.tv	forumcomm.com	Forum Communications
+.parkrapidsenterprise.com	forumcomm.com	Forum Communications
+.perhamfocus.com	forumcomm.com	Forum Communications
+.pineandlakes.com	forumcomm.com	Forum Communications
+.postbulletin.com	forumcomm.com	Forum Communications
+.sidneyherald.com	forumcomm.com	Forum Communications
+.superiortelegram.com	forumcomm.com	Forum Communications
+.thedickinsonpress.com	forumcomm.com	Forum Communications
+.wadenapj.com	forumcomm.com	Forum Communications
+.wahpetondailynews.com	forumcomm.com	Forum Communications
+.wctrib.com	forumcomm.com	Forum Communications
+.willistonherald.com	forumcomm.com	Forum Communications
+
+# --- Postmedia ---
+# Postmedia (CA): the Ontario title group plus Postmedia's metro and Alberta titles seen in the windows, by name.
+.brantfordexpositor.ca	postmedia.com	Postmedia
+.calgaryherald.com	postmedia.com	Postmedia
+.calgarysun.com	postmedia.com	Postmedia
+.chathamdailynews.ca	postmedia.com	Postmedia
+.dailyheraldtribune.com	postmedia.com	Postmedia
+.devondispatch.ca	postmedia.com	Postmedia
+.driving.ca	postmedia.com	Postmedia
+.edmontonjournal.com	postmedia.com	Postmedia
+.edmontonsun.com	postmedia.com	Postmedia
+.elliotlakestandard.ca	postmedia.com	Postmedia
+.intelligencer.ca	postmedia.com	Postmedia
+.leaderpost.com	postmedia.com	Postmedia
+.leducrep.com	postmedia.com	Postmedia
+.lfpress.com	postmedia.com	Postmedia
+.mayerthorpefreelancer.com	postmedia.com	Postmedia
+.montrealgazette.com	postmedia.com	Postmedia
+.napaneeguide.com	postmedia.com	Postmedia
+.nationalpost.com	postmedia.com	Postmedia
+.northernnews.ca	postmedia.com	Postmedia
+.nugget.ca	postmedia.com	Postmedia
+.ottawacitizen.com	postmedia.com	Postmedia
+.ottawasun.com	postmedia.com	Postmedia
+.owensoundsuntimes.com	postmedia.com	Postmedia
+.parisstaronline.com	postmedia.com	Postmedia
+.recorder.ca	postmedia.com	Postmedia
+.saultstar.com	postmedia.com	Postmedia
+.simcoereformer.ca	postmedia.com	Postmedia
+.sprucegroveexaminer.com	postmedia.com	Postmedia
+.standard-freeholder.com	postmedia.com	Postmedia
+.stratfordbeaconherald.com	postmedia.com	Postmedia
+.theobserver.ca	postmedia.com	Postmedia
+.theprovince.com	postmedia.com	Postmedia
+.thestarphoenix.com	postmedia.com	Postmedia
+.thesudburystar.com	postmedia.com	Postmedia
+.thewhig.com	postmedia.com	Postmedia
+.timminspress.com	postmedia.com	Postmedia
+.torontosun.com	postmedia.com	Postmedia
+.vancouversun.com	postmedia.com	Postmedia
+.wetaskiwintimes.com	postmedia.com	Postmedia
+.windsorstar.com	postmedia.com	Postmedia
+.winnipegsun.com	postmedia.com	Postmedia
+
+# --- Black Press ---
+# Black Press Media (CA): WordPress multisite images with /YYYY/MM/DD/ URLs, CA.
+.abbynews.com	blackpress.ca	Black Press
+.agassizharrisonobserver.com	blackpress.ca	Black Press
+.aldergrovestar.com	blackpress.ca	Black Press
+.caledoniacourier.com	blackpress.ca	Black Press
+.campbellrivermirror.com	blackpress.ca	Black Press
+.clearwatertimes.com	blackpress.ca	Black Press
+.cloverdalereporter.com	blackpress.ca	Black Press
+.comoxvalleyrecord.com	blackpress.ca	Black Press
+.cowichanvalleycitizen.com	blackpress.ca	Black Press
+.cranbrooktownsman.com	blackpress.ca	Black Press
+.grandforksgazette.ca	blackpress.ca	Black Press
+.hopestandard.com	blackpress.ca	Black Press
+.interior-news.com	blackpress.ca	Black Press
+.kelownacapnews.com	blackpress.ca	Black Press
+.kimberleybulletin.com	blackpress.ca	Black Press
+.ladysmithchronicle.com	blackpress.ca	Black Press
+.mapleridgenews.com	blackpress.ca	Black Press
+.missioncityrecord.com	blackpress.ca	Black Press
+.nanaimobulletin.com	blackpress.ca	Black Press
+.northislandgazette.com	blackpress.ca	Black Press
+.ominecaexpress.com	blackpress.ca	Black Press
+.peacearchnews.com	blackpress.ca	Black Press
+.pqbnews.com	blackpress.ca	Black Press
+.quesnelobserver.com	blackpress.ca	Black Press
+.reddeeradvocate.com	blackpress.ca	Black Press
+.saobserver.net	blackpress.ca	Black Press
+.sookenewsmirror.com	blackpress.ca	Black Press
+.terracestandard.com	blackpress.ca	Black Press
+.thefreepress.ca	blackpress.ca	Black Press
+.theprogress.com	blackpress.ca	Black Press
+.vernonmorningstar.com	blackpress.ca	Black Press
+.vicnews.com	blackpress.ca	Black Press
+.westerlynews.ca	blackpress.ca	Black Press
+.wltribune.com	blackpress.ca	Black Press
+.yukon-news.com	blackpress.ca	Black Press
+
+# --- Funke ---
+# Funke Mediengruppe (DE): images on img.sparknews.funkemedien.de. Added by name: derwesten.de waz.de.
+.abendblatt.de	funkemedien.de	Funke
+.braunschweiger-zeitung.de	funkemedien.de	Funke
+.derwesten.de	funkemedien.de	Funke
+.harzkurier.de	funkemedien.de	Funke
+.morgenpost.de	funkemedien.de	Funke
+.otz.de	funkemedien.de	Funke
+.thueringer-allgemeine.de	funkemedien.de	Funke
+.tlz.de	funkemedien.de	Funke
+.waz.de	funkemedien.de	Funke
+
+# --- EBRA ---
+# EBRA (FR, Credit Mutuel's regional dailies): images on cdn-s-www.<domain>.
+.bienpublic.com	ebra.fr	EBRA
+.dna.fr	ebra.fr	EBRA
+.estrepublicain.fr	ebra.fr	EBRA
+.lalsace.fr	ebra.fr	EBRA
+.ledauphine.com	ebra.fr	EBRA
+.lejsl.com	ebra.fr	EBRA
+.leprogres.fr	ebra.fr	EBRA
+.republicain-lorrain.fr	ebra.fr	EBRA
+.vosgesmatin.fr	ebra.fr	EBRA
+
+# --- Keskisuomalainen ---
+# Keskisuomalainen (FI): URL /uutissuomalainen/ (the group's shared desk).
+.aamuposti.fi	keskisuomalainen.com	Keskisuomalainen
+.esaimaa.fi	keskisuomalainen.com	Keskisuomalainen
+.ess.fi	keskisuomalainen.com	Keskisuomalainen
+.hameensanomat.fi	keskisuomalainen.com	Keskisuomalainen
+.ita-savo.fi	keskisuomalainen.com	Keskisuomalainen
+.karjalainen.fi	keskisuomalainen.com	Keskisuomalainen
+.keski-uusimaa.fi	keskisuomalainen.com	Keskisuomalainen
+.kouvolansanomat.fi	keskisuomalainen.com	Keskisuomalainen
+.ksml.fi	keskisuomalainen.com	Keskisuomalainen
+.kymensanomat.fi	keskisuomalainen.com	Keskisuomalainen
+.lansi-savo.fi	keskisuomalainen.com	Keskisuomalainen
+.savonsanomat.fi	keskisuomalainen.com	Keskisuomalainen
+
+# --- Nine ---
+# Nine's mastheads (AU): images on static.ffx.io.
+.afr.com	nine.com.au	Nine
+.brisbanetimes.com.au	nine.com.au	Nine
+.smh.com.au	nine.com.au	Nine
+.theage.com.au	nine.com.au	Nine
+.watoday.com.au	nine.com.au	Nine

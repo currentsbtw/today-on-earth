@@ -405,6 +405,23 @@ test("networks: two Big News Network portals are one outlet; articles keep their
   assert.equal(same.heat.cells[0].n, 2);
 });
 
+test("chains: two Newsquest weeklies are one outlet for o, topOutlets and totals.outlets", () => {
+  const records = [
+    rec({ source: "northwichguardian.co.uk", country: "GB", title: "Council approves the new bypass for the town" }),
+    rec({ source: "burytimes.co.uk", country: "GB", title: "Bury school wins a national science prize" }),
+    rec({ source: "theguardian.com", country: "GB", title: "Budget talks continue in Westminster tonight" }),
+  ];
+  const now = new Date("2026-10-20T13:00:00Z");
+  const { heat, cells } = buildSnapshot(records, { now, windowHours: 24 });
+  assert.deepEqual([heat.cells[0].o, heat.cells[0].n, heat.cells[0].c, heat.totals.outlets], [2, 3, 1, 2]);
+  assert.deepEqual(cells[0].topOutlets, [["newsquest.co.uk", 2], ["theguardian.com", 1]]);
+  assert.deepEqual(cells[0].articles.map((a) => a.source).sort(), ["burytimes.co.uk", "northwichguardian.co.uk", "theguardian.com"]);
+  // The chain's copy of one headline on two of its sites is one article of one outlet.
+  const copy = { ...records[0], url: "https://burytimes.co.uk/news/1", source: "burytimes.co.uk" };
+  const same = buildSnapshot([records[0], copy, records[2]], { now, windowHours: 24 });
+  assert.deepEqual([same.heat.cells[0].n, same.heat.cells[0].u, same.heat.cells[0].o], [2, 2, 2]);
+});
+
 test("topCountries lists every outlet country of the cell, by units then code; topOutlets stays at 10", () => {
   const codes = ["AR", "BR", "CA", "DE", "ES", "FR", "GB", "IN", "JP", "MX", "NG", "US"];
   const records: ArticleRecord[] = [];

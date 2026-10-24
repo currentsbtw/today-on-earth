@@ -237,7 +237,8 @@ export function loadCountryLookup(path = DOMAINS_FILE): CountryLookup {
 
 /**
  * Outlet networks (`data/outlet-networks.txt`, see ingest/data/README.md): domains that count
- * as one outlet, named by the network. `outletOf(source)` is the network's name for a listed
+ * as one outlet, named by the network: aggregator networks and domestic chains (Newsquest,
+ * Ippen, Sinclair, ...) whose sites run the same copy. `outletOf(source)` is the network's name for a listed
  * domain, else the domain itself; outlet counts (`o`, `topOutlets`), the per-outlet caps,
  * "one article per outlet and headline" and learned title tails use it. Articles keep their
  * own domain in `source`.

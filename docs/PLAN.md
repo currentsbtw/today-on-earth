@@ -1711,6 +1711,84 @@ aloud by the newscast it is a false claim with the site's name on it.
    a title other than the headline can confirm a loosely grouped story (Gaza's headline is
    about a UAE diplomat; an article title names Gaza), and country-level confirmation does not
    catch a wrong place inside the right country (La Verrière).
+   **Status 1b (2026-10-24): built, not committed.** Measured on the 16 GKG files (2026-10-23
+   03:00 to 04:45 UTC, 13,969 records, 10,317 placed) with the rules of the time: 884 placed
+   records (8.6%) sat at a region's centre (653 US states, type 2; 231 type 5); 6 of them only
+   because their city was skipped as boilerplate. Top regions: New York 121, California 113,
+   Tibet (Xizang) 53, Texas 47, Georgia 38, Tennessee 24, Florida 23, Minnesota 18, Iowa 18,
+   Michigan 15, Ohio 14, Colorado 14, Maine 13, New Jersey 13, Oregon, Massachusetts,
+   Pennsylvania and New Mexico 9 each, North Carolina 8, Alabama 8. "New York" is GDELT's
+   type-2 state entry (centroid 42.15, -74.94, upstate), and many of its records are New York
+   City stories (the council's carriage-horse ban, Mamdani); Georgia's are mostly iheart's DC
+   National Guard story. 65 of the 1,564 cells existed only because of them (415 records: 8
+   of 10+, California 114 and Tibet 57 the largest, 29 of one record); 55 more held some. Under
+   the 15% stop line, so built: in place.ts a record whose first candidate left after the
+   boilerplate skip is a region (type 2 or 5) is unplaced and counted in `unplaced` and the
+   new `regionOnly` (PlacementSummary; the ingest log reads `unplaced=N (by boilerplate=B
+   regionOnly=R)`); gkg.ts's parse-time placement agrees (a region-only record parses
+   unplaced). The region stays in `locs`; state shape and version unchanged; candidate parsing
+   unchanged. **Before/after**, local cold start on the 16 files served from disk (clock
+   04:46 UTC, frozen copies of ingest/ so only this change differs): placed records 10,317 to
+   9,433; `totals.unplaced` 3,503 to 4,301 (articles 13,267 to 13,264, reprints 1,122 to
+   1,016); cells 853 to 804 (49 gone, n 542, none new); moved 23 to 17. In the top 30 the
+   rows New York (state) 116 (9th), California 80 (17th), Tibet 53 (27th) and Texas 51 (28th)
+   leave; Texas's cell is now "Mclennan County, Texas" (n 4), Taipei 166 to 158, Washington 433
+   to 430. stories.json loses the carriage-horse story (4th, in the New York state cell) and
+   a Tennessee execution story (5th, region level), and gains Philadelphia and Washington.
+   `npm run check` OK. Cost: New York City stories GDELT reads as the state leave the map
+   (a city-for-state rule for that entry is a possible follow-up, not built).
+   **Status 1c (2026-10-24): measured, NOT built.** Same 16 files. Seven outlets have a
+   boilerplate pair with count 1: aif.ru Moscow (60%), dayoo.com Guangzhou (50%), liputan6.com
+   Jakarta (54%), livehindustan.com "Hindustan, India" (69%, the outlet's own name, at 28, 76),
+   manilatimes.net Manila (65%), news.yam.md Chisinau (63%), zol.com.cn "Guan Cun, Guangdong"
+   (87%, Zhongguancun misread). Records with that pair as their only candidate: 4, 3, 17, 13,
+   8, 10 and 5, 60 in all (6 more have it as their only city beside a region). ria.ru (20
+   records, Moscow x1 on 7) is under the bar in this window and interfax.ru absent. Twenty
+   drawn with seed 20261024 (mulberry32 shuffle of the URL-sorted pool), judged by eye: right 8
+   (dayoo's NDRC and Supreme People's Court stories, liputan6's KPK and Bayan stories,
+   livehindustan's Jio IPO and an OPPO launch in India, yam.md's Chișinău transplants, zol's
+   51job story), somewhere else 1 (a PR Newswire release on Manila Times about Seatrium and
+   Karpowership), nothing geographic 11 (horoscopes, gadget lists, a recipe, an explainer).
+   8 of 20 is under two thirds: not built. The whole pool by eye: 23 right, 14 elsewhere (7 of
+   manilatimes's 8 are syndicated press releases), 23 nothing. The class is mostly not
+   datelines: two of the seven pairs are an outlet's name or a misread, and Manila x1 is the
+   newswire's footer. Moscow's cell is n 193 either way; aif.ru's 4 stay unplaced.
+   **Status 1d (2026-10-24): built, not committed.** Chains found by data on the 16 files and
+   a 6 h state (2026-10-23 19:15 to 10-24 01:15 UTC, 48,446 records): a domain whose reprint
+   keys equal one same-country domain's in 80%+ of its records (2+ shared headlines) joins its
+   group. The 16 files give 38 groups, the 6 h state 103; the large ones are Australian
+   Community Media (31 / 68 domains), Sinclair (23 / 57), Newsquest (20 / 149), Townsquare
+   radio, Hearst Television, Postmedia, Ippen (7, merged with dpa users into 33 in the 6 h
+   state), MediaNews with Tribune (51 in the 6 h state, AP users among them), Black Press,
+   Scripps, Cox, Forum, NBC and Telemundo, Fox, Graham, Keskisuomalainen, EBRA, Funke, Nine,
+   and NPR member stations (101). The title rule cannot tell a chain from a wire (dpa and AP
+   join unrelated papers), so members were taken by each chain's CMS fingerprint (a URL or
+   image-host pattern on 50%+ of a domain's records, in its country: Newsquest's
+   `/<8 digits>.<slug>/`, Ippen's `-<8 digits>.html`, ACM's `/story/<7 digits>/`,
+   kubrick.htvapps.com, townsquare.media...) and checked by name. Adopted: 19 chains, 785
+   domains, appended to `outlet-networks.txt` as dotted entries named by the chain's corporate
+   domain (`newsquest.co.uk`, `ippen.media`, `medianewsgroup.com`, `sbgi.net`, `acm.media`...),
+   so `outletOf` stays the one source of truth and no code changed: `o`, `topOutlets`,
+   `totals.outlets`, story `o`, the caps, units, placement checks and learned tails already
+   go through it. Rejected: NPR member stations (independent owners sharing NPR copy, as AP
+   members do), wire-only groups, aggregators, and radio groups whose station ownership could
+   not be checked (Cumulus, Midwest, Beasley, Saga); Baltimore Sun and Capital Gazette (sold
+   off Tribune in 2024) and Press Democrat stay separate. `c`, `i` and `l` are unchanged in
+   rule (they count countries and languages; units feed them). On the 16 files 1,310 of
+   13,969 records (9.4%) change outlet: ACM 37 domains / 286 records, Newsquest 44 / 160,
+   Sinclair 23 / 130, Ippen 8 / 111, Townsquare 47 / 92, Hearst 10 / 81, MediaNews 23 / 78,
+   Postmedia 14 / 75. Local cold start on the 16 files (fixed clock 04:46 UTC, offline, same
+   code both runs but the networks file): totals.outlets 2,204 → 1,928, totals.articles
+   13,264 → 12,560, reprints 1,016 → 475, cells 804 → 792, topics 218 → 136. Top 20 cells'
+   `o` before → after: Washington 286 → 236, Paris 134 → 110, London 122 → 108, Hollywood
+   85 → 70, Sydney 67 → 34, Canberra 41 → 7, Moscow 114 → 110; the other 13 unchanged.
+   Canberra's largest story was one ACM opinion column on 34 sites (o 34); London's largest
+   by `o` was a Postmedia press release on 9 sites, now a heat story from 8 outlets; London's
+   topOutlets now lead with newsquest.co.uk 5. No New Jersey cell exists in this window
+   (both runs). `npm run check` OK on both. Cost seen: placement's boilerplate check counts
+   records, so a chain's one story copied across its sites can look like boilerplate: Black
+   Press's B.C. poll story on 16 sites made (Vancouver x2, 60%) a pair and unplaced 16 records
+   (boilerplate-unplaced 116 → 132); counting the share over units would fix it (place.ts).
    From the audit, two more: (e) **cell labels** cleaned (the accented-name bug behind
    "SãPaulo"; the home-country mismatch behind "Leitrim, United Kingdom"); (f) **single-outlet
    stories** marked as one outlet's report and sorted after multi-outlet stories everywhere

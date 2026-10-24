@@ -38,12 +38,14 @@ test("an outlet's fixed block (same place, same count, half its articles) is ski
   assert.deepEqual(s.pairs, [{ source: "newspim.com", name: "Paris, France", n: 2, share: 1 }]);
   assert.equal(s.outletsChecked, 1);
   assert.equal(s.outletsWithBoilerplate, 1);
-  assert.equal(s.moved, 7);
-  assert.equal(s.unplaced, 16);
+  assert.equal(s.moved, 6);
+  // 16 with nothing left, and the Gyeonggi one: once Paris is skipped only a region is left.
+  assert.equal(s.unplaced, 17);
+  assert.equal(s.regionOnly, 1);
   const cells = records.map((r) => r.locationName);
   assert.equal(cells.filter((n) => n === "Paris, France").length, 0);
   assert.equal(cells.filter((n) => n === "Seoul, South Korea").length, 3);
-  assert.equal(cells.filter((n) => n === "Gyeonggi-do, South Korea").length, 1);
+  assert.equal(cells.filter((n) => n === "Gyeonggi-do, South Korea").length, 0);
   const seoul = records.find((r) => r.locationName === "Seoul, South Korea")!;
   assert.equal(seoul.cellId, latLngToCell(37.5664, 127, 3));
   assert.equal(seoul.locationCountry, "KR");
@@ -88,10 +90,30 @@ test("an outlet under the minimum is never flagged; records without candidates a
   const legacy = rec("small.example", undefined, { cellId: "831fb4fffffffff", lat: 1, lon: 2, locationName: "Stored", locationCountry: "FR" });
   const countryOnly = rec("small.example", []);
   const s = resolvePlacement([...small, legacy, countryOnly]);
-  assert.deepEqual(s, { outletsChecked: 0, outletsWithBoilerplate: 0, pairs: [], moved: 0, unplaced: 0 });
+  assert.deepEqual(s, { outletsChecked: 0, outletsWithBoilerplate: 0, pairs: [], moved: 0, unplaced: 0, regionOnly: 0 });
   assert.ok(small.every((r) => r.locationName === "Paris, France"));
   assert.deepEqual([legacy.cellId, legacy.lat, legacy.lon, legacy.locationName], ["831fb4fffffffff", 1, 2, "Stored"]);
   assert.equal(countryOnly.cellId, "");
+});
+
+test("a region-only article is unplaced and keeps its region candidate; a city beats a region", () => {
+  const regionOnly = rec("small.example", [GYEONGGI(5)]);
+  const withCity = rec("small.example", [SEOUL(1, 400), GYEONGGI(5, 10)]);
+  const city = rec("small.example", [BUSAN(2)]);
+  // As parseGkgLine would leave a region-only record before this rule: at the region's centre.
+  assert.notEqual(regionOnly.cellId, "");
+  const s = resolvePlacement([regionOnly, withCity, city]);
+  assert.deepEqual([s.moved, s.unplaced, s.regionOnly], [0, 1, 1]);
+  assert.deepEqual(
+    [regionOnly.cellId, regionOnly.lat, regionOnly.lon, regionOnly.locationName, regionOnly.locationCountry, regionOnly.locationFid],
+    ["", 0, 0, "", "", ""],
+  );
+  assert.deepEqual(regionOnly.locs?.map((c) => [c.name, c.type, c.n]), [["Gyeonggi-do, South Korea", 5, 5]], "the region stays a candidate");
+  assert.equal(withCity.locationName, "Seoul, South Korea");
+  assert.equal(city.locationName, "Busan, South Korea");
+  // Stable on the next run, over the carried records.
+  assert.deepEqual(resolvePlacement([regionOnly, withCity, city]).regionOnly, 1);
+  assert.equal(regionOnly.cellId, "");
 });
 
 test("a network's hosts are checked as one outlet", () => {

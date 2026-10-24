@@ -22,28 +22,28 @@ If GDELT saw it, it is here.
 
 GDELT lists the places each article mentions, once per mention. We take the city the
 article mentions most (a city or landmark, in GDELT's terms); when two cities are
-mentioned equally often, the one mentioned first in the text. An article that mentions
-no city takes the state or region it mentions most, by the same rule. Articles that only
-mention countries are counted in the totals but are not drawn anywhere, because a
-country's centre is not where anything happened. The header tells you how many
-articles were left unplaced.
+mentioned equally often, the one mentioned first in the text. Articles that mention no
+city, only states, regions or countries, are counted in the totals but are not drawn
+anywhere, because the centre of a state or a country is not where anything happened. The
+header tells you how many articles were left unplaced.
 
 Some outlets carry the same place in every article: a footer, a dateline, a sidebar, or
 their own name read as a place. So for each outlet (a listed network counts as one) with
 at least 20 articles in the window that name a city or region, a place that appears with
 the same number of mentions in at least half of those articles is treated as the outlet's
-fixed block and skipped. The article then takes its next place (we keep its three
-most-mentioned cities and its most-mentioned region, in that order) or, when none is
-left, is left unplaced. The same number of mentions is what separates a fixed block from
-a local outlet that really covers its city, where the count varies. The cost: a wire
-outlet whose every article carries a one-mention dateline loses that place, even in
-articles that are about it, and those of its articles that mention no other place are
-left unplaced.
+fixed block and skipped. The article then takes its next city (we keep its three
+most-mentioned cities) or, when no city is left, is left unplaced. The same number of
+mentions is what separates a fixed block from a local outlet that really covers its city,
+where the count varies. The cost: a wire outlet whose every article carries a
+one-mention dateline loses that place, even in articles that are about it, and those of
+its articles that mention no other place are left unplaced.
 
 Places are grouped into hexagonal cells about 100 km across, so "Paris" and its
-suburbs are one dot. When an article mentions no city and its place is a state or
-region ("Texas"), its dot sits at that region's centre; that is less wrong than a
-country's centre, but it is still a centre, and the label tells you so.
+suburbs are one dot. An article whose only place is a state or region ("Texas") is
+therefore not drawn at that region's centre, a point the article never named; we keep the
+region with the article, so the rule can be revisited. The cost: when GDELT reads a city
+as its state ("New York" for New York City is the common case), that article is left
+unplaced too.
 
 ## What the numbers mean
 
@@ -52,7 +52,12 @@ country's centre, but it is still a centre, and the label tells you so.
   the rule under Distinct and reprints; an article with no title counts once per URL).
   A network of sites under one owner, listed in the ingest's networks file, counts as
   one outlet.
-- **Outlets**: distinct website domains; a listed network counts once.
+- **Outlets**: distinct website domains; a listed network counts once. So does a listed
+  chain of local sites that run the same copy: Newsquest, Ippen, MediaNews Group (with
+  Tribune Publishing), Sinclair, Australian Community Media, Hearst Television, Scripps,
+  Townsquare Media, NBCUniversal and Fox stations, Cox Media Group, Graham Media, Forum
+  Communications, Postmedia, Black Press, Funke, EBRA, Keskisuomalainen and Nine. Its
+  sites' copies of one headline are then one article.
 - **Outlet countries**: the countries those outlets are based in, from GDELT's own list of
   news domains by country. Unknown outlets count as unknown, not as any country.
 - **Languages**: the language the article was written in, as GDELT recorded it.
@@ -228,6 +233,11 @@ to 22.0%. Among the 20 largest places, 4 of 40 were wrong. The causes of the 19:
 The bar we have set is under 2% wrong, with the interval's upper bound under 4%. The site
 is not there yet. A rule change that comes from an audit is dated here when it ships, and
 the next audit measures it.
+
+Rule changes since the first audit, 24 October 2026: a top story must name its place in
+its own text; a story from one outlet is shown last and marked; garbled region parts and bare
+codes are dropped from place names; an article that names no city is not drawn; a listed chain
+of local sites counts as one outlet; local-language place names from GeoNames confirm places.
 
 The record is the table of results in docs/audits/README.md, one dated row per audit,
 with each audit's per-story labels beside it and its snapshot in the archive.
