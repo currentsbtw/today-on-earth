@@ -417,9 +417,9 @@ this field existed (state version 4 and older) have no kinds and count as untagg
 ## Top stories (added 2026-10-24): `/data/stories.json`  (one small file, written every run)
 
 The day's largest stories around the world, by a published, deterministic rule: the stories
-with the most distinct outlets across every place, one per place and at most two per country,
-so a reading of them moves around the planet. It feeds the narrated daily clip, which reads
-the first 6 to 8 entries it can voice (docs/PLAN.md "Clip v4: the newscast"). No text of ours:
+with the most distinct outlets across every place, one per place, one per event and at most
+two per country, so a reading of them moves around the planet. It feeds the narrated daily
+clip, which reads the first 6 to 8 entries it can voice (docs/PLAN.md "Clip v4: the newscast"). No text of ours:
 an entry carries an outlet's own headline plus the story's numbers.
 
 ```jsonc
@@ -451,7 +451,11 @@ ranked by distinct outlets `o`, most first; ties go to the higher `n`, then the 
 `first`, then the cell id ascending, then the story's position in its cell (the broadcast's
 tie order). The list is the ranking walked from the top, taking a story when:
 
-- its cell has no entry yet (one story per place), and
+- its cell has no entry yet (one story per place),
+- no entry yet has the same reprint key (one story per event): the **Reprint key** defined
+  under heat.json, of the story's `headline` (already the shown title) and `headlineSource`,
+  without learned tails; an empty key matches nothing. A story skipped here does not use up a
+  place of its country. And
 - its country has fewer than `TOP_STORIES_PER_COUNTRY` = 2 entries, where the country is the
   cell's `home`. Cells whose `home` is unknown (`""`) share one bucket of their own, apart
   from every country, and take at most `TOP_STORIES_UNKNOWN_HOME_MAX` = 1 entry in total (an

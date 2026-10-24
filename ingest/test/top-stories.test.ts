@@ -86,6 +86,25 @@ test("top stories: at most two per country", () => {
   assert.deepEqual(headlines(f), ["US1", "US2", "FR1"]);
 });
 
+test("top stories: one story per event (headline reprint key), skipped before the country cap", () => {
+  const closure = "Israel orders closure of the West Bank";
+  const f = run([
+    { id: "heb", home: "PS", stories: [story(closure, { o: 60 })] },
+    // The same headline from another outlet, its " - Reuters" suffix stripped by the key.
+    { id: "gaz", home: "PS", stories: [story(`${closure} - Reuters`, { o: 50, headlineSource: "reuters.com" })] },
+    { id: "ram", home: "PS", stories: [story("PS-other", { o: 40 })] },
+    { id: "fr1", home: "FR", stories: [story("FR1", { o: 30 })] },
+  ]);
+  // gaz is skipped and does not use up a PS place, so ram takes the second one.
+  assert.deepEqual(headlines(f), [closure, "PS-other", "FR1"]);
+  assert.deepEqual(f.stories.map((e) => e.cell.id), ["heb", "ram", "fr1"]);
+  // A headline whose key is empty (punctuation only) matches nothing: both are listed.
+  assert.deepEqual(headlines(run([
+    { id: "a", home: "US", stories: [story("…!", { o: 20 })] },
+    { id: "b", home: "FR", stories: [story("…!", { o: 10 })] },
+  ])), ["…!", "…!"]);
+});
+
 test("top stories: unknown-home cells share one bucket of one, apart from every country", () => {
   assert.equal(TOP_STORIES_UNKNOWN_HOME_MAX, 1);
   const f = run([

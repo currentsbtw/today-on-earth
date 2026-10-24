@@ -1,12 +1,14 @@
 import { MIN_STORY_U, slotCell, slotStory, tieBreak } from "./broadcast.ts";
+import { reprintKey } from "./reprints.ts";
 import type { CellFile, HeatCell, HeatFile, Story, TopStoriesFile } from "./types.ts";
 
 /**
  * The day's largest stories around the world (docs/DATA-CONTRACT.md "Top stories"), for the
- * narrated clip: the stories with the most distinct outlets across every place, one per place
- * and at most two per country, so the reading moves around the planet. Nothing here writes
- * text: an entry carries an outlet's own headline and the story's counts, shaped exactly as a
- * broadcast slot's. Every threshold lives here and the contract quotes them.
+ * narrated clip: the stories with the most distinct outlets across every place, one per place,
+ * one per event (headline reprint key) and at most two per country, so the reading moves
+ * around the planet. Nothing here writes text: an entry carries an outlet's own headline and
+ * the story's counts, shaped exactly as a broadcast slot's. Every threshold lives here and the
+ * contract quotes them.
  */
 
 /** At most this many entries. The clip reads the first 6 to 8 it can voice; the rest is slack. */
@@ -26,6 +28,11 @@ interface Candidate {
   cell: CellFile;
   heat: HeatCell;
   story: Story;
+  /**
+   * Reprint key of the headline (one per event). The headline is already the shown title, its
+   * outlet suffix cut by the same rule, so no learned tails are needed. "" matches nothing.
+   */
+  key: string;
   /** Position of the story in its cell's `stories` (last tie-break). */
   pos: number;
 }
@@ -42,23 +49,28 @@ export function buildTopStories(args: { heat: HeatFile; cells: readonly CellFile
     if (!h) continue;
     cell.stories.forEach((story, pos) => {
       // As every broadcast slot: the u floor, and an outlet's own headline to read.
-      if (story.u >= MIN_STORY_U && story.headline !== "") all.push({ cell, heat: h, story, pos });
+      if (story.u >= MIN_STORY_U && story.headline !== "") all.push({ cell, heat: h, story, key: reprintKey(story.headline, story.headlineSource), pos });
     });
   }
   all.sort(byOutlets);
 
   const takenCells = new Set<string>();
+  /** Reprint keys of the headlines taken (one per event); an empty key is never added. */
+  const takenEvents = new Set<string>();
   /** Entries per country; the unknown home is keyed separately from every ISO code. */
   const perCountry = new Map<string, number>();
   const stories: TopStoriesFile["stories"] = [];
   for (const c of all) {
     if (stories.length >= TOP_STORIES_MAX) break;
     if (takenCells.has(c.cell.id)) continue;
+    // Before the country check, so a repeat of a taken event does not use up a country place.
+    if (c.key !== "" && takenEvents.has(c.key)) continue;
     const key = c.cell.home === "" ? "(unknown)" : c.cell.home;
     const cap = c.cell.home === "" ? TOP_STORIES_UNKNOWN_HOME_MAX : TOP_STORIES_PER_COUNTRY;
     const had = perCountry.get(key) ?? 0;
     if (had >= cap) continue;
     takenCells.add(c.cell.id);
+    if (c.key !== "") takenEvents.add(c.key);
     perCountry.set(key, had + 1);
     stories.push({ rank: stories.length + 1, cell: slotCell(c.cell, c.heat), story: slotStory(c.story) });
   }

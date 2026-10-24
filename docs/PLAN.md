@@ -926,14 +926,14 @@ the second), and a cell's `home` can differ from the country in its name. To jud
 (museums shut ahead of protests), Washington 340 (the Oleshky ceasefire), Moscow 276 (the diesel
 tanker), Hebron 273 and Gaza 189 (West Bank closure), London 154, Alaska 153, Kyiv 139, Tehran
 116, Milan 115 (Italian headline), Athens 100, Nagqu 86 (the Tibet earthquake). Two findings for
-the newscast, not fixed: (1) **the same event twice**: ranks 4 and 5 carry the identical headline
-in two cells of one country (Hebron and Gaza); the rule needs "one per event" on top of one per
-place: skip a candidate whose headline (the reprint key) matches a taken story's. (2) **A
-misplaced story reads as a false claim**: rank 11, "Ohio could decide control of the Senate",
-sits in Athens, Greece (Athens, Ohio); a newscast that says "Athens, Greece" over it is wrong out
-loud, where the map only showed a dot. Placement quality (Phase 2b residue) is now on the clip's
-critical path, and the reader should at least prefer stories whose headline mentions nothing that
-contradicts the place. Also visible: the headline sources are small outlets (edp24.co.uk,
+the newscast: (1) **the same event twice**: ranks 4 and 5 carry the identical headline in two
+cells of one country (Hebron and Gaza); the rule needs "one per event" on top of one per place:
+skip a candidate whose headline (the reprint key) matches a taken story's. Fixed the same day
+(one per event, by reprint key). (2) Not fixed: **a misplaced story reads as a false claim**:
+rank 11, "Ohio could decide control of the Senate", sits in Athens, Greece (Athens, Ohio); a
+newscast that says "Athens, Greece" over it is wrong out loud, where the map only showed a dot.
+Placement quality (Phase 2b residue) is now on the clip's critical path, and the reader should
+at least prefer stories whose headline mentions nothing that contradicts the place. Also visible: the headline sources are small outlets (edp24.co.uk,
 reflector.com, prpeak.com), so the "large outlet's headline" rule from the first viewing applies
 to the reading voice as well.
 

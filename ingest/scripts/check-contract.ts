@@ -521,6 +521,8 @@ if (!existsSync(topStoriesPath)) {
   const n = (o: Record<string, unknown>, k: string) => (typeof o[k] === "number" ? (o[k] as number) : NaN);
   const homes = new Map<string, number>();
   const ids = new Set<string>();
+  /** Reprint key of each entry's headline -> its index (one per event). */
+  const events = new Map<string, number>();
   const got: string[] = [];
   list.forEach((e, i) => {
     const w = `stories.stories[${i}]`;
@@ -541,6 +543,12 @@ if (!existsSync(topStoriesPath)) {
     for (const k of ["lat", "lon", "name"]) if (cell[k] !== h[k]) err(`${w}.cell.${k}`, `differs from heat.json (${String(cell[k])} vs ${String(h[k])})`);
     if (n(story, "u") < MIN_STORY_U) err(`${w}.story.u`, `${String(story.u)} < ${MIN_STORY_U}`);
     if (typeof story.headline !== "string" || story.headline === "") err(`${w}.story.headline`, "empty; an entry must carry an outlet's headline");
+    else {
+      const key = reprintKey(story.headline, String(story.headlineSource ?? ""));
+      const prior = events.get(key);
+      if (key !== "" && prior !== undefined) err(`${w}.story.headline`, `same reprint key as entry ${prior + 1} (one story per event)`);
+      else if (key !== "") events.set(key, i);
+    }
     const match = allStories.find((c) => c.cell.id === id && Object.keys(story).every((k) => c.s[k] === story[k]));
     if (!match) return err(`${w}.story`, "no story in that cell file matches it field for field");
     if (cell.home !== match.cell.home) err(`${w}.cell.home`, "differs from the cell file");
@@ -551,7 +559,8 @@ if (!existsSync(topStoriesPath)) {
     if (k > cap) err("stories.stories", `home ${JSON.stringify(home)} appears ${k} times, more than ${cap}`);
   }
   // The rule, recomputed from the cell files: rank by o desc, then n desc, first asc, cell id,
-  // position; one per cell, at most two per country, one for all unknown homes, at most 12.
+  // position; one per cell, one per event (non-empty headline reprint key, checked before the
+  // country), at most two per country, one for all unknown homes, at most 12.
   const cmp = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
   const ranked = allStories
     .filter((c) => heatById.has(c.cell.id as string) && n(c.s, "u") >= MIN_STORY_U && typeof c.s.headline === "string" && c.s.headline !== "")
@@ -559,12 +568,16 @@ if (!existsSync(topStoriesPath)) {
   const want: string[] = [];
   const wantCells = new Set<string>();
   const wantHomes = new Map<string, number>();
+  const wantEvents = new Set<string>();
   for (const c of ranked) {
     if (want.length >= TOP_STORIES_MAX) break;
     const home = String(c.cell.home);
     const had = wantHomes.get(home) ?? 0;
-    if (wantCells.has(String(c.cell.id)) || had >= (home === "" ? TOP_STORIES_UNKNOWN_HOME_MAX : TOP_STORIES_PER_COUNTRY)) continue;
+    const key = reprintKey(String(c.s.headline), String(c.s.headlineSource ?? ""));
+    if (wantCells.has(String(c.cell.id)) || (key !== "" && wantEvents.has(key))) continue;
+    if (had >= (home === "" ? TOP_STORIES_UNKNOWN_HOME_MAX : TOP_STORIES_PER_COUNTRY)) continue;
     wantCells.add(String(c.cell.id));
+    if (key !== "") wantEvents.add(key);
     wantHomes.set(home, had + 1);
     want.push(`${String(c.cell.id)}#${c.pos}`);
   }
