@@ -929,7 +929,7 @@ tanker), Hebron 273 and Gaza 189 (West Bank closure), London 154, Alaska 153, Ky
 the newscast: (1) **the same event twice**: ranks 4 and 5 carry the identical headline in two
 cells of one country (Hebron and Gaza); the rule needs "one per event" on top of one per place:
 skip a candidate whose headline (the reprint key) matches a taken story's. Fixed the same day
-(one per event, by reprint key). (2) Not fixed: **a misplaced story reads as a false claim**:
+(one per event, by reprint key). Live 02:16 UTC (run 40053459702): 12 stories, no repeated headline, Gaza gone; the list also carries an Alaska lawsuit story in Petersburg, Russia (Petersburg, Alaska), a second same-name case for the text rule to drop. (2) Not fixed: **a misplaced story reads as a false claim**:
 rank 11, "Ohio could decide control of the Senate", sits in Athens, Greece (Athens, Ohio); a
 newscast that says "Athens, Greece" over it is wrong out loud, where the map only showed a dot.
 Placement quality (Phase 2b residue) is now on the clip's critical path, and the reader should
