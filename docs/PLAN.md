@@ -1176,7 +1176,7 @@ Known and not fixed: place pages and share images are rebuilt from the live wind
 15 minutes, so a caption or share link posted for a place 404s once that place drops under
 10 articles in the last 24 hours (often within a day). Status: fixed 2026-10-23
 by a generated `404.html` that sends a missing `place/<id>` address to the map with the cell
-selected, where the status line says the place is not in the last 24 hours of news.
+selected, where the status line says the place is not in the last 24 hours of news. Live after the deploy (run 40044563503, 6b4d63d): `place/800000000000000.html` returns 404 with the Not Here page (9.1 KB), the browser lands on `/#c=800000000000000`, and once the map has drawn the status reads "That place is not in the last 24 hours of news."; the sitemap does not list the page.
 
 ## Visual redesign: Datamatics Field (shipped 2026-10-21)
 
