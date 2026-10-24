@@ -1675,6 +1675,21 @@ aloud by the newscast it is a false claim with the site's name on it.
    rule; the same-name class needs a signal from the text (next: does the story's headline or
    any of its titles name the place, its region or its country, measured on the 128 audited
    stories). Scripts and full outputs lived in the session scratchpad (consensus/).
+   **The text signal, measured (2026-10-24) on the 128 audited stories.** "Does the headline or
+   any of the story's saved titles name the cell's city, its region or its country (the country
+   also in the title's own language via Intl.DisplayNames), whole word, diacritics stripped?"
+   Unconfirmed catches 15 of the 19 wrong (the 4 it misses name the right place at a wrong
+   coordinate: Obregón in Yucatán, La Verrière in Auvergne) but also marks 39 of the 81 right
+   (48%) and 23 of 28 unclear: right stories go unconfirmed when the city is written in its own
+   script (Москва, Αθήνα, 重庆), inflected (Bratislave, Sloveniji), or stands behind a metonym
+   (White House, Broadway, NYPD, Beşiktaş). **Decision:** (1) the top stories the voice reads
+   (`stories.json`) require confirmation, with a published list of capital metonyms (White
+   House, Pentagon, Kremlin, Downing Street, Élysée...) and a prefix match for inflected city
+   names, accepting that a right story that names nothing is skipped (the list has slack);
+   (2) the site itself shows no "unconfirmed" label until the signal's recall is up; (3) the
+   path to recall is local-language place names: GDELT's FeatureID for non-US places is the
+   GeoNames id, so a one-time build table of GeoNames alternate names for the cells we see is
+   item (g) of trust pass two. Built the same day as (1); status below.
    From the audit, two more: (e) **cell labels** cleaned (the accented-name bug behind
    "SãPaulo"; the home-country mismatch behind "Leitrim, United Kingdom"); (f) **single-outlet
    stories** marked as one outlet's report and sorted after multi-outlet stories everywhere
