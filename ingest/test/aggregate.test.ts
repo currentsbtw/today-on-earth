@@ -363,6 +363,39 @@ test("repeated suffixes: \"X - Section | Outlet\" loses both, the same for the k
   assert.equal(keyer.keyOf(r), keyer.keyOf(plain)); // so the two are reprints of one headline
 });
 
+test("separators added 2026-10-24: \"::\", \"_\", \"•\" and a bar with no spaces (full-width ｜), real titles", () => {
+  const cases: [string, string, string][] = [
+    ["wral.com", "Eleanor Coppola died before she could finish 'Making Marie Antoinette.' Sofia saw it through. :: WRAL.com", "Eleanor Coppola died before she could finish 'Making Marie Antoinette.' Sofia saw it through."],
+    ["eastmoney.com", "广汽高域苏庆鹏：低空经济是长周期赛道资本质量比数量更重要 _ 东方财富网", "广汽高域苏庆鹏：低空经济是长周期赛道资本质量比数量更重要"],
+    ["viveresanbenedetto.it", "Ucraina-Russia, tregua umanitaria per Oleshky dal 27 ottobre: l'accordo mediato da Melania Trump • Vivere San Benedetto notizie per la città e il territorio", "Ucraina-Russia, tregua umanitaria per Oleshky dal 27 ottobre: l'accordo mediato da Melania Trump"],
+    ["hokkoku.co.jp", "仏大統領、高校生と会談 「回答なし」デモ継続へ｜全国のニュース｜北國新聞", "仏大統領、高校生と会談 「回答なし」デモ継続へ"],
+    ["163.com", "特斯拉\"能飞\"引发热议，经济日报：莫用对立思维拉踩车企|比亚迪|电动汽车|中国汽车|汽车产业|传统车企|新能源汽车", "特斯拉\"能飞\"引发热议，经济日报：莫用对立思维拉踩车企"],
+  ];
+  const records = cases.map(([source, title]) => rec({ source, title }));
+  const keyer = createKeyer(records);
+  cases.forEach(([source, , shown], i) => {
+    assert.equal(keyer.shownTitle(records[i]), shown, source);
+    assert.equal(keyer.keyOf(records[i]), reprintKey(shown, source), source);
+  });
+  // A bar inside a short head is not a suffix: the head minimum still applies.
+  assert.equal(reprintKey("闪评｜AI协助发现PHP重大漏洞 网络安全迎来变局"), "闪评ai协助发现php重大漏洞 网络安全迎来变局");
+});
+
+test("joined tails (added 2026-10-24): \"head-Xinhua\" goes only as a learned tail, never by name or length", () => {
+  const xinhua = [
+    "Netanyahu says plans major West Bank operation as Israel places Hebron under closure after deadly attack-Xinhua",
+    "Trump modifies scope of 50-pct tariffs on Canadian products-Xinhua",
+    "Mexico prepares for Day of the Dead with marigolds-Xinhua",
+  ].map((title) => rec({ source: "english.news.cn", title }));
+  assert.deepEqual([...learnTails(xinhua)], [["english.news.cn", new Set(["xinhua"])]]);
+  const keyer = createKeyer(xinhua);
+  assert.equal(keyer.shownTitle(xinhua[1]), "Trump modifies scope of 50-pct tariffs on Canadian products");
+  assert.equal(keyer.keyOf(xinhua[1]), "trump modifies scope of 50pct tariffs on canadian products");
+  // Unlearned, a joined word stays, even when it names the outlet or is one word.
+  assert.equal(reprintKey("Talks resume on the border crossing between Spain-France", "france24.com"), "talks resume on the border crossing between spainfrance");
+  assert.equal(reprintKey(xinhua[2].title, "english.news.cn"), "mexico prepares for day of the dead with marigoldsxinhua");
+});
+
 test("units: an outlet's copies of one headline are one article; two outlets are two; untitled count each", () => {
   const wire = "Storm hits coast, thousands without power";
   const records = [

@@ -100,9 +100,15 @@ domain.
 2. A trailing outlet suffix is removed only when it looks like an outlet name; the rule
    is then applied again to what remains, until it no longer applies ("X - Section |
    Outlet" loses both; changed 2026-10-23). Candidate: the title ends in ` - X`, ` | X`,
-   ` – X` or ` — X` (hyphen, pipe, en dash or em dash with a space on each side; X
-   contains no further such separator), and what precedes that last separator is at least
-   20 characters (code points, trailing space trimmed). Then:
+   ` – X`, ` — X`, ` :: X`, ` _ X` or ` • X` (hyphen, pipe, en dash, em dash, double
+   colon, underscore or bullet with a space on each side; the last three added
+   2026-10-24), or in `|X` or `｜X` (a bar with no spaces, as CJK titles use the
+   full-width bar, which NFKC turns into `|`; added 2026-10-24); X contains no further such
+   separator. Failing those, a **joined tail** `head-X` (a hyphen with no spaces and X one
+   word starting with a capital letter, "…deadly attack-Xinhua"; added 2026-10-24) is a
+   candidate that only (c) below removes, never (a) or (b), so "Spain-France" stays. What
+   precedes the separator must be at least 20 characters (code points, trailing space
+   trimmed). Then:
    - `tail` = X decomposed (NFD) with every character that is not a letter or digit
      (Unicode classes L and N) removed, then a leading `the` removed
      ("The Star" → `star`, "BBC News" → `bbcnews`, "El País" → `elpais`).

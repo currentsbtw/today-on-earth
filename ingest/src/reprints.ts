@@ -9,10 +9,16 @@ import type { ArticleRecord } from "./types.ts";
  * 2. A trailing outlet suffix is removed only when it looks like an outlet name; the rule is
  *    then applied again to what remains, until it no longer applies ("X - Section | Outlet"
  *    loses both; every removal needs a head of 20+ code points, so it stops).
- *    Candidate: the title ends in " - X", " | X", " – X" or " — X" (hyphen, pipe, en dash
- *    or em dash with a space on each side; X contains no further such separator), and what
- *    precedes that last separator (the head, trailing space trimmed) is at least 20 code
- *    points. The candidate is found and measured on the NFKC, whitespace-collapsed title
+ *    Candidate: the title ends in " - X", " | X", " – X", " — X", " :: X", " _ X" or " • X"
+ *    (hyphen, pipe, en dash, em dash, double colon, underscore or bullet with a space on each
+ *    side; "::", "_" and "•" added 2026-10-24), or in "|X" or "｜X" (a bar with no spaces:
+ *    the full-width bar of CJK titles, which NFKC turns into "|"; added 2026-10-24); X
+ *    contains no further such separator. Failing those, a joined tail "head-X" (a hyphen
+ *    with no spaces, X one word starting with a capital letter, as "...attack-Xinhua";
+ *    added 2026-10-24) is a candidate too, but it is removed only by (c) below, never by
+ *    (a) or (b), since "Spain-France" or "Covid-Era" would match them. What precedes the
+ *    separator (the head, trailing space trimmed) must be at least 20 code points. The
+ *    candidate is found and measured on the NFKC, whitespace-collapsed title
  *    before lowercasing (lowercasing can change the code-point count, "İ" -> "i̇"), so the
  *    shown title can always be cut at the same place. Then:
  *    - tail = X decomposed (NFD) with every character that is not a letter or digit
@@ -41,7 +47,12 @@ const MIN_NAME = 3;
 /** A suffix of at most this many words is removed whatever the source. */
 const SHORT_SUFFIX_WORDS = 2;
 
-const SUFFIX = /^(.*?)\s(?:-|\||–|—)\s((?:(?!\s(?:-|\||–|—)\s).)+)$/su;
+/** A suffix separator: one of these with a space on each side, or a bar with none. */
+const SEPARATOR = String.raw`(?:\s(?:-|\||–|—|::|_|•)\s|\||｜)`;
+/** The last separator: a lazy head, then a tail with no separator in it. */
+const SUFFIX = new RegExp(String.raw`^(.*?)${SEPARATOR}((?:(?!${SEPARATOR}).)+)$`, "su");
+/** A joined tail, "head-Xinhua": removed only when it is one of the outlet's learned tails. */
+const JOINED_SUFFIX = /^(.*\S)-(\p{Lu}[\p{L}\p{N}]*)$/su;
 const NATIONAL_SLDS: ReadonlySet<string> = new Set(["com", "co", "net", "org", "gov", "edu", "ac", "or", "ne", "go"]);
 
 /** Letters and digits only (diacritics dropped via NFD), with a leading "the" removed. */
@@ -81,16 +92,21 @@ function finish(t: string): string {
 }
 
 /**
- * The suffix candidate of step 2: the title split at its last " - ", " | ", " – " or " — "
- * into `head` (trailing space trimmed, at least 20 code points) and `tail` (X). Null when
- * there is no such separator or the head is too short. Works on the string as given.
+ * The suffix candidate of step 2: the title split at its last separator (SEPARATOR) into
+ * `head` (trailing space trimmed, at least 20 code points) and `tail` (X); failing that, at a
+ * joined tail "head-X", with `joined` set (only a learned tail removes it). Null when there
+ * is no candidate or the head is too short. Works on the string as given.
  */
-export function splitSuffix(title: string): { head: string; tail: string } | null {
+export function splitSuffix(title: string): { head: string; tail: string; joined: boolean } | null {
   // Greedy last separator: the lazy head plus a tail with no separator in it.
   const m = SUFFIX.exec(title);
-  if (!m) return null;
-  const head = m[1].trimEnd();
-  return Array.from(head).length >= SUFFIX_MIN_REST ? { head, tail: m[2] } : null;
+  if (m) {
+    const head = m[1].trimEnd();
+    if (Array.from(head).length >= SUFFIX_MIN_REST) return { head, tail: m[2], joined: false };
+  }
+  const j = JOINED_SUFFIX.exec(title);
+  if (!j || Array.from(j[1]).length < SUFFIX_MIN_REST) return null;
+  return { head: j[1], tail: j[2], joined: true };
 }
 
 /** Learned tails per outlet (outletOf of the source): normalised tails (step 1 + step 3 form). */
@@ -143,7 +159,8 @@ function keyParts(title: string, source: string, tails?: ReadonlySet<string>): {
   const label = outletLabel(source);
   let strips = 0;
   for (let sp = splitSuffix(t); sp; sp = splitSuffix(t)) {
-    if (!(looksLikeOutlet(sp.tail, label) || (tails !== undefined && tails.has(finish(sp.tail.toLowerCase()))))) break;
+    const learned = tails !== undefined && tails.has(finish(sp.tail.toLowerCase()));
+    if (!(learned || (!sp.joined && looksLikeOutlet(sp.tail, label)))) break;
     t = sp.head;
     strips++;
   }
