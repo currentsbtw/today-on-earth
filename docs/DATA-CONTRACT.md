@@ -417,8 +417,8 @@ this field existed (state version 4 and older) have no kinds and count as untagg
 ## Top stories (added 2026-10-24): `/data/stories.json`  (one small file, written every run)
 
 The day's largest stories around the world, by a published, deterministic rule: the stories
-with the most distinct outlets across every place, one per place, one per event and at most
-two per country, so a reading of them moves around the planet. It feeds the narrated daily
+with the most distinct outlets across every place whose own text names their place, one per
+place, one per event and at most two per country, so a reading of them moves around the planet. It feeds the narrated daily
 clip, which reads the first 6 to 8 entries it can voice (docs/PLAN.md "Clip v4: the newscast"). No text of ours:
 an entry carries an outlet's own headline plus the story's numbers.
 
@@ -430,8 +430,9 @@ an entry carries an outlet's own headline plus the story's numbers.
       "cell": { "id": "832aa8fffffffff", "name": "Washington, United States", "lat": 38.96, "lon": -76.55, "home": "US" },
       "story": { "headline": "…", "headlineSource": "bbc.co.uk", "headlineLang": "en", "headlineUrl": "https://…",
                  "n": 212, "u": 150, "o": 96, "c": 21, "i": 20, "l": 7, "t": -4.1,
-                 "first": "2026-10-26T01:15:00Z", "last": "2026-10-26T04:30:00Z" } },
-    { "rank": 2, "cell": { … }, "story": { … } }
+                 "first": "2026-10-26T01:15:00Z", "last": "2026-10-26T04:30:00Z" },
+      "confirmed": "metonym" },   // added 2026-10-24: why the story is listed here (see Confirmation)
+    { "rank": 2, "cell": { … }, "story": { … }, "confirmed": "city" }
   ]
 }
 ```
@@ -441,6 +442,9 @@ an entry carries an outlet's own headline plus the story's numbers.
   same code shapes both): the cell's `id`, `name`, `lat`, `lon` as in `heat.json` and `home`
   as in its cell file; the story's fields exactly as in the cell file's `stories`, without
   `entities` and `articles`.
+- `confirmed` (added 2026-10-24): `"city"`, `"region"`, `"country"` or `"metonym"`, the first
+  level of the cell's name that the story's own text names (see Confirmation below), so a
+  reader can see why the story is listed at this place.
 - If building the list fails, the run logs the error and still writes the file, with
   `"stories": []`: the map snapshot is never held back by it.
 
@@ -451,6 +455,9 @@ ranked by distinct outlets `o`, most first; ties go to the higher `n`, then the 
 `first`, then the cell id ascending, then the story's position in its cell (the broadcast's
 tie order). The list is the ranking walked from the top, taking a story when:
 
+- its own text confirms its place (Confirmation below). This is checked first: an
+  unconfirmed story is skipped and uses up nothing (not its cell, not its event, not a place
+  of its country), so the next story of the same cell may still be listed,
 - its cell has no entry yet (one story per place),
 - no entry yet has the same reprint key (one story per event): the **Reprint key** defined
   under heat.json, of the story's `headline` (already the shown title) and `headlineSource`,
@@ -466,6 +473,59 @@ the clip slack to skip a story it cannot voice. The constants are in
 `ingest/src/top-stories.ts`. The file is rebuilt from scratch every run; it describes the
 current snapshot only and has no history. It is independent of `broadcast.json`: a story may
 fill a slot there and be listed here.
+
+**Confirmation (added 2026-10-24).** The clip reads these stories aloud naming the place, and
+GDELT sometimes places a story at a same-name place elsewhere (a story about Athens, Ohio in
+Athens, Greece). So a story is listed only when its own text names its place. The texts are
+the story's `headline` and the `title` of each of its `articles` exactly as written to the
+cell file (the newest 6, outlet-spread), so the list can be recomputed from the cell file.
+The cell's `name` is split on commas: the **city** is the first part, the **regions** are the
+middle parts, the **country** is the last part (a name with one part has a city only). The
+levels, tried in this order (each over every text before the next), and the first that
+matches is the entry's `confirmed`:
+
+1. `city`: the city.
+2. `region`: any region.
+3. `country`: the country part, or the name of the cell's `home` in the text's own language,
+   `new Intl.DisplayNames([lang], { type: "region", fallback: "none" }).of(home)` with `lang`
+   the headline's `headlineLang` or the article's `lang` (skipped when `home` or `lang` is
+   empty or the call throws; "Deutschland" in a `de` title for home DE). The ISO code itself
+   is never matched.
+4. `metonym`: a name from the table below for the cell's `home` and city.
+
+Matching: both sides have diacritics stripped (NFD, combining marks removed: "Zürich" and
+"Zurich" are the same) and are compared case-insensitively, as whole words (not preceded or
+followed by a letter or digit). A city, region or country name of 5 or more letters
+(`CONFIRM_PREFIX_MIN_LETTERS`) also matches followed by up to 3 letters
+(`CONFIRM_PREFIX_MAX_EXTRA`: Berlin → Berliner), or with its last letter replaced by 1 to 3
+letters (Bratislava → Bratislave, Milan → Milano, Ukraine → Ukrainian); it never matches
+shorter than itself. A metonym matches as a whole word only, never by prefix, and a metonym
+written all in capitals (WHO, NYPD, UNHCR) only in capitals, so the word "who" is not the
+WHO. A text containing a character of a script written without word spaces (Han, Hiragana,
+Katakana, Thai, Lao, Khmer, Myanmar) is matched by substring instead, at every level; the
+city in the cell name is English, so that rarely fires, but the country's own-language name
+does ("日本" in a `ja` title for home JP). The name in the title's language depends on the ICU
+data of Node; the checker runs in the same Node as the ingest.
+
+Metonyms (`CAPITAL_METONYMS` in `ingest/src/top-stories.ts`; change both together), keyed by
+`home` and city:
+
+| home, city | names |
+|---|---|
+| US, Washington | White House, Pentagon, Capitol Hill, Congress, Supreme Court, Oval Office |
+| RU, Moscow | Kremlin |
+| GB, London | Downing Street, Westminster, No 10, Number 10, Whitehall, Scotland Yard |
+| FR, Paris | Élysée, Elysee, Matignon |
+| DE, Berlin | Bundestag, Kanzleramt |
+| BE, Brussels | European Commission, EU Commission |
+| CN, Beijing | Zhongnanhai |
+| US, New York; US, Manhattan | Wall Street, Broadway, NYPD, Fifth Avenue |
+| VA, Vatican; VA, Vatican City; IT, Rome | Vatican, Holy See |
+| CH, Geneva | WHO, UNHCR |
+
+`npm run check` recomputes each entry's level from its cell file and fails when an entry is
+unconfirmed or its `confirmed` is not the first level that matches, and recomputes the whole
+list with unconfirmed stories skipped.
 
 ## Topics (added 2026-10-23): `/data/topics.json`  (one file, written every run, fetched when the search is first used)
 

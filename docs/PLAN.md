@@ -1691,6 +1691,25 @@ aloud by the newscast it is a false claim with the site's name on it.
    path to recall is local-language place names: GDELT's FeatureID for non-US places is the
    GeoNames id, so a one-time build table of GeoNames alternate names for the cells we see is
    item (g) of trust pass two. Built the same day as (1); status below.
+   **Status: built 2026-10-24, not committed.** `stories.json` entries now need confirmation
+   (contract "Top stories", Confirmation): the headline or a saved title names the city, a
+   region, the country (also in the title's language) or a capital metonym from the published
+   `CAPITAL_METONYMS`; unconfirmed stories are skipped before the cell, event and country
+   checks, and each entry carries `confirmed` (city / region / country / metonym); the checker
+   recomputes it. Two refinements of the decided rule: the prefix form also covers a replaced
+   last letter (Bratislava → Bratislave, which plain "name + 3 letters" does not reach), and
+   all-capital metonyms (WHO, NYPD, UNHCR) match in capitals only (else the word "who"
+   confirms Geneva). Measured on the live list of the 02:16:22 UTC snapshot: 8 of its 12
+   confirmed (Paris city, Washington metonym "White House", Moscow country via "Russian",
+   Hebron city, Alaska city, Kiev country, Milan city via "Milano", Tehran country); the 4
+   unconfirmed are the Ohio Senate story in Athens, Greece, the Alaska lawsuit in St
+   Petersburg, Meghan Markle in London and a Met police story in Hertfordshire. The rule run
+   over the 80 largest cells of the same snapshot (an approximation of the full run) keeps
+   those 8 in order and fills ranks 9 to 12 with Kherson (country), Gaza (city), Seoul
+   (country) and New Delhi (region): 5 city, 5 country, 1 region, 1 metonym. Weak spot seen:
+   a title other than the headline can confirm a loosely grouped story (Gaza's headline is
+   about a UAE diplomat; an article title names Gaza), and country-level confirmation does not
+   catch a wrong place inside the right country (La Verrière).
    From the audit, two more: (e) **cell labels** cleaned (the accented-name bug behind
    "SãPaulo"; the home-country mismatch behind "Leitrim, United Kingdom"); (f) **single-outlet
    stories** marked as one outlet's report and sorted after multi-outlet stories everywhere

@@ -15,7 +15,7 @@ import {
 } from "../src/broadcast.ts";
 import { reprintKey } from "../src/reprints.ts";
 import { MAX_STORIES } from "../src/stories.ts";
-import { TOP_STORIES_MAX, TOP_STORIES_PER_COUNTRY, TOP_STORIES_UNKNOWN_HOME_MAX } from "../src/top-stories.ts";
+import { CONFIRMATION_LEVELS, TOP_STORIES_MAX, TOP_STORIES_PER_COUNTRY, TOP_STORIES_UNKNOWN_HOME_MAX, confirmStory } from "../src/top-stories.ts";
 import { MAX_TOPICS, TOPIC_MAX_CELLS, TOPIC_MIN_TOTAL, isJunkTopic } from "../src/topics.ts";
 import { checkStepFields } from "./history-step-check.ts";
 
@@ -519,6 +519,12 @@ if (!existsSync(topStoriesPath)) {
   const list = Array.isArray(tf.stories) ? (tf.stories as unknown[]) : (err("stories.stories", "not an array"), []);
   if (list.length > TOP_STORIES_MAX) err("stories.stories", `${list.length} > ${TOP_STORIES_MAX}`);
   const n = (o: Record<string, unknown>, k: string) => (typeof o[k] === "number" ? (o[k] as number) : NaN);
+  /** The first confirmation level a cell file's story text matches, or null (contract "Top stories", Confirmation). */
+  const confirmedLevel = (cell: Record<string, unknown>, s: Record<string, unknown>) => {
+    const articles = (Array.isArray(s.articles) ? (s.articles as unknown[]) : []).filter(isObj).map((a) => ({ title: String(a.title ?? ""), lang: String(a.lang ?? "") }));
+    const text = { headline: String(s.headline ?? ""), headlineLang: String(s.headlineLang ?? ""), articles };
+    return confirmStory({ name: String(cell.name ?? ""), home: String(cell.home ?? "") }, text)?.level ?? null;
+  };
   const homes = new Map<string, number>();
   const ids = new Set<string>();
   /** Reprint key of each entry's headline -> its index (one per event). */
@@ -527,7 +533,8 @@ if (!existsSync(topStoriesPath)) {
   list.forEach((e, i) => {
     const w = `stories.stories[${i}]`;
     if (!isObj(e)) return err(w, "not an object");
-    exactKeys(w, e, ["rank", "cell", "story"]);
+    exactKeys(w, e, ["rank", "cell", "story", "confirmed"]);
+    if (!(CONFIRMATION_LEVELS as readonly unknown[]).includes(e.confirmed)) err(`${w}.confirmed`, `expected one of ${CONFIRMATION_LEVELS.join(", ")}, got ${JSON.stringify(e.confirmed)}`);
     if (e.rank !== i + 1) err(`${w}.rank`, `expected ${i + 1}, got ${JSON.stringify(e.rank)}`);
     const cell = isObj(e.cell) ? e.cell : (err(`${w}.cell`, "not an object"), {});
     const story = isObj(e.story) ? e.story : (err(`${w}.story`, "not an object"), {});
@@ -552,6 +559,10 @@ if (!existsSync(topStoriesPath)) {
     const match = allStories.find((c) => c.cell.id === id && Object.keys(story).every((k) => c.s[k] === story[k]));
     if (!match) return err(`${w}.story`, "no story in that cell file matches it field for field");
     if (cell.home !== match.cell.home) err(`${w}.cell.home`, "differs from the cell file");
+    // Confirmation, recomputed from the cell file's name, home, headline and saved titles.
+    const level = confirmedLevel(match.cell, match.s);
+    if (level === null) err(`${w}.confirmed`, `unconfirmed: neither the headline nor a saved title names ${String(match.cell.name)}`);
+    else if (e.confirmed !== level) err(`${w}.confirmed`, `${JSON.stringify(e.confirmed)} but the first level that matches is "${level}"`);
     got.push(`${id}#${match.pos}`);
   });
   for (const [home, k] of homes) {
@@ -559,8 +570,9 @@ if (!existsSync(topStoriesPath)) {
     if (k > cap) err("stories.stories", `home ${JSON.stringify(home)} appears ${k} times, more than ${cap}`);
   }
   // The rule, recomputed from the cell files: rank by o desc, then n desc, first asc, cell id,
-  // position; one per cell, one per event (non-empty headline reprint key, checked before the
-  // country), at most two per country, one for all unknown homes, at most 12.
+  // position; unconfirmed stories skipped first, then one per cell, one per event (non-empty
+  // headline reprint key, checked before the country), at most two per country, one for all
+  // unknown homes, at most 12.
   const cmp = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
   const ranked = allStories
     .filter((c) => heatById.has(c.cell.id as string) && n(c.s, "u") >= MIN_STORY_U && typeof c.s.headline === "string" && c.s.headline !== "")
@@ -571,6 +583,7 @@ if (!existsSync(topStoriesPath)) {
   const wantEvents = new Set<string>();
   for (const c of ranked) {
     if (want.length >= TOP_STORIES_MAX) break;
+    if (confirmedLevel(c.cell, c.s) === null) continue;
     const home = String(c.cell.home);
     const had = wantHomes.get(home) ?? 0;
     const key = reprintKey(String(c.s.headline), String(c.s.headlineSource ?? ""));

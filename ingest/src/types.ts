@@ -220,6 +220,8 @@ export interface TopStory {
   rank: number;
   cell: SlotCell;
   story: SlotStory;
+  /** The first level of the cell's name that the story's own text names (top-stories.ts confirmStory). */
+  confirmed: "city" | "region" | "country" | "metonym";
 }
 
 export interface TopStoriesFile {
