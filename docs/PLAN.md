@@ -1942,6 +1942,60 @@ aloud by the newscast it is a false claim with the site's name on it.
       works across languages. A separate measurement before any build.
    With A, B and C the six cells should land near 60 to 65% at under 10% wrong; 70% needs D.
 
+   **Status 3A (2026-10-24): measured; nothing built, by the acceptance rule.** On the 6 h
+   state (six cells, 3,406 units, 47.4% grouped; scratch copy of stories.ts with flags, the
+   current code reproduced byte for byte). **Diagnosis.** Of the 1,503 grouped units that are
+   not their story's headline: 2-entity join 1,186 (79%), entity + 2 tokens 111, 4 tokens 42,
+   cluster seed 60, merge 38, second pass 66. Joins carried by themes alone: 265 of the 2-entity
+   joins, 37 of the entity + token joins and all 38 merges, 340 in all (23%); 30 of them judged
+   16 right, 12 wrong, 2 unclear, so themes alone are wrong about 40% of the time but also carry
+   most cross-language members of real stories (Greek, Macedonian and Portuguese pieces on the
+   French protests). The 9 wrong of the base sample: 2-entity 5 (2 themes only: drug_trade and
+   crime_cartels put a Lumbee Tribe piece in the Mexico tariffs story; sovereignty and
+   dictatorship put Cuban ex-prisoners in the Brazil runoff; 3 on broad names: facebook / china
+   progressive party taipei / liberty times, supreme court with two themes, GDELT's person
+   "young" with disaster_fire), entity + 2 tokens 2 (justice department + trump/federal; the
+   violent_unrest theme + emmanuel/macron put the Trappes attack in the cost-of-living protests),
+   merge 1 (three maritime and ceasefire themes put a Hormuz shipping piece in the Cuba story),
+   seed 1 (FTSE piece founded the cluster the US stocks headline later joined on dow jones /
+   nasdaq and three currency themes). The 3 unclear are 2-entity joins on names (Hunter Biden,
+   Amy Acton / cnn, supreme court + a theme). So the carriers are themes and broad names alike;
+   no rule of thumb on themes alone reaches the 9.
+
+   **Variants** (P1 a theme counts toward the 2-entity join only beside a person or
+   organisation; P2 the 4-token and entity + 2-token joins need a token in under 5% of the
+   cell's titles, cells of 50+ only; P3 the merge overlaps on the top-5 persons and
+   organisations; P4 = P1 + P2 + P3; P5 = P4 + the second pass needing a rare token). Judged
+   = a fresh 40-item sample of the variant's grouped units, seed 20261024, the base standard
+   (is the item about the story's headline). Base 9 / 28 = how many of the base sample's 9
+   wrong and 28 right units are no longer in the same story.
+
+   | | grouped | judged R / W / U | base 9 wrong out | base 28 right out | Paris, London largest | stories per cell (P L W NJ T D) | base headlines changed |
+   |---|---|---|---|---|---|---|---|
+   | base | 47.4% | 28 / 9 / 3 | | | 138, 42 | 30 30 30 2 5 15 | |
+   | P1 | 43.5% (-3.9) | 30 / 8 / 2 | 5 | 7 | 88, 42 | 30 28 30 2 4 13 | 30 |
+   | P2 | 47.4% (-0.0) | 30 / 9 / 1 | 0 | 1 | 138, 35 | 30 30 30 2 4 16 | 4 |
+   | P3 | 46.9% (-0.5) | 30 / 5 / 5 | 1 | 0 | 138, 42 | 30 30 30 2 5 15 | 3 |
+   | P4 | 41.7% (-5.7) | 29 / 6 / 5 | 6 | 9 | 42, 35 | 30 28 30 2 3 14 | 35 |
+   | P5 | identical to P4 | | | | | | |
+
+   P2 and P5 barely bind: under 5% of titles excludes only 2 to 10 tokens per cell (Paris:
+   paris, macron, france, francia, protests, game; Washington: trump, biden and one syndicated
+   Pentagon headline's words). P1 breaks real stories along with wrong ones (Paris's protests
+   story 138 to 88; P4 splits it to 42, and the Paris attack story and Washington's ceasefire
+   story change their headline). P3's 5 of 40 is sampling luck: on the paired base sample it moves
+   only the one merge-carried wrong (a 40-item sample at 9 wrong has a 95% interval of 12 to
+   38%, so fresh samples cannot separate variants a few items apart; the paired column is the
+   comparison to trust). **Decision:** none reaches 2 of 40 within 3 points, and none halves
+   the wrong count (the best, P4, removes 6 of 9 paired at -5.7 points and judges 6 of 40), so
+   nothing is built. Also measured: a theme never counting as the entity of the
+   entity + token join, alone or with P3, removes 1 to 2 of 9 for -0.4 to -0.8 points; a 1% rare
+   threshold removes none. What the misses point to: broad persons and organisations (cnn,
+   facebook, supreme court, justice department, GDELT's "young") need the same df treatment
+   themes got, below the 15% background share; and at 2 wrong of 40 the 95% interval still runs
+   1 to 17%, so certifying the 5% bar takes about 200 judged items (10 wrong: 3 to 9%).
+   The scratch scripts and the judged samples stay outside the repo.
+
 4. The headline rule (bar 3), which also fixes what the voice reads.
 5. Then the newscast: the voice prototype, the audio-driven timeline, the clip.
 Items 1a and 2 start today; status lines follow each. Live 02:45 UTC (run 40055474611): 12 stories, every entry with its `confirmed` level (5 city, 5 country, 1 metonym, 1 region or city), no Athens, Greece and no Petersburg, Russia; new at the tail Edinburgh (Storm Boelo), Kherson, Gaza, Amman. The Accuracy section is live on the about page. Visible label bug for item 1e: "Amman, (Jo11), Jordan". Live 05:24 UTC (run 40065153518, ba09fdd): regionOnly=6,920 of 7,205 unplaced in the run; totals.unplaced 64,483 to 65,269; cells 3,597 to 3,555. The state-named cells did NOT vanish live at once: "New York, United States" (832a16fffffffff) kept 1,463 records. Measured and explained (not a rule gap): no city-typed New York entry exists at the state centroid (0 of 930 raw entries in the 16 files; the exact-coordinate class is not clean anyway, it catches Andalusia and DC landmarks); the records left are the half of the window ingested before the v6 state shipped (2026-10-23 18:07 UTC), which carry no candidates and keep their stored placement until they age out by about 18:07 UTC on 2026-10-24. Re-read the cell after 18:30 UTC: expected renamed for a Hudson Valley place with n in the low hundreds or fewer. The before/after unplaced totals are also confounded by the chains change shipped in the same commit. Live 05:24 UTC: totals.outlets 10,480 to 9,711, reprints 25,425 to 12,948; Washington o 2,426 to 2,029, Paris 1,944 to 1,550; postmedia.com and townsquaremedia.com appear as single outlets in cells' topOutlets.
