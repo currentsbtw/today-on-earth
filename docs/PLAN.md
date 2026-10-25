@@ -970,6 +970,49 @@ owner's call. **Recommendation: Kokoro** (quality grades, languages, determinism
 Piper as the fallback if CI weight matters more. Determinism across runner CPUs is untested:
 cache the audio by a hash of the script text.
 
+**Decided 2026-10-24 (owner): Kokoro, voice af_heart.** Build contract for v4, binding on the
+renderer (`render/`) and the page (`web/clip.html`) until DATA-CONTRACT carries it:
+
+1. **The script** is built by the renderer from the live `stories.json` and `heat.json`, written
+   as `script.json` beside the outputs, and handed to the page. Lines, in order:
+   - `open`: "Today on Earth, {weekday} the {ordinal} of {month}. {articles} articles from
+     {outlets} outlets in {countries} countries. Here is where the world's press pointed."
+     (digits with thousands separators; the voice reads them correctly).
+   - `story` × 6 (the first six entries of `stories.json`; they are already one per place and
+     event, text-confirmed, credited to a non-republisher): "{Place}. {n} articles from {o}
+     outlets in {l} languages. {headline}." The languages clause only when l >= 2. The outlet is
+     NOT spoken (its name on screen and in the caption is the credit; domains read badly); the
+     headline is spoken only when `headlineLang` is `en` in v4.0. For another language the line
+     is "{Place}. {n} articles from {o} outlets. A headline in {Language}, on screen." and the
+     headline shows unread; v4.1 adds Kokoro's Spanish and Italian voices through the Python
+     front end (misaki via uv) and reads them.
+   - `close`: "That was today on Earth. The full broadcast at currents B T W dot github dot I O
+     slash today on earth. Read by a synthetic voice from the outlets' own headlines."
+   Nothing else is ever spoken. The template is published in the methodology.
+2. **Speech**: `kokoro-js` (pinned), model `onnx-community/Kokoro-82M-v1.0-ONNX` fp32, voice
+   `af_heart`, 24 kHz mono WAV per line, measured; `seconds` per line goes into the script.
+   The model and packages are cached in Actions; the first run downloads about 325 MB.
+3. **The page**: `clip.html?newscast=1&w&h&fps&max=` loads the snapshot (heat, stories, cell
+   outlines) and waits for `window.__clipNewscast(script)` (called by the renderer after load),
+   which returns the plan `{ fps, frames, date, poster, segments: [{ kind, line, start,
+   frames }], lines: [{ id, start, frames }], signals }` with segment kinds: `open` (the world
+   at the live snapshot, the opening's three sentences painted one by one at the line's
+   proportional times, the hook caption's register), per story a `flight` (1.2 s, the place
+   name is being spoken; the caption "N/6 · {PLACE}") then a `card` held until the line ends
+   plus 0.5 s (the card as today: header "N/6", place, ledger row, headline, credit; the
+   headline's words are painted as spoken at the proportional rate, one step per word), then
+   `close` (pull back to the world for the first sentence, then the lockup with ONE verb line,
+   SEE TODAY'S BROADCAST, the address, and READ BY A SYNTHETIC VOICE under it). Lines are
+   separated by a 0.4 s gap. `window.__clipStep(i)` as today; `data-error` if no script
+   arrives within 10 s. The old `?timeline=1` stays until v4 ships, then goes.
+4. **Audio**: the renderer places each line's WAV at its segment's start (from `lines[]`),
+   under it the existing bed at about -26 dBFS (no clicks, no blips; a quiet glide on flights
+   is allowed), mixes to 48 kHz, and encodes as today. The caption file gains the transcript.
+5. **Workflow**: `clip.yml` installs `render/` (kokoro-js as a dependency), caches the model
+   directory, allows 45 minutes, and keeps `--w --h --fps`; the newscast is the default clip.
+6. **Acceptance**: a first local clip rendered end to end (Edge, local data) and watched by the
+   owner; the second audit's top-12 row clean before the first public post.
+
 **What changes in the machinery.** The audio drives the timeline, not the other way round:
 the renderer (or a new step before it) synthesises every line first, measures each line's
 duration, and asks clip.html for a plan whose segments match those durations (a `script`
