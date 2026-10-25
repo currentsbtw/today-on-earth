@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { audioEvents, renderWav } from "../src/audio.mjs";
+import { audioEvents, newscastEvents, renderWav } from "../src/audio.mjs";
 
 const plan = {
   fps: 30,
@@ -61,4 +61,28 @@ test("renderWav: RIFF/PCM header, length, peak under -1 dBFS, sound at an event 
   assert.equal(full.readInt16LE(44), 0);
   assert.ok(peakIn(full, rate, 111 / 30 + 1 - 0.01, 111 / 30 + 1) < 0.01);
   assert.throws(() => renderWav([{ kind: "noise", t: 0, dur: 1 }], 1, rate), /unknown sound/);
+});
+
+test("newscastEvents: the bed at about -26 dBFS over the clip and hold, a quiet glide per flight, nothing else", () => {
+  const news = {
+    fps: 30,
+    frames: 300,
+    segments: [
+      { kind: "open", line: "open", start: 0, frames: 120 },
+      { kind: "flight", line: "story-1", start: 120, frames: 36 },
+      { kind: "card", line: "story-1", start: 156, frames: 84 },
+      { kind: "close", line: "close", start: 240, frames: 60 },
+    ],
+  };
+  const events = newscastEvents(news, 1);
+  assert.deepEqual(events, [
+    { kind: "bed", t: 0, dur: 11, db: -6 },
+    { kind: "glide", t: 4, dur: 1.2, db: -12 },
+  ]);
+  // The bed's peak: about -26 dBFS (the v3 bed's -20 turned down 6 dB), no clicks or blips.
+  const rate = 8000;
+  const wav = renderWav(events, 11, rate);
+  const bedPeak = peakIn(wav, rate, 0.6, 3.9);
+  assert.ok(bedPeak > 10 ** (-29 / 20) && bedPeak < 10 ** (-25 / 20), `bed peak ${(20 * Math.log10(bedPeak)).toFixed(1)} dBFS`);
+  assert.ok(peakIn(wav, rate, 0, 11) < 10 ** (-20 / 20));
 });

@@ -2,7 +2,8 @@
 // reads through window.__clipPlan() (segments, frame counts, poster, date, hour marks), the
 // time-lapse's virtual clock, the two snapshots bracketing it and the linear interpolation of
 // cells and totals between them. No DOM or MapLibre here, so node --test runs it directly
-// (web/test/timeline.test.ts); clip.ts draws what it describes.
+// (web/test/timeline.test.ts); clip.ts draws what it describes. The newscast's plan
+// (clip.html?newscast=1) and its sentence and word timing are at the end of the file.
 
 export type SegmentKind = 'hook' | 'pullback' | 'lapse' | 'flight' | 'card' | 'end';
 
@@ -209,3 +210,207 @@ export function interpolateTotals(a: Counts, b: Counts, f: number): Counts {
   const at = (x: number, y: number) => Math.round(x * (1 - f) + y * f);
   return { articles: at(a.articles, b.articles), cells: at(a.cells, b.cells), outlets: at(a.outlets, b.outlets), countries: at(a.countries, b.countries) };
 }
+
+// The newscast (clip.html?newscast=1, docs/PLAN.md "Clip v4: the newscast"): the renderer
+// synthesises every line of the script first, measures it, and hands the script to the page;
+// the plan below lays the frames out so each line's segments start as its audio starts.
+
+/** One story as the script carries it: its place, the outlet's headline and the counts. */
+export interface NewscastStory {
+  cell: string;
+  /** The cell's name as the heat carries it ("Paris, France"). */
+  place: string;
+  lat: number;
+  lon: number;
+  headline: string;
+  /** The outlet's domain. */
+  source: string;
+  /** The headline's language code ("en", "it"). */
+  lang: string;
+  url: string;
+  n: number;
+  o: number;
+  l: number;
+  i: number;
+  confirmed: string;
+  /** Whether the voice reads the headline (English only in v4.0). */
+  spoken: boolean;
+}
+
+export interface NewscastLine {
+  id: string;
+  kind: 'open' | 'story' | 'close';
+  /** What the voice says, verbatim. */
+  text: string;
+  /** The line's measured audio, in seconds. */
+  seconds: number;
+  /** Story lines: their place in the run (1-based) and the run's length. */
+  n?: number;
+  of?: number;
+  story?: NewscastStory;
+}
+
+export interface NewscastScript {
+  date: string;
+  generatedAt: string;
+  voice: string;
+  /** Silence after each line, in seconds. */
+  gap: number;
+  lines: NewscastLine[];
+}
+
+export type NewscastKind = 'open' | 'flight' | 'card' | 'close';
+
+export interface NewscastSegment {
+  kind: NewscastKind;
+  /** The id of the script line the segment belongs to. */
+  line: string;
+  start: number;
+  frames: number;
+}
+
+export interface NewscastPlan {
+  fps: number;
+  frames: number;
+  date: string;
+  /** The first card's last frame (its headline fully painted). */
+  poster: number;
+  segments: NewscastSegment[];
+  /** Per line: the first frame of its segments (where its audio starts) and its audio's frames. */
+  lines: { id: string; start: number; frames: number }[];
+  signals?: ClipSignal[];
+}
+
+/** A story line's flight into its place, in seconds. */
+export const NEWSCAST_FLIGHT = 1.2;
+/** How long a card holds after its line ends, in seconds. */
+export const NEWSCAST_CARD_HOLD = 0.5;
+/** How long the close's lockup holds after the voice ends, in seconds. */
+export const NEWSCAST_CLOSE_HOLD = 1.0;
+
+/**
+ * Check that `value` is a newscast script (the build contract's shape): a YYYY-MM-DD date,
+ * a gap of 0..5 s, lines with unique ids, kinds, text and 0 < seconds <= 120, one open first
+ * and one close last, and story lines with n/of and a story whose place, coordinates,
+ * headline, counts, language and `spoken` are usable. Throws an Error naming the first problem.
+ */
+export function checkNewscastScript(value: unknown): NewscastScript {
+  const fail = (why: string): never => {
+    throw new Error(`bad script: ${why}`);
+  };
+  const isObject = (x: unknown): x is Record<string, unknown> => typeof x === 'object' && x !== null && !Array.isArray(x);
+  const isText = (x: unknown): x is string => typeof x === 'string' && x.trim() !== '';
+  const isCount = (x: unknown): x is number => typeof x === 'number' && Number.isInteger(x) && x >= 0;
+  if (!isObject(value)) return fail('not an object');
+  if (typeof value.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value.date)) fail('date');
+  if (typeof value.gap !== 'number' || !Number.isFinite(value.gap) || value.gap < 0 || value.gap > 5) fail('gap');
+  const lines = value.lines;
+  if (!Array.isArray(lines) || lines.length < 2) return fail('lines');
+  const ids = new Set<string>();
+  lines.forEach((line: unknown, k: number) => {
+    const where = `line ${k}`;
+    if (!isObject(line)) return fail(where);
+    if (!isText(line.id) || ids.has(line.id)) fail(`${where} id`);
+    ids.add(line.id as string);
+    if (line.kind !== 'open' && line.kind !== 'story' && line.kind !== 'close') fail(`${where} kind`);
+    if (!isText(line.text)) fail(`${where} text`);
+    if (typeof line.seconds !== 'number' || !Number.isFinite(line.seconds) || line.seconds <= 0 || line.seconds > 120) fail(`${where} seconds`);
+    if ((line.kind === 'open') !== (k === 0)) fail(`${where} kind (one open, first)`);
+    if ((line.kind === 'close') !== (k === lines.length - 1)) fail(`${where} kind (one close, last)`);
+    if (line.kind !== 'story') return;
+    if (!isCount(line.n) || !isCount(line.of) || line.n < 1 || line.n > line.of) fail(`${where} n/of`);
+    const story = line.story;
+    if (!isObject(story)) return fail(`${where} story`);
+    if (!isText(story.cell) || !isText(story.place) || !isText(story.headline) || typeof story.source !== 'string') fail(`${where} story text`);
+    if (typeof story.lat !== 'number' || typeof story.lon !== 'number' || Math.abs(story.lat) > 90 || Math.abs(story.lon) > 180) fail(`${where} story lat/lon`);
+    if (!isCount(story.n) || !isCount(story.o) || !isCount(story.l)) fail(`${where} story counts`);
+    if (typeof story.spoken !== 'boolean' || typeof story.lang !== 'string') fail(`${where} story spoken/lang`);
+  });
+  return value as unknown as NewscastScript;
+}
+
+/**
+ * The newscast's plan at `fps`: per line in order, with `script.gap` seconds after each,
+ * `open` -> one open segment of the line's seconds; `story` -> a flight of NEWSCAST_FLIGHT
+ * then a card of (seconds - NEWSCAST_FLIGHT + NEWSCAST_CARD_HOLD); `close` -> one close
+ * segment of seconds + NEWSCAST_CLOSE_HOLD. The gap is held by the line's last segment, so
+ * segments stay contiguous. Segment edges are rounded from the running time in seconds (not
+ * summed from rounded lengths), so a line's start never drifts from its audio by more than
+ * half a frame; every segment keeps at least one frame. `lines[].frames` is the line's audio.
+ */
+export function buildNewscastPlan(script: NewscastScript, fps: number): NewscastPlan {
+  const segments: NewscastSegment[] = [];
+  const lines: NewscastPlan['lines'] = [];
+  let t = 0;
+  let frame = 0;
+  const add = (kind: NewscastKind, line: string, seconds: number) => {
+    t += Math.max(0, seconds);
+    const end = Math.max(frame + 1, Math.round(t * fps));
+    segments.push({ kind, line, start: frame, frames: end - frame });
+    frame = end;
+  };
+  for (const line of script.lines) {
+    lines.push({ id: line.id, start: frame, frames: framesFor(line.seconds, fps) });
+    if (line.kind === 'open') add('open', line.id, line.seconds + script.gap);
+    else if (line.kind === 'close') add('close', line.id, line.seconds + NEWSCAST_CLOSE_HOLD + script.gap);
+    else {
+      add('flight', line.id, NEWSCAST_FLIGHT);
+      add('card', line.id, line.seconds - NEWSCAST_FLIGHT + NEWSCAST_CARD_HOLD + script.gap);
+    }
+  }
+  const card = segments.find((s) => s.kind === 'card');
+  return { fps, frames: frame, date: script.date, poster: card ? card.start + card.frames - 1 : Math.max(0, frame - 1), segments, lines };
+}
+
+/** The newscast segment holding frame i and i's offset into it, or null outside the plan. */
+export function newscastSegmentAt(plan: NewscastPlan, i: number): { segment: NewscastSegment; offset: number } | null {
+  for (const segment of plan.segments) {
+    if (i >= segment.start && i < segment.start + segment.frames) return { segment, offset: i - segment.start };
+  }
+  return null;
+}
+
+/**
+ * The time (seconds from the line's start) at which the voice reaches character `offset` of
+ * `text`, read at an even rate over `seconds`: seconds x offset / length.
+ */
+export const spokenAt = (text: string, offset: number, seconds: number): number => (text.length ? (seconds * Math.min(Math.max(0, offset), text.length)) / text.length : 0);
+
+/** A sentence end: ., ! or ? (and any closing quote) and the space after it, before a capital, a digit or a quote. */
+const SENTENCE_END = /[.!?]["'”’)\]]*\s+(?=[A-Z0-9"'“‘(])/g;
+
+/** `text` split at its sentence ends, each sentence with the time the voice reaches it at an even rate. */
+export function sentenceTimes(text: string, seconds: number): { text: string; at: number }[] {
+  const out: { text: string; at: number }[] = [];
+  let from = 0;
+  for (const m of text.matchAll(SENTENCE_END)) {
+    const cut = (m.index ?? 0) + m[0].trimEnd().length;
+    out.push({ text: text.slice(from, cut), at: spokenAt(text, from, seconds) });
+    from = (m.index ?? 0) + m[0].length;
+  }
+  if (from < text.length) out.push({ text: text.slice(from).trim(), at: spokenAt(text, from, seconds) });
+  return out.filter((s) => s.text);
+}
+
+/**
+ * Where the headline starts in a story line's text: the line ends with it (and a full stop),
+ * after the place and the counts sentence. Its last occurrence; when the text does not carry
+ * it verbatim, where it would start at the end of the text.
+ */
+export function headlineOffset(text: string, headline: string): number {
+  const at = text.lastIndexOf(headline);
+  return at >= 0 ? at : Math.max(0, text.length - headline.length - 1);
+}
+
+/**
+ * The headline's words (runs of non-space) with the time the voice reaches each, in seconds
+ * from the line's start, at an even rate over the whole line: word k at
+ * seconds x (characters before the headline + characters before word k) / line length.
+ */
+export function wordTimes(text: string, headline: string, seconds: number): { word: string; at: number }[] {
+  const start = headlineOffset(text, headline);
+  return Array.from(headline.matchAll(/\S+/g), (m) => ({ word: m[0], at: spokenAt(text, start + (m.index ?? 0), seconds) }));
+}
+
+/** How many of `times` (ascending) have been reached at `t` seconds; an epsilon absorbs float error. */
+export const reached = (times: readonly number[], t: number): number => times.filter((at) => at <= t + 1e-9).length;

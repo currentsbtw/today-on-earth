@@ -2,6 +2,20 @@
 // panel or controls. The renderer drives the timeline mode; the other modes are single stills
 // kept for debugging. Every mode reports readiness the same way (body[data-ready="1"], plus
 // data-error="<reason>" on failure).
+//   ?newscast=1&fps=30   the v4 newscast (docs/PLAN.md "Clip v4: the newscast"): the world at
+//                    the live snapshot is drawn at ready; window.__clipNewscast(script) checks
+//                    the renderer's script (a bad one sets data-error and rejects; none within
+//                    10 s of ready sets data-error="no script"), lays every card out and
+//                    resolves the plan of buildNewscastPlan (web/src/timeline.ts) with the
+//                    stories as `signals`; then __clipPlan() and __clipStep(i) as below. The
+//                    segments: open (the world, no clock, key or totals; the opening's
+//                    sentences painted one by one at their proportional times in the hook
+//                    caption's register), per story a flight captioned "N/M · PLACE" and its
+//                    card (header "N/M", the headline's words painted as the voice reaches
+//                    them, or the whole headline over "HEADLINE NOT READ · <LANGUAGE>" when the
+//                    voice skips it), and close (the first sentence over a pull-back to the
+//                    world, then from the second sentence the end card with one verb line and
+//                    READ BY A SYNTHETIC VOICE, no totals);
 //   ?timeline=1&fps=30&hook=2&fly=1.5&lapse=7&card=5&end=3&slots=3   the whole clip as one
 //                    timeline (values are the defaults; fps an integer 1..60, seconds 0..30,
 //                    slots an integer 0..6, a flight at most 60 frames, else data-error). One
@@ -54,12 +68,35 @@
 // bands with the dot grid above and below a tick-edged map window.
 import './clip.css';
 import type { FilterSpecification, GeoJSONSource, Map as MapLibreMap } from 'maplibre-gl';
-import { loadBroadcast, PLAIN_LABELS, sentenceFacts, SLOT_IDS, type Broadcast, type SignalFact, type Slot, type SlotStory } from './broadcast';
+import { loadBroadcast, PLAIN_LABELS, sentenceFacts, SLOT_IDS, type Broadcast, type SignalFact, type Slot, type SlotCell, type SlotStory } from './broadcast';
 import { loadFrame, loadHeat, loadHistoryIndex, mapCellUrl, PAGE_MIN, placePageUrl, siteUrl, type FrameRow, type Heat, type HistoryFrame, type Totals } from './data';
 import { flightPath, wrapLon } from './flight';
 import { count, shortName, stampOf, utcTime } from './format';
 import { createClipMap, EMPTY, FILL_LAT, fillHeightZoom, fitWorldZoom, latOf, mercY, TILE, type ClipCamera, type MapCell } from './map';
-import { bracket, buildPlan, framesFor, interpolateCells, interpolateTotals, lapseTime, pullbackFraction, readTimelineParams, segmentAt, type ClipPlan, type ClipSignal } from './timeline';
+import {
+  bracket,
+  buildNewscastPlan,
+  buildPlan,
+  checkNewscastScript,
+  framesFor,
+  interpolateCells,
+  interpolateTotals,
+  lapseTime,
+  newscastSegmentAt,
+  pullbackFraction,
+  reached,
+  readTimelineParams,
+  segmentAt,
+  sentenceTimes,
+  wordTimes,
+  type ClipPlan,
+  type ClipSignal,
+  type NewscastLine,
+  type NewscastPlan,
+  type NewscastScript,
+  type NewscastSegment,
+  type NewscastStory,
+} from './timeline';
 
 const params = new URLSearchParams(location.search);
 const size = (value: string | null, fallback: number) => {
@@ -375,7 +412,7 @@ async function cellOutline(id: string): Promise<GeoJSON.Feature | null> {
  * The live site's callout at the cell's centre: the reticle and a tag with the place's name
  * only. No count: beside the card's sentence the place's total would read as the story's.
  */
-function cellTag(cell: NonNullable<Slot['cell']>, heat: Heat): GeoJSON.Feature {
+function cellTag(cell: Pick<SlotCell, 'id' | 'name' | 'lat' | 'lon'>, heat: Heat): GeoJSON.Feature {
   const live = heat.cells.find((c) => c.id === cell.id);
   const label = shortName(live?.name || cell.name);
   return { type: 'Feature', geometry: { type: 'Point', coordinates: [cell.lon, cell.lat] }, properties: { label } };
@@ -384,7 +421,9 @@ function cellTag(cell: NonNullable<Slot['cell']>, heat: Heat): GeoJSON.Feature {
 type Callout = { id: string; outline: GeoJSON.Feature | null; tag: GeoJSON.Feature };
 
 /** A slot's callout: its cell's id, its hexagon (when it can be drawn) and its tag. */
-const slotCallout = async (slot: FilledSlot, heat: Heat): Promise<Callout> => ({ id: slot.cell.id, outline: await cellOutline(slot.cell.id).catch(() => null), tag: cellTag(slot.cell, heat) });
+const slotCallout = (slot: FilledSlot, heat: Heat): Promise<Callout> => cellCallout(slot.cell, heat);
+/** A cell's callout: its id, its hexagon (when it can be drawn) and its tag. */
+const cellCallout = async (cell: Pick<SlotCell, 'id' | 'name' | 'lat' | 'lon'>, heat: Heat): Promise<Callout> => ({ id: cell.id, outline: await cellOutline(cell.id).catch(() => null), tag: cellTag(cell, heat) });
 
 /** The heat layers that name a place; the callout's tag replaces its own label there. */
 const HEAT_LABELS = ['cell-label-top', 'cell-label'];
@@ -453,39 +492,82 @@ const LEDGER: Record<SignalFact, [value: (story: SlotStory) => number, one: stri
   heardIn: [(s) => s.i, 'other country', 'other countries'],
 };
 
-/**
- * Put one slot's texts in the card at type scale `fit`: the header "N/M · plain label", the
- * place's short name, the ledger row (the counts the site's sentence states for the slot), the
- * headline and the outlet. A `caption` (a flight's) adds " → place" to the header.
- */
-function fillCard(slot: FilledSlot, run: RunPlace, fit?: string, caption = false) {
+/** What a card shows: the v3 clip fills it from a broadcast slot, the newscast from a script story. */
+interface CardText {
+  /** The column header ("1/3 · MOST COVERED STORY", or "1/6" in the newscast). */
+  header: string;
+  /** The flight's caption, in the header's place ("1/3 · MOST COVERED STORY → PARIS", "1/6 · PARIS"). */
+  caption: string;
+  /** The place's short name. */
+  place: string;
+  ledger: [n: number, one: string, many: string][];
+  headline: string;
+  lang: string;
+  /** The outlet's domain (uppercased by CSS). */
+  source: string;
+  /** The headline's language in words when the voice does not read it ("Italian"), else "". */
+  unread: string;
+}
+
+/** A slot's card: the header "N/M · plain label", the counts the site's sentence states for it. */
+function slotCard(slot: FilledSlot, run: RunPlace): CardText {
   const { story, cell } = slot;
   const place = shortName(cell.name) || cell.name;
-  el('clip-slot').textContent = `${run.n}/${run.of} · ${PLAIN_LABELS[slot.id]}${caption ? ` → ${place}` : ''}`;
-  el('clip-place').textContent = place;
-  el('clip-ledger').replaceChildren(
-    ...sentenceFacts(slot.id).map((fact) => {
+  const header = `${run.n}/${run.of} · ${PLAIN_LABELS[slot.id]}`;
+  return {
+    header,
+    caption: `${header} → ${place}`,
+    place,
+    ledger: sentenceFacts(slot.id).map((fact) => {
       const [value, one, many] = LEDGER[fact];
-      return countItem(value(story), one, many);
+      return [value(story), one, many];
     }),
-  );
+    headline: story.headline,
+    lang: story.headlineLang,
+    source: story.headlineSource,
+    unread: '',
+  };
+}
+
+/**
+ * Put one card's texts in the card at type scale `fit`: the header, the place's short name,
+ * the ledger row, the headline (one span per word, so the newscast can paint them as spoken)
+ * and the outlet, with the "HEADLINE NOT READ" line over it when the voice skips the headline.
+ * A `caption` (a flight's) puts the caption in the header's place.
+ */
+function fillCard(text: CardText, fit?: string, caption = false) {
+  el('clip-slot').textContent = caption ? text.caption : text.header;
+  el('clip-place').textContent = text.place;
+  el('clip-ledger').replaceChildren(...text.ledger.map(([n, one, many]) => countItem(n, one, many)));
   const headline = el('clip-headline');
-  el('clip-quote').hidden = !story.headline;
-  headline.textContent = story.headline;
+  el('clip-quote').hidden = !text.headline;
+  headline.replaceChildren(...text.headline.split(/(\s+)/).filter(Boolean).map((part) => (/^\s+$/.test(part) ? document.createTextNode(part) : Object.assign(document.createElement('span'), { textContent: part }))));
   headline.removeAttribute('lang');
-  if (story.headlineLang) headline.lang = story.headlineLang;
-  el('clip-outlet').textContent = story.headline ? story.headlineSource : '';
+  if (text.lang) headline.lang = text.lang;
+  const unread = el('clip-unread');
+  unread.hidden = !text.unread;
+  unread.textContent = text.unread ? `Headline not read · ${text.unread}` : '';
+  el('clip-outlet').textContent = text.headline ? text.source : '';
   if (fit !== undefined) el('clip-card').style.setProperty('--fit', fit);
 }
 
 /**
- * Fill the card with one slot and lay it out: the map window it leaves (from under the top
- * text to above the card, at least 22% of the frame), where its slot header sits and the type
- * scale it fitted.
+ * Paint the headline's first `words` words and leave the rest invisible (not dimmed: their
+ * room is kept, so the lines never reflow); null paints them all.
  */
-async function layoutCard(slot: FilledSlot, run: RunPlace): Promise<CardWindow> {
+function paintHeadline(words: number | null) {
+  const spans = el('clip-headline').children;
+  for (let k = 0; k < spans.length; k++) (spans[k] as HTMLElement).style.visibility = words === null || k < words ? '' : 'hidden';
+}
+
+/**
+ * Fill the card with one card's texts and lay it out: the map window it leaves (from under
+ * the top text to above the card, at least 22% of the frame), where its header sits and the
+ * type scale it fitted.
+ */
+async function layoutCard(text: CardText): Promise<CardWindow> {
   const card = el('clip-card');
-  fillCard(slot, run);
+  fillCard(text);
   card.classList.remove('clip-card--caption');
   card.hidden = false;
   // The card's window is measured without the key and the article total, which the card
@@ -525,7 +607,10 @@ function baseLayout() {
   el('clip-map').style.visibility = '';
   setTotal(null);
   setProgress(null);
-  el('clip-hook').hidden = true;
+  const hook = el('clip-hook');
+  hook.hidden = true;
+  hook.classList.remove('clip-hook--say');
+  hook.style.removeProperty('--fit');
   el('clip-end').hidden = true;
   const card = el('clip-card');
   card.hidden = true;
@@ -551,14 +636,22 @@ function lapseLayout(at: string, totals: Totals, timelapse: Window, progress: nu
 }
 
 /**
- * A flight's layout: the time-lapse layout plus one caption, the card's slot header followed
- * by " → place", where the card will put its header; in portrait it is kept clear of the
- * totals on the window's lower rule.
+ * A flight's layout: the time-lapse layout plus one caption (the card's caption text), where
+ * the card will put its header; in portrait it is kept clear of the totals on the window's
+ * lower rule. With `totals` null (the newscast) the frame keeps only the date and clock: no
+ * key and no totals.
  */
-function flightLayout(slot: FilledSlot, run: RunPlace, at: string, totals: Totals, timelapse: Window, card: CardWindow) {
-  lapseLayout(at, totals, timelapse);
+function flightLayout(text: CardText, at: string, totals: Totals | null, timelapse: Window, card: CardWindow) {
+  if (totals) lapseLayout(at, totals, timelapse);
+  else {
+    baseLayout();
+    setTime(at);
+    setCounts(null);
+    showKey(false);
+    setEdges(timelapse);
+  }
   const cardEl = el('clip-card');
-  fillCard(slot, run, card.fit, true);
+  fillCard(text, card.fit, true);
   cardEl.classList.add('clip-card--caption');
   cardEl.hidden = false;
   const counts = el('clip-counts').getBoundingClientRect();
@@ -567,15 +660,15 @@ function flightLayout(slot: FilledSlot, run: RunPlace, at: string, totals: Total
   cardEl.style.setProperty('--caption-top', `${Math.min(card.header, Math.round(floor - unit * 2.4 - header))}px`);
 }
 
-/** A slot's card: date and clock, no key or totals, the window ending above the card. */
-function cardLayout(slot: FilledSlot, run: RunPlace, at: string, card: CardWindow) {
+/** A card: date and clock, no key or totals, the window ending above the card. */
+function cardLayout(text: CardText, at: string, card: CardWindow) {
   baseLayout();
   root.classList.add('clip--card', 'clip--signal');
   setTime(at);
   setCounts(null);
   showKey(false);
   setEdges(card);
-  fillCard(slot, run, card.fit);
+  fillCard(text, card.fit);
   el('clip-card').hidden = false;
 }
 
@@ -590,15 +683,63 @@ function hookLayout(at: string, articles: number, timelapse: Window) {
   el('clip-hook').hidden = false;
 }
 
-/** The end card: no map; the lockup, the address and the live totals. */
-async function endLayout(heat: Heat) {
+/**
+ * The newscast's spoken caption: the date without the clock, no key or totals, and the
+ * sentences in the hook caption's register, each on its own lines; the first `shown` are
+ * painted and the rest kept invisible (their room held, so nothing moves as they paint).
+ * `fit` scales the type (measured once per caption by fitSay).
+ */
+function sayLayout(at: string, sentences: readonly string[], shown: number, w: Window, fit: string) {
+  baseLayout();
+  setTime(at, false);
+  setCounts(null);
+  showKey(false);
+  setEdges(w);
+  const hook = el('clip-hook');
+  hook.classList.add('clip-hook--say');
+  hook.style.setProperty('--fit', fit);
+  el('clip-hook-lead').replaceChildren(
+    ...sentences.map((sentence, k) => {
+      const line = Object.assign(document.createElement('span'), { className: 'clip-say-line' });
+      const words = Object.assign(document.createElement('span'), { textContent: sentence });
+      if (k >= shown) words.style.visibility = 'hidden';
+      line.append(words);
+      return line;
+    }),
+  );
+  hook.hidden = false;
+}
+
+/**
+ * The type scale at which the caption of `sentences` (all painted) stays within 45% of the
+ * window's height, in 5% steps down to 60%.
+ */
+async function fitSay(at: string, sentences: readonly string[], w: Window): Promise<string> {
+  let fit = '1';
+  for (let step = 0; step <= 8; step++) {
+    fit = String(Math.round((1 - step * 0.05) * 100) / 100);
+    sayLayout(at, sentences, sentences.length, w, fit);
+    await fontsLaidOut();
+    if (el('clip-hook').offsetHeight <= (w.bottom - w.top) * 0.45) break;
+  }
+  return fit;
+}
+
+/**
+ * The end card: no map; the lockup, the address and the live totals. The newscast's (`voiced`)
+ * carries one verb line, SEE TODAY'S BROADCAST, over the address and READ BY A SYNTHETIC VOICE
+ * under it, and no totals.
+ */
+async function endLayout(heat: Heat, voiced = false) {
   baseLayout();
   root.classList.add('clip--card', 'clip--end');
   el('clip-map').style.visibility = 'hidden';
   setEdges(bandWindow);
   setTime(heat.generatedAt);
-  setCounts(heat.totals, true);
+  setCounts(voiced ? null : heat.totals, true);
   showKey(false);
+  el('clip-cta-lead').textContent = voiced ? "See today's broadcast" : "Today's broadcast at";
+  el('clip-voice').hidden = !voiced;
   el('clip-end-text').prepend(el('clip-counts'));
   el('clip-end').hidden = false;
   // The lockup takes the centre of the dotted ground.
@@ -623,8 +764,8 @@ async function renderSignal(id: string) {
   setTime(broadcast.generatedAt);
   // Lay the text out before the map so the cell can be centred in the window left between
   // the wordmark's band and the card's band.
-  const w = await layoutCard(slot, ONLY);
-  cardLayout(slot, ONLY, broadcast.generatedAt, w);
+  const w = await layoutCard(slotCard(slot, ONLY));
+  cardLayout(slotCard(slot, ONLY), broadcast.generatedAt, w);
 
   const { map, setCells } = await clipMap(paddingOf(w), { center: [cell.lon, cell.lat], zoom: signalZoom() });
   const [, callout] = await Promise.all([loadDetail(map), slotCallout(slot, heat)]);
@@ -680,13 +821,14 @@ async function renderFlight(id: string, fromParam: string, flyParam: string) {
     startView = timelapseView(at, timelapse);
   } else {
     const previous = filledSlot(broadcast, from.id);
-    startView = arrivalCamera(timelapse, await layoutCard(previous, ONLY), previous.cell);
+    startView = arrivalCamera(timelapse, await layoutCard(slotCard(previous, ONLY)), previous.cell);
   }
-  const card = await layoutCard(slot, ONLY);
+  const text = slotCard(slot, ONLY);
+  const card = await layoutCard(text);
   const arrival = arrivalCamera(timelapse, card, slot.cell);
   const callout = await slotCallout(slot, heat);
 
-  flightLayout(slot, ONLY, at, totals, timelapse, card);
+  flightLayout(text, at, totals, timelapse, card);
 
   const { map, setCells } = await clipMap(paddingOf(timelapse), startView, portrait);
   setCells(heat.cells, maxN);
@@ -708,8 +850,8 @@ async function renderFlight(id: string, fromParam: string, flyParam: string) {
     const arrived = i === fly;
     // The last step is the exact card camera a later flight's `from=s:` reproduces.
     map.jumpTo(arrived ? arrival : path[i]);
-    if (arrived) cardLayout(slot, ONLY, broadcast.generatedAt, card);
-    else flightLayout(slot, ONLY, at, totals, timelapse, card);
+    if (arrived) cardLayout(text, broadcast.generatedAt, card);
+    else flightLayout(text, at, totals, timelapse, card);
     setCallout(map, arrived ? callout : null);
     if (arrived || map.getZoom() >= 3) await ensureDetail();
     await settle(map);
@@ -810,9 +952,9 @@ async function renderTimeline() {
   const timelapse = timelapseWindow();
   setTotal(null);
   setTime(cardAt);
-  const runs: RunPlace[] = chosen.map((_, n) => ({ n: n + 1, of: chosen.length }));
+  const texts = chosen.map((slot, n) => slotCard(slot, { n: n + 1, of: chosen.length }));
   const cards: CardWindow[] = [];
-  for (const [n, slot] of chosen.entries()) cards.push(await layoutCard(slot, runs[n]));
+  for (const text of texts) cards.push(await layoutCard(text));
   hookLayout(liveAt, heat.totals.articles, timelapse);
   await fontsLaidOut();
   // The hook's cell is centred in the window above its caption.
@@ -903,13 +1045,13 @@ async function renderTimeline() {
       case 'flight':
         map.jumpTo(flights[n][offset + 1]);
         // The first flight keeps the last time-lapse frame's clock and totals; later ones the card's.
-        flightLayout(chosen[n], runs[n], n === 0 ? liveAt : cardAt, heat.totals, timelapse, cards[n]);
+        flightLayout(texts[n], n === 0 ? liveAt : cardAt, heat.totals, timelapse, cards[n]);
         showLive();
         showCallout(null);
         break;
       case 'card':
         map.jumpTo(arrivals[n]);
-        cardLayout(chosen[n], runs[n], cardAt, cards[n]);
+        cardLayout(texts[n], cardAt, cards[n]);
         showLive();
         showCallout(n);
         closeUp = true;
@@ -934,7 +1076,222 @@ async function renderTimeline() {
   markReady();
 }
 
+/** The cell ids of the live stories.json, or null when it cannot be read (a check only). */
+async function loadStoryCells(): Promise<Set<string> | null> {
+  try {
+    const res = await fetch(siteUrl('data/stories.json'), { cache: 'no-cache' });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { stories?: { cell?: { id?: string } }[] };
+    return new Set((data.stories ?? []).map((s) => s.cell?.id ?? ''));
+  } catch {
+    return null;
+  }
+}
+
+/** "Italian" for "it"; the code itself when the browser has no name for it. */
+function languageName(code: string): string {
+  try {
+    return new Intl.DisplayNames(['en'], { type: 'language' }).of(code) ?? code;
+  } catch {
+    return code;
+  }
+}
+
+type StoryLine = NewscastLine & { story: NewscastStory; n: number; of: number };
+
+/**
+ * A script story's card: the header "N/M", the flight caption "N/M · PLACE", the ledger row
+ * (articles, outlets, and languages when there are two or more, as the line says them), the
+ * headline and its outlet, and the headline's language when the voice does not read it.
+ */
+function storyCard(line: StoryLine): CardText {
+  const s = line.story;
+  const place = shortName(s.place) || s.place;
+  const header = `${line.n}/${line.of}`;
+  const ledger: CardText['ledger'] = [
+    [s.n, 'article', 'articles'],
+    [s.o, 'outlet', 'outlets'],
+  ];
+  if (s.l >= 2) ledger.push([s.l, 'language', 'languages']);
+  return { header, caption: `${header} · ${place}`, place, ledger, headline: s.headline, lang: s.lang, source: s.source, unread: s.spoken ? '' : languageName(s.lang) };
+}
+
+/**
+ * The newscast (see the top of this file, web/src/timeline.ts and docs/PLAN.md "Clip v4: the
+ * newscast"). Loads the live heat and draws the world; the renderer then hands over the script
+ * with window.__clipNewscast(script), which checks it, measures every layout, builds the plan
+ * and resolves it. One map padded to the open's window throughout, as in the timeline.
+ */
+async function renderNewscast() {
+  const fps = readTimelineParams((name) => (name === 'fps' ? params.get(name) : null)).fps;
+  const [heat, storyCells] = await Promise.all([loadHeat(), loadStoryCells()]);
+  const liveAt = heat.generatedAt;
+  const maxN = heatMax(heat);
+
+  // The window is measured with the clock on (the flights and cards show it; the open and the
+  // close's pull-back hide it), so no camera moves between segments.
+  setTime(liveAt);
+  setCounts(null);
+  showKey(false);
+  await fontsLaidOut();
+  const w0 = timelapseWindow();
+  sayLayout(liveAt, [], 0, w0, '1');
+
+  const { map, setCells } = await clipMap(paddingOf(w0), timelapseView(liveAt, w0), portrait);
+  setCells(heat.cells, maxN);
+  const worldView = held(map, timelapseView(liveAt, w0));
+  map.jumpTo(worldView);
+
+  let detail: Promise<void> | null = null;
+  const ensureDetail = () => (detail ??= loadDetail(map));
+  let plan: NewscastPlan | null = null;
+  let step: ((i: number) => Promise<boolean>) | null = null;
+
+  const page = window as unknown as {
+    __clipNewscast: (script: unknown) => Promise<NewscastPlan>;
+    __clipPlan: () => NewscastPlan;
+    __clipStep: (i: number) => Promise<boolean>;
+  };
+  let noScript = 0;
+  page.__clipPlan = () => {
+    if (!plan) throw new Error('no script yet');
+    return structuredClone(plan);
+  };
+  page.__clipStep = (i: number) => (step ? step(i) : Promise.reject(new Error('no script yet')));
+  page.__clipNewscast = async (raw: unknown) => {
+    window.clearTimeout(noScript);
+    let script: NewscastScript;
+    try {
+      script = checkNewscastScript(raw);
+    } catch (e) {
+      document.body.dataset.error = e instanceof Error ? e.message : 'bad script';
+      throw e;
+    }
+    delete document.body.dataset.error;
+    const stories = script.lines.filter((l): l is StoryLine => l.kind === 'story');
+    for (const line of stories) {
+      if (storyCells && !storyCells.has(line.story.cell)) console.warn(`script story ${line.id}: cell ${line.story.cell} is not in stories.json`);
+      if (!heat.cells.some((c) => c.id === line.story.cell)) console.warn(`script story ${line.id}: cell ${line.story.cell} is not in heat.json`);
+    }
+    const open = script.lines[0];
+    const close = script.lines[script.lines.length - 1];
+
+    // Measure every layout once, with the fonts laid out.
+    const texts = stories.map(storyCard);
+    setTime(liveAt);
+    const cards: CardWindow[] = [];
+    for (const text of texts) cards.push(await layoutCard(text));
+    const openSay = sentenceTimes(open.text, open.seconds);
+    const openFit = await fitSay(liveAt, openSay.map((s) => s.text), w0);
+    const closeSay = sentenceTimes(close.text, close.seconds);
+    const closeFirst = closeSay.slice(0, 1).map((s) => s.text);
+    const closeFit = await fitSay(liveAt, closeFirst, w0);
+
+    const built = buildNewscastPlan(script, fps);
+    built.signals = stories.map((line): ClipSignal => {
+      const live = heat.cells.find((c) => c.id === line.story.cell);
+      return {
+        slot: `s${line.n}`,
+        label: 'STORY',
+        place: shortName(line.story.place) || line.story.place,
+        cell: line.story.cell,
+        page: live && live.n >= PAGE_MIN ? placePageUrl(line.story.cell) : mapCellUrl(line.story.cell),
+      };
+    });
+
+    // Every camera as the map holds it, so the flights join them exactly. A flight of F frames
+    // shows the inner cameras 1..F of an F+1 step path (the card after it holds the end); the
+    // close's pull-back ends on the world (cameras 1..P of a P step path).
+    const minZoom = flightFloor(w0);
+    const path = (a: ClipCamera, b: ClipCamera, steps: number) => flightPath(a, b, steps, { width: W, height: H, minZoom, wrap: portrait });
+    const arrivals = stories.map((line, n) => held(map, arrivalCamera(w0, cards[n], line.story)));
+    const segmentOf = (id: string, kind: NewscastSegment['kind']) => built.segments.find((s) => s.line === id && s.kind === kind)!;
+    const flights = stories.map((line, n) => path(n ? arrivals[n - 1] : worldView, arrivals[n], segmentOf(line.id, 'flight').frames + 1));
+    const closeSegment = segmentOf(close.id, 'close');
+    // The lockup takes over as the second sentence starts; the pull-back fills the frames before.
+    const lockupAt = closeSay[1]?.at ?? close.seconds;
+    const pullFrames = Math.min(closeSegment.frames, Math.max(0, Math.ceil(lockupAt * fps - 1e-9)));
+    const pull = path(arrivals.length ? arrivals[arrivals.length - 1] : worldView, worldView, Math.max(1, pullFrames));
+    const callouts = await Promise.all(stories.map((line) => cellCallout({ id: line.story.cell, name: line.story.place, lat: line.story.lat, lon: line.story.lon }, heat)));
+    const words = stories.map((line) => (line.story.spoken ? wordTimes(line.text, line.story.headline, line.seconds).map((w) => w.at) : null));
+    const lineIndex = new Map(script.lines.map((line, k) => [line.id, k]));
+    const storyIndex = new Map(stories.map((line, n) => [line.id, n]));
+
+    let shownCallout: number | null | undefined;
+    const showCallout = (n: number | null) => {
+      if (shownCallout === n) return;
+      setCallout(map, n === null ? null : callouts[n]);
+      shownCallout = n;
+    };
+    let lastStep = -1;
+
+    step = async (i: number): Promise<boolean> => {
+      const at = Number.isInteger(i) ? newscastSegmentAt(built, i) : null;
+      if (!at) throw new Error(`step ${i} outside 0..${built.frames - 1}`);
+      // A retry redraws the frame from scratch.
+      if (i === lastStep) shownCallout = undefined;
+      lastStep = i;
+      const { segment, offset } = at;
+      const k = lineIndex.get(segment.line)!;
+      const n = storyIndex.get(segment.line) ?? -1;
+      // Seconds since this line's audio started.
+      const t = (i - built.lines[k].start) / fps;
+      let closeUp = false;
+      let end = false;
+      switch (segment.kind) {
+        case 'open':
+          map.jumpTo(worldView);
+          sayLayout(liveAt, openSay.map((s) => s.text), reached(openSay.map((s) => s.at), t), w0, openFit);
+          showCallout(null);
+          break;
+        case 'flight':
+          map.jumpTo(flights[n][offset + 1]);
+          flightLayout(texts[n], liveAt, null, w0, cards[n]);
+          showCallout(null);
+          break;
+        case 'card': {
+          map.jumpTo(arrivals[n]);
+          cardLayout(texts[n], liveAt, cards[n]);
+          const times = words[n];
+          paintHeadline(times ? reached(times, t) : null);
+          showCallout(n);
+          closeUp = true;
+          break;
+        }
+        case 'close':
+          if (offset < pullFrames) {
+            map.jumpTo(pull[offset + 1]);
+            sayLayout(liveAt, closeFirst, closeFirst.length, w0, closeFit);
+            showCallout(null);
+          } else {
+            await endLayout(heat, true);
+            end = true;
+          }
+          break;
+      }
+      if (!end && (closeUp || map.getZoom() >= 3)) await ensureDetail();
+      snapMark();
+      await settle(map);
+      return true;
+    };
+
+    plan = built;
+    await step(0);
+    // The renderer's own first step(0) is not a retry.
+    lastStep = -1;
+    return structuredClone(built);
+  };
+
+  await idle(map);
+  await document.fonts.ready;
+  markReady();
+  noScript = window.setTimeout(() => {
+    if (!plan) document.body.dataset.error = 'no script';
+  }, 10_000);
+}
+
 function render(): Promise<void> {
+  if (params.get('newscast') === '1') return renderNewscast();
   if (params.get('timeline') === '1') return renderTimeline();
   const signal = params.get('signal');
   if (signal !== null) {

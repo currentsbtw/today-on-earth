@@ -18,3 +18,4 @@ clip-out/
 .impeccable/build/
 .impeccable/questions/
 presence/.wrangler/
+render/.cache/

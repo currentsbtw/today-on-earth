@@ -1,10 +1,12 @@
 name: Clip
 
-# Daily vertical clip of the last 24 hours: loads the live site's clip.html once in timeline
-# mode, steps it frame by frame at 30 fps (hook, pull-back, time-lapse, signal cards, end
-# card), adds the soundtrack generated from the timeline, encodes an H.264 + AAC mp4, and
-# publishes it, with caption-<date>.txt (the text to post with it: each signal's place page
-# and the broadcast page), as an artifact and on the rolling "clips" release. Runs after the 00:15 UTC snapshot.
+# Daily vertical clip of the last 24 hours, the newscast (docs/PLAN.md "Clip v4: the
+# newscast"): builds the script from the live stories.json and heat.json, voices each line
+# offline with Kokoro (kokoro-js, voice af_heart), hands the script to the live site's
+# clip.html in newscast mode, steps it frame by frame at 30 fps, mixes the voice over a quiet
+# bed, encodes an H.264 + AAC mp4, and publishes it, with caption-<date>.txt (the text to post
+# with it, with the transcript) and script.json, as an artifact and on the rolling "clips"
+# release. Runs after the 00:15 UTC snapshot.
 on:
   schedule:
     - cron: "20 0 * * *"
@@ -29,7 +31,7 @@ concurrency:
 jobs:
   clip:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     env:
       SITE_URL: https://currentsbtw.github.io/today-on-earth
       # Inputs go through env (not inline ${{ }} in the script); the renderer validates them.
@@ -88,12 +90,33 @@ jobs:
           path: ~/.cache/ffmpeg-static
           key: ffmpeg-static-b6.1.1-linux-x64
 
+      # The Kokoro model (onnx-community/Kokoro-82M-v1.0-ONNX, fp32, about 325 MB) is fetched
+      # from Hugging Face on first use into render/.cache/kokoro (speech.mjs) and cached here,
+      # keyed on the model, its dtype and the pinned kokoro-js version. Saved after the render
+      # even when the render fails later (a page error must not cost the next run the download).
+      - name: Restore the Kokoro model
+        id: kokoro
+        uses: actions/cache/restore@v6
+        with:
+          path: render/.cache/kokoro
+          key: kokoro-Kokoro-82M-v1.0-ONNX-fp32-kokoro-js-1.2.1
+
       - name: Render clip
         working-directory: render
         run: |
-          npm ci
-          npm run clip -- --site "$SITE_URL" --out ../clip-out --w "$CLIP_W" --h "$CLIP_H" --fps 30 --hook 2 --fly 1.5 --lapse 7 --card 5 --end 3 --hold 1 --slots 3
+          # No install scripts: onnxruntime-node ships its Linux CPU binaries in the package
+          # (its postinstall only fetches CUDA providers), sharp's prebuilt binary comes as an
+          # optional dependency, and protobufjs's postinstall only prints a notice.
+          npm ci --ignore-scripts
+          npm run clip -- --site "$SITE_URL" --out ../clip-out --w "$CLIP_W" --h "$CLIP_H" --fps 30 --hold 1
           ls -l ../clip-out
+
+      - name: Save the Kokoro model
+        if: always() && steps.kokoro.outputs.cache-hit != 'true' && hashFiles('render/.cache/kokoro/**/model.onnx') != ''
+        uses: actions/cache/save@v6
+        with:
+          path: render/.cache/kokoro
+          key: kokoro-Kokoro-82M-v1.0-ONNX-fp32-kokoro-js-1.2.1
 
       - uses: actions/upload-artifact@v7
         with:
@@ -102,6 +125,7 @@ jobs:
             clip-out/clip-*.mp4
             clip-out/poster.jpg
             clip-out/caption-*.txt
+            clip-out/script.json
           if-no-files-found: error
           retention-days: 30
 
@@ -112,5 +136,8 @@ jobs:
         run: |
           gh release view clips >/dev/null 2>&1 ||
             gh release create clips --title "Daily clips" --target "$GITHUB_SHA" \
-              --notes "Daily time-lapse clips of the Today On Earth map, one mp4 per day, plus poster.jpg of the latest. Updated by the Clip workflow."
-          gh release upload clips clip-out/clip-*.mp4 clip-out/poster.jpg clip-out/caption-*.txt --clobber
+              --notes "Daily clips of the Today On Earth map, one mp4 per day, plus poster.jpg of the latest. Updated by the Clip workflow."
+          # script.json is per day on the release, beside its caption.
+          date="$(basename clip-out/clip-*.mp4 .mp4)"; date="${date#clip-}"
+          cp clip-out/script.json "clip-out/script-$date.json"
+          gh release upload clips clip-out/clip-*.mp4 clip-out/poster.jpg clip-out/caption-*.txt "clip-out/script-$date.json" --clobber

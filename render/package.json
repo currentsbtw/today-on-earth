@@ -2,7 +2,7 @@
   "name": "today-on-earth-render",
   "version": "0.1.0",
   "private": true,
-  "description": "Renders the daily vertical clip by stepping the live site's clip.html timeline in a system Chrome/Edge, with a generated soundtrack, and encodes it with ffmpeg",
+  "description": "Renders the daily vertical newscast clip: builds and voices the script offline with Kokoro, steps the live site's clip.html in a system Chrome/Edge, mixes the voice over a quiet bed and encodes it with ffmpeg",
   "type": "module",
   "engines": {
     "node": ">=24"
@@ -12,6 +12,8 @@
     "test": "node --test \"test/*.test.mjs\""
   },
   "dependencies": {
+    "@huggingface/transformers": "3.8.1",
+    "kokoro-js": "1.2.1",
     "playwright-core": "^1.64.1"
   }
 }

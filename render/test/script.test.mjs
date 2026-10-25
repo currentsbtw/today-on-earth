@@ -1,0 +1,111 @@
+import assert from "node:assert/strict";
+import { test } from "node:test";
+import { buildScript, clipDate, CLOSE_TEXT, languageName, ordinalWords, spokenDate, spokenSeconds, storyText } from "../src/script.mjs";
+
+const heat = { generatedAt: "2026-10-25T00:15:00Z", windowHours: 24, totals: { articles: 242540, outlets: 10568, countries: 195, cells: 2797 } };
+
+/** A stories.json entry as the ingest writes it (docs/DATA-CONTRACT.md "Top stories"). */
+const entry = (rank, name, story, confirmed = "city") => ({
+  rank,
+  cell: { id: `83${String(rank).padStart(2, "0")}b2fffffffff`, name, lat: 31.25, lon: 35.5, home: "IL" },
+  story: { headlineSource: "wamc.org", headlineLang: "en", headlineUrl: "https://www.wamc.org/x", u: 10, c: 5, t: -2, first: "2026-10-24T03:30:00Z", last: "2026-10-25T00:00:00Z", ...story },
+  confirmed,
+});
+
+const stories = {
+  generatedAt: heat.generatedAt,
+  windowHours: 24,
+  stories: [
+    entry(1, "Hebron, Israel", { headline: "Israeli PM pledges massive military operation after West Bank checkpoint attack", n: 277, o: 245, l: 18, i: 46 }),
+    entry(2, "Paris, France", { headline: "Francia vive nueva jornada de protestas", headlineLang: "es", headlineSource: "eltiempo.com", n: 343, o: 241, l: 24, i: 49 }, "country"),
+    entry(3, "Atlanta, Georgia, United States", { headline: "Six Flags says it will install seat belts?", n: 74, o: 73, l: 1, i: 3 }, "region"),
+    entry(4, "Milan, Lombardia, Italy", { headline: "Cortei, da Milano a Roma", headlineLang: "it", n: 1399, o: 1225, l: 26, i: 47 }),
+    entry(5, "Kiev, Ukraine", { headline: "Musk says he was behind Starlink speed restriction.", n: 121, o: 110, l: 8, i: 20 }),
+    entry(6, "Madrid, Spain", { headline: "Ισπανία", headlineLang: "el", n: 86, o: 78, l: 20, i: 12 }),
+    entry(7, "Tehran, Iran", { headline: "A seventh story", n: 86, o: 75, l: 22, i: 9 }),
+  ],
+};
+
+test("dates in words: ordinals, the weekday and month in UTC, the clip's day from the snapshot", () => {
+  assert.deepEqual([1, 2, 3, 11, 12, 13, 20, 21, 22, 23, 24, 30, 31].map(ordinalWords), [
+    "first", "second", "third", "eleventh", "twelfth", "thirteenth", "twentieth", "twenty-first", "twenty-second", "twenty-third", "twenty-fourth", "thirtieth", "thirty-first",
+  ]);
+  assert.throws(() => ordinalWords(32), /day of month/);
+  assert.equal(spokenDate("2026-10-24"), "Saturday the twenty-fourth of October");
+  assert.equal(spokenDate("2026-01-01"), "Thursday the first of January");
+  assert.throws(() => spokenDate("24 October"), /date/);
+  // A 00:15 UTC snapshot of the last 24 hours is mostly the day before (as v3's plan dates it).
+  assert.equal(clipDate(heat), "2026-10-24");
+  assert.equal(clipDate({ generatedAt: "2026-10-24T14:00:00Z", windowHours: 24 }), "2026-10-24");
+  assert.throws(() => clipDate({}), /generatedAt/);
+});
+
+test("buildScript: the opening for a known date and totals, six stories, the close", () => {
+  const script = buildScript({ stories, heat, date: "2026-10-24", generatedAt: "2026-10-25T00:20:00Z" });
+  assert.deepEqual(
+    { ...script, lines: undefined },
+    { date: "2026-10-24", generatedAt: "2026-10-25T00:20:00Z", voice: { engine: "kokoro", name: "af_heart" }, gap: 0.4, lines: undefined },
+  );
+  assert.deepEqual(script.lines[0], {
+    id: "open",
+    kind: "open",
+    text: "Today on Earth, Saturday the twenty-fourth of October. 242,540 articles from 10,568 outlets in 195 countries. Here is where the world's press pointed.",
+    seconds: 0,
+  });
+  assert.deepEqual(script.lines.map((l) => l.id), ["open", "story-1", "story-2", "story-3", "story-4", "story-5", "story-6", "close"]);
+  assert.deepEqual(script.lines.at(-1), { id: "close", kind: "close", text: CLOSE_TEXT, seconds: 0 });
+  assert.equal(
+    CLOSE_TEXT,
+    "That was today on Earth. The full broadcast at currents B T W dot github dot I O slash today on earth. Read by a synthetic voice from the outlets' own headlines.",
+  );
+  assert.equal(spokenSeconds(script), 0);
+  // Fewer stories than six: all of them; none: the opening and the close.
+  assert.equal(buildScript({ stories: { stories: stories.stories.slice(0, 2) }, heat, date: "2026-10-24" }).lines.length, 4);
+  assert.deepEqual(buildScript({ stories: { stories: [] }, heat, date: "2026-10-24" }).lines.map((l) => l.kind), ["open", "close"]);
+  assert.throws(() => buildScript({ stories, heat: { totals: { articles: 1 } }, date: "2026-10-24" }), /totals.outlets/);
+});
+
+test("buildScript: a story line with and without the languages clause, its story fields", () => {
+  const [, hebron, , atlanta, milan, kiev] = buildScript({ stories, heat, date: "2026-10-24" }).lines;
+  assert.equal(hebron.text, "Hebron. 277 articles from 245 outlets in 18 languages. Israeli PM pledges massive military operation after West Bank checkpoint attack.");
+  assert.deepEqual([hebron.n, hebron.of], [1, 6]);
+  assert.deepEqual(hebron.story, {
+    cell: "8301b2fffffffff",
+    place: "Hebron",
+    lat: 31.25,
+    lon: 35.5,
+    headline: "Israeli PM pledges massive military operation after West Bank checkpoint attack",
+    source: "wamc.org",
+    lang: "en",
+    url: "https://www.wamc.org/x",
+    n: 277,
+    o: 245,
+    l: 18,
+    i: 46,
+    confirmed: "city",
+    spoken: true,
+  });
+  // l = 1: no languages clause; a headline ending in ? or . keeps its own mark.
+  assert.equal(atlanta.text, "Atlanta. 74 articles from 73 outlets. Six Flags says it will install seat belts?");
+  assert.equal(atlanta.story.place, "Atlanta");
+  assert.equal(kiev.text, "Kiev. 121 articles from 110 outlets in 8 languages. Musk says he was behind Starlink speed restriction.");
+  // Thousands separators in the counts.
+  assert.equal(milan.text, "Milan. 1,399 articles from 1,225 outlets. A headline in Italian, on screen.");
+  assert.equal(storyText({ place: "X", n: 5, o: 4, l: 2, headline: "H", lang: "en" }).text, "X. 5 articles from 4 outlets in 2 languages. H.");
+});
+
+test("buildScript: a non-English headline is on screen, not spoken", () => {
+  const lines = buildScript({ stories, heat, date: "2026-10-24" }).lines;
+  const paris = lines[2];
+  assert.equal(paris.text, "Paris. 343 articles from 241 outlets. A headline in Spanish, on screen.");
+  assert.equal(paris.story.spoken, false);
+  assert.equal(paris.story.headline, "Francia vive nueva jornada de protestas");
+  assert.equal(paris.story.source, "eltiempo.com");
+  assert.equal(lines[6].text, "Madrid. 86 articles from 78 outlets. A headline in Greek, on screen.");
+  // The headline itself never reaches the spoken text.
+  assert.ok(!paris.text.includes("Francia"));
+  assert.equal(languageName("es"), "Spanish");
+  assert.equal(languageName("zh"), "Chinese");
+  assert.equal(languageName("qqq"), "qqq");
+  assert.equal(languageName(undefined), "another language");
+});

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { bracket, buildPlan, framesFor, interpolateCells, interpolateTotals, lapseTime, pullbackFraction, readTimelineParams, segmentAt, TIMELINE_DEFAULTS, type ClipPlan } from '../src/timeline.ts';
+import { bracket, buildNewscastPlan, buildPlan, checkNewscastScript, framesFor, headlineOffset, interpolateCells, interpolateTotals, lapseTime, pullbackFraction, reached, readTimelineParams, segmentAt, sentenceTimes, spokenAt, TIMELINE_DEFAULTS, wordTimes, type ClipPlan, type NewscastLine, type NewscastScript } from '../src/timeline.ts';
 
 const MIN = 60_000;
 const HOUR = 60 * MIN;
@@ -185,4 +185,132 @@ test('parameters: defaults, and bad values rejected', () => {
     assert.throws(() => read(bad), /^Error: bad /, bad);
   }
   assert.deepEqual(read('fps=60&fly=1'), { ...TIMELINE_DEFAULTS, fps: 60, fly: 1 });
+});
+
+// The newscast (clip.html?newscast=1).
+
+const OPEN = 'Today on Earth, Saturday the 24th of October. 242,540 articles from 10,568 outlets in 195 countries. Here is where the world\'s press pointed.';
+const HEADLINE = 'France braces: Macron restricts protests';
+const storyLine = (id: string, n: number, seconds: number, spoken = true): NewscastLine => ({
+  id,
+  kind: 'story',
+  text: `Paris. 520 articles from 410 outlets in 38 languages. ${HEADLINE}.`,
+  seconds,
+  n,
+  of: 2,
+  story: { cell: '831fb4fffffffff', place: 'Paris, France', lat: 48.86, lon: 2.35, headline: HEADLINE, source: 'example.com', lang: 'en', url: '', n: 520, o: 410, l: 38, i: 30, confirmed: 'city', spoken },
+});
+const script = (): NewscastScript => ({
+  date: '2026-10-24',
+  generatedAt: '2026-10-24T12:00:00Z',
+  voice: 'af_heart',
+  gap: 0.4,
+  lines: [
+    { id: 'open', kind: 'open', text: OPEN, seconds: 9.8 },
+    storyLine('s1', 1, 12),
+    storyLine('s2', 2, 11.5, false),
+    { id: 'close', kind: 'close', text: 'That was today on Earth. The full broadcast at currents B T W dot github dot I O slash today on earth. Read by a synthetic voice from the outlets\' own headlines.', seconds: 8.2 },
+  ],
+});
+
+test('newscast plan: open, flight + card per story, close; the gap held by each line', () => {
+  const plan = buildNewscastPlan(script(), 30);
+  // Edges at the running time: open 9.8+0.4 = 10.2 s; s1 flight to 11.4, card 12-1.2+0.5+0.4 = 11.7 to 23.1;
+  // s2 flight to 24.3, card 11.5-1.2+0.9 = 11.2 to 35.5; close 8.2+1.0+0.4 = 9.6 to 45.1.
+  assert.deepEqual(
+    plan.segments.map((s) => [s.kind, s.line, s.start, s.frames]),
+    [
+      ['open', 'open', 0, 306],
+      ['flight', 's1', 306, 36],
+      ['card', 's1', 342, 351],
+      ['flight', 's2', 693, 36],
+      ['card', 's2', 729, 336],
+      ['close', 'close', 1065, 288],
+    ],
+  );
+  assert.equal(plan.frames, 1353);
+  assert.equal(plan.date, '2026-10-24');
+  assert.equal(plan.fps, 30);
+});
+
+test('newscast plan: segments contiguous; lines start at their first segment, frames are the audio', () => {
+  const plan = buildNewscastPlan(script(), 30);
+  let next = 0;
+  for (const s of plan.segments) {
+    assert.equal(s.start, next);
+    assert.ok(s.frames > 0);
+    next += s.frames;
+  }
+  assert.equal(next, plan.frames);
+  assert.deepEqual(plan.lines, [
+    { id: 'open', start: 0, frames: 294 },
+    { id: 's1', start: 306, frames: 360 },
+    { id: 's2', start: 693, frames: 345 },
+    { id: 'close', start: 1065, frames: 246 },
+  ]);
+  // The next line starts exactly the gap after the previous line's audio + its hold.
+  assert.equal(plan.lines[1].start - plan.lines[0].start, Math.round((9.8 + 0.4) * 30));
+  for (const line of plan.lines) assert.equal(plan.segments.find((s) => s.line === line.id)!.start, line.start);
+});
+
+test('newscast plan: the poster is the first card\'s last frame; no drift from rounding', () => {
+  const plan = buildNewscastPlan(script(), 30);
+  assert.equal(plan.poster, 342 + 351 - 1);
+  // 25 fps: 1.2 s flights are 30 frames; line starts stay at round(running seconds x fps).
+  const p25 = buildNewscastPlan(script(), 25);
+  assert.deepEqual(p25.lines.map((l) => l.start), [0, Math.round(10.2 * 25), Math.round(23.1 * 25), Math.round(35.5 * 25)]);
+  const noStory = buildNewscastPlan({ ...script(), lines: [script().lines[0], script().lines[3]] }, 30);
+  assert.deepEqual(noStory.segments.map((s) => s.kind), ['open', 'close']);
+  assert.equal(noStory.poster, noStory.frames - 1);
+});
+
+test('newscast script check: the contract shape, else an Error naming the problem', () => {
+  assert.equal(checkNewscastScript(script()).lines.length, 4);
+  const bad = (edit: (s: any) => void, why: RegExp) => {
+    const s: any = script();
+    edit(s);
+    assert.throws(() => checkNewscastScript(s), why);
+  };
+  assert.throws(() => checkNewscastScript(null), /bad script: not an object/);
+  bad((s) => (s.date = '24 Oct'), /date/);
+  bad((s) => (s.lines = [s.lines[0]]), /lines/);
+  bad((s) => (s.lines[1].seconds = 0), /line 1 seconds/);
+  bad((s) => (s.lines[2].id = 's1'), /line 2 id/);
+  bad((s) => s.lines.reverse(), /line 0 kind/);
+  bad((s) => delete s.lines[1].story, /line 1 story/);
+  bad((s) => (s.lines[1].story.lat = 'x'), /line 1 story lat/);
+  bad((s) => (s.lines[1].story.spoken = 'yes'), /spoken/);
+  bad((s) => (s.lines[1].n = 3), /line 1 n\/of/);
+});
+
+test('sentence times: split at sentence ends, each at seconds x chars before / total', () => {
+  const said = sentenceTimes(OPEN, 9.8);
+  assert.deepEqual(
+    said.map((s) => s.text),
+    ['Today on Earth, Saturday the 24th of October.', '242,540 articles from 10,568 outlets in 195 countries.', "Here is where the world's press pointed."],
+  );
+  assert.equal(said[0].at, 0);
+  assert.equal(said[1].at, (9.8 * OPEN.indexOf('242,540')) / OPEN.length);
+  assert.equal(said[2].at, (9.8 * OPEN.indexOf('Here')) / OPEN.length);
+  // "U.S." is not a sentence end; "dot I O" has none.
+  assert.equal(sentenceTimes('The U.S. votes. Then more.', 2).length, 2);
+  assert.equal(sentenceTimes('One sentence', 1).length, 1);
+  assert.equal(reached(said.map((s) => s.at), 0), 1);
+  assert.equal(reached(said.map((s) => s.at), said[2].at), 3);
+  assert.equal(reached(said.map((s) => s.at), said[2].at - 0.01), 2);
+});
+
+test('word times: the headline starts after the counts, words at an even rate over the line', () => {
+  const text = `Paris. 520 articles from 410 outlets in 38 languages. ${HEADLINE}.`;
+  const start = text.indexOf(HEADLINE);
+  assert.equal(headlineOffset(text, HEADLINE), start);
+  const words = wordTimes(text, HEADLINE, 12);
+  assert.deepEqual(words.map((w) => w.word), ['France', 'braces:', 'Macron', 'restricts', 'protests']);
+  assert.equal(words[0].at, (12 * start) / text.length);
+  assert.equal(words[2].at, (12 * (start + HEADLINE.indexOf('Macron'))) / text.length);
+  assert.ok(words.every((w, k) => k === 0 || w.at > words[k - 1].at));
+  assert.ok(words[words.length - 1].at < 12);
+  // Not verbatim in the text (the renderer cleaned it): it is taken to end the line.
+  assert.equal(headlineOffset('Paris. Counts. Something else.', 'Other words'), 'Paris. Counts. Something else.'.length - 'Other words'.length - 1);
+  assert.equal(spokenAt('abcd', 2, 8), 4);
 });

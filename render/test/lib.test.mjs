@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { captionText, captureTimeline, checkPlan, describeSegments, ffmpegArgs, frameName, MAX_BAD_SHARE, maxCellN, parseArgs, timelineUrl } from "../src/lib.mjs";
+import { captionText, captureTimeline, checkNewscastPlan, checkPlan, checkScript, describeSegments, ffmpegArgs, frameName, MAX_BAD_SHARE, maxCellN, mixArgs, newscastUrl, parseArgs, timelineUrl } from "../src/lib.mjs";
 
 test("parseArgs: defaults, platform browser channel, validation", () => {
   const o = parseArgs(["--site", "https://currentsbtw.github.io/today-on-earth/", "--out", "out"], "linux");
   assert.deepEqual(o, {
+    mode: "newscast",
     site: "https://currentsbtw.github.io/today-on-earth",
     out: "out",
     w: 1080,
@@ -19,6 +20,8 @@ test("parseArgs: defaults, platform browser channel, validation", () => {
     slots: 3,
     music: "generated",
     channel: "chrome",
+    script: null,
+    encode: true,
   });
   assert.equal(parseArgs(["--site=http://localhost:5173", "--out=o", "--w", "1920", "--h", "1080"], "win32").channel, "msedge");
   assert.throws(() => parseArgs(["--out", "o"]), /--site/);
@@ -192,4 +195,132 @@ test("ffmpegArgs: H.264 + AAC with the generated wav, a looped and faded music f
   const none = ffmpegArgs({ ...base, hold: 0, audio: { kind: "none" } });
   assert.ok(!none.includes("-c:a") && !none.includes("-shortest") && !none.includes("-vf") && !none.includes("1:a:0"));
   assert.equal(none.filter((a) => a === "-i").length, 1);
+});
+
+test("parseArgs: --mode, --script and the --no-encode flag", () => {
+  const base = ["--site", "http://x", "--out", "o"];
+  assert.equal(parseArgs([...base, "--mode", "timeline"], "linux").mode, "timeline");
+  assert.throws(() => parseArgs([...base, "--mode", "trailer"]), /--mode must be newscast or timeline/);
+  const o = parseArgs([...base, "--no-encode", "--script", "out/script.json"], "linux");
+  assert.deepEqual([o.mode, o.script, o.encode], ["newscast", "out/script.json", false]);
+  assert.throws(() => parseArgs([...base, "--no-encode=1"]), /takes no value/);
+  assert.throws(() => parseArgs([...base, "--mode", "timeline", "--script", "s.json"]), /--script needs --mode newscast/);
+  assert.equal(newscastUrl(parseArgs(["--site", "https://example.test/toe/", "--out", "o"], "linux"), 1401), "https://example.test/toe/clip.html?newscast=1&w=1080&h=1920&fps=30&max=1401");
+  assert.equal(newscastUrl({ site: "http://x", w: 540, h: 960, fps: 24 }), "http://x/clip.html?newscast=1&w=540&h=960&fps=24");
+});
+
+const voicedScript = () => ({
+  date: "2026-10-24",
+  generatedAt: "2026-10-25T00:20:00Z",
+  voice: { engine: "kokoro", name: "af_heart" },
+  gap: 0.4,
+  lines: [
+    { id: "open", kind: "open", text: "Today on Earth, Saturday the twenty-fourth of October.", seconds: 9.9 },
+    { id: "story-1", kind: "story", text: "Hebron. 277 articles from 245 outlets in 18 languages. Israeli PM pledges massive military operation.", seconds: 6.1, n: 1, of: 2, story: { source: "wamc.org", headline: "Israeli PM pledges massive military operation", spoken: true } },
+    { id: "story-2", kind: "story", text: "Paris. 343 articles from 241 outlets. A headline in Spanish, on screen.", seconds: 4.2, n: 2, of: 2, story: { source: "eltiempo.com", headline: "Francia vive nueva jornada de protestas", spoken: false } },
+    { id: "close", kind: "close", text: "That was today on Earth.", seconds: 9.0 },
+  ],
+});
+
+/** A plan as the page would return it for voicedScript() at 10 fps (the 0.4 s gap is 4 frames). */
+const newscastPlan = () => ({
+  fps: 10,
+  frames: 330,
+  date: "2026-10-24",
+  poster: 5,
+  segments: [
+    { kind: "open", line: "open", start: 0, frames: 103 },
+    { kind: "flight", line: "story-1", start: 103, frames: 12 },
+    { kind: "card", line: "story-1", start: 115, frames: 54 },
+    { kind: "flight", line: "story-2", start: 169, frames: 12 },
+    { kind: "card", line: "story-2", start: 181, frames: 35 },
+    { kind: "close", line: "close", start: 216, frames: 114 },
+  ],
+  lines: [
+    { id: "open", start: 0, frames: 99 },
+    { id: "story-1", start: 103, frames: 61 },
+    { id: "story-2", start: 169, frames: 42 },
+    { id: "close", start: 216, frames: 90 },
+  ],
+});
+
+test("checkScript: a voiced script passes; an unvoiced or misordered one throws", () => {
+  const s = voicedScript();
+  assert.equal(checkScript(s), s);
+  const broken = (change, why) => {
+    const p = voicedScript();
+    change(p);
+    assert.throws(() => checkScript(p), why);
+  };
+  broken((p) => (p.lines[1].seconds = 0), /story-1 has 0 seconds \(not voiced\)/);
+  broken((p) => p.lines.reverse(), /is "close", expected open/);
+  broken((p) => (p.lines[2].id = "story-1"), /story-1 repeated/);
+  broken((p) => (p.date = "24 Oct"), /date/);
+});
+
+test("checkNewscastPlan: the contract's shape; lines in order, not overlapping, inside the frames, long enough", () => {
+  const script = voicedScript();
+  const plan = newscastPlan();
+  assert.equal(checkNewscastPlan(plan, 10, script), plan);
+  assert.equal(describeSegments(plan.segments), "open 103 · flight 12 · card 54 · flight 12 · card 35 · close 114");
+  const broken = (change, why) => {
+    const p = newscastPlan();
+    change(p);
+    assert.throws(() => checkNewscastPlan(p, 10, script), why);
+  };
+  assert.throws(() => checkNewscastPlan(newscastPlan(), 30, script), /fps 10, asked 30/);
+  broken((p) => (p.date = "2026-10-23"), /date "2026-10-23", the script's is 2026-10-24/);
+  broken((p) => (p.segments[0].kind = "hook"), /unknown segment kind "hook"/);
+  broken((p) => (p.segments[2].start = 116), /card starts at 116, expected 115/);
+  broken((p) => (p.frames = 331), /sum to 330/);
+  broken((p) => (p.segments[1].line = "story-9"), /names line "story-9", not in the script/);
+  broken((p) => (p.segments[3].line = "story-1"), /segment 4 \(flight\) names line story-1, expected story-2/);
+  broken((p) => ([p.segments[1].kind, p.segments[2].kind] = ["card", "flight"]), /segment kinds open card flight/);
+  broken((p) => p.lines.pop(), /3 lines, the script has 4/);
+  broken((p) => ([p.lines[1], p.lines[2]] = [p.lines[2], p.lines[1]]), /line 2 is "story-2", expected story-1/);
+  // Overlap: story-1 starts before the opening ends.
+  broken((p) => (p.lines[1].start = 98), /story-1 starts at 98, before the previous line ends at 99/);
+  // Past the end of the clip.
+  broken((p) => (p.lines[3].frames = 115), /close ends at 331, after the clip's 330 frames/);
+  // Shorter than its audio: 6.1 s at 10 fps needs 60 frames (one frame of rounding allowed).
+  broken((p) => (p.lines[1].frames = 59), /story-1 has 59 frames for 6.10 s of audio/);
+  const sixty = newscastPlan();
+  sixty.lines[1].frames = 60;
+  assert.equal(checkNewscastPlan(sixty, 10, script), sixty);
+  broken((p) => (p.signals = [{}]), /signal 1 has no slot/);
+});
+
+test("captionText: the transcript after the links, each story's headline credit", () => {
+  const broadcast = "Today's broadcast: https://currentsbtw.github.io/today-on-earth/broadcast";
+  const transcript = [
+    "Today on Earth, Saturday the twenty-fourth of October.",
+    "Hebron. 277 articles from 245 outlets in 18 languages. Israeli PM pledges massive military operation.",
+    "Headline from wamc.org",
+    "Paris. 343 articles from 241 outlets. A headline in Spanish, on screen.",
+    "Headline from eltiempo.com: Francia vive nueva jornada de protestas",
+    "That was today on Earth.",
+  ];
+  assert.equal(
+    captionText({ date: "2026-10-24" }, { script: voicedScript() }),
+    `${["Today On Earth · 24 October 2026", "The last 24 hours of the world's news, one dot per place.", "", broadcast, "", ...transcript].join("\n")}\n`,
+  );
+  // With signals, the transcript comes after the signal links and the broadcast line.
+  const withSignals = captionText({ date: "2026-10-24", signals: signals().slice(0, 1) }, { script: voicedScript() }).split("\n");
+  assert.deepEqual(withSignals.slice(3, 9), ["1/1 · MOST COVERED STORY · Paris", `${PAGE}831fb4fffffffff.html`, "", broadcast, "", transcript[0]]);
+});
+
+test("mixArgs: each voice line resampled to 48 kHz and delayed to its start, in samples, over the bed", () => {
+  const args = mixArgs({ bed: "bed.wav", lines: [{ path: "line-open.wav", at: 0 }, { path: "line-story-1.wav", at: 10.3 }], output: "audio.wav" });
+  const at = (a, flag) => a[a.indexOf(flag) + 1];
+  assert.deepEqual(args.filter((a, i) => args[i - 1] === "-i"), ["bed.wav", "line-open.wav", "line-story-1.wav"]);
+  assert.equal(
+    at(args, "-filter_complex"),
+    "[1:a]aresample=48000,aformat=sample_fmts=fltp:channel_layouts=mono,adelay=delays=0S:all=1[v1];" +
+      "[2:a]aresample=48000,aformat=sample_fmts=fltp:channel_layouts=mono,adelay=delays=494400S:all=1[v2];" +
+      "[0:a][v1][v2]amix=inputs=3:duration=first:dropout_transition=0:normalize=0[out]",
+  );
+  assert.deepEqual([at(args, "-map"), at(args, "-ar"), at(args, "-ac"), at(args, "-c:a"), args.at(-1)], ["[out]", "48000", "1", "pcm_s16le", "audio.wav"]);
+  // No voice files: the bed alone.
+  const bedOnly = mixArgs({ bed: "b.wav", lines: [], output: "o.wav" });
+  assert.equal(at(bedOnly, "-filter_complex"), "[0:a]amix=inputs=1:duration=first:dropout_transition=0:normalize=0[out]");
 });

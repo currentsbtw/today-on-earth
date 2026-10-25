@@ -385,6 +385,19 @@ body {
   overflow: hidden;
 }
 
+/* The newscast's card when the voice skips the headline: one line in the tag register over the
+   credit, naming the headline's language. */
+.clip-unread {
+  margin: calc(var(--u) * 1.8) 0 0;
+  width: fit-content;
+  background: var(--k);
+  font-size: calc(var(--u) * 2.04);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
 .clip-outlet {
   margin-top: calc(var(--u) * 1.8);
   font-size: calc(var(--u) * 2.1);
@@ -432,11 +445,28 @@ body {
 }
 
 .clip-hook-lead {
-  font-size: calc(var(--u) * 7);
+  font-size: calc(var(--u) * 7 * var(--fit, 1));
   font-weight: 600;
   line-height: 1.08;
   letter-spacing: -0.01em;
   text-wrap: balance;
+}
+
+/* The newscast's spoken caption (the open, and the close's first sentence): the sentences in
+   the lead's register, each starting its own line on its own blocks, at the type scale clip.ts
+   fitted (--fit); no reading key. A sentence not yet spoken keeps its room, invisible. */
+.clip-hook--say .clip-hook-key {
+  display: none;
+}
+
+.clip-hook-lead .clip-say-line {
+  display: block;
+  padding: 0;
+  background: none;
+}
+
+.clip-say-line + .clip-say-line {
+  margin-top: calc(var(--u) * 1.6 * var(--fit, 1));
 }
 
 .clip-hook-key {
@@ -568,4 +598,17 @@ body {
   line-height: 1.4;
   letter-spacing: 0.01em;
   white-space: nowrap;
+}
+
+/* The newscast's end card: the synthetic voice named 1u under the address (the lockup block's
+   4u gap less 3u), in the count labels' register, muted. */
+.clip-voice {
+  margin: calc(var(--u) * -3) 0 0;
+  padding: 0 calc(var(--u) * 1);
+  background: var(--k);
+  color: var(--muted, #9a9a9a);
+  font-size: calc(var(--u) * 2.04);
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }

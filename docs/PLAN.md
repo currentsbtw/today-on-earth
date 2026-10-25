@@ -1013,6 +1013,56 @@ renderer (`render/`) and the page (`web/clip.html`) until DATA-CONTRACT carries 
 6. **Acceptance**: a first local clip rendered end to end (Edge, local data) and watched by the
    owner; the second audit's top-12 row clean before the first public post.
 
+**Status v4 (page), 2026-10-24: built, not committed.** `clip.html?newscast=1&w&h&fps&max=`
+draws the world at the live snapshot at ready and waits for `window.__clipNewscast(script)`,
+which checks the script's shape (`checkNewscastScript`; a bad one sets `data-error` and rejects;
+no script within 10 s of ready sets `data-error="no script"`), lays every card out and resolves
+the plan; `__clipPlan()` and `__clipStep(i)` then work as in the timeline. The plan is the pure
+`buildNewscastPlan(script, fps)` in `web/src/timeline.ts`: open = seconds; per story a 1.2 s
+flight and a card of seconds - 1.2 + 0.5; close = seconds + 1.0; the 0.4 s gap is held by each
+line's last segment so the segments stay contiguous, and every segment edge is rounded from the
+running time in seconds, so a line never drifts from its audio by more than half a frame.
+`segments[].line` is the line's `id`; `lines[].start` is where the renderer places the line's
+WAV and `lines[].frames` is its audio; `poster` is the first card's last frame; `signals` carry
+`slot: "s<N>"`, `label: "STORY"`, the place, cell and page. The sentence and word timing
+(`sentenceTimes`, `wordTimes`) is proportional by characters over the whole line. stories.json
+is read only to warn (console) when a script story's cell is not in it. `?timeline=1` is
+unchanged (the card code is shared, not forked). Checked in headless Edge against the dev
+server at 540x960 with a hand-built script from local cells (Moscow, Paris, Milan in Italian
+unread, Vancouver, New York, Brisbane; 9.8 s, about 12 s each, 8.2 s): 2,919 frames, poster
+695, all four layouts drawn as DESIGN.md "Newscast" describes; 19 tests pass. Not yet done: a
+render end to end with real audio (the renderer's side) and the owner's viewing.
+
+**Status v4 (render), 2026-10-24: built, not committed.** `render/src/script.mjs` builds the
+script (contract item 1) from the live `stories.json` and `heat.json`: the clip's day is the UTC
+day of the middle of the snapshot's window (v3's rule), the place is the cell name up to the
+first comma, the language name comes from `Intl.DisplayNames` (the code when unknown), and the
+non-English line is the contract's exact form (no languages clause). `render/src/speech.mjs`
+voices it (item 2): kokoro-js 1.2.1 and @huggingface/transformers 3.8.1 pinned, fp32, af_heart,
+one 24 kHz mono 16-bit WAV per line, seconds from the sample count; transformers.js reads no
+environment variable for its cache (not `HF_HOME`), so the model goes to `$KOKORO_CACHE_DIR`,
+else `render/.cache/kokoro` (gitignored). `clip.mjs --mode newscast` (the default) writes
+`script.json`, hands it to `__clipNewscast`, checks the plan (`checkNewscastPlan`: kinds open,
+flight + card per story, close, each segment naming its line; `lines` in script order, not
+overlapping, inside the frames and at least as long as their audio), steps the frames, and
+mixes the audio in ffmpeg (`adelay` in samples per line after `aresample` to 48 kHz, `amix
+normalize=0` over the bed WAV from audio.mjs at -26 dBFS with a -30 dBFS glide per flight);
+`--script <file>` reuses a voiced script, `--no-encode` stops before the encode, `--mode
+timeline` keeps v3. The caption gains the transcript, each story line followed by "Headline
+from <outlet>" (plus the headline when unread), which is where the outlet credit lives. Clip
+workflow: 45 min, `npm ci --ignore-scripts` (verified locally; the Linux onnxruntime binaries
+are in the package), the model cached by restore/save keyed on model, dtype and kokoro-js
+version, `script-<date>.json` uploaded beside the caption. Measured here on the live data of
+2026-10-25 03:02 UTC (Windows, 22 cores): 8 lines, 93.8 s of speech, voiced in 25 s, identical
+WAV bytes on repeat; the mix leaves 27 to 36 dBFS of bed in the gaps and every line WAV starts
+and ends in silence. End to end against the dev server's page at 540x960, 10 fps: 1,010
+frames, 0 bad, 102 s mp4 with 48 kHz AAC, in 70 s. **Findings for the owner.** (1) The clip is
+about 100 s, not 55 to 70: the opening alone takes 14.7 s and each English story 12 to 14 s at
+Kokoro's speed 1; choices are fewer stories, a shorter opening, or Kokoro's `speed` option.
+(2) Headline prefixes are read aloud ("Arab News | Musk says..."): the ingest's suffix cleaning
+should cover prefixes. (3) Cell names are read as the gazetteer spells them ("Kiev", "Rio De
+Janeiro"). Not done: the owner's viewing (item 6), and a Linux run of the synthesis (CI).
+
 **What changes in the machinery.** The audio drives the timeline, not the other way round:
 the renderer (or a new step before it) synthesises every line first, measures each line's
 duration, and asks clip.html for a plan whose segments match those durations (a `script`

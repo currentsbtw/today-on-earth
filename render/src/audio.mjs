@@ -12,7 +12,11 @@
 //
 // A "decay" here is the time the envelope takes to fall 60 dB (exponential). The levels are
 // absolute: the mix is only ever turned down (to a -1 dBFS peak) when sounds coincide and
-// clip, never up, so a click stays a quiet tick and the hit is the loudest thing.
+// clip, never up, so a click stays a quiet tick and the hit is the loudest thing. An event's
+// optional `db` turns that one sound down (or up) from its level above.
+//
+// The newscast (v4) uses only the bed, at about -26 dBFS, and a quiet glide (about -30 dBFS)
+// under each flight, under the voice (newscastEvents); no clicks, blips or hits.
 
 export const SAMPLE_RATE = 48_000;
 const FADE_IN = 0.5;
@@ -42,6 +46,24 @@ export function audioEvents(plan, hold) {
   return events.sort((a, b) => a.t - b.t);
 }
 
+/** dB of each newscast sound below its v3 level (bed -20 -> -26, glide -18 -> -30). */
+export const NEWSCAST_BED_DB = -6;
+export const NEWSCAST_GLIDE_DB = -12;
+
+/**
+ * The newscast's underlay, in seconds, sorted by start: one `bed` over the whole clip (frames
+ * / fps + hold seconds) at about -26 dBFS and a quiet `glide` under each `flight` segment.
+ * @param {{ fps: number, frames: number, segments: { kind: string, start: number, frames: number }[] }} plan
+ * @param {number} hold
+ * @returns {{ kind: "bed" | "glide", t: number, dur: number, db: number }[]}
+ */
+export function newscastEvents(plan, hold) {
+  const at = (frame) => frame / plan.fps;
+  const events = [{ kind: "bed", t: 0, dur: at(plan.frames) + hold, db: NEWSCAST_BED_DB }];
+  for (const s of plan.segments) if (s.kind === "flight") events.push({ kind: "glide", t: at(s.start), dur: at(s.frames), db: NEWSCAST_GLIDE_DB });
+  return events.sort((a, b) => a.t - b.t);
+}
+
 /** Add `f(dt)` for dt in [0, dur) seconds from `t` into `out` (clipped to its length). */
 function add(out, rate, t, dur, f) {
   const from = Math.max(0, Math.round(t * rate));
@@ -68,7 +90,7 @@ const VOICES = {
  * Synthesise `events` (audioEvents' shape) into a mono 16-bit PCM WAV `seconds` long: fade
  * in over 0.5 s and out over the last 1.5 s, turned down to a -1 dBFS peak if louder (never
  * up: the voices' levels are absolute), clamp.
- * @param {{ kind: string, t: number, dur: number }[]} events
+ * @param {{ kind: string, t: number, dur: number, db?: number }[]} events
  * @param {number} seconds
  * @param {number} rate samples per second
  * @returns {Buffer}
@@ -80,7 +102,8 @@ export function renderWav(events, seconds, rate = SAMPLE_RATE) {
     const voice = VOICES[e.kind];
     if (!voice) throw new Error(`unknown sound ${e.kind}`);
     // The decaying sounds ring for their decay time; the bed and glides last their duration.
-    add(mix, rate, e.t, e.dur, (dt) => voice(dt, e.dur));
+    const level = db(e.db ?? 0);
+    add(mix, rate, e.t, e.dur, (dt) => level * voice(dt, e.dur));
   }
   let peak = 0;
   for (let i = 0; i < n; i++) {
