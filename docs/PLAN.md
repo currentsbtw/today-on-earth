@@ -1109,7 +1109,7 @@ already holds an unread card for its line less the flight plus 0.5 s and the gap
 6.0 to 7.3 s, the Spanish one 3.5 s, close 5.5 s), 1,683 frames, 0 bad, a 57.1 s mp4. Seen
 in the timing: with the counts gone, the headline starts about 0.5 s into the line, inside the
 1.2 s flight, so its first one or two words are already spoken when the card appears (the
-reveal paints them at the card's first frame).
+reveal paints them at the card's first frame). CI verified (run 40446556404 on ubuntu-latest after deploy 40445140614): 8 lines, 48.9 s of speech synthesised in 14.1 s from the cached model, 1,809 frames, clip-2026-10-26.mp4 61.3 s on the clips release, identical to the local render. The v4.1 newscast is the daily clip from 2026-10-28 00:20 UTC.
 
 
 **What changes in the machinery.** The audio drives the timeline, not the other way round:
