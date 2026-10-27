@@ -2,7 +2,7 @@ import { isRepublisher as defaultIsRepublisher, outletOf } from "./domains.ts";
 import { titleTokens } from "./entities.ts";
 import { createKeyer, keyCounts, unitsOf, type Keyer } from "./reprints.ts";
 import { cellStats, compareNewestFirst, homeCountry, knownCountries, representative, round, toCellArticle } from "./stats.ts";
-import type { ArticleRecord, Story } from "./types.ts";
+import type { ArticleRecord, Story, StoryEn } from "./types.ts";
 
 /**
  * Group one cell's articles into stories (docs/DATA-CONTRACT.md "Stories").
@@ -31,6 +31,9 @@ import type { ArticleRecord, Story } from "./types.ts";
  *   count in the story's counters, dates and entities but never become its headline (medoid);
  * - the headline is the medoid's shown title, credited to the earliest identical copy from an
  *   outlet that is not a republisher (creditedCopy);
+ * - when the credited headline is not English, the story's English title (`en`, for
+ *   stories.json only) is the medoid rule restricted to the English-titled clustered members,
+ *   credited the same way (englishTitle);
  * - stories are re-sorted by final n (ties keeping the order above); the first 30
  *   (FULL_STORIES) are full, every later one is compact: the same object with at most 3
  *   entities, no `articles`, and `compact: true`.
@@ -150,6 +153,29 @@ function oldestFirst(a: ArticleRecord, b: ArticleRecord): number {
   return a.url < b.url ? -1 : a.url > b.url ? 1 : 0;
 }
 
+/**
+ * The story's English title for the newscast (added 2026-10-27 evening, docs/VOICE.md "v2.1"
+ * item 3; stories.json's `en`), asked for only when the credited headline is not English.
+ * `ranked` are the clustered members' records in medoid order (titled first, then the most
+ * total token overlap with every clustered member, then earliest, then URL), so its first
+ * English-titled one (lang "en", non-empty shown title) is the medoid rule restricted to
+ * English titles, still scored against the whole story's clustered members. Credited by
+ * creditedCopy (the earliest non-republisher copy of that title among the clustered members) and
+ * shown cleaned as the headline is (keyer.shownTitle). Attached members are never in `ranked`,
+ * so they never supply it. Undefined when no clustered member has an English title.
+ */
+export function englishTitle(
+  ranked: readonly ArticleRecord[],
+  core: readonly { r: ArticleRecord }[],
+  keyer: Keyer,
+  isRepublisher: (source: string) => boolean = defaultIsRepublisher,
+): StoryEn | undefined {
+  const pick = ranked.find((r) => r.lang === "en" && keyer.shownTitle(r) !== "");
+  if (!pick) return undefined;
+  const credited = creditedCopy(pick, core, keyer, isRepublisher);
+  return { headline: keyer.shownTitle(pick), source: credited.source, url: credited.url };
+}
+
 /** Greedy pass: returns clusters in creation order. */
 function cluster(items: Item[]): Cluster[] {
   const clusters: Cluster[] = [];
@@ -253,7 +279,7 @@ export function displayEntities(nameDf: Map<string, number>, themeDf: Map<string
  * `names`: how many of the story's leading `entities` are persons or organisations (the rest
  * are theme words).
  */
-function toStory(core: Item[], attached: Item[], home: string, copies: Map<string, number>, keyer: Keyer, compact: boolean): { story: Story; names: number } {
+function toStory(core: Item[], attached: Item[], home: string, copies: Map<string, number>, keyer: Keyer, compact: boolean): { story: Story; names: number; en: StoryEn | undefined } {
   const group = attached.length ? [...core, ...attached] : core;
   const records = group.flatMap((g) => g.unit);
   const s = cellStats(records, keyer, home);
@@ -287,6 +313,7 @@ function toStory(core: Item[], attached: Item[], home: string, copies: Map<strin
     );
   const medoid = ranked[0].g.r;
   const credited = creditedCopy(medoid, core, keyer);
+  const en = credited.lang === "en" ? undefined : englishTitle(ranked.map((x) => x.g.r), core, keyer);
 
   const perOutlet = new Map<string, number>();
   const keys = new Set<string>();
@@ -330,7 +357,7 @@ function toStory(core: Item[], attached: Item[], home: string, copies: Map<strin
     });
   }
   // displayEntities puts the persons and organisations first, at most STORY_ENTITIES of them.
-  return { story, names: Math.min(story.entities.length, STORY_ENTITIES, nameDf.size) };
+  return { story, names: Math.min(story.entities.length, STORY_ENTITIES, nameDf.size), en };
 }
 
 /**
@@ -389,10 +416,26 @@ function attach(items: readonly Item[], stories: readonly Item[][]): Item[][] {
 
 /**
  * Kinds (kinds.ts letters) that make an article unit count toward a story's grim share `g`
- * (docs/DATA-CONTRACT.md "Top stories", added 2026-10-27): conflict, crime and disaster.
- * Politics (p) does not count, unlike the "ordinary" slot, which counts any kind.
+ * (docs/DATA-CONTRACT.md "Top stories"): since 2026-10-27 evening (docs/VOICE.md "v2.1"), h
+ * alone, the KILL or WOUND themes. It replaced the morning's "cdk" (conflict, crime, disaster),
+ * which marked nearly every large story grim. The "ordinary" slot still counts any kind.
  */
-export const GRIM_KINDS = "cdk";
+export const GRIM_KINDS = "h";
+
+/**
+ * Fail-closed transition for `g` (added 2026-10-27 evening): records parsed before kind h
+ * existed carry no h (the carried state keeps no KILL or WOUND theme to recompute it from), so
+ * counting them would under-report the share. A unit is fresh when every copy's `time` (GDELT
+ * time) is at or after G_SINCE, and `g` is computed over the fresh units only. A story with any
+ * stale unit gets `g` only when it has at least G_MIN_FRESH_UNITS fresh units, otherwise none
+ * (undefined, so stories.json omits it and the clip treats the story as grim). A story whose
+ * units are all fresh gets the plain share whatever its size. Once the 24 h window holds only
+ * records newer than G_SINCE (from 2026-10-28 21:30 UTC) every unit is fresh and this is the
+ * plain share again; G_SINCE, G_MIN_FRESH_UNITS and the `since` parameter can be removed after
+ * 2026-10-29.
+ */
+export const G_SINCE = "2026-10-27T21:30:00Z";
+export const G_MIN_FRESH_UNITS = 10;
 
 /**
  * Whether an article unit carries a kind: any of its records (an outlet's copies of one
@@ -411,13 +454,27 @@ export const countKindUnits = (units: readonly (readonly ArticleRecord[])[], kin
 export const grimShare = (grim: number, units: number) => (units > 0 ? round(grim / units, 2) : 0);
 
 /**
+ * A story's `g` from its article units under the G_SINCE transition: the grim share of its
+ * fresh units, or undefined when it has a stale unit and fewer than G_MIN_FRESH_UNITS fresh ones.
+ */
+export function storyGrimShare(units: readonly (readonly ArticleRecord[])[], since: string = G_SINCE): number | undefined {
+  const fresh = units.filter((unit) => unit.every((r) => r.time >= since));
+  if (fresh.length < units.length && fresh.length < G_MIN_FRESH_UNITS) return undefined;
+  return grimShare(countKindUnits(fresh, GRIM_KINDS), fresh.length);
+}
+
+/**
  * `records` are one cell's articles; `home` is that cell's own country (for each story's `i`).
  * `keyer` is the snapshot's (reprint keys, shown titles); by default one learned from `records`.
  * `tagged[k]` (ingest-internal, not part of the cell file) is how many of `stories[k]`'s article
  * units carry any kind (conflict, politics, crime, disaster), for the broadcast's "ordinary" slot.
  * `grim[k]` (ingest-internal, written to stories.json as `g`) is `stories[k]`'s grim share: the
- * share of its article units carrying a conflict, crime or disaster kind (GRIM_KINDS), 2 decimals.
+ * share of its article units carrying the harm kind h (KILL or WOUND, GRIM_KINDS), 2 decimals,
+ * over its fresh units under the G_SINCE transition (storyGrimShare); undefined when it has none.
  * Both count the same units (clustered and attached) by the same unitHasKind rule.
+ * `en[k]` (ingest-internal, written to stories.json as `en`) is `stories[k]`'s English title
+ * when its credited headline is not English (englishTitle), undefined otherwise.
+ * `gSince` is G_SINCE, a parameter only so tests and offline replays can move the transition.
  * `names[k]` (ingest-internal) is how many of `stories[k].entities`, from the start, are persons or
  * organisations; the rest are theme words (displayEntities). For the topic index.
  */
@@ -425,7 +482,8 @@ export function buildStories(
   records: readonly ArticleRecord[],
   keyer: Keyer = createKeyer(records),
   home = homeCountry(records),
-): { stories: Story[]; unclustered: number; tagged: number[]; grim: number[]; names: number[] } {
+  gSince: string = G_SINCE,
+): { stories: Story[]; unclustered: number; tagged: number[]; grim: (number | undefined)[]; en: (StoryEn | undefined)[]; names: number[] } {
   const items = unitsOf(records, keyer, outletOf)
     .map((unit) => itemOf(unit, keyer))
     .sort((a, b) => oldestFirst(a.r, b.r));
@@ -448,13 +506,14 @@ export function buildStories(
     return {
       ...toStory(kept[k], attached[k], home, copies, keyer, rank >= FULL_STORIES),
       tagged: countKindUnits(units),
-      grim: grimShare(countKindUnits(units, GRIM_KINDS), units.length),
+      grim: storyGrimShare(units, gSince),
     };
   });
   const stories = built.map((b) => b.story);
   const tagged = built.map((b) => b.tagged);
   const grim = built.map((b) => b.grim);
+  const en = built.map((b) => b.en);
   const names = built.map((b) => b.names);
   const clustered = stories.reduce((sum, s) => sum + s.n, 0);
-  return { stories, unclustered: items.length - clustered, tagged, grim, names };
+  return { stories, unclustered: items.length - clustered, tagged, grim, en, names };
 }

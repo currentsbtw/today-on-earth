@@ -1,7 +1,7 @@
 import { MIN_STORY_U, slotCell, slotStory, tieBreak } from "./broadcast.ts";
 import { placeNames, type PlaceNamesTable } from "./placenames-table.ts";
 import { reprintKey } from "./reprints.ts";
-import type { CellFile, HeatCell, HeatFile, Story, TopStoriesFile, TopStory } from "./types.ts";
+import type { CellFile, HeatCell, HeatFile, Story, StoryEn, TopStoriesFile, TopStory } from "./types.ts";
 
 /**
  * The day's largest stories around the world (docs/DATA-CONTRACT.md "Top stories"), for the
@@ -18,10 +18,13 @@ import type { CellFile, HeatCell, HeatFile, Story, TopStoriesFile, TopStory } fr
  * The city and region may also be named in a local language (Купянск, 重庆): the place-names
  * table (placenames-table.ts, from GeoNames) adds names by the cell's FeatureID `fid`.
  *
- * Each entry also carries `g` (added 2026-10-27), its story's grim share as stories.ts computes
- * it (the share of the story's article units with a conflict, crime or disaster kind), so the
- * clip can gate its show-mode frames on the coverage. It sits on the entry, not in `story`,
- * which stays the cell file's fields exactly.
+ * Each entry also carries `g` (added 2026-10-27, redefined that evening), its story's grim share
+ * as stories.ts computes it (the share of the story's article units with the harm kind h, KILL or
+ * WOUND, absent during the G_SINCE transition when too few units are fresh), so the clip can
+ * gate its show-mode frames on the coverage; and `en` (added 2026-10-27 evening), the story's
+ * English title when its credited headline is not English (stories.ts englishTitle), which the
+ * newscast reads instead. Both sit on the entry, not in `story`, which stays the cell file's
+ * fields exactly.
  */
 
 /** At most this many entries. The clip reads the first 6 to 8 it can voice; the rest is slack. */
@@ -205,8 +208,13 @@ export function buildTopStories(args: {
    * entry as `g` (added 2026-10-27). A story missing from the map gets no `g`.
    */
   storyGrim?: ReadonlyMap<Story, number>;
+  /**
+   * Per story: its English title (stories.ts buildStories `en`, Snapshot.storyEn), written to the
+   * entry as `en` (added 2026-10-27 evening). A story missing from the map gets no `en`.
+   */
+  storyEn?: ReadonlyMap<Story, StoryEn>;
 }): TopStoriesFile {
-  const { heat, cells, storyGrim } = args;
+  const { heat, cells, storyGrim, storyEn } = args;
   const heatById = new Map(heat.cells.map((c) => [c.id, c]));
   const all: Candidate[] = [];
   for (const cell of cells) {
@@ -241,7 +249,12 @@ export function buildTopStories(args: {
     if (c.key !== "") takenEvents.add(c.key);
     perCountry.set(key, had + 1);
     const g = storyGrim?.get(c.story);
-    stories.push({ rank: stories.length + 1, cell: slotCell(c.cell, c.heat), story: slotStory(c.story), confirmed: confirmed.level, ...(g === undefined ? {} : { g }) });
+    const en = storyEn?.get(c.story);
+    stories.push({
+      rank: stories.length + 1, cell: slotCell(c.cell, c.heat), story: slotStory(c.story), confirmed: confirmed.level,
+      ...(g === undefined ? {} : { g }),
+      ...(en === undefined ? {} : { en: { headline: en.headline, source: en.source, url: en.url } }),
+    });
   }
   return { generatedAt: heat.generatedAt, windowHours: heat.windowHours, stories };
 }

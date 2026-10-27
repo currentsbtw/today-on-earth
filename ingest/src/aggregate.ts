@@ -4,7 +4,7 @@ import type { BaselineView } from "./baseline.ts";
 import { outletOf } from "./domains.ts";
 import { createKeyer, keyCounts, unitsOf, type Keyer } from "./reprints.ts";
 import { buildStories } from "./stories.ts";
-import type { ArticleRecord, CellFile, HeatCell, HeatFile, Story } from "./types.ts";
+import type { ArticleRecord, CellFile, HeatCell, HeatFile, Story, StoryEn } from "./types.ts";
 
 export { compareNewestFirst, countSorted } from "./stats.ts";
 
@@ -63,10 +63,17 @@ export interface Snapshot {
   /** Per story: how many of its articles carry any kind (ingest-internal, for the broadcast). */
   storyTagged: Map<Story, number>;
   /**
-   * Per story: its grim share, the share of its article units carrying a conflict, crime or
-   * disaster kind (ingest-internal here; stories.json writes it as `g`).
+   * Per story: its grim share, the share of its article units carrying the harm kind h (KILL or
+   * WOUND), over its fresh units under the G_SINCE transition (stories.ts storyGrimShare);
+   * a story without one is not in the map (ingest-internal here; stories.json writes it as `g`).
    */
   storyGrim: Map<Story, number>;
+  /**
+   * Per story whose credited headline is not English and that has an English-titled clustered
+   * member: its English title (stories.ts englishTitle; ingest-internal here; stories.json
+   * writes it as `en`).
+   */
+  storyEn: Map<Story, StoryEn>;
   /**
    * Per story: how many of its leading `entities` are persons or organisations; the rest are
    * theme words (ingest-internal, for topics.json).
@@ -83,7 +90,14 @@ export interface Snapshot {
  */
 export function buildSnapshot(
   records: readonly ArticleRecord[],
-  opts: { now: Date; windowHours: number; baseline?: BaselineView; keyer?: Keyer },
+  opts: {
+    now: Date;
+    windowHours: number;
+    baseline?: BaselineView;
+    keyer?: Keyer;
+    /** stories.ts G_SINCE, overridable only for tests and offline replays. */
+    gSince?: string;
+  },
 ): Snapshot {
   const baseline = opts.baseline ?? { baselineDays: 0, b: () => 0, articlesNormal: null, articlesNormalDays: 0, totalDays: 0 };
   const keyer = opts.keyer ?? createKeyer(records);
@@ -120,6 +134,7 @@ export function buildSnapshot(
   let articles = unplaced;
   const storyTagged = new Map<Story, number>();
   const storyGrim = new Map<Story, number>();
+  const storyEn = new Map<Story, StoryEn>();
   const storyNames = new Map<Story, number>();
   for (const [id, list] of byCell) {
     if (list.length < MIN_CELL_ARTICLES) {
@@ -139,10 +154,13 @@ export function buildSnapshot(
       const key = keyer.keyOf(r);
       return key ? copies.get(key)! - 1 : 0;
     };
-    const { stories, unclustered, tagged, grim, names } = timed(() => buildStories(list, keyer, s.home));
+    const { stories, unclustered, tagged, grim, en, names } = timed(() => buildStories(list, keyer, s.home, opts.gSince));
     stories.forEach((story, k) => {
       storyTagged.set(story, tagged[k]);
-      storyGrim.set(story, grim[k]);
+      const g = grim[k];
+      if (g !== undefined) storyGrim.set(story, g);
+      const e = en[k];
+      if (e) storyEn.set(story, e);
       storyNames.set(story, names[k]);
     });
     cellFiles.set(id, {
@@ -188,5 +206,5 @@ export function buildSnapshot(
     topOutletCountries: sortCounts(countryUnits).slice(0, TOP_OUTLET_COUNTRIES),
     cells: heatCells,
   };
-  return { heat, cells: heatCells.map((c) => cellFiles.get(c.id)!), storiesMs, storyTagged, storyGrim, storyNames };
+  return { heat, cells: heatCells.map((c) => cellFiles.get(c.id)!), storiesMs, storyTagged, storyGrim, storyEn, storyNames };
 }

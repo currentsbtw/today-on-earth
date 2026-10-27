@@ -185,16 +185,16 @@ function checkSignals(plan, fail) {
   });
 }
 
-const NEWSCAST_KINDS = new Set(["open", "count", "aside", "flight", "card", "close"]);
-/** The segment kinds a script line is laid out as (show mode v2: count and aside are open-type, under either name). */
-const SEGMENTS_FOR = { open: [["open"]], count: [["count"], ["open"]], aside: [["aside"], ["open"]], story: [["flight", "card"]], close: [["close"]] };
+const NEWSCAST_KINDS = new Set(["open", "flight", "card", "close"]);
+/** The segment kinds a script line is laid out as (show mode v2.1: an aside is one open-type segment, kind `open`). */
+const SEGMENTS_FOR = { open: [["open"]], aside: [["open"]], story: [["flight", "card"]], close: [["close"]] };
 
 /**
  * Check a voiced script (from --script, or before it goes to the page): a YYYY-MM-DD date and
  * lines, each with a unique string id, a known kind, text and `seconds` > 0; the first line
- * `open`, the last `close`, between them `story` lines, at most one `count` (second, show mode
- * v2; a v1 script has none) and `aside` lines, each directly after a story that is not grim.
- * Returns the script.
+ * `open`, the last `close`, between them `story` lines and `aside` lines, each aside directly
+ * after a story that is not grim (so line 2 is a story, or the close when there are no stories).
+ * A `count` line (show mode v2, removed in v2.1) is rejected. Returns the script.
  * @param {any} script
  */
 export function checkScript(script) {
@@ -210,7 +210,7 @@ export function checkScript(script) {
     if (ids.has(l.id)) fail(`line id ${l.id} repeated`);
     ids.add(l.id);
     const last = k === script.lines.length - 1;
-    const want = k === 0 ? ["open"] : last ? ["close"] : k === 1 ? ["count", "story", "aside"] : ["story", "aside"];
+    const want = k === 0 ? ["open"] : last ? ["close"] : ["story", "aside"];
     if (!want.includes(l.kind)) fail(`line ${l.id} is ${JSON.stringify(l.kind)}, expected ${want.join(" or ")}`);
     if (l.kind === "aside") {
       const before = script.lines[k - 1];
@@ -227,9 +227,8 @@ export function checkScript(script) {
  * Check the plan clip.html's `window.__clipNewscast(script)` returned (v4 build contract item
  * 3), and return it: `fps` as asked, `frames` a positive integer, `date` the script's, `poster`
  * a frame index; `segments` contiguous from frame 0, summing to `frames`, one per line in the
- * script's order: `open`; for a `count` or `aside` line one segment named `count`/`aside` or
- * `open` (open-type); a `flight` and a `card` per story; `close`; each naming its script
- * line in `line`; `lines`
+ * script's order: `open`; for an `aside` line one open-type segment (kind `open`); a `flight`
+ * and a `card` per story; `close`; each naming its script line in `line`; `lines`
  * one entry per script line in the script's order, each `{ id, start, frames }` inside the
  * clip, in order and not overlapping, and at least as long as the line's audio (one frame of
  * rounding allowed) so a voice never runs into the next; `signals` as for the timeline.

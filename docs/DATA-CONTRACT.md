@@ -462,7 +462,7 @@ Every cell in `heat.json` has a `b`, so for rising every cell with `n` >= 20 is 
 a brand-new cell (`b` = 0) is measured against the floor of 3.
 
 **Kinds** (ingest-internal, never in a public file). Each article gets the set of kinds among
-`c` conflict, `p` politics, `k` crime, `d` disaster, from GDELT's raw V2Themes (every theme
+`c` conflict, `p` politics, `k` crime, `d` disaster, `h` harm, from GDELT's raw V2Themes (every theme
 of the article, before the grouping deny list in Stories drops the broad families). A theme
 name matches a rule exactly, or by prefix where the rule ends in `*` (case-insensitive):
 
@@ -475,6 +475,9 @@ name matches a rule exactly, or by prefix where the rule ends in `*` (case-insen
   ORGANIZED_CRIME, CORRUPTION, CYBER_ATTACK
 - disaster: NATURAL_DISASTER_*, MANMADE_DISASTER_* except MANMADE_DISASTER_IMPLIED,
   DISASTER_*, EVACUATION
+- harm (`h`, added 2026-10-27 evening, for stories.json's `g` only): KILL, WOUND, exact names,
+  never by prefix. Both stay in conflict too, so harm never changes whether an article has any
+  kind.
 
 GDELT's CRISISLEX_ themes are not mapped: they are crisis-lexicon word matches, not topics.
 Measured 2026-10-21 on 10,652 placed articles (4 files of each feed): CRISISLEX_CRISISLEXREC
@@ -505,8 +508,13 @@ an entry carries an outlet's own headline plus the story's numbers.
                  "n": 212, "u": 150, "o": 96, "c": 21, "i": 20, "l": 7, "t": -4.1,
                  "first": "2026-10-26T01:15:00Z", "last": "2026-10-26T04:30:00Z" },
       "confirmed": "metonym",     // added 2026-10-24: why the story is listed here (see Confirmation)
-      "g": 0.38 },                // added 2026-10-27: the story's grim share, 0 to 1, 2 decimals (see below)
-    { "rank": 2, "cell": { … }, "story": { … }, "confirmed": "city", "g": 0 }
+      "g": 0.38 },                // added 2026-10-27, redefined that evening: the kill-or-wound share (see below)
+    { "rank": 2, "cell": { … },
+      "story": { "headline": "Ana Lee gana las elecciones en Riverton", "headlineSource": "elpais.com", "headlineLang": "es", … },
+      "confirmed": "city", "g": 0,
+      "en": { "headline": "Ana Lee wins Riverton elections", "source": "wral.com", "url": "https://…" } },
+                                  // added 2026-10-27 evening: the story's English title (see below)
+    { "rank": 3, "cell": { … }, "story": { … }, "confirmed": "city" }   // no g: G_SINCE transition (see below)
   ]
 }
 ```
@@ -519,16 +527,41 @@ an entry carries an outlet's own headline plus the story's numbers.
 - `confirmed` (added 2026-10-24): `"city"`, `"region"`, `"country"` or `"metonym"`, the first
   level of the cell's name that the story's own text names (see Confirmation below), so a
   reader can see why the story is listed at this place.
-- `g` (added 2026-10-27): the story's grim share, the number of its article units (the units
-  its `n` counts, attached ones included) of which at least one copy carries a conflict, crime
-  or disaster theme kind, divided by all its units, 0 to 1, 2 decimals (0 when it has no
-  units). The kinds are the ingest's article kinds from GDELT's raw themes (`ingest/src/kinds.ts`:
-  c conflict, k crime, d disaster); politics (p) does not count. It is the same unit count the
-  broadcast's ordinary slot uses, which counts politics too. A property of the coverage, not a
-  judgment of the story; the clip treats `g` >= 0.25 as grim. It sits on the entry, not in
-  `story`, which stays the cell file's fields exactly. The cell files carry no kinds, so `g`
-  cannot be recomputed from them. Additive: files from before 2026-10-27 lack it, and a reader
-  treats a missing `g` as unknown.
+- `g` (added 2026-10-27; redefined 2026-10-27 evening, replacing that morning's definition,
+  which counted any conflict, crime or disaster kind and marked nearly every large story grim):
+  the story's kill-or-wound share, the number of its article units (the units its `n` counts,
+  attached ones included) of which at least one copy carries the harm kind, divided by all its
+  units, 0 to 1, 2 decimals (0 when it has no units). The harm kind `h` is the ingest's article
+  kind for GDELT's raw themes KILL and WOUND, exactly those two names (`ingest/src/kinds.ts`);
+  conflict, crime, disaster and politics kinds do not count. It is counted over units as the
+  broadcast's ordinary slot counts any kind. A property of the coverage, not a judgment of the
+  story; the clip treats `g` >= 0.5 as grim (the threshold and the family were chosen by the
+  measurement in docs/VOICE.md "Gate calibration, measured"). **Transition (fail closed):**
+  records parsed before the harm kind existed carry no `h`, so `g` is computed only over the
+  story's fresh units, those whose every copy has a GDELT `time` at or after
+  `G_SINCE` = `2026-10-27T21:30:00Z` (`ingest/src/stories.ts`). A story with any older unit
+  gets `g` only when it has at least `G_MIN_FRESH_UNITS` = 10 fresh units, and `g` is then the
+  share among those; with fewer it has no `g`. A story whose units are all fresh gets the
+  plain share whatever its size, so once the 24 h window holds only records from after
+  `G_SINCE` (from 2026-10-28 21:30 UTC) every story has `g` again; the transition can be
+  removed after 2026-10-29. It sits on the entry, not in `story`, which stays the cell file's
+  fields exactly. The cell files carry no kinds, so `g` cannot be recomputed from them.
+  Additive: files from before 2026-10-27 lack it, and a reader treats a missing `g` as unknown
+  (the clip treats it as grim).
+- `en` (added 2026-10-27 evening): the story's English title, `{ "headline", "source",
+  "url" }`, for the newscast, which reads it instead of a credited headline in another
+  language. Present only when the story's `headlineLang` is not `"en"` and at least one of
+  the story's clustered members (the members that may supply the headline; attached ones never
+  do, see Stories) has an English title (`lang` `"en"`). Among those English-titled clustered
+  members, the title is chosen by the medoid rule restricted to them: the most total title-token
+  overlap with all the story's clustered members, titled first, ties by earliest time, then URL.
+  `headline` is that title shown cleaned exactly as a story's `headline` is (outlet suffix
+  cut); `source` and `url` credit it by the headline's rule: the earliest identical copy among
+  the clustered members from an outlet that is not a republisher (a republisher only when every
+  copy is one). Each is a non-empty string. It sits on the entry, not in `story`, which keeps
+  the credited headline; the site still shows the credited headline. The cell files keep only a
+  story's newest 6 titles, so `en` cannot be recomputed from them. Additive: files from before
+  2026-10-27 evening lack it, and a reader treats a missing `en` as unknown.
 - If building the list fails, the run logs the error and still writes the file, with
   `"stories": []`: the map snapshot is never held back by it.
 
@@ -709,7 +742,8 @@ successful run to the release tagged `archive-YYYY-MM-DD` (the UTC day of
 The files are byte-for-byte the `/data/` files of that run, so this contract describes
 them too, as of the version that wrote them. Older archived files may lack fields added
 later (readers treat a missing field as `0` / `""`, except the history's `newest`, `added`
-and `a`, and stories.json's `g` (added 2026-10-27), which are unknown when missing, and
+and `a`, and stories.json's `g` (added 2026-10-27) and `en` (added 2026-10-27 evening), which
+are unknown when missing, and
 heat.json's `articlesNormal` (added 2026-10-27), which is `null` when missing). Repository variable `ARCHIVE=false`
 turns the step off; a failed upload never fails the snapshot.
 

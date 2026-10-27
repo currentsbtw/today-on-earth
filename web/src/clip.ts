@@ -10,8 +10,8 @@
 //                    stories as `signals`; then __clipPlan() and __clipStep(i) as below. The
 //                    segments: open (the world, no clock, key or totals; the opening's
 //                    sentences painted one by one at their proportional times in the hook
-//                    caption's register; the script's count line and each aside take an
-//                    open segment of their own laid out the same way, an aside after a card
+//                    caption's register; each of the script's asides takes an
+//                    open segment of its own laid out the same way, an aside after a card
 //                    first pulling back to the world over a flight's length), per story a
 //                    flight captioned "N/M · PLACE" and its card (header "N/M", the whole headline from the card's first frame, over
 //                    "HEADLINE NOT READ · <LANGUAGE>" when the voice skips it), and close (the first sentence over a pull-back to the
@@ -1171,10 +1171,10 @@ async function renderNewscast() {
     setTime(liveAt);
     const cards: CardWindow[] = [];
     for (const text of texts) cards.push(await layoutCard(text));
-    // The open, the count and the asides: the spoken caption, per line.
+    // The open and the asides: the spoken caption, per line.
     const says = new Map<string, { texts: string[]; ats: number[]; fit: string }>();
     for (const line of script.lines) {
-      if (line.kind !== 'open' && line.kind !== 'count' && line.kind !== 'aside') continue;
+      if (line.kind !== 'open' && line.kind !== 'aside') continue;
       const said = sentenceTimes(line.text, line.seconds);
       const texts = said.map((s) => s.text);
       says.set(line.id, { texts, ats: said.map((s) => s.at), fit: await fitSay(liveAt, texts, w0) });
@@ -1250,7 +1250,7 @@ async function renderNewscast() {
       let end = false;
       switch (segment.kind) {
         case 'open': {
-          // The open, the count or an aside.
+          // The open or an aside.
           const pullBack = asidePulls.get(segment.line);
           map.jumpTo(pullBack && offset < pullBack.length - 1 ? pullBack[offset + 1] : worldView);
           const say = says.get(segment.line)!;

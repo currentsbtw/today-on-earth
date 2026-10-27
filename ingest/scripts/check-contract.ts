@@ -558,12 +558,27 @@ if (!existsSync(topStoriesPath)) {
   list.forEach((e, i) => {
     const w = `stories.stories[${i}]`;
     if (!isObj(e)) return err(w, "not an object");
-    exactKeys(w, e, ["rank", "cell", "story", "confirmed"], ["g"]);
-    // g (added 2026-10-27): the story's grim share, 0 to 1, 2 decimals. The cell files carry no
-    // kinds, so its value cannot be recomputed here; optional for files from before it.
+    exactKeys(w, e, ["rank", "cell", "story", "confirmed"], ["g", "en"]);
+    // g (added 2026-10-27, redefined that evening as the kill-or-wound share): 0 to 1, 2 decimals.
+    // The cell files carry no kinds, so its value cannot be recomputed here; optional for files
+    // from before it and while the G_SINCE transition leaves a story too few fresh units.
     if ("g" in e) {
       num(`${w}.g`, e.g, 2);
       if (typeof e.g === "number" && (e.g < 0 || e.g > 1)) err(`${w}.g`, `${e.g} is outside 0..1`);
+    }
+    // en (added 2026-10-27 evening): the story's English title, { headline, source, url }, each a
+    // non-empty string, only on a story whose credited headline is not English. The cell files keep
+    // only the newest 6 titles, so which title it is cannot be recomputed here.
+    if ("en" in e) {
+      if (!isObj(e.en)) err(`${w}.en`, "not an object");
+      else {
+        exactKeys(`${w}.en`, e.en, ["headline", "source", "url"]);
+        for (const k of ["headline", "source", "url"]) {
+          const v = (e.en as Record<string, unknown>)[k];
+          if (typeof v !== "string" || v === "") err(`${w}.en.${k}`, `expected a non-empty string, got ${JSON.stringify(v)}`);
+        }
+      }
+      if (isObj(e.story) && e.story.headlineLang === "en") err(`${w}.en`, "present although the credited headline is English");
     }
     if (!(CONFIRMATION_LEVELS as readonly unknown[]).includes(e.confirmed)) err(`${w}.confirmed`, `expected one of ${CONFIRMATION_LEVELS.join(", ")}, got ${JSON.stringify(e.confirmed)}`);
     if (e.rank !== i + 1) err(`${w}.rank`, `expected ${i + 1}, got ${JSON.stringify(e.rank)}`);

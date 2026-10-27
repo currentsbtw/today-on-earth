@@ -5,13 +5,10 @@ import {
   buildScript,
   clipDate,
   closeText,
-  COUNT,
-  COUNT_NONE,
-  countBand,
-  countText,
   FRAME_VARIANTS,
   FRAMES,
   fnv1a32,
+  GRIM_SHARE,
   isGrim,
   languageName,
   numberWords,
@@ -31,6 +28,7 @@ import {
   storyText,
   UNREAD,
 } from "../src/script.mjs";
+import { captionText, checkScript } from "../src/lib.mjs";
 import { linePieces, PIECE_GAP } from "../src/speech.mjs";
 
 const heat = { generatedAt: "2026-10-25T00:15:00Z", windowHours: 24, totals: { articles: 242540, outlets: 10568, countries: 195, cells: 2797 } };
@@ -73,7 +71,7 @@ test("dates in words: ordinals, the weekday and month in UTC, the clip's day fro
   assert.throws(() => clipDate({}), /generatedAt/);
 });
 
-test("buildScript: open (sign-on and date), count, six stories, close for a known date", () => {
+test("buildScript: open (sign-on and date), six stories, close for a known date (no count line)", () => {
   const script = buildScript({ stories, date: "2026-10-24", heat, generatedAt: "2026-10-25T00:20:00Z" });
   assert.deepEqual(
     { ...script, lines: undefined },
@@ -87,10 +85,8 @@ test("buildScript: open (sign-on and date), count, six stories, close for a know
     seconds: 0,
   });
   assert.equal(script.lines[0].text, openText("2026-10-24"));
-  // No articlesNormal in heat.json: the no-history count, heat.json's total rounded to the nearest thousand, in words.
-  assert.deepEqual(script.lines[1], { id: "count", kind: "count", text: "Two hundred and forty-three thousand articles. We counted every one. We read six headlines. Here they are.", seconds: 0 });
-  // No `g` in this stories.json: every story is grim (the gate fails closed), so no aside.
-  assert.deepEqual(script.lines.map((l) => l.id), ["open", "count", "story-1", "story-2", "story-3", "story-4", "story-5", "story-6", "close"]);
+  // No `g` in this stories.json: every story is grim (the gate fails closed), so no aside. No count line (v2.1).
+  assert.deepEqual(script.lines.map((l) => l.id), ["open", "story-1", "story-2", "story-3", "story-4", "story-5", "story-6", "close"]);
   assert.deepEqual(script.lines.at(-1), {
     id: "close",
     kind: "close",
@@ -101,16 +97,23 @@ test("buildScript: open (sign-on and date), count, six stories, close for a know
   // The voice label is never spoken (it is on the lockup and in the caption).
   assert.ok(!script.lines.some((l) => /synthetic voice/i.test(l.text)));
   assert.equal(spokenSeconds(script), 0);
-  // Fewer stories than six: all of them; the no-history count says how many were read.
+  // Fewer stories than six: all of them.
   const two = buildScript({ stories: { stories: stories.stories.slice(0, 2) }, date: "2026-10-24", heat });
-  assert.deepEqual(two.lines.map((l) => l.kind), ["open", "count", "story", "story", "close"]);
-  assert.equal(two.lines[1].text, "Two hundred and forty-three thousand articles. We counted every one. We read two headlines. Here they are.");
-  assert.equal(countText({ articles, stories: 1 }), "Two hundred and forty-three thousand articles. We counted every one. We read one headline. Here it is.");
-  // None: open, count (v1's empty form), close; still a valid script.
+  assert.deepEqual(two.lines.map((l) => l.kind), ["open", "story", "story", "close"]);
+  assert.ok(!script.lines.concat(two.lines).some((l) => l.kind === "count" || /We counted every one|pointed nowhere/.test(l.text)));
+});
+
+test("buildScript: no stories is the open (sign-on and date) and the close, and passes checkScript", () => {
   const none = buildScript({ stories: { stories: [] }, date: "2026-10-24", heat });
-  assert.deepEqual(none.lines.map((l) => l.kind), ["open", "count", "close"]);
-  assert.equal(none.lines[1].text, "Their press pointed nowhere we could place.");
-  assert.equal(none.lines[1].text, COUNT_NONE);
+  assert.deepEqual(none.lines.map((l) => [l.id, l.kind]), [["open", "open"], ["close", "close"]]);
+  assert.equal(none.lines[0].text, "Today on Earth. One planet, one rotation, one count. The humans supplied the rest. The humans call this day Saturday, the twenty-fourth of October.");
+  assert.equal(none.lines[1].text, closeText("2026-10-24", articles, 0));
+  assert.ok(!none.lines.some((l) => /pointed nowhere/.test(l.text)));
+  // Voiced (seconds filled), it is a valid script for the page.
+  none.lines.forEach((l) => (l.seconds = 3));
+  assert.equal(checkScript(none), none);
+  // A missing stories list is the same.
+  assert.deepEqual(buildScript({ stories: {}, date: "2026-10-24", heat }).lines.map((l) => l.kind), ["open", "close"]);
 });
 
 test("buildScript: without heat.json's total the script is not built", () => {
@@ -118,11 +121,11 @@ test("buildScript: without heat.json's total the script is not built", () => {
     assert.throws(() => buildScript({ stories, date: "2026-10-24", heat: { ...heat, totals: { articles: bad } } }), /heat\.json totals\.articles/);
   }
   assert.throws(() => buildScript({ stories, date: "2026-10-24" }), /heat\.json totals\.articles is undefined/);
-  // A missing or null articlesNormal is not an error: the no-history band.
-  for (const normal of [undefined, null]) {
-    const s = buildScript({ stories, date: "2026-10-24", heat: { ...heat, articlesNormal: normal, articlesNormalDays: normal === null ? 3 : undefined } });
-    assert.match(s.lines[1].text, /We counted every one\./);
-  }
+  // Also with no stories (a sign-off may speak the total).
+  assert.throws(() => buildScript({ stories: { stories: [] }, date: "2026-10-24", heat: { ...heat, totals: {} } }), /heat\.json totals\.articles/);
+  // heat.json's articlesNormal is no longer read: the same script with or without it.
+  const at = (h) => JSON.stringify(buildScript({ stories, date: "2026-10-24", heat: h, generatedAt: "x" }));
+  assert.equal(at({ ...heat, articlesNormal: 100_000, articlesNormalDays: 14 }), at(heat));
 });
 
 test("numbers in words: the close's count, rounded to the nearest thousand from 1,000 up", () => {
@@ -151,7 +154,7 @@ test("numbers in words: the close's count, rounded to the nearest thousand from 
 });
 
 test("buildScript: a story line is the place and the headline (no counts), its story fields", () => {
-  const [, , hebron, , atlanta, milan, kiev] = buildScript({ stories, date: "2026-10-24", heat }).lines;
+  const [, hebron, , atlanta, milan, kiev] = buildScript({ stories, date: "2026-10-24", heat }).lines;
   assert.equal(hebron.text, "Hebron. The humans wrote: Israeli PM pledges massive military operation after West Bank checkpoint attack.");
   assert.deepEqual([hebron.n, hebron.of], [1, 6]);
   // The counts stay in the story object (the card's ledger row), only out of the voice.
@@ -197,7 +200,7 @@ test("buildScript: a story line is the place and the headline (no counts), its s
 
 test("invisible characters: out of the spoken text and the script's headline", () => {
   const zw = entry(1, "London, United Kingdom", { headline: "​Chris Brown⁠ avoids jail time﻿, given suspended‎ sentence", n: 323, o: 282, l: 6, i: 30 });
-  const [, , london] = buildScript({ stories: { stories: [zw] }, date: "2026-10-24", heat }).lines;
+  const [, london] = buildScript({ stories: { stories: [zw] }, date: "2026-10-24", heat }).lines;
   assert.equal(london.story.headline, "Chris Brown avoids jail time, given suspended sentence");
   assert.equal(london.story.said, london.story.headline);
   assert.equal(london.text, "London. The humans wrote: Chris Brown avoids jail time, given suspended sentence.");
@@ -206,7 +209,7 @@ test("invisible characters: out of the spoken text and the script's headline", (
 
 test("buildScript: a headline in a language with a Kokoro voice is read in it; any other is on screen", () => {
   const lines = buildScript({ stories, date: "2026-10-24", heat }).lines;
-  const paris = lines[3];
+  const paris = lines[2];
   // Spanish: the frame (English voice), then the headline (ef_dora), one line as for English.
   assert.equal(paris.text, "Paris. The humans wrote, in Spanish: Francia vive nueva jornada de protestas.");
   assert.equal(paris.story.spoken, true);
@@ -216,7 +219,7 @@ test("buildScript: a headline in a language with a Kokoro voice is read in it; a
   assert.equal(paris.story.headline, "Francia vive nueva jornada de protestas");
   assert.equal(paris.story.source, "eltiempo.com");
   // Greek has no Kokoro voice: on screen, unread, no readIn; its frame is the whole text (no headline follows).
-  const madrid = lines[7];
+  const madrid = lines[6];
   assert.equal(madrid.text, "Madrid. The humans wrote this in Greek. It is on your screen.");
   assert.deepEqual([madrid.story.spoken, madrid.story.said, "readIn" in madrid.story, madrid.story.frame, madrid.story.variant], [false, "", false, madrid.text, "unread"]);
   assert.ok(!madrid.text.includes("Ισπανία"));
@@ -248,7 +251,7 @@ test("buildScript: a headline in a language with a Kokoro voice is read in it; a
 });
 
 test("spoken headlines: an outlet or section label is not read; the card keeps the shown title", () => {
-  const kiev = buildScript({ stories, date: "2026-10-24", heat }).lines[6];
+  const kiev = buildScript({ stories, date: "2026-10-24", heat }).lines[5];
   assert.equal(kiev.text, "Kiev. The humans wrote: Musk says he was behind Starlink speed restriction.");
   assert.equal(kiev.story.headline, "Arab News | Musk says he was behind Starlink speed restriction.");
   assert.equal(kiev.story.said, "Musk says he was behind Starlink speed restriction.");
@@ -270,7 +273,7 @@ test("spoken headlines: an outlet or section label is not read; the card keeps t
 
 test("onScreenLine: a read story falls back to its on-screen form (the phonemiser failed)", () => {
   const lines = buildScript({ stories, date: "2026-10-24", heat }).lines;
-  const paris = lines[3];
+  const paris = lines[2];
   const back = onScreenLine(paris);
   assert.equal(back.text, "Paris. The humans wrote this in Spanish. It is on your screen.");
   assert.deepEqual([back.story.spoken, back.story.said, "readIn" in back.story, back.story.frame, back.story.variant], [false, "", false, back.text, "unread"]);
@@ -280,18 +283,18 @@ test("onScreenLine: a read story falls back to its on-screen form (the phonemise
   assert.equal(back.story.source, "eltiempo.com");
   assert.equal(paris.story.readIn, "es");
   // As buildScript writes an unread story, and English or on-screen lines pass through unchanged.
-  const unread = buildScript({ stories: { stories: [{ ...stories.stories[1], story: { ...stories.stories[1].story, headlineLang: "el" } }] }, date: "2026-10-24", heat }).lines[2];
+  const unread = buildScript({ stories: { stories: [{ ...stories.stories[1], story: { ...stories.stories[1].story, headlineLang: "el" } }] }, date: "2026-10-24", heat }).lines[1];
   assert.deepEqual(back.story, { ...unread.story, lang: "es", frame: back.text });
   // A non-plain two-voice frame falls back the same way.
   const outlets = { ...paris, text: "Paris. 241 of the humans' outlets covered this. One of them wrote, in Spanish: Francia vive nueva jornada de protestas.", story: { ...paris.story, variant: "outlets", frame: "Paris. 241 of the humans' outlets covered this. One of them wrote, in Spanish: " } };
   assert.equal(onScreenLine(outlets).text, back.text);
   assert.equal(onScreenLine(outlets).story.variant, "unread");
-  for (const l of [lines[0], lines[1], lines[2], lines[7], lines.at(-1)]) assert.equal(onScreenLine(l), l);
+  for (const l of [lines[0], lines[1], lines[6], lines.at(-1)]) assert.equal(onScreenLine(l), l);
 });
 
 test("linePieces: a story read in its language splits at its frame, not at a colon in the headline", () => {
   const colon = entry(1, "Washington, District of Columbia, United States", { headline: "Trump: las elecciones en Brasil fueron 'amañadas'", headlineLang: "es", n: 321, o: 266, l: 25, i: 60 });
-  const [, , line] = buildScript({ stories: { stories: [colon] }, date: "2026-10-24", heat }).lines;
+  const [, line] = buildScript({ stories: { stories: [colon] }, date: "2026-10-24", heat }).lines;
   assert.equal(line.text, "Washington. The humans wrote, in Spanish: Trump: las elecciones en Brasil fueron 'amañadas'.");
   assert.deepEqual(linePieces(line), {
     frame: "Washington. The humans wrote, in Spanish:",
@@ -414,12 +417,6 @@ test("the pools: the text of docs/VOICE.md, character for character", () => {
     "Today on Earth. One planet, one rotation, one count. The humans supplied the rest.",
     "You are watching Today on Earth, from a distance we consider safe.",
   ]);
-  assert.deepEqual(COUNT.map((c) => c.fn({ N: "{N}", stories: 6 })), [
-    "{N} articles. A loud rotation, even for them.",
-    "{N} articles. A quiet rotation. We checked the instrument. It is the humans.",
-    "{N} articles. An ordinary rotation for the humans. We have no other kind.",
-    "{N} articles. We counted every one. We read six headlines. Here they are.",
-  ]);
   assert.deepEqual(SIGN_OFF.map((s) => s.fn({ N: "{N}" })), [
     "That was today on Earth. The humans will write again tomorrow. We will count again tomorrow. Neither of us can stop.",
     "That was today on Earth. We did not read the articles. We counted them. It was easier.",
@@ -432,13 +429,14 @@ test("the pools: the text of docs/VOICE.md, character for character", () => {
     "The humans' press covered {Place} in {l} languages. We work in one. We are doing our best.",
     "This has been the part of the programme where we read things. It is most of the programme.",
   ]);
-  for (const p of [FRAMES, UNREAD, SIGN_ON, COUNT, ASIDES, SIGN_OFF]) assert.ok(Object.isFrozen(p) && p.every(Object.isFrozen));
+  for (const p of [FRAMES, UNREAD, SIGN_ON, ASIDES, SIGN_OFF]) assert.ok(Object.isFrozen(p) && p.every(Object.isFrozen));
 });
 
-test("the grim gate: entry g >= 0.25 is grim and plain; below is not; a missing g fails closed", () => {
-  assert.deepEqual([0.25, 0.24, 0.9, 0, undefined, null, Number.NaN, "0.1"].map(isGrim), [true, false, true, false, true, true, true, true]);
-  const s = storyLines(buildScript({ stories: sixEnglish([0.25, 0.24, 0.24, 0.24, 0.24, undefined]), date: "2026-10-24", heat }));
-  assert.deepEqual(s.map((l) => [l.story.g, l.story.grim]), [[0.25, true], [0.24, false], [0.24, false], [0.24, false], [0.24, false], [null, true]]);
+test("the grim gate: kill-or-wound share g >= 0.5 is grim and plain; below is not; a missing g fails closed", () => {
+  assert.equal(GRIM_SHARE, 0.5);
+  assert.deepEqual([0.5, 0.49, 0.25, 0.9, 0, undefined, null, Number.NaN, Infinity, "0.1"].map(isGrim), [true, false, false, true, false, true, true, true, true, true]);
+  const s = storyLines(buildScript({ stories: sixEnglish([0.5, 0.49, 0.49, 0.25, 0.49, undefined]), date: "2026-10-24", heat }));
+  assert.deepEqual(s.map((l) => [l.story.g, l.story.grim]), [[0.5, true], [0.49, false], [0.49, false], [0.25, false], [0.49, false], [null, true]]);
   // Grim stories take the plain frame.
   assert.equal(s[0].story.variant, "plain");
   assert.equal(s[5].story.variant, "plain");
@@ -469,7 +467,9 @@ test("the plain floor: at least two plain stories; grim ones count; the rest for
     // One grim: it counts, one forced.
     assert.equal(planShow(showInput(sixEnglish([0, 0, 0.5, 0, 0, 0])), date).forced.length, 1, date);
     // Two grim: none forced.
-    const two = planShow(showInput(sixEnglish([0.3, 0, 0, 0, 0.3, 0])), date);
+    const two = planShow(showInput(sixEnglish([0.6, 0, 0, 0, 0.6, 0])), date);
+    // Under the gate (0.3 < 0.5): not grim, so the floor forces two.
+    assert.equal(planShow(showInput(sixEnglish([0.3, 0, 0, 0, 0.3, 0])), date).forced.length, 2, date);
     assert.deepEqual([two.forced, two.plain.slice(0, 2)], [[], [1, 5]], date);
   }
 });
@@ -518,7 +518,7 @@ test("plain is not hashed: a non-grim story outside the floor is never plain whi
         else assert.notEqual(st.variant.id, "plain", `${date} story ${st.k}`);
       }
       // Exactly the floor: grim stories plus the forced ones, never more.
-      assert.equal(plan.stories.filter((x) => x.variant.id === "plain").length, Math.max(2, gs.filter((g) => g >= 0.25).length), date);
+      assert.equal(plan.stories.filter((x) => x.variant.id === "plain").length, Math.max(2, gs.filter((g) => g >= GRIM_SHARE).length), date);
     }
   }
   // When no variant is eligible (all used or failing), pickFrame falls back to plain instead of throwing.
@@ -559,7 +559,7 @@ test("asides: after story 2 and 4 on an even hash, never after a grim story, nev
   const coin = (date, k) => seedHash(`${date}:aside:${k}`) % 2;
   assert.deepEqual([coin("2026-10-24", 2), coin("2026-10-24", 4), coin("2026-10-23", 2), coin("2026-10-23", 4), coin("2026-10-21", 2), coin("2026-10-21", 4)], [0, 0, 1, 1, 1, 0]);
   const even = buildScript({ stories: sixEnglish([0, 0, 0, 0, 0, 0]), date: "2026-10-24", heat });
-  assert.deepEqual(even.lines.map((l) => l.id), ["open", "count", "story-1", "story-2", "aside-2", "story-3", "story-4", "aside-4", "story-5", "story-6", "close"]);
+  assert.deepEqual(even.lines.map((l) => l.id), ["open", "story-1", "story-2", "aside-2", "story-3", "story-4", "aside-4", "story-5", "story-6", "close"]);
   const asides = even.lines.filter((l) => l.kind === "aside");
   assert.deepEqual(asides.map((a) => [a.after, a.seconds]), [[2, 0], [4, 0]]);
   // The text: picked by the same seed, no repeat; each one from the pool with its numbers filled in.
@@ -577,15 +577,15 @@ test("asides: after story 2 and 4 on an even hash, never after a grim story, nev
   assert.ok(!buildScript({ stories: sixEnglish([0, 0, 0, 0, 0, 0]), date: "2026-10-23", heat }).lines.some((l) => l.kind === "aside"));
   assert.deepEqual(buildScript({ stories: sixEnglish([0, 0, 0, 0, 0, 0]), date: "2026-10-21", heat }).lines.filter((l) => l.kind === "aside").map((l) => l.after), [4]);
   // Never after a grim story.
-  const grim2 = buildScript({ stories: sixEnglish([0, 0.4, 0, 0, 0, 0]), date: "2026-10-24", heat });
+  const grim2 = buildScript({ stories: sixEnglish([0, 0.6, 0, 0, 0, 0]), date: "2026-10-24", heat });
   assert.deepEqual(grim2.lines.filter((l) => l.kind === "aside").map((l) => l.after), [4]);
   const grim4 = buildScript({ stories: sixEnglish([0, 0, 0, undefined, 0, 0]), date: "2026-10-24", heat });
   assert.deepEqual(grim4.lines.filter((l) => l.kind === "aside").map((l) => l.after), [2]);
   // Only when that many stories exist; with two stories the aside comes before the close, never last.
   const two = buildScript({ stories: { stories: sixEnglish([0, 0]).stories.slice(0, 2) }, date: "2026-10-24", heat });
-  assert.deepEqual(two.lines.map((l) => l.kind), ["open", "count", "story", "story", "aside", "close"]);
+  assert.deepEqual(two.lines.map((l) => l.kind), ["open", "story", "story", "aside", "close"]);
   const one = buildScript({ stories: { stories: sixEnglish([0]).stories.slice(0, 1) }, date: "2026-10-24", heat });
-  assert.deepEqual(one.lines.map((l) => l.kind), ["open", "count", "story", "close"]);
+  assert.deepEqual(one.lines.map((l) => l.kind), ["open", "story", "close"]);
   // The languages aside needs a story with l >= 10 among those read.
   assert.equal(ASIDES.find((a) => a.id === "languages").ok({ most: { l: 9 } }), false);
   assert.equal(ASIDES.find((a) => a.id === "languages").ok({ most: { l: 10 } }), true);
@@ -596,25 +596,6 @@ test("asides: after story 2 and 4 on an even hash, never after a grim story, nev
       if (l.kind === "aside") assert.ok(s.lines[x - 1].kind === "story" && !s.lines[x - 1].story.grim);
     });
   }
-});
-
-test("the count's bands: loud above 1.15x the normal, quiet below 0.85x, ordinary between, no history without one", () => {
-  assert.equal(countBand(230_000, 200_000, 7), "ordinary"); // exactly 1.15x
-  assert.equal(countBand(230_001, 200_000, 7), "loud");
-  assert.equal(countBand(170_000, 200_000, 7), "ordinary"); // exactly 0.85x
-  assert.equal(countBand(169_999, 200_000, 7), "quiet");
-  assert.equal(countBand(200_000, 200_000, 14), "ordinary");
-  assert.equal(countBand(230_001, 200_000), "loud"); // days absent: not checked
-  // heat.json before 7 days: articlesNormal null, articlesNormalDays 0.
-  for (const [normal, days] of [[null, 0], [undefined, undefined], [0, 7], [-5, 7], ["200000", 7], [200_000, 6], [200_000, 0]]) {
-    assert.equal(countBand(230_001, normal, days), "no-history", `${normal} ${days}`);
-  }
-  const at = (articles, articlesNormal, articlesNormalDays = 7) =>
-    buildScript({ stories, date: "2026-10-24", heat: { ...heat, totals: { articles }, articlesNormal, articlesNormalDays } }).lines[1].text;
-  assert.equal(at(230_001, 200_000), "Two hundred and thirty thousand articles. A loud rotation, even for them.");
-  assert.equal(at(169_999, 200_000), "One hundred and seventy thousand articles. A quiet rotation. We checked the instrument. It is the humans.");
-  assert.equal(at(230_000, 200_000), "Two hundred and thirty thousand articles. An ordinary rotation for the humans. We have no other kind.");
-  assert.equal(at(230_000, null, 0), "Two hundred and thirty thousand articles. We counted every one. We read six headlines. Here they are.");
 });
 
 test("sign-on and sign-off: by date; the six-headlines sign-off only with six stories", () => {
@@ -631,10 +612,68 @@ test("sign-on and sign-off: by date; the six-headlines sign-off only with six st
 });
 
 test("determinism: the same inputs give a byte-identical script", () => {
-  const input = () => ({ stories: withG([0.1, 0.5, 0.1, 0.1, 0.5, 0.1]), date: "2026-10-24", heat: { ...heat, articlesNormal: 190_000, articlesNormalDays: 7 }, generatedAt: "2026-10-25T00:20:00Z" });
+  const input = () => ({ stories: withG([0.1, 0.5, 0.1, 0.1, 0.5, 0.1]), date: "2026-10-24", heat, generatedAt: "2026-10-25T00:20:00Z" });
   const a = JSON.stringify(buildScript(input()));
   const b = JSON.stringify(buildScript(input()));
   assert.equal(a, b);
   // Another date, another show.
   assert.notEqual(JSON.stringify(buildScript({ ...input(), date: "2026-10-25" })).replace(/2026-10-25/g, "2026-10-24"), a);
+});
+
+// ---- v2.1: the English read (docs/VOICE.md "v2.1", item 3) ----
+
+test("en: a Spanish story with an English title is read in English; the credited original is kept; the caption credits en.source", () => {
+  const en = { headline: "France sees a new day of protests | Reuters", source: "reuters.com", url: "https://www.reuters.com/x" };
+  const withEn = { stories: stories.stories.map((e, x) => (x === 1 ? { ...e, en } : e)) };
+  const script = buildScript({ stories: withEn, date: "2026-10-24", heat });
+  const paris = script.lines[2];
+  assert.equal(paris.text, "Paris. The humans wrote: France sees a new day of protests.");
+  // English voice: no readIn, so speech.mjs reads the whole line with af_heart.
+  assert.ok(!("readIn" in paris.story));
+  assert.deepEqual(
+    [paris.story.headline, paris.story.source, paris.story.lang, paris.story.url, paris.story.said, paris.story.spoken, paris.story.frame, paris.story.variant],
+    ["France sees a new day of protests | Reuters", "reuters.com", "en", "https://www.reuters.com/x", "France sees a new day of protests", true, "Paris. The humans wrote: ", "plain"],
+  );
+  assert.deepEqual(paris.story.original, { headline: "Francia vive nueva jornada de protestas", source: "eltiempo.com", lang: "es", url: "https://www.wamc.org/x" });
+  // The other stories are as without en; an English story has no original.
+  const plain = buildScript({ stories, date: "2026-10-24", heat });
+  assert.deepEqual(script.lines.filter((l) => l.id !== "story-2"), plain.lines.filter((l) => l.id !== "story-2"));
+  assert.ok(!("original" in script.lines[1].story));
+  // onScreenLine leaves it alone (nothing to fall back from).
+  assert.equal(onScreenLine(paris), paris);
+  // The caption: the English line as spoken, credited to en.source.
+  script.lines.forEach((l) => (l.seconds = 1));
+  const caption = captionText({ date: "2026-10-24" }, { script }).split("\n");
+  const at = caption.indexOf(paris.text);
+  assert.ok(at > 0);
+  assert.equal(caption[at + 1], "Headline from reuters.com");
+  assert.ok(!caption.includes("Headline from eltiempo.com"));
+  // A non-grim en story may take any variant, the languages frame included (no readIn).
+  const open = buildScript({ stories: withG([0, 0, 0, 0, 0, 0], withEn.stories), date: "2026-10-24", heat }).lines.find((l) => l.id === "story-2");
+  assert.ok(!("readIn" in open.story));
+  assert.equal(open.story.lang, "en");
+  assert.equal(open.text, open.story.frame + open.story.said + ".");
+  assert.ok(!/, in Spanish/.test(open.text));
+});
+
+test("en: absent keeps the two-voice line; an unread language with en is read in English; a malformed en is ignored", () => {
+  const paris = buildScript({ stories, date: "2026-10-24", heat }).lines[2];
+  assert.equal(paris.text, "Paris. The humans wrote, in Spanish: Francia vive nueva jornada de protestas.");
+  assert.equal(paris.story.readIn, "es");
+  assert.equal(paris.story.source, "eltiempo.com");
+  assert.ok(!("original" in paris.story));
+  // Greek (no voice) with en: read in English instead of the on-screen form.
+  const greek = { ...stories.stories[5], en: { headline: "Spain in the news", source: "ekathimerini.com", url: "https://www.ekathimerini.com/x" } };
+  const [, madrid] = buildScript({ stories: { stories: [greek] }, date: "2026-10-24", heat }).lines;
+  assert.equal(madrid.text, "Madrid. The humans wrote: Spain in the news.");
+  assert.deepEqual([madrid.story.spoken, madrid.story.lang, madrid.story.source, madrid.story.original.lang, madrid.story.original.headline], [true, "en", "ekathimerini.com", "el", "Ισπανία"]);
+  // An en without a usable headline is treated as absent.
+  for (const bad of [null, "x", {}, { headline: "" }, { headline: "​ " }, { headline: 5, source: "a.com" }]) {
+    const [, line] = buildScript({ stories: { stories: [{ ...stories.stories[1], en: bad }] }, date: "2026-10-24", heat }).lines;
+    assert.equal(line.text, paris.text, JSON.stringify(bad));
+    assert.ok(!("original" in line.story));
+  }
+  // en with no source or url: credited as null (the caption says "an outlet").
+  const [, bare] = buildScript({ stories: { stories: [{ ...stories.stories[1], en: { headline: "France sees a new day of protests" } }] }, date: "2026-10-24", heat }).lines;
+  assert.deepEqual([bare.story.source, bare.story.url, bare.story.original.source], [null, null, "eltiempo.com"]);
 });

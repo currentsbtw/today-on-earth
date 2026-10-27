@@ -1,8 +1,9 @@
-// The newscast's script, show mode v2 (docs/VOICE.md "Proposed: show mode, v2" for the pools,
-// word for word, and "Implementation decisions (2026-10-27)" for the mechanism). Fixed sentences
-// over the live snapshot, nothing written by us or an AI. Pure, so it can be unit-tested; the
-// renderer synthesises each line (speech.mjs), fills `seconds`, hands the script to clip.html and
-// writes it as script.json beside the clip.
+// The newscast's script, show mode v2.1 (docs/VOICE.md "Show mode, v2" for the pools, word for
+// word, "Implementation decisions (2026-10-27)" for the mechanism and "v2.1" for the gate, the
+// removed count line and the English read). Fixed sentences over the live snapshot, nothing
+// written by us or an AI. Pure, so it can be unit-tested; the renderer synthesises each line
+// (speech.mjs), fills `seconds`, hands the script to clip.html and writes it as script.json beside
+// the clip.
 //
 // The one rule: a line's words never depend on a story's content. Every choice below is made by
 // a rule that reads only the clip date, the line's position and the numbers the script already
@@ -11,18 +12,21 @@
 //
 // Lines, in order:
 //   open   a sign-on (SIGN_ON, by `${date}:open`), a space, "The humans call this day {Weekday},
-//          the {ordinal} of {month}."
-//   count  always second: COUNT by band, heat.json totals.articles against articlesNormal (the
-//          median daily total): loud above 1.15x, quiet below 0.85x, else ordinary; no-history
-//          when articlesNormal is null or absent (or articlesNormalDays < 7). {N} is spokenCount.
-//          No stories: "Their press pointed nowhere we could place." (v1's empty form). The
-//          no-history line says "six headlines"; with 1 to 5 stories the number and its noun
-//          agree with the stories read ("We read two headlines. Here they are."; one: "We read
-//          one headline. Here it is.").
+//          the {ordinal} of {month}." With no stories the script is this and the close.
 //   story  the first STORY_COUNT stories. `frame` + the headline as spoken (spokenHeadline, a full
-//          stop added when it has no closing mark). The frame by:
+//          stop added when it has no closing mark). The headline read:
+//            an entry with `en: { headline, source, url }` (the ingest's English title for a story
+//              whose credited headline is not English; on the entry, beside cell and story) is read
+//              as an English story: en.headline, the English voice, no readIn; the line's story
+//              fields headline, source, lang ("en") and url are en's, and the credited headline
+//              is kept as `original: { headline, source, lang, url }` (the card and the caption
+//              credit en.source, since both read story.source);
+//            otherwise the credited headline (story.headline, headlineSource, headlineLang,
+//              headlineUrl) as before.
+//          The frame by:
 //            grim (the entry's g >= GRIM_SHARE, or g missing: the gate fails closed) -> plain;
-//              (g is on the stories.json entry, { rank, cell, story, confirmed, g }, not in story);
+//              (g, the kill-or-wound share, is on the stories.json entry, { rank, cell, story,
+//              confirmed, g, en? }, not in story);
 //            plain floor: at least two plain stories per show (grim ones count); if fewer,
 //              `pick` over the remaining readable positions by `${date}:plain:${j}` (j from 0);
 //            otherwise FRAME_VARIANTS (every frame but plain) by `${date}:story:${k}` (k from 1),
@@ -30,10 +34,10 @@
 //              o >= 10, languages l >= 3, countries i >= 5, quote never on the first story
 //              (k >= 2), unknown never on grim); plain only when none is eligible
 //              (pickFrame). No variant repeats.
-//          A headline in a language Kokoro has a voice for (VOICE_FOR_LANG in speech.mjs) is read
-//          in two pieces split at `frame` (speech.mjs linePieces): the frame in English, the
-//          headline in its language. Each variant takes the language as ", in {Language}" just
-//          before the colon that ends the frame:
+//          A headline (no `en`) in a language Kokoro has a voice for (VOICE_FOR_LANG in speech.mjs)
+//          is read in two pieces split at `frame` (speech.mjs linePieces): the frame in English,
+//          the headline in its language. Each variant takes the language as ", in {Language}"
+//          just before the colon that ends the frame:
 //            plain      "{Place}. The humans wrote, in {Language}: "
 //            unedited   "{Place}. From the humans' press, unedited, in {Language}: "
 //            theirs     "{Place}. Their words, not ours, in {Language}: "
@@ -43,14 +47,14 @@
 //            unknown    "{Place}. We do not know what this means. The humans wrote, in {Language}: "
 //            languages  not taken by a two-voice story ("We will read it in one" would be
 //                       false: the frame is English, the headline another language).
-//          A headline in any other language is not read: UNREAD by `${date}:story:${k}`; grim
-//          ones take the fixed `unread`; `unread-theirs` at most once per show. Its `frame` is
-//          the whole text (no headline follows).
+//          A headline (no `en`) in any other language is not read: UNREAD by `${date}:story:${k}`;
+//          grim ones take the fixed `unread`; `unread-theirs` at most once per show. Its `frame`
+//          is the whole text (no headline follows).
 //   aside  zero to two, candidates after story 2 and after story 4 (when that many stories exist
 //          and that story is not grim), taken when seedHash(`${date}:aside:${k}`) % 2 === 0; the
 //          text from ASIDES by the same seed, no repeat. `after: k`.
 //   close  a sign-off (SIGN_OFF, by `${date}:close`); the "{N} articles, six headlines" one only
-//          when six stories were read.
+//          when six stories were read. {N} is spokenCount of heat.json totals.articles.
 //
 // The hash (seedHash) is FNV-1a, 32-bit, over the seed's UTF-8 bytes, followed by the MurmurHash3
 // 32-bit finaliser; `pick` starts at seedHash % pool length.
@@ -80,7 +84,7 @@ function hundredsWords(n) {
 /**
  * An integer from 0 to 99,999,999 in words, the first letter capitalised (it starts a
  * sentence): 225000 -> "Two hundred and twenty-five thousand", 1005 -> "One thousand and
- * five", 0 -> "No" (the close says "No articles in one rotation.", as the opening says "No").
+ * five", 0 -> "No" (a sign-off's "{N} articles" then reads "No articles").
  */
 export function numberWords(n) {
   if (!Number.isInteger(n) || n < 0 || n > 99_999_999) throw new Error(`number ${n} outside 0..99,999,999`);
@@ -188,15 +192,14 @@ export function spokenHeadline(headline) {
 /** Whether a headline in `lang` is read aloud: English, or a language with a voice in VOICE_FOR_LANG. */
 export const readable = (lang) => lang === "en" || Object.hasOwn(VOICE_FOR_LANG, lang ?? "");
 
-/** A story is grim for the show at this grim share or above (the "Ordinary life" slot's quarter). */
-export const GRIM_SHARE = 0.25;
-/** The count's bands against articlesNormal: loud above LOUD/100 x, quiet below QUIET/100 x (hundredths, compared exactly). */
-export const LOUD = 115;
-export const QUIET = 85;
-/** articlesNormal is used only when it covers at least this many days. */
-export const NORMAL_MIN_DAYS = 7;
+/**
+ * A story is grim for the show at this grim share or above. `g` is the kill-or-wound share: the
+ * share of the story's article units with at least one copy carrying a KILL or WOUND theme
+ * (docs/VOICE.md "Gate calibration, measured" and "v2.1").
+ */
+export const GRIM_SHARE = 0.5;
 
-/** Whether a story with grim share `g` is grim: g >= GRIM_SHARE; a missing or non-finite g fails closed (grim). */
+/** Whether a story with kill-or-wound share `g` is grim: g >= GRIM_SHARE; a missing or non-finite g fails closed (grim). */
 export const isGrim = (g) => (typeof g === "number" && Number.isFinite(g) ? g >= GRIM_SHARE : true);
 
 /** FNV-1a, 32-bit, over the UTF-8 bytes of `str`: "" -> 0x811c9dc5, "a" -> 0xe40c292c. */
@@ -253,22 +256,6 @@ export const SIGN_ON = pool([
   { id: "one-planet", text: "Today on Earth. One planet, one rotation, one count. The humans supplied the rest." },
   { id: "safe-distance", text: "You are watching Today on Earth, from a distance we consider safe." },
 ]);
-
-/** The count line by band; `fn({ N, stories })`, N the spoken count, stories the number read. */
-export const COUNT = pool([
-  { id: "loud", fn: ({ N }) => `${N} articles. A loud rotation, even for them.` },
-  { id: "quiet", fn: ({ N }) => `${N} articles. A quiet rotation. We checked the instrument. It is the humans.` },
-  { id: "ordinary", fn: ({ N }) => `${N} articles. An ordinary rotation for the humans. We have no other kind.` },
-  {
-    id: "no-history",
-    fn: ({ N, stories }) =>
-      stories === STORY_COUNT
-        ? `${N} articles. We counted every one. We read six headlines. Here they are.`
-        : `${N} articles. We counted every one. We read ${numberWords(stories).toLowerCase()} ${stories === 1 ? "headline. Here it is." : "headlines. Here they are."}`,
-  },
-]);
-/** The count line's text when no story was read (v1's empty opening). */
-export const COUNT_NONE = "Their press pointed nowhere we could place.";
 
 /** ", in {Language}" before a two-voice frame's colon, "" for an English one. */
 const inLang = (s) => (s.language ? `, in ${s.language}` : "");
@@ -338,26 +325,6 @@ export const SIGN_OFF = pool([
 export function openText(day) {
   const date = spokenDate(day);
   return `${pick(SIGN_ON, `${day}:open`).text} The humans call this day ${date}.`;
-}
-
-/**
- * The count's band: "loud" (articles > 1.15 x normal), "quiet" (< 0.85 x), "ordinary", or
- * "no-history" when `normal` is not a positive number, or `days` is given and under
- * NORMAL_MIN_DAYS.
- */
-export function countBand(articles, normal, days) {
-  if (typeof normal !== "number" || !Number.isFinite(normal) || normal <= 0) return "no-history";
-  if (days !== undefined && days !== null && !(Number.isFinite(days) && days >= NORMAL_MIN_DAYS)) return "no-history";
-  if (articles * 100 > normal * LOUD) return "loud";
-  if (articles * 100 < normal * QUIET) return "quiet";
-  return "ordinary";
-}
-
-/** The count line's text: the band's line, or COUNT_NONE when no story was read. */
-export function countText({ articles, normal, days, stories }) {
-  if (stories === 0) return COUNT_NONE;
-  const band = countBand(articles, normal, days);
-  return COUNT.find((c) => c.id === band).fn({ N: spokenCount(articles), stories });
 }
 
 /** The closing line for `day`: a sign-off, the "{N} articles, six headlines" one only with six stories. */
@@ -459,11 +426,23 @@ export function planShow(stories, date) {
 }
 
 /**
- * The newscast script from the live stories.json and heat.json bodies: open, count, the first
- * STORY_COUNT stories (fewer if fewer) with asides between, close. `seconds` are 0 until
- * synthesised. heat.totals.articles is spoken (count, some sign-offs and asides); without it (not
- * an integer in 0..9,999,999) this throws, as for a malformed stories.json. heat.articlesNormal
- * and heat.articlesNormalDays choose the count's band; missing or null is the no-history line.
+ * An entry's English read, `en: { headline, source, url }` (v2.1), or null when absent. An `en`
+ * without a non-empty string headline is treated as absent (the credited headline is read).
+ */
+function englishRead(e) {
+  const en = e?.en;
+  if (e?.story?.headlineLang === "en") return null; // the contract sends en only for a non-English credited headline
+  if (!en || typeof en !== "object" || typeof en.headline !== "string" || !visible(en.headline).trim()) return null;
+  return { headline: en.headline, source: typeof en.source === "string" && en.source ? en.source : null, url: typeof en.url === "string" && en.url ? en.url : null };
+}
+
+/**
+ * The newscast script from the live stories.json and heat.json bodies: open, the first
+ * STORY_COUNT stories (fewer if fewer) with asides between, close (no stories: open and close).
+ * `seconds` are 0 until synthesised. heat.totals.articles is spoken (some sign-offs and the ratio
+ * aside); without it (not an integer in 0..9,999,999) this throws, as for a malformed
+ * stories.json. An entry's `en` (englishRead) replaces the read headline and its credit; the
+ * credited one is kept on the story as `original`.
  * @param {{ stories: any, heat: any, date: string, generatedAt?: string }} p
  */
 export function buildScript({ stories, heat, date, generatedAt = new Date().toISOString() }) {
@@ -478,18 +457,19 @@ export function buildScript({ stories, heat, date, generatedAt = new Date().toIS
     }
     // `g` is on the entry, beside cell and story (story stays the cell file's fields); absent on older files.
     const g = typeof e.g === "number" && Number.isFinite(e.g) ? e.g : null;
-    return { e, cell, story, g, place: shortPlace(cell.name) };
+    // The credited headline, and the one read: en's (English) when the entry carries it.
+    const credited = { headline: visible(story.headline).trim(), source: story.headlineSource ?? null, lang: story.headlineLang ?? null, url: story.headlineUrl ?? null };
+    const en = englishRead(e);
+    const head = en ? { headline: visible(en.headline).trim(), source: en.source, lang: "en", url: en.url } : credited;
+    return { e, cell, story, g, place: shortPlace(cell.name), head, original: en ? credited : null };
   });
-  const show = planShow(read.map((r) => ({ place: r.place, lang: r.story.headlineLang, o: r.story.o, l: r.story.l, i: r.story.i, g: r.g })), date);
+  const show = planShow(read.map((r) => ({ place: r.place, lang: r.head.lang, o: r.story.o, l: r.story.l, i: r.story.i, g: r.g })), date);
   const N = spokenCount(articles);
-  const lines = [
-    { id: "open", kind: "open", text: openText(date), seconds: 0 },
-    { id: "count", kind: "count", text: countText({ articles, normal: heat.articlesNormal, days: heat.articlesNormalDays, stories: entries.length }), seconds: 0 },
-  ];
-  read.forEach(({ e, cell, story, g, place }, x) => {
+  const lines = [{ id: "open", kind: "open", text: openText(date), seconds: 0 }];
+  read.forEach(({ e, cell, story, g, place, head, original }, x) => {
     const k = x + 1;
     const { grim, variant } = show.stories[x];
-    const { text, spoken, said, frame, readIn } = storyText({ place, headline: story.headline, lang: story.headlineLang, o: story.o, l: story.l, i: story.i, grim }, variant);
+    const { text, spoken, said, frame, readIn } = storyText({ place, headline: head.headline, lang: head.lang, o: story.o, l: story.l, i: story.i, grim }, variant);
     lines.push({
       id: `story-${k}`,
       kind: "story",
@@ -502,10 +482,11 @@ export function buildScript({ stories, heat, date, generatedAt = new Date().toIS
         place,
         lat: cell.lat,
         lon: cell.lon,
-        headline: visible(story.headline).trim(),
-        source: story.headlineSource ?? null,
-        lang: story.headlineLang ?? null,
-        url: story.headlineUrl ?? null,
+        headline: head.headline,
+        source: head.source,
+        lang: head.lang,
+        url: head.url,
+        ...(original ? { original } : {}),
         n: story.n,
         o: story.o,
         l: story.l,

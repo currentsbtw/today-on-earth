@@ -148,7 +148,14 @@ test("kinds: raw themes map to sorted letters; broad non-topic themes do not cou
   assert.equal(parseKinds("NATURAL_DISASTER_FLOODS,9;LEADER,40;ARMEDCONFLICT,12;CRIME_ILLEGAL_DRUGS,3;ARMEDCONFLICT,80"), "cdkp");
   assert.equal(parseKinds("UNREST_POLICEBRUTALITY,1"), "c");
   assert.equal(parseKinds("GOV_DIVISIONOFPOWER,4;EPU_POLICY_GOVERNMENT,5"), "p");
-  assert.equal(parseKinds("kill,3"), "c"); // case-insensitive
+  assert.equal(parseKinds("kill,3"), "ch"); // case-insensitive; KILL is conflict and harm
+  // Harm (h, added 2026-10-27 evening): exactly KILL and WOUND, never by prefix, never another theme.
+  assert.equal(parseKinds("WOUND,7"), "ch");
+  assert.equal(parseKinds("KILL,1;WOUND,2;ELECTION,3"), "chp");
+  assert.equal(parseKinds("ARMEDCONFLICT,1;TERROR,2;KIDNAP,3;NATURAL_DISASTER_FLOODS,4"), "cdk");
+  assert.deepEqual(themeKinds("KILL"), ["c", "h"]);
+  assert.deepEqual(themeKinds("KILLER_WHALE"), []);
+  assert.deepEqual(themeKinds("WOUNDED"), []);
   assert.equal(parseKinds("MANMADE_DISASTER_IMPLIED,1;MANMADE_DISASTER_POWER_OUTAGE,9"), "d");
   assert.equal(parseKinds("MANMADE_DISASTER_IMPLIED,1;CRISISLEX_CRISISLEXREC,2;CRISISLEX_T03_DEAD,4;KILLER_WHALE,5;TAX_FNCACT_POLICE,3"), "");
   assert.equal(parseKinds(""), "");
@@ -163,6 +170,12 @@ test("kinds: parsed from the raw themes, before the grouping deny list drops the
   assert.ok(r.ok);
   assert.equal(r.record.kinds, "cp");
   assert.deepEqual(r.record.themes, ["env_climatechange"]); // ARMEDCONFLICT and ELECTION are denied for grouping
+  // KILL is denied for grouping too, so its harm kind exists only because kinds read the raw themes.
+  line[8] = "KILL,10;ELECTION,40;ENV_CLIMATECHANGE,3";
+  const k = parseGkgLine(line.join("\t"), loadCountryLookup());
+  assert.ok(k.ok);
+  assert.equal(k.record.kinds, "chp");
+  assert.deepEqual(k.record.themes, ["env_climatechange"]);
 });
 
 test("kinds: buildStories counts each story's tagged articles", () => {

@@ -58,7 +58,8 @@ export interface ArticleRecord {
   video: string;
   /**
    * Kinds of the article from its raw V2Themes (kinds.ts): sorted distinct letters among
-   * c (conflict), d (disaster), k (crime), p (politics), "" when none. Ingest-internal.
+   * c (conflict), d (disaster), h (harm: KILL or WOUND, added 2026-10-27), k (crime),
+   * p (politics), "" when none. Ingest-internal.
    */
   kinds: string;
   /**
@@ -246,12 +247,26 @@ export interface TopStory {
   /** The first level of the cell's name that the story's own text names (top-stories.ts confirmStory). */
   confirmed: "city" | "region" | "country" | "metonym";
   /**
-   * The story's grim share: of its article units, the share carrying a conflict, crime or
-   * disaster kind (stories.ts GRIM_KINDS; politics does not count), 0 to 1, 2 decimals
-   * (added 2026-10-27). Written on every entry the ingest builds; absent only when the caller
-   * passed no share for the story (and in files from before 2026-10-27).
+   * The story's grim share: of its article units, the share carrying the harm kind h (KILL or
+   * WOUND; stories.ts GRIM_KINDS), 0 to 1, 2 decimals (added 2026-10-27, redefined that
+   * evening). Absent while the G_SINCE transition leaves the story too few fresh units
+   * (stories.ts storyGrimShare), when the caller passed no share, and in files from before
+   * 2026-10-27.
    */
   g?: number;
+  /**
+   * The story's English title when its credited headline is not English (stories.ts
+   * englishTitle; added 2026-10-27 evening). Absent when the headline is English or no
+   * clustered member has an English title.
+   */
+  en?: StoryEn;
+}
+
+/** An English title of a story: its shown text, and the outlet and URL it is credited to. */
+export interface StoryEn {
+  headline: string;
+  source: string;
+  url: string;
 }
 
 export interface TopStoriesFile {

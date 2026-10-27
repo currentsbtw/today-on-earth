@@ -4,7 +4,10 @@ import { isDeniedTheme, parseNames, parseOrgs, parseThemes, titleTokens } from "
 import { decodeState, encodeState } from "../src/state.ts";
 import { isRepublisher, makeIsRepublisher, parseRepublishers } from "../src/domains.ts";
 import { createKeyer } from "../src/reprints.ts";
-import { FULL_STORIES, GRIM_KINDS, MAX_STORIES, buildStories, countKindUnits, creditedCopy, grimShare, themeWords, unitHasKind } from "../src/stories.ts";
+import {
+  FULL_STORIES, GRIM_KINDS, G_MIN_FRESH_UNITS, G_SINCE, MAX_STORIES, buildStories, countKindUnits, creditedCopy, englishTitle, grimShare, storyGrimShare,
+  themeWords, unitHasKind,
+} from "../src/stories.ts";
 import type { ArticleRecord } from "../src/types.ts";
 import { gzipSync } from "node:zlib";
 
@@ -359,6 +362,7 @@ test("state v5 stores entity lists, video, location country and kinds; v4, v3, v
   const v4r = decodeState(v4).records[0];
   assert.deepEqual([v4r.locationCountry, v4r.kinds], ["US", ""]);
   assert.equal(decodeState(encodeState({ feeds: {}, records: [{ ...rec, kinds: "kc" }] }, t(6))).records[0].kinds, "");
+  assert.equal(decodeState(encodeState({ feeds: {}, records: [{ ...rec, kinds: "chp" }] }, t(6))).records[0].kinds, "chp"); // harm (h) survives the state
   assert.throws(() => decodeState(gzipSync(JSON.stringify({ v: 7, feeds: {}, records: [] }))));
   // A raw GDELT place name stored by older code is tidied on load.
   const raw = { ...rec, locationName: "London, London, City Of, United Kingdom" };
@@ -402,38 +406,143 @@ test("stories: countries lists every outlet country of the story, attached units
   assert.equal(story.i, story.countries.filter(([cc]) => cc !== "US").length);
 });
 
-// One story of 8 article units, one per outlet, with the given kinds (kinds.ts letters) in order.
-const kindStory = (kinds: string[]) =>
+// Times after the G_SINCE transition (fresh) and before it (stale).
+const fresh = (m: number) => new Date(Date.parse(G_SINCE) + (m + 1) * 60_000).toISOString().replace(/\.\d{3}Z$/, "Z");
+const stale = (m: number) => new Date(Date.parse(G_SINCE) - (m + 1) * 60_000).toISOString().replace(/\.\d{3}Z$/, "Z");
+
+// One story of article units, one per outlet, with the given kinds (kinds.ts letters) in order;
+// unit i's time is `time(i)`, fresh by default.
+const kindStory = (kinds: string[], time: (i: number) => string = fresh) =>
   buildStories(kinds.map((k, i) => art({
-    url: `https://o${i}.com/a`, time: t(1, i), source: `o${i}.com`, title: `Harvest festival opens in Riverton square ${i}`,
+    url: `https://o${i}.com/a`, time: time(i), source: `o${i}.com`, title: `Harvest festival opens in Riverton square ${i}`,
     persons: ["ann lee"], orgs: ["riverton council"], kinds: k,
   })));
 
-test("grim share g: units carrying conflict, crime or disaster over all units, 2 decimals; politics does not count", () => {
-  // 3 of 8 units grim (c, k, and d with p); one more is politics only, which the ordinary slot counts but g does not.
-  const mixed = kindStory(["c", "k", "dp", "p", "", "", "", ""]);
+test("grim share g: units carrying harm (KILL or WOUND) over all units, 2 decimals; conflict, crime and disaster alone do not count", () => {
+  // 3 of 8 units carry h; the others carry conflict, crime, disaster or politics, which the ordinary slot counts but g does not.
+  const mixed = kindStory(["ch", "h", "chk", "c", "k", "d", "p", ""]);
   assert.equal(mixed.stories.length, 1);
   assert.equal(mixed.stories[0].n, 8);
   assert.deepEqual(mixed.grim, [0.38]); // 3/8 = 0.375
-  assert.deepEqual(mixed.tagged, [4]); // the ordinary slot's count: any kind, politics included
+  assert.deepEqual(mixed.tagged, [7]); // the ordinary slot's count: any kind
   assert.ok(!("g" in mixed.stories[0])); // ingest-internal: never in the cell file
-  // Politics only: every unit tagged, none grim.
-  const politics = kindStory(Array(8).fill("p"));
-  assert.deepEqual(politics.grim, [0]);
-  assert.deepEqual(politics.tagged, [8]);
+  // Conflict, crime and disaster without harm: every unit tagged, none grim.
+  const noHarm = kindStory(["c", "k", "d", "cdk", "c", "k", "d", "p"]);
+  assert.deepEqual(noHarm.grim, [0]);
+  assert.deepEqual(noHarm.tagged, [8]);
   // No units: 0, not NaN.
   assert.equal(grimShare(0, 0), 0);
   assert.equal(grimShare(3, 8), 0.38);
-  assert.equal(GRIM_KINDS, "cdk");
+  assert.equal(GRIM_KINDS, "h");
 });
 
-test("grim share g: a unit counts when any of its copies carries a grim kind, as the ordinary slot counts any kind", () => {
+test("grim share g: a unit counts when any of its copies carries harm, as the ordinary slot counts any kind", () => {
   const rec = (kinds: string) => art({ url: `https://x.com/${kinds || "none"}`, time: t(1), kinds });
-  const unit = [rec(""), rec("pk")]; // an outlet's two copies of one headline; the second carries crime
+  const unit = [rec(""), rec("ch")]; // an outlet's two copies of one headline; the second carries harm
   assert.equal(unitHasKind(unit, GRIM_KINDS), true);
-  assert.equal(unitHasKind([rec("p")], GRIM_KINDS), false);
+  assert.equal(unitHasKind([rec("cdkp")], GRIM_KINDS), false);
   assert.equal(unitHasKind([rec("p")]), true);
   assert.equal(unitHasKind([rec("")]), false);
-  assert.equal(countKindUnits([unit, [rec("p")], [rec("")]], GRIM_KINDS), 1);
-  assert.equal(countKindUnits([unit, [rec("p")], [rec("")]]), 2);
+  assert.equal(countKindUnits([unit, [rec("ck")], [rec("")]], GRIM_KINDS), 1);
+  assert.equal(countKindUnits([unit, [rec("ck")], [rec("")]]), 2);
+});
+
+test("grim share g, G_SINCE transition: computed over fresh units only; omitted when a story has stale units and fewer than 10 fresh", () => {
+  assert.equal(G_SINCE, "2026-10-27T21:30:00Z");
+  assert.equal(G_MIN_FRESH_UNITS, 10);
+  // 8 units, one record before G_SINCE: fewer than 10 fresh units, so no g (fail closed).
+  const oneStale = kindStory(["h", "h", "", "", "", "", "", ""], (i) => (i === 7 ? stale(0) : fresh(i)));
+  assert.equal(oneStale.stories[0].n, 8);
+  assert.deepEqual(oneStale.grim, [undefined]);
+  // The same story with every record at or after G_SINCE: the plain share, whatever its size.
+  assert.deepEqual(kindStory(["h", "h", "", "", "", "", "", ""]).grim, [0.25]);
+  assert.deepEqual(kindStory(["h", "", ""], (i) => (i === 0 ? G_SINCE : fresh(i))).grim, [0.33]); // G_SINCE itself is fresh
+  // 12 fresh units (6 with harm) and 5 stale ones: g over the 12 (0.5), not over all 17 (0.35).
+  const kinds17 = [...Array(6).fill("h"), ...Array(6).fill(""), ...Array(5).fill("")];
+  const mixed = kindStory(kinds17, (i) => (i < 12 ? fresh(i) : stale(i)));
+  assert.equal(mixed.stories[0].n, 17);
+  assert.deepEqual(mixed.grim, [0.5]);
+  // 9 fresh units and one stale: none.
+  const nine = kindStory([...Array(9).fill("h"), ""], (i) => (i < 9 ? fresh(i) : stale(i)));
+  assert.equal(nine.stories[0].n, 10);
+  assert.deepEqual(nine.grim, [undefined]);
+  // A unit is stale when any of its copies is: one outlet's fresh copy plus its stale copy of the same headline.
+  const r = (url: string, time: string, kinds = "") => art({ url, time, kinds });
+  const fresh9 = Array.from({ length: 9 }, (_, i) => [r(`https://f${i}.com/a`, fresh(i), "h")]);
+  assert.equal(storyGrimShare([...fresh9, [r("https://m.com/a", stale(0)), r("https://m.com/b", fresh(0), "h")]]), undefined);
+  assert.equal(storyGrimShare([...fresh9, [r("https://m.com/a", fresh(1)), r("https://m.com/b", fresh(0), "h")]]), 1);
+  // The transition can be moved for tests and offline replays (buildStories' gSince).
+  const records = ["h", "", "", ""].map((k, i) => art({
+    url: `https://o${i}.com/a`, time: stale(i), source: `o${i}.com`, title: `Harvest festival opens in Riverton square ${i}`,
+    persons: ["ann lee"], orgs: ["riverton council"], kinds: k,
+  }));
+  assert.deepEqual(buildStories(records).grim, [undefined]);
+  assert.deepEqual(buildStories(records, undefined, undefined, "2026-10-01T00:00:00Z").grim, [0.25]);
+});
+
+// English title (`en`, added 2026-10-27 evening): a Spanish-headlined story with English-titled members.
+const vote = { persons: ["ana lee"], orgs: ["riverton council"] };
+const es = (i: number, title: string) =>
+  art({ ...vote, url: `https://diario${i}.es/a`, time: fresh(i), source: `diario${i}.es`, country: "ES", lang: "es", title });
+const en = (source: string, m: number, title: string) => art({ ...vote, url: `https://${source}/${m}`, time: fresh(m), source, lang: "en", title });
+const spanish = [
+  es(0, "Ana Lee gana elecciones Riverton alcaldía"),
+  es(1, "Ana Lee gana elecciones Riverton"),
+  es(2, "Ana Lee gana elecciones Riverton votos"),
+  es(3, "Ana Lee gana elecciones Riverton escrutinio"),
+];
+const enClose = "Ana Lee wins Riverton elections";
+const enFar = "Council results announced tonight";
+
+test("en: a Spanish headline with two English clustered titles gets the one overlapping the story most, credited to a newsroom", () => {
+  const records = [...spanish, en("aol.com", 10, enClose), en("wral.com", 11, enClose), en("newsday.com", 12, enFar)];
+  const { stories, en: titles } = buildStories(records);
+  assert.equal(stories.length, 1);
+  assert.equal(stories[0].n, 7);
+  assert.equal(stories[0].headlineLang, "es");
+  assert.match(stories[0].headline, /gana elecciones/);
+  // The closer English title wins; its earliest copy is a republisher's (aol.com), so the newsroom copy is credited.
+  assert.deepEqual(titles, [{ headline: enClose, source: "wral.com", url: "https://wral.com/11" }]);
+  assert.ok(!("en" in stories[0])); // ingest-internal: never in the cell file
+  // The far title alone is still an English title: it is the en then.
+  const alone = buildStories([...spanish, en("newsday.com", 12, enFar)]).en;
+  assert.deepEqual(alone, [{ headline: enFar, source: "newsday.com", url: "https://newsday.com/12" }]);
+});
+
+test("en: absent when the credited headline is English or no clustered member has an English title", () => {
+  const english = [
+    en("wral.com", 0, "Ana Lee wins Riverton mayor elections"),
+    en("newsday.com", 1, "Ana Lee wins Riverton elections narrowly"),
+    en("kxan.com", 2, "Ana Lee wins Riverton elections count"),
+    es(3, "Ana Lee gana elecciones Riverton"),
+  ];
+  const a = buildStories(english);
+  assert.equal(a.stories[0].headlineLang, "en");
+  assert.deepEqual(a.en, [undefined]);
+  const b = buildStories(spanish);
+  assert.equal(b.stories[0].headlineLang, "es");
+  assert.deepEqual(b.en, [undefined]);
+});
+
+test("en: attached members never supply it", () => {
+  // No shared names and only 3 shared title tokens (riverton, gana, elecciones): not clustered, attached by the second pass.
+  const loose = art({ url: "https://wral.com/x", time: fresh(20), source: "wral.com", lang: "en", title: "Riverton gana elecciones, results tonight" });
+  const { stories, en: titles } = buildStories([...spanish, loose]);
+  assert.equal(stories.length, 1);
+  assert.equal(stories[0].n, 5); // the attached unit counts in the story
+  assert.equal(stories[0].headlineLang, "es");
+  assert.deepEqual(titles, [undefined]);
+});
+
+test("englishTitle: the first English-titled record in medoid order, credited by creditedCopy's rule", () => {
+  const keyer = createKeyer([]);
+  const a = en("aol.com", 1, enClose);
+  const b = en("wral.com", 2, enClose);
+  const c = en("newsday.com", 3, enFar);
+  const ranked = [spanish[0], a, c, b];
+  const core = [...spanish, a, b, c].map((r) => ({ r }));
+  assert.deepEqual(englishTitle(ranked, core, keyer), { headline: enClose, source: "wral.com", url: "https://wral.com/2" });
+  assert.deepEqual(englishTitle(ranked, core, keyer, () => false), { headline: enClose, source: "aol.com", url: "https://aol.com/1" });
+  assert.equal(englishTitle(spanish, spanish.map((r) => ({ r })), keyer), undefined);
+  assert.equal(englishTitle([art({ url: "https://u.com/1", time: fresh(0), lang: "en", title: "" })], [], keyer), undefined); // untitled
 });

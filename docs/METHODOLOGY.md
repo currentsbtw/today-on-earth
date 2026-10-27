@@ -130,7 +130,11 @@ one of its grouped articles, chosen because it overlaps most with the others, sh
 described under Distinct and reprints. We never write a headline. The headline is credited to
 the earliest copy GDELT saw from an outlet that writes its own stories; sites that re-host other
 outlets' articles (a public list, ingest/data/republishers.txt) are credited only when no one else
-carried the title. Articles that fit no
+carried the title. When that headline is not in English and the story has an English title, the
+daily clip reads the English title instead: of the story's grouped articles with English titles,
+the one whose title overlaps most with the story's other titles, credited by the same rule, and the
+clip's card and caption credit that outlet. The site's headline stays the story's most
+representative title, in any language. Articles that fit no
 story are listed below, unfiltered.
 
 A story written by one outlet alone comes after the stories from two or more outlets and
@@ -179,10 +183,9 @@ in full; a published rule picks one line from each pool without reading any stor
 order, the show has:
 
 1. The sign-on and the date line, read as one line.
-2. The count: the day's article count against its normal.
-3. Up to six stories, each a frame line followed by the outlet's headline.
-4. Up to two asides, each after a story.
-5. The sign-off.
+2. Up to six stories, each a frame line followed by the outlet's headline (the story's English
+   title when it has one, as described under Stories), with up to two asides, each after a story.
+3. The sign-off.
 
 In the lines below, {N} is the article count of the last 24 hours, in words, rounded to the nearest thousand from 1,000 up; {Place} is
 the story's place; {h} is the headline; {o}, {l} and {i} are the story's outlets,
@@ -198,13 +201,6 @@ language; {k} is the number of headlines read so far in the show.
 - "You are watching Today on Earth, from a distance we consider safe."
 
 The sign-on is followed by the fixed date line: "The humans call this day {Weekday}, the {ordinal} of {month}."
-
-**The count** (one line, chosen by the count's band, below):
-
-- loud: "{N} articles. A loud rotation, even for them."
-- quiet: "{N} articles. A quiet rotation. We checked the instrument. It is the humans."
-- ordinary: "{N} articles. An ordinary rotation for the humans. We have no other kind."
-- no history: "{N} articles. We counted every one. We read six headlines. Here they are."
 
 **Story frames** (one per story; the condition, where there is one, follows the line):
 
@@ -253,26 +249,27 @@ show take the plain frame. Grim stories count toward the two; when fewer than tw
 stories would take it, it is given to further stories, picked by the same hash over the
 seeds `{date}:plain:{j}` among the remaining positions.
 
-The grim gate. For each story, g is the share of its articles that carry a conflict,
-crime or disaster theme (the Conflict, Crime and Disaster families listed below, the same
-as for the Ordinary life slot; Politics does not count). A story with g of 0.25 or more is
-grim: it gets the plain frame (or, when the voice cannot read its headline, the first
+The grim gate. For each story, g is the share of its articles that GDELT tagged KILL or
+WOUND (those two theme tags exactly, on any copy of the article). A story with g of 0.5 or
+more is grim: it gets the plain frame (or, when the voice cannot read its headline, the first
 unreadable-headline line), never a variant, and no aside follows it. A story without
-a recorded g is treated as grim.
+a recorded g is treated as grim. (Articles seen before 27 October 2026 21:30 UTC carry no KILL-or-WOUND
+record, so for one day after that time the share counts only the articles seen after it, and a
+story with fewer than ten of those has no share.) The share and the threshold were chosen by measurement on a
+live day (27 October 2026, 262,567 articles, 1,421 stories of 10 or more articles): the
+earlier share, of articles with any conflict, crime or disaster theme, marked 72% of those
+stories grim and every one of the day's twelve largest, while the kill-or-wound share at 0.5
+marks 17% and agreed with a reader's judgement on ten of the twelve. The measurement is in
+the repository's docs/VOICE.md.
 
 Asides. An aside can come after the second story and after the fourth, when the show has
 that many stories and the story before it is not grim. Each of those two places takes an
 aside when the hash of `{date}:aside:{k}` is even; the aside's line is then picked from
 its pool by the same seed, without repeating within the show.
 
-The count's bands. The count compares the article count of the last 24 hours with the
-median of the totals recorded at the end of each of the last 7 to 14 complete UTC days.
-Above 1.15 times the median is loud, below 0.85 times the median is quiet, and anything
-between is ordinary. Until 7 complete days are recorded there is no median, and the count
-uses the no-history line.
-
 The headline is the outlet's own words, verbatim apart from a leading or trailing outlet
-or section label, which is dropped for speech. A headline in Spanish, French, Italian,
+or section label, which is dropped for speech. It is the story's English title when the story
+has one (see Stories), credited to that title's outlet. A headline in Spanish, French, Italian,
 Portuguese, Hindi, Japanese or Chinese is read in that language's voice, and the frame
 before it in the English voice; the frame then names the language, with ", in {Language}"
 before the colon that ends it ("{Place}. The humans wrote, in {Language}: "), and the

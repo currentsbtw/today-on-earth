@@ -184,7 +184,7 @@ async function main(): Promise<number> {
   await writeFile(join(outDir, "topics.json"), topicsJson);
   const broadcast = buildBroadcastSafe({ heat: snapshot.heat, cells: snapshot.cells, storyTagged: snapshot.storyTagged, baselineSince: nextBaseline.since }, log);
   await writeFile(join(outDir, "broadcast.json"), JSON.stringify(broadcast));
-  const topStories = buildTopStoriesSafe({ heat: snapshot.heat, cells: snapshot.cells, storyGrim: snapshot.storyGrim }, log);
+  const topStories = buildTopStoriesSafe({ heat: snapshot.heat, cells: snapshot.cells, storyGrim: snapshot.storyGrim, storyEn: snapshot.storyEn }, log);
   const topStoriesJson = JSON.stringify(topStories);
   await writeFile(join(outDir, "stories.json"), topStoriesJson);
   const stateBytes = encodeState({ feeds, records }, snapshot.heat.generatedAt);

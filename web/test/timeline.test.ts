@@ -190,7 +190,6 @@ test('parameters: defaults, and bad values rejected', () => {
 // The newscast (clip.html?newscast=1).
 
 const OPEN = 'Today on Earth, Saturday the 24th of October. 242,540 articles from 10,568 outlets in 195 countries. Here is where the world\'s press pointed.';
-const COUNT = 'Two hundred and forty-two thousand articles. We counted every one. We read six headlines. Here they are.';
 const ASIDE = 'We pause to note that the humans wrote two hundred and forty-two thousand articles today and we have read one headline. The ratio is not in our favour.';
 const HEADLINE = 'France braces: Macron restricts protests';
 const storyLine = (id: string, n: number, seconds: number, spoken = true): NewscastLine => ({
@@ -209,31 +208,29 @@ const script = (): NewscastScript => ({
   gap: 0.4,
   lines: [
     { id: 'open', kind: 'open', text: OPEN, seconds: 9.8 },
-    { id: 'count', kind: 'count', text: COUNT, seconds: 4.6 },
     storyLine('s1', 1, 12),
     storyLine('s2', 2, 11.5, false),
     { id: 'close', kind: 'close', text: 'That was today on Earth. The full broadcast at currents B T W dot github dot I O slash today on earth. Read by a synthetic voice from the outlets\' own headlines.', seconds: 8.2 },
   ],
 });
 
-test('newscast plan: open, count, flight + card per story, close; the gap held by each line', () => {
+test('newscast plan: open, flight + card per story, close; the gap held by each line', () => {
   const plan = buildNewscastPlan(script(), 30);
-  // Edges at the running time: open 9.8+0.4 = 10.2 s; count 4.6+0.4 = 5.0 to 15.2; s1 flight to 16.4,
-  // card 0.7+12+0.5-1.2+0.4 = 12.4 to 28.8; s2 flight to 30.0, card 0.7+11.5+0.5-1.2+0.4 = 11.9 to 41.9;
-  // close 8.2+1.0+0.4 = 9.6 to 51.5.
+  // Edges at the running time: open 9.8+0.4 = 10.2 s; s1 flight to 11.4,
+  // card 0.7+12+0.5-1.2+0.4 = 12.4 to 23.8; s2 flight to 25.0, card 0.7+11.5+0.5-1.2+0.4 = 11.9 to 36.9;
+  // close 8.2+1.0+0.4 = 9.6 to 46.5.
   assert.deepEqual(
     plan.segments.map((s) => [s.kind, s.line, s.start, s.frames]),
     [
       ['open', 'open', 0, 306],
-      ['open', 'count', 306, 150],
-      ['flight', 's1', 456, 36],
-      ['card', 's1', 492, 372],
-      ['flight', 's2', 864, 36],
-      ['card', 's2', 900, 357],
-      ['close', 'close', 1257, 288],
+      ['flight', 's1', 306, 36],
+      ['card', 's1', 342, 372],
+      ['flight', 's2', 714, 36],
+      ['card', 's2', 750, 357],
+      ['close', 'close', 1107, 288],
     ],
   );
-  assert.equal(plan.frames, 1545);
+  assert.equal(plan.frames, 1395);
   assert.equal(plan.date, '2026-10-24');
   assert.equal(plan.fps, 30);
 });
@@ -249,10 +246,9 @@ test('newscast plan: segments contiguous; a story line starts LINE_LEAD into its
   assert.equal(next, plan.frames);
   assert.deepEqual(plan.lines, [
     { id: 'open', start: 0, frames: 294 },
-    { id: 'count', start: 306, frames: 138 },
-    { id: 's1', start: 477, frames: 360 },
-    { id: 's2', start: 885, frames: 345 },
-    { id: 'close', start: 1257, frames: 246 },
+    { id: 's1', start: 327, frames: 360 },
+    { id: 's2', start: 735, frames: 345 },
+    { id: 'close', start: 1107, frames: 246 },
   ]);
   assert.equal(LINE_LEAD, 0.7);
   for (const line of plan.lines) {
@@ -260,7 +256,7 @@ test('newscast plan: segments contiguous; a story line starts LINE_LEAD into its
     const first = own[0];
     const last = own[own.length - 1];
     if (first.kind !== 'flight') {
-      // The open, the count and the close: the audio starts with the line's segment.
+      // The open and the close: the audio starts with the line's segment.
       assert.equal(first.start, line.start);
       continue;
     }
@@ -277,20 +273,19 @@ test('newscast plan: segments contiguous; a story line starts LINE_LEAD into its
 
 test('newscast plan: the poster is the first card\'s last frame; no drift from rounding', () => {
   const plan = buildNewscastPlan(script(), 30);
-  assert.equal(plan.poster, 492 + 372 - 1);
+  assert.equal(plan.poster, 342 + 372 - 1);
   // 25 fps: 1.2 s flights are 30 frames; every line start stays within half a frame of its
-  // audio's time in seconds (the count 10.2; story lines 0.7 s into their flights: 15.9, 29.5;
-  // the close 41.9).
+  // audio's time in seconds (story lines 0.7 s into their flights: 10.9, 24.5; the close 36.9).
   const p25 = buildNewscastPlan(script(), 25);
-  [0, 10.2, 15.9, 29.5, 41.9].forEach((at, k) => assert.ok(Math.abs(p25.lines[k].start - at * 25) <= 0.5, `line ${k} at ${p25.lines[k].start}`));
+  [0, 10.9, 24.5, 36.9].forEach((at, k) => assert.ok(Math.abs(p25.lines[k].start - at * 25) <= 0.5, `line ${k} at ${p25.lines[k].start}`));
   assert.deepEqual(p25.segments.filter((s) => s.kind === 'flight').map((s) => s.frames), [30, 30]);
-  const noStory = buildNewscastPlan({ ...script(), lines: [script().lines[0], script().lines[1], script().lines[4]] }, 30);
-  assert.deepEqual(noStory.segments.map((s) => s.kind), ['open', 'open', 'close']);
+  const noStory = buildNewscastPlan({ ...script(), lines: [script().lines[0], script().lines[3]] }, 30);
+  assert.deepEqual(noStory.segments.map((s) => s.kind), ['open', 'close']);
   assert.equal(noStory.poster, noStory.frames - 1);
 });
 
 test('newscast script check: the contract shape, else an Error naming the problem', () => {
-  assert.equal(checkNewscastScript(script()).lines.length, 5);
+  assert.equal(checkNewscastScript(script()).lines.length, 4);
   const bad = (edit: (s: any) => void, why: RegExp) => {
     const s: any = script();
     edit(s);
@@ -298,79 +293,105 @@ test('newscast script check: the contract shape, else an Error naming the proble
   };
   assert.throws(() => checkNewscastScript(null), /bad script: not an object/);
   bad((s) => (s.date = '24 Oct'), /date/);
-  bad((s) => (s.lines = [s.lines[0], s.lines[1]]), /lines/);
-  bad((s) => (s.lines[2].seconds = 0), /line 2 seconds/);
-  bad((s) => (s.lines[3].id = 's1'), /line 3 id/);
+  bad((s) => (s.lines = [s.lines[0]]), /lines/);
+  bad((s) => (s.lines[1].seconds = 0), /line 1 seconds/);
+  bad((s) => (s.lines[2].id = 's1'), /line 2 id/);
   bad((s) => s.lines.reverse(), /line 0 kind/);
-  bad((s) => (s.lines[2].kind = 'headline'), /line 2 kind$/);
-  bad((s) => delete s.lines[2].story, /line 2 story/);
-  bad((s) => (s.lines[2].story.lat = 'x'), /line 2 story lat/);
-  bad((s) => (s.lines[2].story.spoken = 'yes'), /spoken/);
-  bad((s) => (s.lines[2].n = 3), /line 2 n\/of/);
-  bad((s) => (s.lines[2].story.g = 1.5), /line 2 story g/);
-  bad((s) => (s.lines[2].story.grim = 'no'), /line 2 story grim/);
+  bad((s) => (s.lines[1].kind = 'headline'), /line 1 kind$/);
+  bad((s) => delete s.lines[1].story, /line 1 story/);
+  bad((s) => (s.lines[1].story.lat = 'x'), /line 1 story lat/);
+  bad((s) => (s.lines[1].story.spoken = 'yes'), /spoken/);
+  bad((s) => (s.lines[1].n = 3), /line 1 n\/of/);
+  bad((s) => (s.lines[1].story.g = 1.5), /line 1 story g/);
+  bad((s) => (s.lines[1].story.grim = 'no'), /line 1 story grim/);
+  // v2.1: the count line is gone; a script that still has one fails on the kind.
+  bad((s) => s.lines.splice(1, 0, { id: 'count', kind: 'count', text: 'Two hundred and forty-two thousand articles.', seconds: 4.6 }), /line 1 kind$/);
+});
+
+test('newscast script check: open and close alone (no stories) pass', () => {
+  const s = script();
+  s.lines = [s.lines[0], s.lines[3]];
+  assert.deepEqual(checkNewscastScript(s).lines.map((l) => l.kind), ['open', 'close']);
+  const plan = buildNewscastPlan(s, 30);
+  assert.deepEqual(plan.segments.map((g) => [g.kind, g.line, g.start, g.frames]), [['open', 'open', 0, 306], ['close', 'close', 306, 288]]);
+  assert.equal(plan.poster, plan.frames - 1);
+});
+
+test('newscast script check: a story read in English carries its credited headline as original', () => {
+  const s = script();
+  const original = { headline: 'La France se prépare : Macron restreint les manifestations', source: 'example.fr', lang: 'fr', url: 'https://example.fr/a' };
+  s.lines[1].story = { ...s.lines[1].story!, original };
+  assert.deepEqual(checkNewscastScript(s).lines[1].story!.original, original);
+  const bad = (edit: (o: any) => void, why: RegExp) => {
+    const t: any = script();
+    t.lines[1].story.original = { ...original };
+    edit(t.lines[1].story);
+    assert.throws(() => checkNewscastScript(t), why);
+  };
+  bad((st) => (st.original = 'La France'), /line 1 story original/);
+  bad((st) => (st.original.headline = ''), /line 1 story original/);
+  bad((st) => (st.original.source = 3), /line 1 story original/);
+  bad((st) => delete st.original.lang, /line 1 story original/);
+  bad((st) => (st.original.url = null), /line 1 story original/);
 });
 
 // Show mode v2 (docs/VOICE.md "Implementation decisions (2026-10-27)").
 
 const aside = (id: string, after: number, seconds = 7.5): NewscastLine => ({ id, kind: 'aside', text: ASIDE, seconds, after });
-/** open, count, two stories with an aside after the first, close. */
+/** open, two stories with an aside after the first, close. */
 const showV2 = (): NewscastScript => {
   const s = script();
-  s.lines[2].story = { ...s.lines[2].story!, variant: 'outlets', g: 0.12, grim: false, frame: "Paris. 410 of the humans' outlets covered this. One of them wrote: " };
-  s.lines[3].story = { ...s.lines[3].story!, variant: 'plain', g: null, grim: true, frame: 'Paris. The humans wrote: ' };
-  s.lines.splice(3, 0, aside('a1', 1));
+  s.lines[1].story = { ...s.lines[1].story!, variant: 'outlets', g: 0.12, grim: false, frame: "Paris. 410 of the humans' outlets covered this. One of them wrote: " };
+  s.lines[2].story = { ...s.lines[2].story!, variant: 'plain', g: null, grim: true, frame: 'Paris. The humans wrote: ' };
+  s.lines.splice(2, 0, aside('a1', 1));
   return s;
 };
 
-test('show v2 script check: open, count, stories, an aside, close accepted; the order rules enforced', () => {
+test('show v2 script check: open, stories, an aside, close accepted; the order rules enforced', () => {
   const ok = checkNewscastScript(showV2());
-  assert.deepEqual(ok.lines.map((l) => l.kind), ['open', 'count', 'story', 'aside', 'story', 'close']);
+  assert.deepEqual(ok.lines.map((l) => l.kind), ['open', 'story', 'aside', 'story', 'close']);
   const bad = (edit: (s: any) => void, why: RegExp) => {
     const s: any = showV2();
     edit(s);
     assert.throws(() => checkNewscastScript(s), why);
   };
-  // A missing count (a v1 script), and a count out of second place.
-  bad((s) => s.lines.splice(1, 1), /line 1 kind \(one count, second\)/);
-  bad((s) => s.lines.splice(3, 0, s.lines.splice(1, 1)[0]), /kind \(one count, second\)/);
+  // A count line (script v2 before v2.1) is not a kind any more.
+  bad((s) => s.lines.splice(1, 0, { id: 'count', kind: 'count', text: 'Two hundred and forty-two thousand articles.', seconds: 4.6 }), /line 1 kind$/);
   // An aside last (in the close's place), an aside first.
-  bad((s) => (s.lines[5] = aside('a9', 2)), /line 5 kind \(an aside, never first or last\)/);
+  bad((s) => (s.lines[4] = aside('a9', 2)), /line 4 kind \(an aside, never first or last\)/);
   bad((s) => s.lines.unshift(aside('a9', 0)), /line 0 kind \(an aside, never first or last\)/);
   // Three asides.
-  bad((s) => s.lines.splice(5, 0, aside('a2', 2), aside('a3', 2)), /line 6 kind \(at most two asides\)/);
+  bad((s) => s.lines.splice(4, 0, aside('a2', 2), aside('a3', 2)), /line 5 kind \(at most two asides\)/);
   // `after` names the story before the aside.
-  bad((s) => (s.lines[3].after = 2), /line 3 after/);
+  bad((s) => (s.lines[2].after = 2), /line 2 after/);
   // Two asides pass.
   const two: any = showV2();
-  two.lines.splice(5, 0, aside('a2', 2));
-  assert.equal(checkNewscastScript(two).lines.length, 7);
+  two.lines.splice(4, 0, aside('a2', 2));
+  assert.equal(checkNewscastScript(two).lines.length, 6);
 });
 
-test('show v2 plan: the count and the aside are open-type segments of their seconds plus the gap', () => {
+test('show v2 plan: the aside is an open-type segment of its seconds plus the gap', () => {
   const plan = buildNewscastPlan(showV2(), 30);
-  // open 10.2 s; count 5.0 to 15.2; s1 flight 1.2 to 16.4, card 12.4 to 28.8; aside 7.5+0.4 = 7.9 to 36.7;
-  // s2 flight to 37.9, card 11.9 to 49.8; close 9.6 to 59.4.
+  // open 10.2 s; s1 flight 1.2 to 11.4, card 12.4 to 23.8; aside 7.5+0.4 = 7.9 to 31.7;
+  // s2 flight to 32.9, card 11.9 to 44.8; close 9.6 to 54.4.
   assert.deepEqual(
     plan.segments.map((s) => [s.kind, s.line, s.start, s.frames]),
     [
       ['open', 'open', 0, 306],
-      ['open', 'count', 306, 150],
-      ['flight', 's1', 456, 36],
-      ['card', 's1', 492, 372],
-      ['open', 'a1', 864, 237],
-      ['flight', 's2', 1101, 36],
-      ['card', 's2', 1137, 357],
-      ['close', 'close', 1494, 288],
+      ['flight', 's1', 306, 36],
+      ['card', 's1', 342, 372],
+      ['open', 'a1', 714, 237],
+      ['flight', 's2', 951, 36],
+      ['card', 's2', 987, 357],
+      ['close', 'close', 1344, 288],
     ],
   );
-  assert.equal(plan.frames, 1782);
-  // The count's and the aside's audio start with their segments; the next line starts after the gap.
+  assert.equal(plan.frames, 1632);
+  // The aside's audio starts with its segment; the next line starts after the gap.
   const line = (id: string) => plan.lines.find((l) => l.id === id)!;
-  assert.deepEqual(line('count'), { id: 'count', start: 306, frames: 138 });
-  assert.deepEqual(line('a1'), { id: 'a1', start: 864, frames: 225 });
-  assert.equal(line('s2').start, Math.round((36.7 + LINE_LEAD) * 30));
-  assert.equal(plan.poster, 492 + 372 - 1);
+  assert.deepEqual(line('a1'), { id: 'a1', start: 714, frames: 225 });
+  assert.equal(line('s2').start, Math.round((31.7 + LINE_LEAD) * 30));
+  assert.equal(plan.poster, 342 + 372 - 1);
 });
 
 test('sentence times: split at sentence ends, each at seconds x chars before / total', () => {

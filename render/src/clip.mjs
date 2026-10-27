@@ -123,7 +123,7 @@ async function voicedScript(opts, heat, outDir) {
   // Loaded only here: --script and --mode timeline never load the model.
   const { synthesise } = await import("./speech.mjs");
   const stories = await fetchJson(opts.site, "data/stories.json");
-  // The count speaks the snapshot's total against articlesNormal; buildScript throws when heat.json has no total.
+  // Some sign-offs and the ratio aside speak the snapshot's total; buildScript throws when heat.json has no total.
   const script = buildScript({ stories, heat, date: clipDate(heat) });
   const voiceDir = join(outDir, "voice");
   await rm(voiceDir, { recursive: true, force: true });

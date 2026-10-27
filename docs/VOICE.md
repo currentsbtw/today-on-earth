@@ -617,3 +617,34 @@ the ingest omits `g` on any story with a unit older than the deploy (fail closed
 than under-reporting it. The alternative on the table is H >= 0.5, "nothing war-adjacent",
 which would have opened one story in twelve tonight. Not measured yet, noted for later:
 judging the headline's own unit (the medoid's themes) instead of a share over the story.
+
+### v2.1 (decided by the owner 2026-10-27 ~20:30 UTC, after the first v2 clip)
+
+Three changes shipped as one, binding on the build:
+
+1. **The gate is the kill-or-wound share at 0.5.** ingest/src/kinds.ts gains kind `h`
+   (harm): the exact themes KILL and WOUND (no prefixes, nothing else). stories.json's `g`
+   is redefined as the share of a story's article units with at least one copy carrying `h`,
+   two decimals; the render's GRIM_SHARE becomes 0.5. Transition, fail closed: records parsed
+   before the change carry no `h`, so the ingest computes `g` only over the units whose record `time` (GDELT time) is at or
+   after `G_SINCE = "2026-10-27T21:30:00Z"`, and omits it when fewer than 10 such units exist; the
+   render treats a missing `g` as grim, as before. After 24 h every window record is newer and
+   `g` is the plain share again. The methodology states the family, the threshold, and the measurement that chose
+   them (the Gate calibration section above).
+2. **The count line goes.** Script lines are `open` (sign-on, then the date line), `story`
+   (with asides between), `close`. The page validator rejects a `count` kind. The count pools,
+   bands and `articlesNormal` reading leave the render; heat.json keeps `articlesNormal` and
+   `articlesNormalDays` (additive, now unused by the clip; the band may return inside a
+   sign-off later). The total is still spoken by the sign-offs that carry {N}.
+3. **The newscast reads English when it can.** When a story's credited headline is not
+   English and the story has English-titled grouped articles, the ingest records, on the
+   stories.json entry, `en: { headline, source, url }`: among the story's English-titled
+   clustered members, the title that overlaps most with the whole story (the medoid rule
+   restricted to English titles), credited by the same non-republisher rule, shown cleaned as
+   the credited headline is. Absent when the credited headline is English or no English title
+   exists. The newscast's story line then reads `en.headline` with the English voice, the card
+   and the caption credit `en.source`, and the script's story keeps the credited headline as
+   `original: { headline, source, lang, url }`. The site is unchanged: it shows the credited
+   headline, and every headline, as before. Published in the methodology as the newscast's
+   rule: "the clip reads the English title when the story has one; the site's headline is
+   the story's most representative title in any language."

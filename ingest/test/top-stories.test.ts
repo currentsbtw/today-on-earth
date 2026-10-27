@@ -4,7 +4,7 @@ import { MIN_STORY_U } from "../src/broadcast.ts";
 import {
   CAPITAL_METONYMS, TOP_STORIES_MAX, TOP_STORIES_PER_COUNTRY, TOP_STORIES_UNKNOWN_HOME_MAX, buildTopStories, buildTopStoriesSafe, confirmStory,
 } from "../src/top-stories.ts";
-import type { CellArticle, CellFile, HeatCell, HeatFile, Story, TopStoriesFile } from "../src/types.ts";
+import type { CellArticle, CellFile, HeatCell, HeatFile, Story, StoryEn, TopStoriesFile } from "../src/types.ts";
 
 const NOW = "2026-10-24T12:00:00Z";
 const T = (h: number) => `2026-10-24T${String(h).padStart(2, "0")}:00:00Z`;
@@ -41,12 +41,12 @@ function heatOf(specs: CellSpec[]): HeatFile {
   };
 }
 
-function run(specs: CellSpec[], storyGrim?: ReadonlyMap<Story, number>): TopStoriesFile {
+function run(specs: CellSpec[], storyGrim?: ReadonlyMap<Story, number>, storyEn?: ReadonlyMap<Story, StoryEn>): TopStoriesFile {
   const cells: CellFile[] = specs.map((s) => ({
     id: s.id, name: nameOf(s), home: s.home ?? "US", n: 50, u: 50, o: 1, c: 1, i: 0, l: 1, t: 0,
     topOutlets: [], topCountries: [], languages: [], articles: [], videos: 0, stories: s.stories, unclustered: 0,
   }));
-  return buildTopStories({ heat: heatOf(specs), cells, storyGrim });
+  return buildTopStories({ heat: heatOf(specs), cells, storyGrim, storyEn });
 }
 
 const headlines = (f: TopStoriesFile) => f.stories.map((e) => e.story.headline);
@@ -261,4 +261,20 @@ test("top stories: each entry carries its story's grim share g from the snapshot
   // A story the map does not hold gets no g (readers treat a missing g as unknown).
   const none = run([{ id: "a", home: "US", stories: [story("Plain-o9", { o: 9 })] }], new Map());
   assert.ok(!("g" in none.stories[0]));
+});
+
+test("top stories: an entry carries its story's English title en from the snapshot, after g; none without one", () => {
+  const vote = story("Elecciones en Testland-o30", { o: 30, headlineLang: "es", headlineSource: "diario.es" });
+  const fair = story("Fair-o20", { o: 20 });
+  const title: StoryEn = { headline: "Testland votes in elections", source: "wral.com", url: "https://wral.com/1" };
+  const f = run([{ id: "a", home: "ES", stories: [vote] }, { id: "b", home: "FR", stories: [fair] }], new Map([[vote, 0.1], [fair, 0]]), new Map([[vote, title]]));
+  assert.deepEqual(f.stories[0].en, title);
+  assert.notEqual(f.stories[0].en, title); // a copy, not the snapshot's object
+  assert.deepEqual(Object.keys(f.stories[0]), ["rank", "cell", "story", "confirmed", "g", "en"]);
+  assert.equal(f.stories[0].story.headline, "Elecciones en Testland-o30"); // the story keeps its credited headline
+  assert.ok(!("en" in f.stories[0].story));
+  assert.ok(!("en" in f.stories[1]));
+  // Without g (the transition) en still stands on its own.
+  const noG = run([{ id: "a", home: "ES", stories: [vote] }], undefined, new Map([[vote, title]]));
+  assert.deepEqual(Object.keys(noG.stories[0]), ["rank", "cell", "story", "confirmed", "en"]);
 });

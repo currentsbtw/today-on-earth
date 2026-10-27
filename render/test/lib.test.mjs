@@ -360,16 +360,15 @@ test("mixArgs: each voice line resampled to 48 kHz and delayed to its start, in 
   assert.equal(at(bedOnly, "-filter_complex"), "[0:a]amix=inputs=1:duration=first:dropout_transition=0:normalize=0[out]");
 });
 
-/** voicedScript() as show mode v2 writes it: a count second, an aside after story 1 (not grim). */
+/** voicedScript() as show mode v2.1 writes it: an aside after story 1 (not grim); no count line. */
 const v2Script = () => {
   const s = voicedScript();
   s.lines[1].story.grim = false;
-  s.lines.splice(1, 0, { id: "count", kind: "count", text: "Two hundred and forty-three thousand articles. We counted every one. We read two headlines. Here they are.", seconds: 5 });
-  s.lines.splice(3, 0, { id: "aside-1", kind: "aside", text: "This has been the part of the programme where we read things. It is most of the programme.", seconds: 4, after: 1 });
+  s.lines.splice(2, 0, { id: "aside-1", kind: "aside", text: "This has been the part of the programme where we read things. It is most of the programme.", seconds: 4, after: 1 });
   return s;
 };
 
-test("show mode v2: checkScript takes count and aside lines; captionText prints them as plain lines", () => {
+test("show mode v2.1: checkScript takes aside lines, rejects a count line; captionText prints asides as plain lines", () => {
   const s = v2Script();
   assert.equal(checkScript(s), s);
   const broken = (change, why) => {
@@ -377,43 +376,52 @@ test("show mode v2: checkScript takes count and aside lines; captionText prints 
     change(p);
     assert.throws(() => checkScript(p), why);
   };
-  broken((p) => (p.lines[2].story.grim = true), /aside aside-1 follows a grim story \(story-1\)/);
-  broken((p) => p.lines.splice(2, 1), /aside aside-1 follows a count line/);
-  broken((p) => ([p.lines[1], p.lines[2]] = [p.lines[2], p.lines[1]]), /line count is "count", expected story or aside/);
-  broken((p) => (p.lines[1].kind = "aside"), /aside count follows a open line/);
+  broken((p) => (p.lines[1].story.grim = true), /aside aside-1 follows a grim story \(story-1\)/);
+  broken((p) => p.lines.splice(1, 1), /aside aside-1 follows a open line/);
   broken((p) => (p.lines.at(-1).kind = "aside"), /expected close/);
+  // The v2 count line is gone: rejected second, or anywhere else.
+  const count = { id: "count", kind: "count", text: "Two hundred and forty-three thousand articles. We counted every one. We read two headlines. Here they are.", seconds: 5 };
+  broken((p) => p.lines.splice(1, 0, count), /line count is "count", expected story or aside/);
+  broken((p) => p.lines.splice(3, 0, count), /line count is "count", expected story or aside/);
+  // Line 2 is a story (or the close when there are none): open then close passes.
+  const none = { ...voicedScript(), lines: [voicedScript().lines[0], voicedScript().lines.at(-1)] };
+  assert.equal(checkScript(none), none);
   const lines = captionText({ date: "2026-10-24" }, { script: s }).split("\n");
-  assert.deepEqual(lines.slice(6, 12), [s.lines[0].text, s.lines[1].text, s.lines[2].text, "Headline from wamc.org", s.lines[3].text, s.lines[4].text]);
+  assert.deepEqual(lines.slice(6, 11), [s.lines[0].text, s.lines[1].text, "Headline from wamc.org", s.lines[2].text, s.lines[3].text]);
 });
 
-test("show mode v2: checkNewscastPlan lays count and aside lines out as one open-type segment", () => {
+test("show mode v2.1: checkNewscastPlan lays an aside out as one open segment; count and aside segment kinds are refused", () => {
   const script = v2Script();
-  const plan = (name) => ({
+  const plan = () => ({
     fps: 10,
-    frames: 424,
+    frames: 370,
     date: "2026-10-24",
     poster: 5,
     segments: [
       { kind: "open", line: "open", start: 0, frames: 103 },
-      { kind: name ?? "count", line: "count", start: 103, frames: 54 },
-      { kind: "flight", line: "story-1", start: 157, frames: 12 },
-      { kind: "card", line: "story-1", start: 169, frames: 54 },
-      { kind: name ?? "aside", line: "aside-1", start: 223, frames: 40 },
-      { kind: "flight", line: "story-2", start: 263, frames: 12 },
-      { kind: "card", line: "story-2", start: 275, frames: 35 },
-      { kind: "close", line: "close", start: 310, frames: 114 },
+      { kind: "flight", line: "story-1", start: 103, frames: 12 },
+      { kind: "card", line: "story-1", start: 115, frames: 54 },
+      { kind: "open", line: "aside-1", start: 169, frames: 40 },
+      { kind: "flight", line: "story-2", start: 209, frames: 12 },
+      { kind: "card", line: "story-2", start: 221, frames: 35 },
+      { kind: "close", line: "close", start: 256, frames: 114 },
     ],
     lines: [
       { id: "open", start: 0, frames: 99 },
-      { id: "count", start: 103, frames: 50 },
-      { id: "story-1", start: 157, frames: 61 },
-      { id: "aside-1", start: 223, frames: 40 },
-      { id: "story-2", start: 263, frames: 42 },
-      { id: "close", start: 310, frames: 90 },
+      { id: "story-1", start: 103, frames: 61 },
+      { id: "aside-1", start: 169, frames: 40 },
+      { id: "story-2", start: 209, frames: 42 },
+      { id: "close", start: 256, frames: 90 },
     ],
   });
-  for (const name of [undefined, "open"]) assert.ok(checkNewscastPlan(plan(name), 10, script));
+  assert.ok(checkNewscastPlan(plan(), 10, script));
+  const named = plan();
+  named.segments[3].kind = "aside";
+  assert.throws(() => checkNewscastPlan(named, 10, script), /unknown segment kind "aside"/);
+  const counted = plan();
+  counted.segments[3].kind = "count";
+  assert.throws(() => checkNewscastPlan(counted, 10, script), /unknown segment kind "count"/);
   const p = plan();
-  p.segments[4].kind = "card";
-  assert.throws(() => checkNewscastPlan(p, 10, script), /segment kinds open count flight card card flight card close, expected open count flight card aside flight card close/);
+  p.segments[3].kind = "card";
+  assert.throws(() => checkNewscastPlan(p, 10, script), /segment kinds open flight card card flight card close, expected open flight card open flight card close/);
 });
