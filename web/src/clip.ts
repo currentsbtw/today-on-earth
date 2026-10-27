@@ -1213,7 +1213,7 @@ async function renderNewscast() {
     const pullFrames = Math.min(closeSegment.frames, Math.max(0, Math.ceil(lockupAt * fps - 1e-9)));
     const pull = path(arrivals.length ? arrivals[arrivals.length - 1] : worldView, worldView, Math.max(1, pullFrames));
     const callouts = await Promise.all(stories.map((line) => cellCallout({ id: line.story.cell, name: line.story.place, lat: line.story.lat, lon: line.story.lon }, heat)));
-    const words = stories.map((line) => (line.story.spoken ? wordTimes(line.text, line.story.headline, line.seconds).map((w) => w.at) : null));
+    const words = stories.map((line) => (line.story.spoken ? wordTimes(line.text, line.story.headline, line.seconds, line.story.said).map((w) => w.at) : null));
     const lineIndex = new Map(script.lines.map((line, k) => [line.id, k]));
     const storyIndex = new Map(stories.map((line, n) => [line.id, n]));
 

@@ -4,23 +4,26 @@
 // script to clip.html, and writes it as script.json beside the clip.
 //
 //   open   "Today on Earth, {weekday} the {ordinal} of {month}. {articles} articles from
-//          {outlets} outlets in {countries} countries. Here is where the world's press pointed."
-//   story  "{Place}. {n} articles from {o} outlets in {l} languages. {headline}."  (the
-//          languages clause only when l >= 2), or for a headline not in English:
+//          {outlets} outlets in {countries} countries."
+//   story  "{Place}. {n} articles from {o} outlets. {headline}."  (the headline as spoken,
+//          spokenHeadline; the languages count is on the card's ledger row, not spoken), or
+//          for a headline not in English:
 //          "{Place}. {n} articles from {o} outlets. A headline in {Language}, on screen."
-//   close  "That was today on Earth. The full broadcast at currents B T W dot github dot I O
-//          slash today on earth. Read by a synthetic voice from the outlets' own headlines."
+//   close  "That was today on Earth. The full broadcast is at the address on screen. Read by a
+//          synthetic voice from the outlets' own headlines."
 //
-// The outlet is never spoken (its name on screen and in the caption is the credit).
+// The outlet is never spoken (its name on screen and in the caption is the credit), nor the
+// address (it is on the close's lockup).
+import { VOICE_SPEED } from "./speech.mjs";
 
 /** Stories read per clip: the first entries of stories.json. */
-export const STORY_COUNT = 6;
+export const STORY_COUNT = 5;
 /** Seconds of silence between lines (the page lays the lines out with it). */
 export const LINE_GAP = 0.4;
-export const VOICE = Object.freeze({ engine: "kokoro", name: "af_heart" });
+export const VOICE = Object.freeze({ engine: "kokoro", name: "af_heart", speed: VOICE_SPEED });
 
 export const CLOSE_TEXT =
-  "That was today on Earth. The full broadcast at currents B T W dot github dot I O slash today on earth. Read by a synthetic voice from the outlets' own headlines.";
+  "That was today on Earth. The full broadcast is at the address on screen. Read by a synthetic voice from the outlets' own headlines.";
 
 const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -69,6 +72,11 @@ export function languageName(code) {
   }
 }
 
+/** Zero-width and other invisible characters: U+200B-U+200F, U+2060 (word joiner), U+FEFF (BOM). */
+const INVISIBLE = /[​-‏⁠﻿]/gu;
+/** `s` without invisible characters (the spoken text and the script's headline). */
+export const visible = (s) => String(s ?? "").replace(INVISIBLE, "");
+
 /** The place as spoken: the cell name up to the first comma ("Milan, Lombardia, Italy" -> "Milan"). */
 export const shortPlace = (name) => String(name ?? "").split(",")[0].trim();
 
@@ -80,15 +88,40 @@ const sentence = (s) => {
 
 /** The opening line's text. */
 export function openText(day, totals) {
-  return `Today on Earth, ${spokenDate(day)}. ${count(totals.articles)} articles from ${count(totals.outlets)} outlets in ${count(totals.countries)} countries. Here is where the world's press pointed.`;
+  return `Today on Earth, ${spokenDate(day)}. ${count(totals.articles)} articles from ${count(totals.outlets)} outlets in ${count(totals.countries)} countries.`;
 }
 
-/** A story line's text and whether its headline is spoken (English only in v4.0). */
-export function storyText({ place, n, o, l, headline, lang }) {
+/**
+ * An outlet or section label at the start of a headline: 1 to 4 words, then " | ", " — ",
+ * " – " or " :: " ("Arab News | ", "WATCH | ", "Opinion — "). HEADLINE_SUFFIX is the same form
+ * at the end ("... | Arab News"), for a shown title the ingest's cleaning left one on.
+ */
+export const HEADLINE_PREFIX = /^(?:[^\s|—–]+ ){0,3}[^\s|—–]+ (?:\||—|–|::) /u;
+export const HEADLINE_SUFFIX = / (?:\||—|–|::) (?:[^\s|—–]+ ){0,3}[^\s|—–]+$/u;
+/** Never strip a label when what is left would be shorter than this (characters). */
+const MIN_SPOKEN_HEADLINE = 20;
+
+/** The headline as the voice reads it: a leading and a trailing label removed (the card shows it unchanged). */
+export function spokenHeadline(headline) {
+  let h = String(headline ?? "").trim();
+  for (const label of [HEADLINE_PREFIX, HEADLINE_SUFFIX]) {
+    const rest = h.replace(label, "").trim();
+    if (rest !== h && rest.length >= MIN_SPOKEN_HEADLINE) h = rest;
+  }
+  return h;
+}
+
+/**
+ * A story line's text, whether its headline is spoken (English only in v4.0) and `said`, the
+ * headline exactly as the text carries it (after spokenHeadline, before the added full stop;
+ * "" when not read). Invisible characters are removed from all of it.
+ */
+export function storyText({ place, n, o, headline, lang }) {
   const spoken = lang === "en";
   const counts = `${count(n)} articles from ${count(o)} outlets`;
-  if (!spoken) return { text: `${place}. ${counts}. A headline in ${languageName(lang)}, on screen.`, spoken };
-  return { text: `${place}. ${counts}${l >= 2 ? ` in ${count(l)} languages` : ""}. ${sentence(headline)}`, spoken };
+  if (!spoken) return { text: visible(`${place}. ${counts}. A headline in ${languageName(lang)}, on screen.`), spoken, said: "" };
+  const said = spokenHeadline(visible(headline));
+  return { text: visible(`${place}. ${counts}. ${sentence(said)}`), spoken, said };
 }
 
 /**
@@ -110,7 +143,7 @@ export function buildScript({ stories, heat, date, generatedAt = new Date().toIS
       if (!Number.isFinite(story[f])) throw new Error(`stories.json entry ${k + 1} story.${f} is ${JSON.stringify(story[f])}`);
     }
     const place = shortPlace(cell.name);
-    const { text, spoken } = storyText({ place, n: story.n, o: story.o, l: story.l, headline: story.headline, lang: story.headlineLang });
+    const { text, spoken, said } = storyText({ place, n: story.n, o: story.o, headline: story.headline, lang: story.headlineLang });
     lines.push({
       id: `story-${k + 1}`,
       kind: "story",
@@ -123,7 +156,7 @@ export function buildScript({ stories, heat, date, generatedAt = new Date().toIS
         place,
         lat: cell.lat,
         lon: cell.lon,
-        headline: story.headline,
+        headline: visible(story.headline).trim(),
         source: story.headlineSource ?? null,
         lang: story.headlineLang ?? null,
         url: story.headlineUrl ?? null,
@@ -133,6 +166,7 @@ export function buildScript({ stories, heat, date, generatedAt = new Date().toIS
         i: story.i,
         confirmed: e.confirmed ?? null,
         spoken,
+        said,
       },
     });
   });

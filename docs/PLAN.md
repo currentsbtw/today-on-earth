@@ -976,30 +976,46 @@ renderer (`render/`) and the page (`web/clip.html`) until DATA-CONTRACT carries 
 1. **The script** is built by the renderer from the live `stories.json` and `heat.json`, written
    as `script.json` beside the outputs, and handed to the page. Lines, in order:
    - `open`: "Today on Earth, {weekday} the {ordinal} of {month}. {articles} articles from
-     {outlets} outlets in {countries} countries. Here is where the world's press pointed."
-     (digits with thousands separators; the voice reads them correctly).
-   - `story` × 6 (the first six entries of `stories.json`; they are already one per place and
-     event, text-confirmed, credited to a non-republisher): "{Place}. {n} articles from {o}
-     outlets in {l} languages. {headline}." The languages clause only when l >= 2. The outlet is
+     {outlets} outlets in {countries} countries." Two sentences, nothing more (owner
+     2026-10-25: the third sentence, "Here is where the world's press pointed.", is dropped).
+     Digits with thousands separators; the voice reads them correctly.
+   - `story` × 5 (owner 2026-10-25, was 6: the first five entries of `stories.json`; they are
+     already one per place and event, text-confirmed, credited to a non-republisher; the header
+     reads "N/5" through the line's `of`): "{Place}. {n} articles from {o} outlets.
+     {headline}." No languages clause (owner 2026-10-25, second pass; the card's ledger row
+     still shows the languages). The spoken
+     headline drops an outlet or section label (owner 2026-10-25; speech only, the card shows
+     the title unchanged): a leading 1 to 4 words followed by " | ", " — ", " – " or " :: "
+     ("Arab News | ", "WATCH | ", "Opinion — "), and a trailing label of the same form when the
+     shown title still carries one; never when what is left would be under 20 characters
+     (`HEADLINE_PREFIX`, `HEADLINE_SUFFIX` and `spokenHeadline` in `render/src/script.mjs`). The
+     caption's transcript shows the spoken form; its "Headline from <outlet>" line stays. The
+     story object carries the spoken form as `said` ("" when not read), which the page's word
+     reveal uses to find the headline in the line. Zero-width and other invisible characters
+     (U+200B to U+200F, U+2060, U+FEFF) are removed from the spoken text and from the script's
+     `headline`, so the card and the reveal see the same string. The outlet is
      NOT spoken (its name on screen and in the caption is the credit; domains read badly); the
      headline is spoken only when `headlineLang` is `en` in v4.0. For another language the line
      is "{Place}. {n} articles from {o} outlets. A headline in {Language}, on screen." and the
      headline shows unread; v4.1 adds Kokoro's Spanish and Italian voices through the Python
      front end (misaki via uv) and reads them.
-   - `close`: "That was today on Earth. The full broadcast at currents B T W dot github dot I O
-     slash today on earth. Read by a synthetic voice from the outlets' own headlines."
+   - `close`: "That was today on Earth. The full broadcast is at the address on screen. Read by
+     a synthetic voice from the outlets' own headlines." (owner 2026-10-25, second pass: the
+     address is no longer spoken; it is on the lockup.)
    Nothing else is ever spoken. The template is published in the methodology.
 2. **Speech**: `kokoro-js` (pinned), model `onnx-community/Kokoro-82M-v1.0-ONNX` fp32, voice
-   `af_heart`, 24 kHz mono WAV per line, measured; `seconds` per line goes into the script.
+   `af_heart` at speed 1.1 (owner 2026-10-25; kokoro-js's `generate(text, { voice, speed })`,
+   `VOICE_SPEED` in `render/src/speech.mjs`, written to `script.json` as `voice.speed`),
+   24 kHz mono WAV per line, measured; `seconds` per line goes into the script.
    The model and packages are cached in Actions; the first run downloads about 325 MB.
 3. **The page**: `clip.html?newscast=1&w&h&fps&max=` loads the snapshot (heat, stories, cell
    outlines) and waits for `window.__clipNewscast(script)` (called by the renderer after load),
    which returns the plan `{ fps, frames, date, poster, segments: [{ kind, line, start,
    frames }], lines: [{ id, start, frames }], signals }` with segment kinds: `open` (the world
-   at the live snapshot, the opening's three sentences painted one by one at the line's
+   at the live snapshot, the opening's two sentences painted one by one at the line's
    proportional times, the hook caption's register), per story a `flight` (1.2 s, the place
-   name is being spoken; the caption "N/6 · {PLACE}") then a `card` held until the line ends
-   plus 0.5 s (the card as today: header "N/6", place, ledger row, headline, credit; the
+   name is being spoken; the caption "N/5 · {PLACE}") then a `card` held until the line ends
+   plus 0.5 s (the card as today: header "N/5", place, ledger row, headline, credit; the
    headline's words are painted as spoken at the proportional rate, one step per word), then
    `close` (pull back to the world for the first sentence, then the lockup with ONE verb line,
    SEE TODAY'S BROADCAST, the address, and READ BY A SYNTHETIC VOICE under it). Lines are
@@ -1062,6 +1078,24 @@ Kokoro's speed 1; choices are fewer stories, a shorter opening, or Kokoro's `spe
 (2) Headline prefixes are read aloud ("Arab News | Musk says..."): the ingest's suffix cleaning
 should cover prefixes. (3) Cell names are read as the gazetteer spells them ("Kiev", "Rio De
 Janeiro"). Not done: the owner's viewing (item 6), and a Linux run of the synthesis (CI). **First full clip (2026-10-24 ~20:30 UTC, 79e027f, local render against the live snapshot): 3,030 frames at 1080x1920 30 fps, 0 bad, 260 s to step, 102 s long, voice 93.8 s over 8 lines; the owner has the mp4, script and caption. Findings for the owner: length 102 s against the planned 55 to 70 (the opening 14.7 s, English stories 12 to 14 s each); headline prefixes are spoken ("Arab News |"); place names follow the gazetteer ("Kiev", "Rio De Janeiro"); two of six stories were non-English and shown unread. CI verified the same night: dispatched run 40158657288 on ubuntu-latest downloaded and cached the model, synthesised 8 lines (96.4 s) in 37 s, stepped 3,108 frames with 0 bad, and uploaded clip-2026-10-24.mp4 (104.6 s, 8.6 MB), script-2026-10-24.json and the caption to the clips release; the newscast is now the daily clip.**
+
+**Status v4.0.1 (render), 2026-10-26: built, not committed.** The owner's pacing decisions of
+2026-10-25: five stories (`STORY_COUNT = 5`), the two-sentence opening, Kokoro at speed 1.1
+(`VOICE_SPEED`, in `script.json` as `voice.speed`), and the spoken headline without an outlet
+or section label (`spokenHeadline`; the card and the caption's credit line unchanged). Measured
+on the live snapshot of 2026-10-27 02:54 UTC (local render against the dev server, 1080x1920
+30 fps): 7 lines, 78.4 s of speech (opening 11.9 s, English stories 10.9 to 12.9 s, the German
+one 6.8 s, close 11.1 s), 2,540 frames, 0 bad, an 85.7 s mp4 (was 102 s). Speed 1.1 shortens a
+line by about 6%, not 10% (the opening measured 12.65 s at 1.0, 11.93 s at 1.1): still over the
+55 to 70 s plan. None of the five headlines carried a label that day. Second pass the same
+day: the close no longer speaks the address ("The full broadcast is at the address on
+screen."), the story line drops the languages clause, invisible characters (U+200B to U+200F,
+U+2060, U+FEFF) leave the spoken text and the script's headline (London's headline began with
+a U+200B), and each story carries `said`, the spoken headline, which `headlineOffset` in
+`web/src/timeline.ts` uses to time the word reveal (a dropped label's words come just before
+the voice reaches the rest); `NewscastScript.voice` is typed as the object the renderer
+writes. Same snapshot: 69.5 s of speech (opening 11.9 s, English stories 9.3 to 11.5 s, the
+German one 6.8 s, close 8.1 s), 2,275 frames, 0 bad, a 76.8 s mp4.
 
 **What changes in the machinery.** The audio drives the timeline, not the other way round:
 the renderer (or a new step before it) synthesises every line first, measures each line's

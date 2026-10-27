@@ -126,7 +126,7 @@ async function voicedScript(opts, heat, outDir) {
   const script = buildScript({ stories, heat, date: clipDate(heat) });
   const voiceDir = join(outDir, "voice");
   await rm(voiceDir, { recursive: true, force: true });
-  const seconds = await synthesise(script.lines, { outDir: voiceDir, voice: script.voice.name });
+  const seconds = await synthesise(script.lines, { outDir: voiceDir, voice: script.voice.name, speed: script.voice.speed });
   script.lines.forEach((l, k) => (l.seconds = Math.round(seconds[k] * 1e6) / 1e6));
   return { script: checkScript(script), voiceDir };
 }

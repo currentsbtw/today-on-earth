@@ -203,7 +203,7 @@ const storyLine = (id: string, n: number, seconds: number, spoken = true): Newsc
 const script = (): NewscastScript => ({
   date: '2026-10-24',
   generatedAt: '2026-10-24T12:00:00Z',
-  voice: 'af_heart',
+  voice: { engine: 'kokoro', name: 'af_heart', speed: 1.1 },
   gap: 0.4,
   lines: [
     { id: 'open', kind: 'open', text: OPEN, seconds: 9.8 },
@@ -313,4 +313,16 @@ test('word times: the headline starts after the counts, words at an even rate ov
   // Not verbatim in the text (the renderer cleaned it): it is taken to end the line.
   assert.equal(headlineOffset('Paris. Counts. Something else.', 'Other words'), 'Paris. Counts. Something else.'.length - 'Other words'.length - 1);
   assert.equal(spokenAt('abcd', 2, 8), 4);
+  // With `said` (a label dropped from the spoken form): its words line up with the voice; the
+  // label's words come just before; a `said` the text does not carry falls back as above.
+  const shown = `Arab News | ${HEADLINE}`;
+  const spokenLine = `Paris. 520 articles from 410 outlets. ${HEADLINE}.`;
+  const at = spokenLine.indexOf(HEADLINE);
+  assert.equal(headlineOffset(spokenLine, shown, HEADLINE), at - 'Arab News | '.length);
+  const labelled = wordTimes(spokenLine, shown, 10, HEADLINE);
+  assert.deepEqual(labelled.map((w) => w.word).slice(0, 4), ['Arab', 'News', '|', 'France']);
+  assert.equal(labelled[3].at, (10 * at) / spokenLine.length);
+  assert.ok(labelled[0].at < labelled[3].at);
+  assert.equal(headlineOffset(spokenLine, HEADLINE, ''), at);
+  assert.equal(headlineOffset('Paris. Counts. Something else.', 'Other words', 'Not here'), 'Paris. Counts. Something else.'.length - 'Other words'.length - 1);
 });

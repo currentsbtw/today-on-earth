@@ -235,6 +235,11 @@ export interface NewscastStory {
   confirmed: string;
   /** Whether the voice reads the headline (English only in v4.0). */
   spoken: boolean;
+  /**
+   * The headline exactly as the line's text carries it (an outlet or section label removed;
+   * "" when not read). Absent in scripts before v4.0.1.
+   */
+  said?: string;
 }
 
 export interface NewscastLine {
@@ -253,7 +258,8 @@ export interface NewscastLine {
 export interface NewscastScript {
   date: string;
   generatedAt: string;
-  voice: string;
+  /** The synthesis the renderer used: engine "kokoro", voice name "af_heart", speed 1.1. */
+  voice: { engine: string; name: string; speed: number };
   /** Silence after each line, in seconds. */
   gap: number;
   lines: NewscastLine[];
@@ -325,6 +331,7 @@ export function checkNewscastScript(value: unknown): NewscastScript {
     if (typeof story.lat !== 'number' || typeof story.lon !== 'number' || Math.abs(story.lat) > 90 || Math.abs(story.lon) > 180) fail(`${where} story lat/lon`);
     if (!isCount(story.n) || !isCount(story.o) || !isCount(story.l)) fail(`${where} story counts`);
     if (typeof story.spoken !== 'boolean' || typeof story.lang !== 'string') fail(`${where} story spoken/lang`);
+    if (story.said !== undefined && typeof story.said !== 'string') fail(`${where} story said`);
   });
   return value as unknown as NewscastScript;
 }
@@ -394,10 +401,17 @@ export function sentenceTimes(text: string, seconds: number): { text: string; at
 
 /**
  * Where the headline starts in a story line's text: the line ends with it (and a full stop),
- * after the place and the counts sentence. Its last occurrence; when the text does not carry
- * it verbatim, where it would start at the end of the text.
+ * after the place and the counts sentence. With `said` (the headline as spoken, a label
+ * removed) found in the text, the offset that lines the shown headline's copy of `said` up with
+ * it, so a dropped label's words come just before the voice reaches the rest (never below 0).
+ * Otherwise the headline's last occurrence; when the text does not carry it verbatim, where it
+ * would start at the end of the text.
  */
-export function headlineOffset(text: string, headline: string): number {
+export function headlineOffset(text: string, headline: string, said?: string): number {
+  if (said) {
+    const at = text.lastIndexOf(said);
+    if (at >= 0) return Math.max(0, at - Math.max(0, headline.indexOf(said)));
+  }
   const at = text.lastIndexOf(headline);
   return at >= 0 ? at : Math.max(0, text.length - headline.length - 1);
 }
@@ -406,9 +420,10 @@ export function headlineOffset(text: string, headline: string): number {
  * The headline's words (runs of non-space) with the time the voice reaches each, in seconds
  * from the line's start, at an even rate over the whole line: word k at
  * seconds x (characters before the headline + characters before word k) / line length.
+ * `said` as for headlineOffset.
  */
-export function wordTimes(text: string, headline: string, seconds: number): { word: string; at: number }[] {
-  const start = headlineOffset(text, headline);
+export function wordTimes(text: string, headline: string, seconds: number, said?: string): { word: string; at: number }[] {
+  const start = headlineOffset(text, headline, said);
   return Array.from(headline.matchAll(/\S+/g), (m) => ({ word: m[0], at: spokenAt(text, start + (m.index ?? 0), seconds) }));
 }
 

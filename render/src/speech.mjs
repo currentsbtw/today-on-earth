@@ -1,6 +1,6 @@
 // The newscast's voice (clip v4, build contract item 2): kokoro-js (pinned) with the model
 // onnx-community/Kokoro-82M-v1.0-ONNX in fp32 on the CPU, voice af_heart. One 24 kHz mono
-// 16-bit WAV per script line (line-<id>.wav); the measured seconds (sample count / rate) go
+// 16-bit WAV per script line (line-<id>.wav), read at VOICE_SPEED; the measured seconds (sample count / rate) go
 // back into the script. Deterministic for the same text on the same machine (checked by the
 // prototype: identical PCM across runs and processes).
 //
@@ -18,6 +18,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 export const MODEL = "onnx-community/Kokoro-82M-v1.0-ONNX";
 export const DTYPE = "fp32";
 export const SPEECH_RATE = 24_000;
+/** kokoro-js's `speed` option for every line (1 is the model's own pace; owner's decision 2026-10-25). */
+export const VOICE_SPEED = 1.1;
 export const DEFAULT_CACHE_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..", ".cache", "kokoro");
 /** kokoro-js tokenises with truncation at 512 tokens (about one phoneme per character). */
 const LONG_LINE = 400;
@@ -73,10 +75,10 @@ export const lineWav = (outDir, id) => join(outDir, `line-${id}.wav`);
  * in order (also as `{ id: seconds }` on `byId`). Logs each line's seconds, synthesis time and
  * peak level.
  * @param {{ id: string, text: string }[]} lines
- * @param {{ outDir: string, voice?: string }} opts
+ * @param {{ outDir: string, voice?: string, speed?: number }} opts
  * @returns {Promise<number[] & { byId: Record<string, number> }>}
  */
-export async function synthesise(lines, { outDir, voice = "af_heart" }) {
+export async function synthesise(lines, { outDir, voice = "af_heart", speed = VOICE_SPEED }) {
   await mkdir(outDir, { recursive: true });
   const tts = await loadVoice();
   const seconds = /** @type {number[] & { byId: Record<string, number> }} */ ([]);
@@ -85,7 +87,7 @@ export async function synthesise(lines, { outDir, voice = "af_heart" }) {
   for (const line of lines) {
     if (line.text.length > LONG_LINE) log(`speech: warning: line ${line.id} is ${line.text.length} characters; kokoro-js truncates at 512 tokens`);
     const t = performance.now();
-    const audio = await tts.generate(line.text, { voice });
+    const audio = await tts.generate(line.text, { voice, speed });
     const samples = audio.audio;
     if (audio.sampling_rate !== SPEECH_RATE) throw new Error(`kokoro returned ${audio.sampling_rate} Hz, expected ${SPEECH_RATE}`);
     if (!samples.length) throw new Error(`kokoro returned no audio for line ${line.id}`);
