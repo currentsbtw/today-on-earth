@@ -377,3 +377,140 @@ and the about page's opening, which it mirrors); DESIGN.md (the Overview's "two 
 paragraph gains one sentence: the prose voice is the Observer's). Verification: the test
 suites, a local newscast render with `--no-encode` whose script.json matches the sample
 above in form, and the three tests in this brief applied to the rendered script by a person.
+
+## Proposed: show mode, v2 (2026-10-27, owner's direction, not yet built)
+
+The owner, after the first Observer clip: "The humans wrote:" on every story is too flat.
+The target is an intergalactic news show about Earth: nuanced, lively, varied, sarcastic.
+This section designs that inside the one rule that cannot move, stated first.
+
+### The one rule, and where the bite goes
+
+A line's words may never depend on a story's content. Variety and sarcasm are therefore
+drawn from pools by a rule that does not read the story (date and position), and every
+variant in a pool has to be fit to land beside any headline, because any can. The targets
+of the sarcasm are the species as a whole (the audience included), the show itself, the
+viewer's planet and device, the count and the instrument. Never the subject of a headline,
+never a named person, never the people of a place. Punch at the species, never at the
+story.
+
+The reason, once: the methodology promises that nothing about the news is written by us,
+the audit calibrates that promise, and a joke that varied with the story would be
+editorial even when it was kind. Per-story sarcasm is shape C (a human writes the show)
+or a different product with the promise removed; the owner can choose that later, and this
+design does not foreclose it.
+
+### The grim gate (data, not taste)
+
+stories.json gains one additive field per story, `g`: the share (0 to 1, two decimals) of
+the story's articles that carry a conflict, crime or disaster theme kind (the ingest's
+existing article kinds c, k, d; politics p does not count). A story with `g` >= 0.25 is
+"grim" for the show: it gets the plain frame ("{Place}. The humans wrote: {headline}."),
+no variant, and no aside follows it. The threshold is the "Ordinary life" slot's own
+quarter, published in the methodology. The share is a property of the coverage, not a
+judgment of the story; the site already uses it for a slot.
+
+### Selection, deterministic
+
+Every pool choice is `pick(pool, seed)` with the seed built from the clip date and the
+line's position (`${date}:${kind}:${index}`) through a small published hash, so one
+snapshot always yields one script (CI reproducibility, byte-identical audio on repeat). A
+variant never repeats inside one show; a variant whose data condition fails (a story with
+one language cannot take the "read in N languages" frame) is skipped for the next in order.
+At least two of six stories use the plain frame even when none is grim, so the plain frame
+stays the show's baseline and the variants read as departures from it.
+
+### The pools (first draft; every line must pass the three tests on its own)
+
+**Sign-on** (one, by date):
+- "This is Today on Earth, the only news about this planet made by anyone who does not live on it."
+- "Today on Earth. We are in orbit. The humans are below, writing."
+- "Good rotation. This is Today on Earth. We have counted the humans' news so that you do not have to."
+- "Today on Earth. One planet, one rotation, one count. The humans supplied the rest."
+- "You are watching Today on Earth, from a distance we consider safe."
+
+Then the fixed date line: "The humans call this day {Weekday}, the {ordinal} of {month}."
+
+**The count** (one, by the day's total against the trailing median of daily totals, when
+7 days exist; the thresholds published: above 1.15x loud, below 0.85x quiet, else ordinary):
+- loud: "{N} articles. A loud rotation, even for them."
+- quiet: "{N} articles. A quiet rotation. We checked the instrument. It is the humans."
+- ordinary: "{N} articles. An ordinary rotation for the humans. We have no other kind."
+- no history: "{N} articles. We counted every one. We read six headlines. Here they are."
+
+**Story frames** (per story, by position; `{h}` is the headline verbatim; conditions in brackets):
+- plain: "{Place}. The humans wrote: {h}"
+- "{Place}. From the humans' press, unedited: {h}"
+- "{Place}. Their words, not ours: {h}"
+- "{Place}. {o} of the humans' outlets covered this. One of them wrote: {h}" [o >= 10]
+- "{Place}. Read in {l} languages. We will read it in one: {h}" [l >= 3]
+- "{Place}. Heard in {i} countries that are not this one. The headline: {h}" [i >= 5]
+- "Next, {Place}. The humans wrote, and we quote: {h}"
+- "{Place}. We do not know what this means. The humans wrote: {h}" [never on a grim story; the gate]
+- unread, fixed: "{Place}. The humans wrote this in {Language}. It is on your screen."
+- unread, variant: "{Place}. The humans wrote this in {Language}, which is one of theirs. It is on your screen."
+
+**Asides** (zero to two per show, after a non-grim story, by position; about the species or
+the show; each states only numbers the script already holds):
+- "We pause to note that the humans wrote {N} articles today and we have read {k} headlines. The ratio is not in our favour."
+- "The humans' press works in {L} languages. We work in one. We are doing our best." [L = languages across the six stories, >= 5]
+- "Four of these six places have appeared in this programme before. The humans return to the same places. So do we." [needs yesterday's script.json from the clips release; plumbing, so a later increment]
+- "This has been the part of the programme where we read things. It is most of the programme."
+
+**Sign-off** (one, by date):
+- "That was today on Earth. The humans will write again tomorrow. We will count again tomorrow. Neither of us can stop."
+- "That was today on Earth. We did not read the articles. We counted them. It was easier."
+- "This has been Today on Earth. We remain in orbit, where it is quiet."
+- "That was today on Earth. {N} articles, six headlines, one planet. We will be back when it turns."
+- "That was today on Earth. If the humans write something tomorrow, and they will, we will count it."
+
+### Words still banned
+
+The list in "The rule, as a character trait" stands, in every pool: tragic, shocking,
+finally, again (about a story; "again" about the ritual is fine), still, apparently,
+seems, important, matters, deserves, sadly, interesting, strange, bizarre. No adjective
+about an event. No verb about what happened. No name of a person outside a headline.
+
+### Sample show from the 2026-10-27 17:50 UTC script
+
+Grim shares are estimated here (the field does not exist yet); the real gate decides.
+Kiev and Tehran are treated as grim (conflict themes), Gaza as politics, below the gate.
+
+```
+sign-on  This is Today on Earth, the only news about this planet made by anyone who does
+         not live on it. The humans call this day Tuesday, the twenty-seventh of October.
+count    Two hundred and twenty-eight thousand articles. We counted every one. We read six
+         headlines. Here they are.
+story 1  Moscow. The humans wrote this in German, which is one of theirs. It is on your
+         screen.
+story 2  Gaza. Heard in 34 countries that are not this one. The headline: Israel election:
+         Voters deciding whether to oust Netanyahu.
+story 3  Kiev. The humans wrote: Local ceasefire brokered by Melania Trump starts in
+         southern Ukraine as Russia attacks other areas.                       [grim: plain]
+story 4  Washington. 267 of the humans' outlets covered this. One of them wrote: Trump
+         approval rises from record low to 32% ahead of midterm election, Reuters Ipsos
+         poll finds.
+aside    We pause to note that the humans wrote two hundred and twenty-eight thousand
+         articles today and we have read four headlines. The ratio is not in our favour.
+story 5  Tehran. The humans wrote: SAUDI-IRAN TALKS: Saudi Arabia, Turkey And Pakistan
+         Sending Senior Security Officials To Tehran Amid Rising Regional Tensions. [grim]
+story 6  Belgrade. Their words, not ours: Vucic Concedes Defeat as Student Movement Ushers
+         in New Era in Serbia.
+sign-off That was today on Earth. The humans will write again tomorrow. We will count
+         again tomorrow. Neither of us can stop.
+```
+
+Length: the sign-on, count and one aside add roughly 12 s over v1's 75 s. The site keeps
+the v1 sentences (a page is read, not performed); the broadcast page may take the sign-on
+later.
+
+### What building it touches
+
+ingest/src/stories.ts and top-stories.ts (the `g` share, from the existing article kinds),
+docs/DATA-CONTRACT.md (additive field), render/src/script.mjs (pools, pick, the gate, the
+count line with a trailing median read from history/index.json when 7 days exist, asides
+as a new line kind the clip page must accept), web/src/timeline.ts (an `aside` kind laid
+out like the open's spoken caption), render/src/lib.mjs (caption transcript unchanged in
+form), docs/METHODOLOGY.md ("The daily clip": the pools are published in full with the
+selection rule and the gate), tests for pick, the gate, the conditions and the no-repeat
+rule. Build only on the owner's go, after the pools above are edited to taste.
