@@ -1798,6 +1798,16 @@ plausibly about, or datelined from, this place" as right / wrong / unclear, with
 cases grouped by cause. Run weekly by the maintainers (not by a model in CI: nothing in the
 pipeline judges text), published as a dated row. The first run is in progress as this is
 written; its result goes under "Accuracy, first audit" below.
+**Status (2026-10-27): three rows added, not yet run.** `audit-sample` now draws four files from
+one snapshot and seed: placement as before, `grouping` (100 grouped non-headline articles of
+full stories in the six measured cells, judged "is this article about the story's headline";
+100 rather than 40, though only about 200 could certify bar 2's 5%), `top12` (every entry of
+`stories.json`, judged for placement and outlet, the list the newscast reads) and `headlines`
+(60 six-cell headlines, bar 3's known-outlet share). `--fetch` saves `stories.json` and the
+snapshot tarball carries it; `audit-tally <date>` prints all four, "–" for a missing file. The
+results table gains grouping wrong %, top-12 wrong and headlines known %. The second audit, the
+first with all four, is due 2026-10-31 (seed 20261031); a live dry run on 2026-10-27 13:26 UTC
+drew 124 / 100 of 808 / 12 / 60 of 856.
 
 **Accuracy, first audit (2026-10-24, snapshot 02:01:54 UTC, seed 20261024; 68 cells, 128
 stories, judged by the orchestrator's auditor, four articles read in full).** Wrong 19 of 128:

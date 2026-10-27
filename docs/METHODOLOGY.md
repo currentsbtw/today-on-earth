@@ -224,6 +224,12 @@ story a person asks one question: is this story plausibly about, or datelined fr
 place? The answer is right, wrong or unclear. A national story placed at the seat of
 government counts as right.
 
+Since 27 October 2026 each audit also measures three more things from the same snapshot and
+seed: story grouping (in six large places, the share of 100 grouped articles that are not about
+their story's headline), the top-12 list the daily clip reads (each entry's place, as above,
+and its outlet), and the share of 60 headlines in the six places credited to an outlet a reader
+would recognise rather than a small site, a portal or an aggregator.
+
 The first audit, on 24 October 2026 (the snapshot of 02:01:54 UTC), judged 128 stories in
 68 places: 81 right, 19 wrong, 28 unclear. That is 14.8% wrong, with a 95% interval of 9.7
 to 22.0%. Among the 20 largest places, 4 of 40 were wrong. The causes of the 19:
