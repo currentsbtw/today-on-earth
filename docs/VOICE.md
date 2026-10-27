@@ -1,9 +1,9 @@
 # The Observer: a voice brief for the template alien
 
-Status: brief only, written 2026-10-27. Nothing here is built. No line in this document
-ships before the second audit (2026-10-31) and the first public post, so the dry newscast
-and this one can be compared on real posts. docs/PLAN.md "Ideas parking lot" records the
-decision trail (the three shapes weighed; this is shape A).
+Status: written 2026-10-27 as a brief; the same evening the owner decided to build at once
+rather than wait for the 2026-10-31 audit, so that the first public post goes out in this
+voice. docs/PLAN.md "Ideas parking lot" records the decision trail (the three shapes
+weighed; this is shape A).
 
 ## What this changes, and what it must not
 
@@ -220,7 +220,7 @@ to be legible from it alone: a count, a species, no opinion.
 | caption, line 2 | The last 24 hours of the world's news, one dot per place. | One rotation of the humans' news, one dot per place. Counted, not read. |
 | caption, transcript | each spoken line, then "Headline from {outlet}" | unchanged in form; the lines themselves change with the script |
 | caption, last line | Read by a synthetic voice from the outlets' own headlines. | unchanged (disclosure) |
-| caption, address | Today's broadcast: {address} | Today's broadcast: {address}. The method and the code: github.com/currentsbtw/today-on-earth |
+| caption, address | Today's broadcast: {address} | Today's broadcast: {address}, then on its own line: The method and the code: github.com/currentsbtw/today-on-earth |
 
 ### The about page (web/about.html, docs/METHODOLOGY.md)
 
@@ -238,7 +238,7 @@ Today:
 The Observer:
 
 > This is a count of your planet's news. Every fifteen minutes we read a list of what the
-> humans' press wrote in the last rotation and put one dot where each article points. A
+> humans' press wrote in the last rotation and put one dot where each article that names a city points. A
 > bigger dot means more articles. That is all it means. We cannot tell what matters. We can
 > tell what was written, and where, and by how many. We did not read the articles. We
 > counted them. The rest of this page explains how, in plain words.
@@ -361,12 +361,13 @@ is unchanged. No paid or cloud voice.
 5. The Observer stays unnamed for now. The mascot's label is a count, OBSERVERS · N, and a
    name would make it a person. The site's name is already the title of its broadcast.
 
-Nothing is open. The build waits for the 2026-10-31 audit and the first public post.
+Nothing is open. Build decided 2026-10-27 evening (owner): now, not after the audit; the
+first public post is in this voice.
 
 ## When this is built
 
-After the 2026-10-31 audit row and the first public post. One builder, one change,
-touching: render/src/script.mjs and render/test/script.test.mjs; render/src/lib.mjs
+Started 2026-10-27 evening on the owner's decision. Two builders on disjoint files (the
+newscast and caption in render/; the site, the broadcast page and the docs), touching: render/src/script.mjs and render/test/script.test.mjs; render/src/lib.mjs
 (captionText) and render/test/lib.test.mjs; web/src/broadcast.ts and ingest/test/broadcast
 tests where sentences are asserted; web/scripts/build-places.mjs, which ports the slot
 sentences for the static broadcast page and the feeds and must say the same words as

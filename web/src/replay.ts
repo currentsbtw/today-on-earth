@@ -288,7 +288,7 @@ export async function initReplay(live: LiveMoment, onFrame: (view: FrameView) =>
     updateField();
     root.classList.add('is-static');
     root.hidden = false;
-    showEmpty(`Replay starts at ${MIN_FRAMES} snapshots. ${frames.length} so far.`);
+    showEmpty(`Replay begins after ${MIN_FRAMES} counts. We have ${frames.length}.`);
     return null;
   }
 

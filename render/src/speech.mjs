@@ -5,7 +5,8 @@
 // prototype: identical PCM across runs and processes).
 //
 // A story whose headline is read in another language (`story.readIn`, v4.2; VOICE_FOR_LANG)
-// is two pieces in one line WAV: "{Place}." by af_heart (English phonemes, kokoro-js's own),
+// is two pieces in one line WAV: the frame, "{Place}. The humans wrote, in {Language}:"
+// (`story.frame`, as script.mjs built it), by af_heart (English phonemes, kokoro-js's own),
 // PIECE_GAP of silence, then the headline by that language's voice. kokoro-js phonemises
 // English only (its espeak-ng carries English data, and generate() refuses other voices), so
 // the headline's phonemes come from render/py/phonemize.py (misaki on espeak-ng, cutlet, or
@@ -34,7 +35,7 @@ const RENDER_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const DEFAULT_CACHE_DIR = join(RENDER_DIR, ".cache", "kokoro");
 /** kokoro-js tokenises with truncation at 512 tokens (about one phoneme per character). */
 const LONG_LINE = 400;
-/** The English voice: every line, and the place name of a headline read in another language. */
+/** The English voice: every line, and the frame of a headline read in another language. */
 export const ENGLISH_VOICE = "af_heart";
 /**
  * The Kokoro 1.0 voice that reads a headline in each language (owner 2026-10-27; female voices,
@@ -49,7 +50,7 @@ export const VOICE_FOR_LANG = Object.freeze({
   pt: "pf_dora",
   zh: "zf_xiaobei",
 });
-/** Seconds of silence between the place (English) and the headline (its language) in one line. */
+/** Seconds of silence between the frame (English) and the headline (its language) in one line. */
 export const PIECE_GAP = 0.25;
 /** The Python phonemiser's uv project; its environment is $UV_PROJECT_ENVIRONMENT, else render/.cache/py. */
 export const PY_PROJECT = join(RENDER_DIR, "py");
@@ -102,17 +103,19 @@ export function pcm16Wav(samples, rate) {
 export const lineWav = (outDir, id) => join(outDir, `line-${id}.wav`);
 
 /**
- * A line read in two pieces: "{Place}." (English) and the headline (the rest of the line's
- * text, as the script built it), with the headline's language and voice.
- * @param {{ id: string, text: string, story: { place: string, readIn: string } }} line
+ * A line read in two pieces: the frame, "{Place}. The humans wrote, in {Language}:" (English;
+ * `story.frame` as script.mjs built it, so a colon inside the headline never moves the split),
+ * and the headline (the rest of the line's text), with the headline's language and voice.
+ * `frame` is the English piece (the frame without its trailing space).
+ * @param {{ id: string, text: string, story: { frame: string, readIn: string } }} line
  */
 export function linePieces(line) {
-  const { place, readIn } = line.story;
+  const { frame, readIn } = line.story;
   const voice = VOICE_FOR_LANG[readIn];
   if (!voice) throw new Error(`line ${line.id}: no voice for language ${JSON.stringify(readIn)}`);
-  const head = `${place}. `;
-  if (!line.text.startsWith(head) || line.text.length <= head.length) throw new Error(`line ${line.id}: the text does not start with "${head}" and a headline`);
-  return { place: head.trim(), headline: line.text.slice(head.length), lang: readIn, voice };
+  if (typeof frame !== "string" || !frame.trim()) throw new Error(`line ${line.id}: no frame for the English piece`);
+  if (!line.text.startsWith(frame) || !line.text.slice(frame.length).trim()) throw new Error(`line ${line.id}: the text does not start with "${frame}" and a headline`);
+  return { frame: frame.trim(), headline: line.text.slice(frame.length), lang: readIn, voice };
 }
 
 /** Seconds the phonemiser may take (a first uv sync included) before it is stopped. */
@@ -245,9 +248,9 @@ export async function synthesise(lines, { outDir, voice = ENGLISH_VOICE, speed =
     const two = read.get(line.id);
     let samples;
     if (two) {
-      const place = await speak(tts, { text: two.place, voice, speed, id: line.id });
+      const frame = await speak(tts, { text: two.frame, voice, speed, id: line.id });
       const headline = await speak(tts, { phonemes: phonemes[line.id], voice: two.voice, speed, id: line.id });
-      samples = joinPieces([place, headline], PIECE_GAP);
+      samples = joinPieces([frame, headline], PIECE_GAP);
       seconds.voices[line.id] = `${voice} + ${two.voice}`;
     } else {
       samples = await speak(tts, { text: line.text, voice, speed, id: line.id });
@@ -276,7 +279,7 @@ if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {
   const said = "Francia vive nueva jornada de protestas";
   const lines = [
     { id: "self-test", text: "Today on Earth. This is a test of the synthetic voice." },
-    { id: "self-test-es", kind: "story", text: `Madrid. ${said}.`, story: { place: "Madrid", headline: said, lang: "es", spoken: true, said, readIn: "es" } },
+    { id: "self-test-es", kind: "story", text: `Madrid. The humans wrote, in Spanish: ${said}.`, story: { place: "Madrid", headline: said, lang: "es", spoken: true, said, readIn: "es", frame: "Madrid. The humans wrote, in Spanish: " } },
   ];
   // KOKORO_PHONEMIZER=none simulates a phonemiser failure: the Spanish line falls back to the on-screen form.
   import("./script.mjs")

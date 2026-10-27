@@ -5,10 +5,11 @@ true of the running system; update it when the system changes.
 
 ## What you are looking at
 
-A map of where the world's news is pointing right now. Each dot is a place that
-articles published in the last 24 hours are about. A bigger dot means more articles.
-That is all it means. It is not a map of what matters, and it is not a map of what
-happened; it is a map of coverage.
+This is a count of your planet's news. Every fifteen minutes we read a list of what the
+humans' press wrote in the last rotation and put one dot where each article that names a city points. A
+bigger dot means more articles. That is all it means. We cannot tell what matters. We can
+tell what was written, and where, and by how many. We did not read the articles. We
+counted them. The rest of this page explains how, in plain words.
 
 ## Where the articles come from
 
@@ -144,9 +145,9 @@ from the last 24 hours under a published rule. A filled slot shows an outlet's o
 headline, verbatim apart from the trailing outlet name or label (see Distinct and
 reprints), and the story's coverage numbers. Nothing in it is written or
 summarised by us or by a model. The sentence above each headline is a fixed template
-filled with the story's own numbers ("One story over Nairobi: 214 articles from 61
-outlets in 19 languages."), so they count that story, not everything written about
-the place.
+filled with the story's own numbers ("The humans spoke most about one story, over
+Nairobi: 214 articles from 61 outlets in 19 languages."), so they count that story, not
+everything written about the place.
 
 Every slot needs a story with at least 3 distinct headlines, so one article echoed
 across many sites never fills a slot, and the story must have a headline. "Heard
@@ -172,6 +173,26 @@ order:
 
 The broadcast page (`broadcast.html`), its feed and each place's feed carry the same fixed
 sentences, headlines and numbers as the site, nothing more.
+
+The daily clip reads the day's stories aloud in fixed lines, the same for every story:
+
+- Open: "Today on Earth. The humans call this day {Weekday}, the {ordinal} of {month}.
+  Six places their press pointed at. We counted." (the number of stories read, in words;
+  one story: "One place their press pointed at. We counted."; none: "Their press pointed
+  nowhere we could place.").
+- A story whose headline the voice reads: "{Place}. The humans wrote: {headline}."
+- A story whose headline is read in its own language (Spanish, French, Italian,
+  Portuguese, Hindi, Japanese or Chinese): "{Place}. The humans wrote, in {Language}:
+  {headline}.", the frame in the English voice and the headline in that language's voice.
+- A story whose headline the voice cannot read: "{Place}. The humans wrote this in
+  {Language}. It is on your screen."
+- Close: "That was today on Earth. {articles, in words, rounded to the nearest thousand}
+  articles in one rotation. We did not read them. We counted them. We will count again
+  tomorrow."
+
+The headline is the outlet's own words, verbatim apart from a leading or trailing outlet
+or section label, which is dropped for speech. The outlet is never spoken; it is credited
+on screen and in the caption. Nothing else is spoken.
 
 The four theme families, in full, from GDELT's own theme tags. A name ending in `*`
 covers every theme that starts with it.

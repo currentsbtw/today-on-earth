@@ -123,7 +123,8 @@ async function voicedScript(opts, heat, outDir) {
   // Loaded only here: --script and --mode timeline never load the model.
   const { synthesise } = await import("./speech.mjs");
   const stories = await fetchJson(opts.site, "data/stories.json");
-  const script = buildScript({ stories, date: clipDate(heat) });
+  // The close speaks the snapshot's total; buildScript throws when heat.json has none.
+  const script = buildScript({ stories, date: clipDate(heat), articles: heat?.totals?.articles });
   const voiceDir = join(outDir, "voice");
   await rm(voiceDir, { recursive: true, force: true });
   // A headline the phonemiser could not give phonemes for is spoken, and written, in its on-screen form.

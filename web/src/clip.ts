@@ -667,7 +667,7 @@ function hookLayout(at: string, articles: number, timelapse: Window) {
   setCounts(null);
   showKey(false);
   setEdges(timelapse);
-  el('clip-hook-lead').replaceChildren(Object.assign(document.createElement('span'), { textContent: `${count(articles)} articles in 24 hours.` }));
+  el('clip-hook-lead').replaceChildren(Object.assign(document.createElement('span'), { textContent: `In one rotation the humans wrote ${count(articles)} articles.` }));
   el('clip-hook').hidden = false;
 }
 

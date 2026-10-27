@@ -668,7 +668,7 @@ function signalCard(slot: Slot, list: HTMLElement, pick: (slot: Slot) => void): 
     // An empty slot does not fold: its name and the one-line reason, always shown.
     li.classList.add('is-empty');
     head.append(el('span', 'signal-row', label));
-    li.append(el('p', 'signal-empty', emptyLine(slot) || 'No story met the rule today.'));
+    li.append(el('p', 'signal-empty', emptyLine(slot) || 'No story met the rule today. The rule does not bend.'));
     return li;
   }
   const story = slot.story;

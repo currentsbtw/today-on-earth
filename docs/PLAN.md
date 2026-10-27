@@ -2412,4 +2412,5 @@ Items 1a and 2 start today; status lines follow each. Live 02:45 UTC (run 400554
   the first posts show the dry newscast does not travel; never B on real headlines. Timing:
   after the 2026-10-31 audit and the first public post, so the two can be compared.
   Brief written 2026-10-27: docs/VOICE.md (character, vocabulary, every rewritten fixed
-  sentence, a sample newscast from the live snapshot; build after the 10/31 audit).
+  sentence, a sample newscast from the live snapshot). Owner, the same evening: build now,
+  not after the audit; the first public post goes out in the Observer voice.

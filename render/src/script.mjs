@@ -3,14 +3,25 @@
 // unit-tested; the renderer synthesises each line (speech.mjs), fills `seconds` and hands the
 // script to clip.html, and writes it as script.json beside the clip.
 //
-//   open   "Today on Earth. {Weekday}, the {ordinal} of {month}. Six places the world's press
-//          pointed at."  (the number of stories read, in words)
-//   story  "{Place}. {headline}."  (the headline as spoken, spokenHeadline; the counts are on
-//          the card's ledger row, not spoken). A headline in a language Kokoro has a voice for
-//          (VOICE_FOR_LANG in speech.mjs: es fr hi it ja pt zh) is read in that language by that
-//          voice, the place by the English one; the story carries `readIn: '<lang>'` (v4.2).
-//          For any other language: "{Place}. The headline is in {Language}, on screen."
-//   close  "That was today on Earth. Every place, every outlet, every day. Find us on GitHub."
+// The lines are the Observer's (docs/VOICE.md "The newscast"): the frame is its voice, the
+// headline the outlet's words, and nothing in any line says anything about a story.
+//
+//   open   "Today on Earth. The humans call this day {Weekday}, the {ordinal} of {month}. Six
+//          places their press pointed at. We counted."  (the number of stories read, in words;
+//          one: "One place their press pointed at. We counted."; none: "... {month}. Their press
+//          pointed nowhere we could place.")
+//   story  "{Place}. The humans wrote: {headline}."  (the headline as spoken, spokenHeadline;
+//          the counts are on the card's ledger row, not spoken; the frame is the same for every
+//          story). A headline in a language Kokoro has a voice for (VOICE_FOR_LANG in
+//          speech.mjs: es fr hi it ja pt zh) is "{Place}. The humans wrote, in {Language}:
+//          {headline}.", the frame read by the English voice and the headline by that
+//          language's; the story carries `readIn: '<lang>'` (v4.2) and `frame`, the English
+//          piece exactly as it starts the text (speech.mjs linePieces splits there).
+//          For any other language: "{Place}. The humans wrote this in {Language}. It is on your
+//          screen."
+//   close  "That was today on Earth. {N} articles in one rotation. We did not read them. We
+//          counted them. We will count again tomorrow."  ({N}: heat.json totals.articles in
+//          words, rounded to the nearest thousand from 1,000 up, spokenCount)
 //
 // The outlet is never spoken (its name on screen and in the caption is the credit), nor the
 // address or the voice label: both stand on the close's lockup, and the label is the caption
@@ -23,8 +34,52 @@ export const STORY_COUNT = 6;
 export const LINE_GAP = 0.4;
 export const VOICE = Object.freeze({ engine: "kokoro", name: "af_heart", speed: VOICE_SPEED });
 
-export const CLOSE_TEXT =
-  "That was today on Earth. Every place, every outlet, every day. Find us on GitHub.";
+const UNITS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+const TENS = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+
+/** 1..999 in words, British style: 225 -> "two hundred and twenty-five", 40 -> "forty". */
+function hundredsWords(n) {
+  const h = Math.floor(n / 100);
+  const r = n % 100;
+  const rest = r < 20 ? UNITS[r] : `${TENS[Math.floor(r / 10)]}${r % 10 ? `-${UNITS[r % 10]}` : ""}`;
+  if (!h) return rest;
+  return r ? `${UNITS[h]} hundred and ${rest}` : `${UNITS[h]} hundred`;
+}
+
+/**
+ * An integer from 0 to 99,999,999 in words, the first letter capitalised (it starts a
+ * sentence): 225000 -> "Two hundred and twenty-five thousand", 1005 -> "One thousand and
+ * five", 0 -> "No" (the close says "No articles in one rotation.", as the opening says "No").
+ */
+export function numberWords(n) {
+  if (!Number.isInteger(n) || n < 0 || n > 99_999_999) throw new Error(`number ${n} outside 0..99,999,999`);
+  if (n === 0) return "No";
+  const groups = [
+    [Math.floor(n / 1_000_000), " million"],
+    [Math.floor(n / 1000) % 1000, " thousand"],
+    [n % 1000, ""],
+  ];
+  const words = groups.filter(([g]) => g).map(([g, unit]) => `${hundredsWords(g)}${unit}`);
+  // "One thousand and five": the British "and" before a last group under a hundred.
+  if (n >= 1000 && n % 1000 > 0 && n % 1000 < 100) words.splice(-1, 1, `and ${words.at(-1)}`);
+  const s = words.join(" ");
+  return s[0].toUpperCase() + s.slice(1);
+}
+
+/**
+ * A count of articles as the close speaks it: from 1,000 up rounded to the nearest thousand
+ * (225169 -> "Two hundred and twenty-five thousand", 1500 -> "Two thousand"), below 1,000 the
+ * exact number (999 -> "Nine hundred and ninety-nine"). 0 to 9,999,999.
+ */
+export function spokenCount(n) {
+  if (!Number.isInteger(n) || n < 0 || n > 9_999_999) throw new Error(`article count ${JSON.stringify(n)} outside 0..9,999,999`);
+  return numberWords(n < 1000 ? n : Math.round(n / 1000) * 1000);
+}
+
+/** The closing line for a snapshot of `articles` articles (heat.json totals.articles). */
+export function closeText(articles) {
+  return `That was today on Earth. ${spokenCount(articles)} articles in one rotation. We did not read them. We counted them. We will count again tomorrow.`;
+}
 
 const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -86,11 +141,14 @@ const sentence = (s) => {
   return /[.!?…。！？।]["'”’)」』]*$/u.test(t) ? t : `${t}.`;
 };
 
-/** The opening line's text for `stories` stories read ("Six places", "One place"; none: no third sentence). */
+/** The opening line's text for `stories` stories read ("Six places", "One place"; none: "Their press pointed nowhere we could place."). */
 export function openText(day, stories) {
   if (!Number.isInteger(stories) || stories < 0 || stories >= NUMBER_WORDS.length) throw new Error(`story count ${stories}`);
-  const places = stories === 0 ? "" : ` ${NUMBER_WORDS[stories]} ${stories === 1 ? "place" : "places"} the world's press pointed at.`;
-  return `Today on Earth. ${spokenDate(day)}.${places}`;
+  const places =
+    stories === 0
+      ? "Their press pointed nowhere we could place."
+      : `${NUMBER_WORDS[stories]} ${stories === 1 ? "place" : "places"} their press pointed at. We counted.`;
+  return `Today on Earth. The humans call this day ${spokenDate(day)}. ${places}`;
 }
 
 /**
@@ -116,40 +174,49 @@ export function spokenHeadline(headline) {
 /** Whether a headline in `lang` is read aloud: English, or a language with a voice in VOICE_FOR_LANG. */
 export const readable = (lang) => lang === "en" || Object.hasOwn(VOICE_FOR_LANG, lang ?? "");
 
+/** The unread story line: "{Place}. The humans wrote this in {Language}. It is on your screen." */
+const unreadText = (place, lang) => visible(`${place}. The humans wrote this in ${languageName(lang)}. It is on your screen.`);
+
 /**
  * A story line's text, whether its headline is spoken, `said`, the headline exactly as the text
  * carries it (after spokenHeadline, before the added full stop; "" when not read), and for a
- * headline read in another language `readIn`, its language code. Invisible characters are
- * removed from all of it.
+ * headline read in another language `readIn`, its language code, and `frame`, the English
+ * piece the text starts with ("Paris. The humans wrote, in Spanish: "), after which the
+ * headline is read by the language's voice. The frame is the same for every story. Invisible
+ * characters are removed from all of it.
  */
 export function storyText({ place, headline, lang }) {
   const spoken = readable(lang);
-  if (!spoken) return { text: visible(`${place}. The headline is in ${languageName(lang)}, on screen.`), spoken, said: "" };
+  if (!spoken) return { text: unreadText(place, lang), spoken, said: "" };
   const said = spokenHeadline(visible(headline));
-  const line = { text: visible(`${place}. ${sentence(said)}`), spoken, said };
-  return lang === "en" ? line : { ...line, readIn: lang };
+  if (lang === "en") return { text: visible(`${place}. The humans wrote: ${sentence(said)}`), spoken, said };
+  const frame = visible(`${place}. The humans wrote, in ${languageName(lang)}: `);
+  return { text: `${frame}${sentence(said)}`, spoken, said, readIn: lang, frame };
 }
 
 /**
  * A story line whose headline was to be read in another language, in its "on screen" form
- * instead: "{Place}. The headline is in {Language}, on screen.", spoken false, said "", no
- * readIn (the renderer's fallback when the phonemiser cannot give its phonemes). A new line;
- * any other line is returned unchanged.
+ * instead: "{Place}. The humans wrote this in {Language}. It is on your screen.", spoken false,
+ * said "", no readIn or frame (the renderer's fallback when the phonemiser cannot give its
+ * phonemes). A new line; any other line is returned unchanged.
  * @param {any} line
  */
 export function onScreenLine(line) {
   if (line?.kind !== "story" || !line.story?.readIn) return line;
-  const { readIn, ...story } = line.story;
-  const text = visible(`${story.place}. The headline is in ${languageName(story.lang ?? readIn)}, on screen.`);
-  return { ...line, text, story: { ...story, spoken: false, said: "" } };
+  const { readIn, frame, ...story } = line.story;
+  return { ...line, text: unreadText(story.place, story.lang ?? readIn), story: { ...story, spoken: false, said: "" } };
 }
 
 /**
  * The newscast script from the live stories.json body: the opening, the first STORY_COUNT
- * stories (fewer if fewer), the close. `seconds` are 0 until synthesised.
- * @param {{ stories: any, date: string, generatedAt?: string }} p
+ * stories (fewer if fewer), the close. `seconds` are 0 until synthesised. `articles` is the
+ * snapshot's total (heat.json totals.articles), spoken in the close; without it (not an
+ * integer in 0..9,999,999) this throws, as for a malformed stories.json: the close is not
+ * shipped without its number.
+ * @param {{ stories: any, date: string, articles: number, generatedAt?: string }} p
  */
-export function buildScript({ stories, date, generatedAt = new Date().toISOString() }) {
+export function buildScript({ stories, date, articles, generatedAt = new Date().toISOString() }) {
+  if (!Number.isInteger(articles) || articles < 0 || articles > 9_999_999) throw new Error(`heat.json totals.articles is ${JSON.stringify(articles)}; the close needs it`);
   const entries = Array.isArray(stories?.stories) ? stories.stories.slice(0, STORY_COUNT) : [];
   const lines = [{ id: "open", kind: "open", text: openText(date, entries.length), seconds: 0 }];
   entries.forEach((e, k) => {
@@ -159,7 +226,7 @@ export function buildScript({ stories, date, generatedAt = new Date().toISOStrin
       if (!Number.isFinite(story[f])) throw new Error(`stories.json entry ${k + 1} story.${f} is ${JSON.stringify(story[f])}`);
     }
     const place = shortPlace(cell.name);
-    const { text, spoken, said, readIn } = storyText({ place, headline: story.headline, lang: story.headlineLang });
+    const { text, spoken, said, readIn, frame } = storyText({ place, headline: story.headline, lang: story.headlineLang });
     lines.push({
       id: `story-${k + 1}`,
       kind: "story",
@@ -183,11 +250,11 @@ export function buildScript({ stories, date, generatedAt = new Date().toISOStrin
         confirmed: e.confirmed ?? null,
         spoken,
         said,
-        ...(readIn ? { readIn } : {}),
+        ...(readIn ? { readIn, frame } : {}),
       },
     });
   });
-  lines.push({ id: "close", kind: "close", text: CLOSE_TEXT, seconds: 0 });
+  lines.push({ id: "close", kind: "close", text: closeText(articles), seconds: 0 });
   return { date, generatedAt, voice: { ...VOICE }, gap: LINE_GAP, lines };
 }
 

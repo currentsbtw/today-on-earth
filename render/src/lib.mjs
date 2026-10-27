@@ -275,6 +275,11 @@ export const VOICE_NOTE = "Read by a synthetic voice from the outlets' own headl
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
+/** The caption's second line, under the date. */
+export const CAPTION_SITE_LINE = "One rotation of the humans' news, one dot per place. Counted, not read.";
+/** The caption's line under the broadcast's address. */
+export const CAPTION_CODE_LINE = "The method and the code: github.com/currentsbtw/today-on-earth";
+
 /** "2026-10-23" -> "23 October 2026". */
 export const longDate = (day) => {
   const [y, m, d] = day.split("-").map(Number);
@@ -282,9 +287,10 @@ export const longDate = (day) => {
 };
 
 /**
- * The caption posted with the clip (caption-<date>.txt): the date line and the site's line,
- * then per signal "1/3 · MOST COVERED STORY · Paris" with its place page's address on the next
- * line, then the broadcast's address. Without signals (none filled, or an older page whose
+ * The caption posted with the clip (caption-<date>.txt): the date line and the site's line
+ * (CAPTION_SITE_LINE, the Observer's, docs/VOICE.md), then per signal "1/3 · MOST COVERED
+ * STORY · Paris" with its place page's address on the next line, then the broadcast's address
+ * and, under it, the repository's (CAPTION_CODE_LINE). Without signals (none filled, or an older page whose
  * plan has none) the signal block is left out. With the newscast's `script`, the transcript
  * follows after a blank line: each spoken line as spoken, and under each story line its
  * headline's credit, "Headline from wamc.org", with the headline itself when the voice did not
@@ -295,12 +301,12 @@ export const longDate = (day) => {
  */
 export function captionText(plan, { broadcast = BROADCAST_ADDRESS, script } = {}) {
   const signals = plan.signals ?? [];
-  const lines = [`Today On Earth · ${longDate(plan.date)}`, "The last 24 hours of the world's news, one dot per place.", ""];
+  const lines = [`Today On Earth · ${longDate(plan.date)}`, CAPTION_SITE_LINE, ""];
   if (signals.length) {
     signals.forEach((g, k) => lines.push(`${k + 1}/${signals.length} · ${g.label.toUpperCase()} · ${g.place}`, g.page));
     lines.push("");
   }
-  lines.push(`Today's broadcast: ${broadcast}`);
+  lines.push(`Today's broadcast: ${broadcast}`, CAPTION_CODE_LINE);
   if (script) {
     lines.push("");
     for (const l of script.lines) {

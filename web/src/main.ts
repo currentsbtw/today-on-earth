@@ -126,8 +126,8 @@ function dlRows(target: HTMLElement, rows: [label: string, value: string][]) {
 
 /** The sentence, the clock's snapshot line and the column totals for the live snapshot or a replay frame. */
 function showTotals(t: Totals, at: string, replay: boolean) {
-  const verb = replay ? 'were' : 'are';
-  sentence.textContent = `${plural(t.articles, 'article', 'articles')} ${verb} pointing at ${plural(t.cells, 'place', 'places')}.`;
+  const frame = replay ? 'In that rotation' : 'In one rotation';
+  sentence.textContent = `${frame} the humans wrote ${plural(t.articles, 'article', 'articles')} about ${plural(t.cells, 'place', 'places')}.`;
   const time = utcTime(at);
   document.body.classList.toggle('is-replay', replay);
   if (replay) {
@@ -229,7 +229,7 @@ function renderCol() {
     }),
   );
   colEmpty.hidden = !!shown.length || !colRows.length;
-  colEmpty.textContent = q ? `No place matches "${colFilter.value.trim()}".` : '';
+  colEmpty.textContent = q ? `No place the humans call "${colFilter.value.trim()}".` : '';
   markCol();
 }
 
@@ -393,7 +393,7 @@ function searchTopics() {
   }
   topicMatches = found;
   topicActive = found.length ? 0 : -1;
-  setTopicNote(found.length ? '' : `No topic matches "${topicInput.value.trim()}"`);
+  setTopicNote(found.length ? '' : `No topic the humans call "${topicInput.value.trim()}".`);
   renderTopicList();
 }
 
@@ -516,7 +516,7 @@ async function start() {
       setStatus(DRAWING);
     },
     () => {
-      sentence.textContent = 'The news snapshot could not be loaded.';
+      sentence.textContent = 'The count did not arrive. Reload.';
       setStatus('Could not load the news snapshot.');
     },
   );
@@ -764,7 +764,7 @@ async function start() {
     void openCell(live.get(id) ?? { id, lat, lon, name, n: slot.story?.n ?? 0 }, slot.id);
   };
   const noBroadcast = () => {
-    signalsEmpty.textContent = 'No broadcast in this snapshot.';
+    signalsEmpty.textContent = 'Nothing to broadcast from this count.';
     signalsEmpty.hidden = false;
   };
   loadBroadcast().then(

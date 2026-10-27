@@ -104,26 +104,26 @@ export function signalLine(slot: Slot): string {
   const languages = plural(s.l, 'language', 'languages');
   switch (slot.id) {
     case 'loudest':
-      return `One story over ${place}: ${articles} in ${languages}.`;
+      return `The humans spoke most about one story, over ${place}: ${articles} in ${languages}.`;
     case 'planet':
-      return `One story over ${place}, heard in ${plural(s.i, 'other country', 'other countries')}: ${articles}.`;
+      return `One story over ${place} was heard in more countries than any other: ${plural(s.i, 'other country', 'other countries')}. ${articles}.`;
     case 'rising': {
       // The stored ratio divides by max(normal, 3), so it is not "times the usual level"
       // for quiet places: state both numbers instead.
       const usual = Math.round(slot.b ?? 0);
       return usual > 0
-        ? `One story over ${place}: ${articles}, where the place usually has ${plural(usual, 'article', 'articles')} a day.`
-        : `One story over ${place}: ${articles}, where the place usually has none.`;
+        ? `The humans turned to ${place}: ${articles}, where they usually write ${plural(usual, 'article', 'articles')} a day.`
+        : `The humans turned to ${place}: ${articles}, where they usually write none.`;
     }
     case 'brightest':
-      return `The most positive story, over ${place}: ${articles}, tone ${tone(s.t)}.`;
+      return `The most positive tone the humans wrote today, over ${place}: ${articles}, tone ${tone(s.t)}. Positive is the humans' word. We report their score.`;
     case 'ordinary':
-      return `One story of ordinary life, over ${place}: ${articles} in ${languages}.`;
+      return `One story of what the humans call ordinary life, over ${place}: ${articles} in ${languages}.`;
     case 'faint': {
       const usual = Math.round(slot.b ?? 0);
       return usual > 0
-        ? `One story from a quiet place, ${place}: ${articles}; the place usually has ${num(usual)} a day.`
-        : `One story from a quiet place, ${place}: ${articles}; the place usually has none.`;
+        ? `One story from a place the humans rarely write about, ${place}: ${articles}; on most days it gets ${num(usual)}.`
+        : `One story from a place the humans rarely write about, ${place}: ${articles}; on most days it gets none.`;
     }
     default:
       return '';
@@ -157,6 +157,6 @@ export function sentenceFacts(id: SlotId): readonly SignalFact[] {
 /** Why an empty slot is empty, in the same fixed voice. */
 export function emptyLine(slot: Slot): string {
   if (slot.available) return '';
-  if (slot.reason === 'baseline') return slot.availableFrom ? `Needs more days of history; from ${slot.availableFrom}.` : 'Needs more days of history.';
-  return 'No story met the rule today.';
+  if (slot.reason === 'baseline') return slot.availableFrom ? `We have not watched long enough. From ${slot.availableFrom}.` : 'We have not watched long enough.';
+  return 'No story met the rule today. The rule does not bend.';
 }

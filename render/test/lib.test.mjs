@@ -112,8 +112,10 @@ test("checkPlan: accepts a plan's signals, rejects a malformed entry", () => {
 
 test("captionText: date, one line and address per signal, the broadcast line", () => {
   const lines = (...l) => `${l.join("\n")}\n`;
-  const head = ["Today On Earth · 22 October 2026", "The last 24 hours of the world's news, one dot per place.", ""];
+  const head = ["Today On Earth · 22 October 2026", "One rotation of the humans' news, one dot per place. Counted, not read.", ""];
   const tail = "Today's broadcast: https://currentsbtw.github.io/today-on-earth/broadcast";
+  // The repository's line follows the broadcast's address.
+  const code = "The method and the code: github.com/currentsbtw/today-on-earth";
   assert.equal(
     captionText({ ...goodPlan(), signals: signals() }),
     lines(
@@ -126,10 +128,11 @@ test("captionText: date, one line and address per signal, the broadcast line", (
       `${PAGE}8328d4fffffffff.html`,
       "",
       tail,
+      code,
     ),
   );
-  assert.equal(captionText({ ...goodPlan(), signals: [] }), lines(...head, tail));
-  assert.equal(captionText(goodPlan()), lines(...head, tail));
+  assert.equal(captionText({ ...goodPlan(), signals: [] }), lines(...head, tail, code));
+  assert.equal(captionText(goodPlan()), lines(...head, tail, code));
   assert.match(captionText({ date: "2026-01-05" }), /^Today On Earth · 5 January 2026\n/);
 });
 
@@ -215,10 +218,10 @@ const voicedScript = () => ({
   voice: { engine: "kokoro", name: "af_heart" },
   gap: 0.4,
   lines: [
-    { id: "open", kind: "open", text: "Today on Earth, Saturday the twenty-fourth of October.", seconds: 9.9 },
-    { id: "story-1", kind: "story", text: "Hebron. 277 articles from 245 outlets in 18 languages. Israeli PM pledges massive military operation.", seconds: 6.1, n: 1, of: 2, story: { source: "wamc.org", headline: "Israeli PM pledges massive military operation", spoken: true } },
-    { id: "story-2", kind: "story", text: "Paris. 343 articles from 241 outlets. A headline in Spanish, on screen.", seconds: 4.2, n: 2, of: 2, story: { source: "eltiempo.com", headline: "Francia vive nueva jornada de protestas", spoken: false } },
-    { id: "close", kind: "close", text: "That was today on Earth.", seconds: 9.0 },
+    { id: "open", kind: "open", text: "Today on Earth. The humans call this day Saturday, the twenty-fourth of October. Two places their press pointed at. We counted.", seconds: 9.9 },
+    { id: "story-1", kind: "story", text: "Hebron. The humans wrote: Israeli PM pledges massive military operation.", seconds: 6.1, n: 1, of: 2, story: { source: "wamc.org", headline: "Israeli PM pledges massive military operation", spoken: true } },
+    { id: "story-2", kind: "story", text: "Paris. The humans wrote this in Spanish. It is on your screen.", seconds: 4.2, n: 2, of: 2, story: { source: "eltiempo.com", headline: "Francia vive nueva jornada de protestas", spoken: false } },
+    { id: "close", kind: "close", text: "That was today on Earth. Two hundred and forty-three thousand articles in one rotation. We did not read them. We counted them. We will count again tomorrow.", seconds: 9.0 },
   ],
 });
 
@@ -292,28 +295,29 @@ test("checkNewscastPlan: the contract's shape; lines in order, not overlapping, 
 
 test("captionText: the transcript after the links, each story's headline credit", () => {
   const broadcast = "Today's broadcast: https://currentsbtw.github.io/today-on-earth/broadcast";
+  const code = "The method and the code: github.com/currentsbtw/today-on-earth";
   const transcript = [
-    "Today on Earth, Saturday the twenty-fourth of October.",
-    "Hebron. 277 articles from 245 outlets in 18 languages. Israeli PM pledges massive military operation.",
+    "Today on Earth. The humans call this day Saturday, the twenty-fourth of October. Two places their press pointed at. We counted.",
+    "Hebron. The humans wrote: Israeli PM pledges massive military operation.",
     "Headline from wamc.org",
-    "Paris. 343 articles from 241 outlets. A headline in Spanish, on screen.",
+    "Paris. The humans wrote this in Spanish. It is on your screen.",
     "Headline from eltiempo.com: Francia vive nueva jornada de protestas",
-    "That was today on Earth.",
+    "That was today on Earth. Two hundred and forty-three thousand articles in one rotation. We did not read them. We counted them. We will count again tomorrow.",
     // The voice label: a note line after the transcript, not a spoken line.
     "Read by a synthetic voice from the outlets' own headlines.",
   ];
   assert.equal(
     captionText({ date: "2026-10-24" }, { script: voicedScript() }),
-    `${["Today On Earth · 24 October 2026", "The last 24 hours of the world's news, one dot per place.", "", broadcast, "", ...transcript].join("\n")}\n`,
+    `${["Today On Earth · 24 October 2026", "One rotation of the humans' news, one dot per place. Counted, not read.", "", broadcast, code, "", ...transcript].join("\n")}\n`,
   );
   // With signals, the transcript comes after the signal links and the broadcast line.
   const withSignals = captionText({ date: "2026-10-24", signals: signals().slice(0, 1) }, { script: voicedScript() }).split("\n");
-  assert.deepEqual(withSignals.slice(3, 9), ["1/1 · MOST COVERED STORY · Paris", `${PAGE}831fb4fffffffff.html`, "", broadcast, "", transcript[0]]);
+  assert.deepEqual(withSignals.slice(3, 10), ["1/1 · MOST COVERED STORY · Paris", `${PAGE}831fb4fffffffff.html`, "", broadcast, code, "", transcript[0]]);
   // A headline read in Spanish (v4.2): the line as spoken, in Spanish, and the credit alone.
   const read = voicedScript();
-  read.lines[2] = { ...read.lines[2], text: "Paris. Francia vive nueva jornada de protestas.", story: { ...read.lines[2].story, spoken: true, said: "Francia vive nueva jornada de protestas", readIn: "es" } };
+  read.lines[2] = { ...read.lines[2], text: "Paris. The humans wrote, in Spanish: Francia vive nueva jornada de protestas.", story: { ...read.lines[2].story, spoken: true, said: "Francia vive nueva jornada de protestas", readIn: "es", frame: "Paris. The humans wrote, in Spanish: " } };
   const lines = captionText({ date: "2026-10-24" }, { script: read }).split("\n");
-  assert.deepEqual(lines.slice(8, 10), ["Paris. Francia vive nueva jornada de protestas.", "Headline from eltiempo.com"]);
+  assert.deepEqual(lines.slice(9, 11), ["Paris. The humans wrote, in Spanish: Francia vive nueva jornada de protestas.", "Headline from eltiempo.com"]);
 });
 
 test("checkNewscastPlan: a story line's audio may start inside its flight (the page's LINE_LEAD)", () => {

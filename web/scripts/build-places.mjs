@@ -139,24 +139,24 @@ function signalLine(slot) {
   const languages = plural(s.l, 'language', 'languages');
   switch (slot.id) {
     case 'loudest':
-      return `One story over ${place}: ${articles} in ${languages}.`;
+      return `The humans spoke most about one story, over ${place}: ${articles} in ${languages}.`;
     case 'planet':
-      return `One story over ${place}, heard in ${plural(s.i, 'other country', 'other countries')}: ${articles}.`;
+      return `One story over ${place} was heard in more countries than any other: ${plural(s.i, 'other country', 'other countries')}. ${articles}.`;
     case 'rising': {
       const usual = Math.round(slot.b ?? 0);
       return usual > 0
-        ? `One story over ${place}: ${articles}, where the place usually has ${plural(usual, 'article', 'articles')} a day.`
-        : `One story over ${place}: ${articles}, where the place usually has none.`;
+        ? `The humans turned to ${place}: ${articles}, where they usually write ${plural(usual, 'article', 'articles')} a day.`
+        : `The humans turned to ${place}: ${articles}, where they usually write none.`;
     }
     case 'brightest':
-      return `The most positive story, over ${place}: ${articles}, tone ${tone(s.t)}.`;
+      return `The most positive tone the humans wrote today, over ${place}: ${articles}, tone ${tone(s.t)}. Positive is the humans' word. We report their score.`;
     case 'ordinary':
-      return `One story of ordinary life, over ${place}: ${articles} in ${languages}.`;
+      return `One story of what the humans call ordinary life, over ${place}: ${articles} in ${languages}.`;
     case 'faint': {
       const usual = Math.round(slot.b ?? 0);
       return usual > 0
-        ? `One story from a quiet place, ${place}: ${articles}; the place usually has ${count(usual)} a day.`
-        : `One story from a quiet place, ${place}: ${articles}; the place usually has none.`;
+        ? `One story from a place the humans rarely write about, ${place}: ${articles}; on most days it gets ${count(usual)}.`
+        : `One story from a place the humans rarely write about, ${place}: ${articles}; on most days it gets none.`;
     }
     default:
       return '';
@@ -165,8 +165,8 @@ function signalLine(slot) {
 
 function emptyLine(slot) {
   if (slot.available) return '';
-  if (slot.reason === 'baseline') return slot.availableFrom ? `Needs more days of history; from ${slot.availableFrom}.` : 'Needs more days of history.';
-  return 'No story met the rule today.';
+  if (slot.reason === 'baseline') return slot.availableFrom ? `We have not watched long enough. From ${slot.availableFrom}.` : 'We have not watched long enough.';
+  return 'No story met the rule today. The rule does not bend.';
 }
 
 /** The story's counts the slot's sentence does not already state (the Signals entry's meta line). */
@@ -631,14 +631,14 @@ function slotsOf(broadcast) {
   if (!broadcast) return SLOT_IDS.map((id) => ({ id, available: false, none: true }));
   return arr(broadcast.slots).filter((s) => s && typeof s === 'object' && SLOT_IDS.includes(s.id));
 }
-const NO_BROADCAST = 'No broadcast in this snapshot.';
+const NO_BROADCAST = 'Nothing to broadcast from this count.';
 const filled = (slot) => !!(slot.available && slot.cell && slot.story && typeof slot.cell.id === 'string');
 
 /** One slot of the broadcast page: plain label, site label, then the place, sentence and story. */
 function slotSection(slot, paged) {
   const head = `<h2>${esc(PLAIN_LABELS[slot.id])}</h2>\n<p class="label slot-id">${esc(SLOT_LABELS[slot.id])}</p>`;
   const line = filled(slot) ? signalLine(slot) : '';
-  if (!line) return `<section class="slot">\n${head}\n<p class="line">${esc(slot.none ? NO_BROADCAST : emptyLine(slot) || 'No story met the rule today.')}</p>\n</section>`;
+  if (!line) return `<section class="slot">\n${head}\n<p class="line">${esc(slot.none ? NO_BROADCAST : emptyLine(slot) || 'No story met the rule today. The rule does not bend.')}</p>\n</section>`;
   const { cell, story } = slot;
   const name = str(cell.name) || cell.id;
   const place = paged.has(cell.id) ? `<a href="place/${esc(cell.id)}.html">${esc(name)}</a>` : esc(name);
@@ -693,7 +693,7 @@ function broadcastFeed(broadcast, heat, paged) {
     const parts = slotsOf(broadcast).map((slot) => {
       const head = `<h3>${esc(PLAIN_LABELS[slot.id])}</h3><p>${esc(SLOT_LABELS[slot.id])}</p>`;
       const line = filled(slot) ? signalLine(slot) : '';
-      if (!line) return `${head}<p>${esc(emptyLine(slot) || 'No story met the rule today.')}</p>`;
+      if (!line) return `${head}<p>${esc(emptyLine(slot) || 'No story met the rule today. The rule does not bend.')}</p>`;
       const { cell, story } = slot;
       const name = str(cell.name) || cell.id;
       const place = paged.has(cell.id) ? `<a href="${esc(`${SITE}place/${cell.id}.html`)}">${esc(name)}</a>` : esc(name);
