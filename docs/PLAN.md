@@ -1150,7 +1150,7 @@ and headline in an English line; trimming the pieces' edge silence before the jo
 it to about 0.25 s, the owner's call by ear. The page's word reveal is proportional over the
 whole line, so on a two-piece line the headline's words run slightly ahead of the voice. Spanish
 is espeak's Castilian ("dice" with θ). Not done: a Linux (CI) run of the phonemiser, and the
-owner's listening.
+owner's listening. CI verified (run 40516958128 on ubuntu-latest): uv synced the locked environment, the Spanish headline was phonemised in 244 ms and read by af_heart + ef_dora, 8 lines in 18 s, no fallback, clip-2026-10-27.mp4 (68.3 s) on the clips release.
 
 
 **What changes in the machinery.** The audio drives the timeline, not the other way round:
