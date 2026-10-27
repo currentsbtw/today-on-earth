@@ -10,8 +10,10 @@
 //                    stories as `signals`; then __clipPlan() and __clipStep(i) as below. The
 //                    segments: open (the world, no clock, key or totals; the opening's
 //                    sentences painted one by one at their proportional times in the hook
-//                    caption's register), per story a flight captioned "N/M · PLACE" and its
-//                    card (header "N/M", the whole headline from the card's first frame, over
+//                    caption's register; the script's count line and each aside take an
+//                    open segment of their own laid out the same way, an aside after a card
+//                    first pulling back to the world over a flight's length), per story a
+//                    flight captioned "N/M · PLACE" and its card (header "N/M", the whole headline from the card's first frame, over
 //                    "HEADLINE NOT READ · <LANGUAGE>" when the voice skips it), and close (the first sentence over a pull-back to the
 //                    world, then from the second sentence the end card with one verb line and
 //                    READ BY A SYNTHETIC VOICE, no totals);
@@ -81,6 +83,7 @@ import {
   interpolateCells,
   interpolateTotals,
   lapseTime,
+  NEWSCAST_FLIGHT,
   newscastSegmentAt,
   pullbackFraction,
   reached,
@@ -1161,7 +1164,6 @@ async function renderNewscast() {
       if (storyCells && !storyCells.has(line.story.cell)) console.warn(`script story ${line.id}: cell ${line.story.cell} is not in stories.json`);
       if (!heat.cells.some((c) => c.id === line.story.cell)) console.warn(`script story ${line.id}: cell ${line.story.cell} is not in heat.json`);
     }
-    const open = script.lines[0];
     const close = script.lines[script.lines.length - 1];
 
     // Measure every layout once, with the fonts laid out.
@@ -1169,8 +1171,14 @@ async function renderNewscast() {
     setTime(liveAt);
     const cards: CardWindow[] = [];
     for (const text of texts) cards.push(await layoutCard(text));
-    const openSay = sentenceTimes(open.text, open.seconds);
-    const openFit = await fitSay(liveAt, openSay.map((s) => s.text), w0);
+    // The open, the count and the asides: the spoken caption, per line.
+    const says = new Map<string, { texts: string[]; ats: number[]; fit: string }>();
+    for (const line of script.lines) {
+      if (line.kind !== 'open' && line.kind !== 'count' && line.kind !== 'aside') continue;
+      const said = sentenceTimes(line.text, line.seconds);
+      const texts = said.map((s) => s.text);
+      says.set(line.id, { texts, ats: said.map((s) => s.at), fit: await fitSay(liveAt, texts, w0) });
+    }
     const closeSay = sentenceTimes(close.text, close.seconds);
     const closeFirst = closeSay.slice(0, 1).map((s) => s.text);
     const closeFit = await fitSay(liveAt, closeFirst, w0);
@@ -1194,15 +1202,30 @@ async function renderNewscast() {
     const path = (a: ClipCamera, b: ClipCamera, steps: number) => flightPath(a, b, steps, { width: W, height: H, minZoom, wrap: portrait });
     const arrivals = stories.map((line, n) => held(map, arrivalCamera(w0, cards[n], line.story)));
     const segmentOf = (id: string, kind: NewscastSegment['kind']) => built.segments.find((s) => s.line === id && s.kind === kind)!;
-    const flights = stories.map((line, n) => path(n ? arrivals[n - 1] : worldView, arrivals[n], segmentOf(line.id, 'flight').frames + 1));
+    const lineIndex = new Map(script.lines.map((line, k) => [line.id, k]));
+    const storyIndex = new Map(stories.map((line, n) => [line.id, n]));
+    // Where the camera stands when line k ends: a story on its arrival, every other line on the world.
+    const cameraAfter = script.lines.map((line) => (line.kind === 'story' ? arrivals[storyIndex.get(line.id)!] : worldView));
+    const cameraBefore = (id: string) => {
+      const k = lineIndex.get(id)!;
+      return k ? cameraAfter[k - 1] : worldView;
+    };
+    const flights = stories.map((line, n) => path(cameraBefore(line.id), arrivals[n], segmentOf(line.id, 'flight').frames + 1));
+    // An aside after a card pulls back to the world over a flight's length (or its whole
+    // segment when shorter), as the close does, then holds the world; elsewhere it holds the world.
+    const asidePulls = new Map<string, ClipCamera[]>();
+    for (const line of script.lines) {
+      const k = lineIndex.get(line.id)!;
+      if (line.kind !== 'aside' || script.lines[k - 1].kind !== 'story') continue;
+      const frames = Math.min(segmentOf(line.id, 'open').frames, framesFor(NEWSCAST_FLIGHT, fps));
+      asidePulls.set(line.id, path(cameraBefore(line.id), worldView, Math.max(1, frames)));
+    }
     const closeSegment = segmentOf(close.id, 'close');
     // The lockup takes over as the second sentence starts; the pull-back fills the frames before.
     const lockupAt = closeSay[1]?.at ?? close.seconds;
     const pullFrames = Math.min(closeSegment.frames, Math.max(0, Math.ceil(lockupAt * fps - 1e-9)));
-    const pull = path(arrivals.length ? arrivals[arrivals.length - 1] : worldView, worldView, Math.max(1, pullFrames));
+    const pull = path(cameraBefore(close.id), worldView, Math.max(1, pullFrames));
     const callouts = await Promise.all(stories.map((line) => cellCallout({ id: line.story.cell, name: line.story.place, lat: line.story.lat, lon: line.story.lon }, heat)));
-    const lineIndex = new Map(script.lines.map((line, k) => [line.id, k]));
-    const storyIndex = new Map(stories.map((line, n) => [line.id, n]));
 
     let shownCallout: number | null | undefined;
     const showCallout = (n: number | null) => {
@@ -1226,11 +1249,15 @@ async function renderNewscast() {
       let closeUp = false;
       let end = false;
       switch (segment.kind) {
-        case 'open':
-          map.jumpTo(worldView);
-          sayLayout(liveAt, openSay.map((s) => s.text), reached(openSay.map((s) => s.at), t), w0, openFit);
+        case 'open': {
+          // The open, the count or an aside.
+          const pullBack = asidePulls.get(segment.line);
+          map.jumpTo(pullBack && offset < pullBack.length - 1 ? pullBack[offset + 1] : worldView);
+          const say = says.get(segment.line)!;
+          sayLayout(liveAt, say.texts, reached(say.ats, t), w0, say.fit);
           showCallout(null);
           break;
+        }
         case 'flight':
           map.jumpTo(flights[n][offset + 1]);
           flightLayout(texts[n], liveAt, null, w0, cards[n]);

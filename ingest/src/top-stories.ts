@@ -17,6 +17,11 @@ import type { CellFile, HeatCell, HeatFile, Story, TopStoriesFile, TopStory } fr
  * the place, so a story GDELT placed at a same-name town elsewhere must not be read there.
  * The city and region may also be named in a local language (Купянск, 重庆): the place-names
  * table (placenames-table.ts, from GeoNames) adds names by the cell's FeatureID `fid`.
+ *
+ * Each entry also carries `g` (added 2026-10-27), its story's grim share as stories.ts computes
+ * it (the share of the story's article units with a conflict, crime or disaster kind), so the
+ * clip can gate its show-mode frames on the coverage. It sits on the entry, not in `story`,
+ * which stays the cell file's fields exactly.
  */
 
 /** At most this many entries. The clip reads the first 6 to 8 it can voice; the rest is slack. */
@@ -192,8 +197,16 @@ interface Candidate {
 /** Ranking: more distinct outlets `o`, then the broadcast's tie order (higher n, earlier first, cell id, position). */
 const byOutlets = (a: Candidate, b: Candidate) => b.story.o - a.story.o || tieBreak(a, b);
 
-export function buildTopStories(args: { heat: HeatFile; cells: readonly CellFile[] }): TopStoriesFile {
-  const { heat, cells } = args;
+export function buildTopStories(args: {
+  heat: HeatFile;
+  cells: readonly CellFile[];
+  /**
+   * Per story: its grim share (stories.ts buildStories `grim`, Snapshot.storyGrim), written to the
+   * entry as `g` (added 2026-10-27). A story missing from the map gets no `g`.
+   */
+  storyGrim?: ReadonlyMap<Story, number>;
+}): TopStoriesFile {
+  const { heat, cells, storyGrim } = args;
   const heatById = new Map(heat.cells.map((c) => [c.id, c]));
   const all: Candidate[] = [];
   for (const cell of cells) {
@@ -227,7 +240,8 @@ export function buildTopStories(args: { heat: HeatFile; cells: readonly CellFile
     takenCells.add(c.cell.id);
     if (c.key !== "") takenEvents.add(c.key);
     perCountry.set(key, had + 1);
-    stories.push({ rank: stories.length + 1, cell: slotCell(c.cell, c.heat), story: slotStory(c.story), confirmed: confirmed.level });
+    const g = storyGrim?.get(c.story);
+    stories.push({ rank: stories.length + 1, cell: slotCell(c.cell, c.heat), story: slotStory(c.story), confirmed: confirmed.level, ...(g === undefined ? {} : { g }) });
   }
   return { generatedAt: heat.generatedAt, windowHours: heat.windowHours, stories };
 }

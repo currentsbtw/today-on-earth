@@ -21,6 +21,9 @@ deployed site. In local dev the frontend serves `web/public/data/` at `/data/`.
                                   // left once outlet boilerplate is skipped (only a region, or nothing), counted here,
                                   // never binned (changed 2026-10-23; region-only articles since 2026-10-24)
               "reprints": 23100 }, // sum over cells of (n - u): articles that copy another outlet's headline in the same cell (added 2026-10-21)
+  "articlesNormal": 214500,       // median of totals.articles as recorded once per complete UTC day (that day's last snapshot) over
+                                  // the last up to 14 complete days, a whole number; null until 7 such days exist, see Baseline (added 2026-10-27)
+  "articlesNormalDays": 9,        // how many complete days articlesNormal covers, 7 to 14; 0 while it is null (added 2026-10-27)
   "topOutletCountries": [["US", 52000], ["GB", 18100], ["IN", 12400]], // the 20 outlet countries with the most article units in the
                                   // window, placed and unplaced (the unit of totals.articles), by units desc then code, "" excluded;
                                   // the "largest news countries", see Coverage gaps (added 2026-10-23)
@@ -73,6 +76,17 @@ So that a quiet place lighting up can show, each cell carries its own normal:
   back-filled earlier days are partial and never count as complete. Baseline,
   state and history live in the same cache entry, so they are restored or lost
   together (a baseline surviving a lost state would double count).
+- The count's normal (added 2026-10-27), for the daily clip's count line: top level
+  `"articlesNormal": 214500` and `"articlesNormalDays": 9`. The carried baseline also
+  keeps one window total per UTC day: every run writes its `totals.articles` under the
+  run's UTC day, replacing the earlier run's, so a day that is over holds its last
+  snapshot's total. `articlesNormal` is the median of those totals over the last up to 14
+  complete days (the complete days above) that have one, rounded to a whole number;
+  `articlesNormalDays` is how many days that is. While fewer than 7 complete days have a
+  total, `articlesNormal` is `null` and `articlesNormalDays` is 0 (the one `null` in these
+  files; see Rules). Baseline files from before 2026-10-27 hold no day totals, so the count
+  starts from the first run after the change. Both fields are additive: older files lack
+  them, and a reader treats a missing `articlesNormal` as `null`.
 
 ### Reprints and international attention (added 2026-10-21)
 
@@ -490,8 +504,9 @@ an entry carries an outlet's own headline plus the story's numbers.
       "story": { "headline": "…", "headlineSource": "bbc.co.uk", "headlineLang": "en", "headlineUrl": "https://…",
                  "n": 212, "u": 150, "o": 96, "c": 21, "i": 20, "l": 7, "t": -4.1,
                  "first": "2026-10-26T01:15:00Z", "last": "2026-10-26T04:30:00Z" },
-      "confirmed": "metonym" },   // added 2026-10-24: why the story is listed here (see Confirmation)
-    { "rank": 2, "cell": { … }, "story": { … }, "confirmed": "city" }
+      "confirmed": "metonym",     // added 2026-10-24: why the story is listed here (see Confirmation)
+      "g": 0.38 },                // added 2026-10-27: the story's grim share, 0 to 1, 2 decimals (see below)
+    { "rank": 2, "cell": { … }, "story": { … }, "confirmed": "city", "g": 0 }
   ]
 }
 ```
@@ -504,6 +519,16 @@ an entry carries an outlet's own headline plus the story's numbers.
 - `confirmed` (added 2026-10-24): `"city"`, `"region"`, `"country"` or `"metonym"`, the first
   level of the cell's name that the story's own text names (see Confirmation below), so a
   reader can see why the story is listed at this place.
+- `g` (added 2026-10-27): the story's grim share, the number of its article units (the units
+  its `n` counts, attached ones included) of which at least one copy carries a conflict, crime
+  or disaster theme kind, divided by all its units, 0 to 1, 2 decimals (0 when it has no
+  units). The kinds are the ingest's article kinds from GDELT's raw themes (`ingest/src/kinds.ts`:
+  c conflict, k crime, d disaster); politics (p) does not count. It is the same unit count the
+  broadcast's ordinary slot uses, which counts politics too. A property of the coverage, not a
+  judgment of the story; the clip treats `g` >= 0.25 as grim. It sits on the entry, not in
+  `story`, which stays the cell file's fields exactly. The cell files carry no kinds, so `g`
+  cannot be recomputed from them. Additive: files from before 2026-10-27 lack it, and a reader
+  treats a missing `g` as unknown.
 - If building the list fails, the run logs the error and still writes the file, with
   `"stories": []`: the map snapshot is never held back by it.
 
@@ -684,7 +709,8 @@ successful run to the release tagged `archive-YYYY-MM-DD` (the UTC day of
 The files are byte-for-byte the `/data/` files of that run, so this contract describes
 them too, as of the version that wrote them. Older archived files may lack fields added
 later (readers treat a missing field as `0` / `""`, except the history's `newest`, `added`
-and `a`, which are unknown when missing). Repository variable `ARCHIVE=false`
+and `a`, and stories.json's `g` (added 2026-10-27), which are unknown when missing, and
+heat.json's `articlesNormal` (added 2026-10-27), which is `null` when missing). Repository variable `ARCHIVE=false`
 turns the step off; a failed upload never fails the snapshot.
 
 ## Carried files: `state.json.gz` and `history.json.gz`  (ingest-internal)
@@ -740,4 +766,6 @@ failure fails the run; that path is unused in production.
 - Permalinks (frontend only): the URL hash `#c=<cellId>&t=<frame at>` selects a cell
   and a frame. `t` is the frame's `at` value with punctuation removed
   (`20261021T044714Z`). Either key may be absent. Unknown values are ignored silently.
-- Missing values are `""` for strings and `0` for numbers, never `null`.
+- Missing values are `""` for strings and `0` for numbers, never `null`. One exception:
+  `heat.json` `articlesNormal` is `null` while no normal exists (added 2026-10-27), since 0
+  would read as a real median.

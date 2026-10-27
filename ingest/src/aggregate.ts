@@ -63,6 +63,11 @@ export interface Snapshot {
   /** Per story: how many of its articles carry any kind (ingest-internal, for the broadcast). */
   storyTagged: Map<Story, number>;
   /**
+   * Per story: its grim share, the share of its article units carrying a conflict, crime or
+   * disaster kind (ingest-internal here; stories.json writes it as `g`).
+   */
+  storyGrim: Map<Story, number>;
+  /**
    * Per story: how many of its leading `entities` are persons or organisations; the rest are
    * theme words (ingest-internal, for topics.json).
    */
@@ -80,7 +85,7 @@ export function buildSnapshot(
   records: readonly ArticleRecord[],
   opts: { now: Date; windowHours: number; baseline?: BaselineView; keyer?: Keyer },
 ): Snapshot {
-  const baseline = opts.baseline ?? { baselineDays: 0, b: () => 0 };
+  const baseline = opts.baseline ?? { baselineDays: 0, b: () => 0, articlesNormal: null, articlesNormalDays: 0, totalDays: 0 };
   const keyer = opts.keyer ?? createKeyer(records);
   const byCell = new Map<string, ArticleRecord[]>();
   const unplacedRecords: ArticleRecord[] = [];
@@ -114,6 +119,7 @@ export function buildSnapshot(
   const unplaced = unplacedUnits.length;
   let articles = unplaced;
   const storyTagged = new Map<Story, number>();
+  const storyGrim = new Map<Story, number>();
   const storyNames = new Map<Story, number>();
   for (const [id, list] of byCell) {
     if (list.length < MIN_CELL_ARTICLES) {
@@ -133,9 +139,10 @@ export function buildSnapshot(
       const key = keyer.keyOf(r);
       return key ? copies.get(key)! - 1 : 0;
     };
-    const { stories, unclustered, tagged, names } = timed(() => buildStories(list, keyer, s.home));
+    const { stories, unclustered, tagged, grim, names } = timed(() => buildStories(list, keyer, s.home));
     stories.forEach((story, k) => {
       storyTagged.set(story, tagged[k]);
+      storyGrim.set(story, grim[k]);
       storyNames.set(story, names[k]);
     });
     cellFiles.set(id, {
@@ -176,8 +183,10 @@ export function buildSnapshot(
     newestArticleAt: newest,
     baselineDays: baseline.baselineDays,
     totals: { articles, outlets: outlets.size, countries: countries.size, cells: heatCells.length, unplaced, reprints },
+    articlesNormal: baseline.articlesNormal,
+    articlesNormalDays: baseline.articlesNormalDays,
     topOutletCountries: sortCounts(countryUnits).slice(0, TOP_OUTLET_COUNTRIES),
     cells: heatCells,
   };
-  return { heat, cells: heatCells.map((c) => cellFiles.get(c.id)!), storiesMs, storyTagged, storyNames };
+  return { heat, cells: heatCells.map((c) => cellFiles.get(c.id)!), storiesMs, storyTagged, storyGrim, storyNames };
 }

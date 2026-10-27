@@ -174,25 +174,110 @@ order:
 The broadcast page (`broadcast.html`), its feed and each place's feed carry the same fixed
 sentences, headlines and numbers as the site, nothing more.
 
-The daily clip reads the day's stories aloud in fixed lines, the same for every story:
+The daily clip is a short spoken show. Its lines come from fixed pools, published below
+in full; a published rule picks one line from each pool without reading any story. In
+order, the show has:
 
-- Open: "Today on Earth. The humans call this day {Weekday}, the {ordinal} of {month}.
-  Six places their press pointed at. We counted." (the number of stories read, in words;
-  one story: "One place their press pointed at. We counted."; none: "Their press pointed
-  nowhere we could place.").
-- A story whose headline the voice reads: "{Place}. The humans wrote: {headline}."
-- A story whose headline is read in its own language (Spanish, French, Italian,
-  Portuguese, Hindi, Japanese or Chinese): "{Place}. The humans wrote, in {Language}:
-  {headline}.", the frame in the English voice and the headline in that language's voice.
-- A story whose headline the voice cannot read: "{Place}. The humans wrote this in
-  {Language}. It is on your screen."
-- Close: "That was today on Earth. {articles, in words, rounded to the nearest thousand}
-  articles in one rotation. We did not read them. We counted them. We will count again
-  tomorrow."
+1. The sign-on and the date line, read as one line.
+2. The count: the day's article count against its normal.
+3. Up to six stories, each a frame line followed by the outlet's headline.
+4. Up to two asides, each after a story.
+5. The sign-off.
+
+In the lines below, {N} is the article count of the last 24 hours, in words, rounded to the nearest thousand from 1,000 up; {Place} is
+the story's place; {h} is the headline; {o}, {l} and {i} are the story's outlets,
+languages, and countries other than the place's own; {Language} is the headline's
+language; {k} is the number of headlines read so far in the show.
+
+**Sign-on** (one per show):
+
+- "This is Today on Earth, the only news about this planet made by anyone who does not live on it."
+- "Today on Earth. We are in orbit. The humans are below, writing."
+- "Good rotation. This is Today on Earth. We have counted the humans' news so that you do not have to."
+- "Today on Earth. One planet, one rotation, one count. The humans supplied the rest."
+- "You are watching Today on Earth, from a distance we consider safe."
+
+The sign-on is followed by the fixed date line: "The humans call this day {Weekday}, the {ordinal} of {month}."
+
+**The count** (one line, chosen by the count's band, below):
+
+- loud: "{N} articles. A loud rotation, even for them."
+- quiet: "{N} articles. A quiet rotation. We checked the instrument. It is the humans."
+- ordinary: "{N} articles. An ordinary rotation for the humans. We have no other kind."
+- no history: "{N} articles. We counted every one. We read six headlines. Here they are."
+
+**Story frames** (one per story; the condition, where there is one, follows the line):
+
+- plain: "{Place}. The humans wrote: {h}" (not picked by the hash: used for grim stories, for the plain floor below, and when no other frame is eligible)
+- "{Place}. From the humans' press, unedited: {h}"
+- "{Place}. Their words, not ours: {h}"
+- "{Place}. {o} of the humans' outlets covered this. One of them wrote: {h}" (at least 10 outlets)
+- "{Place}. Read in {l} languages. We will read it in one: {h}" (at least 3 languages)
+- "{Place}. Heard in {i} countries that are not this one. The headline: {h}" (at least 5 countries)
+- "Next, {Place}. The humans wrote, and we quote: {h}" (never on the first story)
+- "{Place}. We do not know what this means. The humans wrote: {h}" (never on a grim story)
+
+**Stories whose headline the voice cannot read** (one per such story, in place of a frame and headline):
+
+- "{Place}. The humans wrote this in {Language}. It is on your screen."
+- "{Place}. The humans wrote this in {Language}, which is one of theirs. It is on your screen."
+
+**Asides** (zero to two per show):
+
+- "We pause to note that the humans wrote {N} articles today and we have read {k} headlines. The ratio is not in our favour."
+- "The humans' press covered {Place} in {l} languages. We work in one. We are doing our best." ({Place} and {l} from the story read today with the most languages; at least 10)
+- "This has been the part of the programme where we read things. It is most of the programme."
+
+**Sign-off** (one per show):
+
+- "That was today on Earth. The humans will write again tomorrow. We will count again tomorrow. Neither of us can stop."
+- "That was today on Earth. We did not read the articles. We counted them. It was easier."
+- "This has been Today on Earth. We remain in orbit, where it is quiet."
+- "That was today on Earth. {N} articles, six headlines, one planet. We will be back when it turns." (only when six stories were read)
+- "That was today on Earth. If the humans write something tomorrow, and they will, we will count it."
+
+How a line is picked. Each pick starts from the FNV-1a 32-bit hash, passed through the
+MurmurHash3 finaliser so that every bit of it is mixed, of a seed made of the clip's date and the line's position: `{date}:open` for the sign-on, `{date}:story:{k}`
+for the k-th story, `{date}:aside:{k}` for an aside after the k-th story and
+`{date}:close` for the sign-off. The hash, modulo the pool's size, gives a starting line.
+From there the pick walks forward through the pool, wrapping round at the end, past any
+line already used in the show (the first unreadable-headline line may repeat) and past any line whose condition the story does not meet, and takes the
+first line left. The rule reads the date and the position, never the story's content, so
+the same snapshot always gives the same show, and no person or model chooses a line for
+a story.
+
+Conditions and the plain floor. The outlets frame needs at least 10 outlets, the
+languages frame at least 3 languages, and the countries frame at least 5 countries other
+than the place's own; the other frames have no condition. At least two stories in every
+show take the plain frame. Grim stories count toward the two; when fewer than two
+stories would take it, it is given to further stories, picked by the same hash over the
+seeds `{date}:plain:{j}` among the remaining positions.
+
+The grim gate. For each story, g is the share of its articles that carry a conflict,
+crime or disaster theme (the Conflict, Crime and Disaster families listed below, the same
+as for the Ordinary life slot; Politics does not count). A story with g of 0.25 or more is
+grim: it gets the plain frame (or, when the voice cannot read its headline, the first
+unreadable-headline line), never a variant, and no aside follows it. A story without
+a recorded g is treated as grim.
+
+Asides. An aside can come after the second story and after the fourth, when the show has
+that many stories and the story before it is not grim. Each of those two places takes an
+aside when the hash of `{date}:aside:{k}` is even; the aside's line is then picked from
+its pool by the same seed, without repeating within the show.
+
+The count's bands. The count compares the article count of the last 24 hours with the
+median of the totals recorded at the end of each of the last 7 to 14 complete UTC days.
+Above 1.15 times the median is loud, below 0.85 times the median is quiet, and anything
+between is ordinary. Until 7 complete days are recorded there is no median, and the count
+uses the no-history line.
 
 The headline is the outlet's own words, verbatim apart from a leading or trailing outlet
-or section label, which is dropped for speech. The outlet is never spoken; it is credited
-on screen and in the caption. Nothing else is spoken.
+or section label, which is dropped for speech. A headline in Spanish, French, Italian,
+Portuguese, Hindi, Japanese or Chinese is read in that language's voice, and the frame
+before it in the English voice; the frame then names the language, with ", in {Language}"
+before the colon that ends it ("{Place}. The humans wrote, in {Language}: "), and the
+languages frame is not used for it. The outlet is never spoken; it is credited on screen and
+in the caption. Nothing else is spoken.
 
 The four theme families, in full, from GDELT's own theme tags. A name ending in `*`
 covers every theme that starts with it.

@@ -4,7 +4,7 @@ import { isDeniedTheme, parseNames, parseOrgs, parseThemes, titleTokens } from "
 import { decodeState, encodeState } from "../src/state.ts";
 import { isRepublisher, makeIsRepublisher, parseRepublishers } from "../src/domains.ts";
 import { createKeyer } from "../src/reprints.ts";
-import { FULL_STORIES, MAX_STORIES, buildStories, creditedCopy, themeWords } from "../src/stories.ts";
+import { FULL_STORIES, GRIM_KINDS, MAX_STORIES, buildStories, countKindUnits, creditedCopy, grimShare, themeWords, unitHasKind } from "../src/stories.ts";
 import type { ArticleRecord } from "../src/types.ts";
 import { gzipSync } from "node:zlib";
 
@@ -400,4 +400,40 @@ test("stories: countries lists every outlet country of the story, attached units
   assert.deepEqual(story.countries, [["GB", 2], ["JP", 1], ["US", 1]]); // "" left out; tie by code
   assert.equal(story.c, story.countries.length);
   assert.equal(story.i, story.countries.filter(([cc]) => cc !== "US").length);
+});
+
+// One story of 8 article units, one per outlet, with the given kinds (kinds.ts letters) in order.
+const kindStory = (kinds: string[]) =>
+  buildStories(kinds.map((k, i) => art({
+    url: `https://o${i}.com/a`, time: t(1, i), source: `o${i}.com`, title: `Harvest festival opens in Riverton square ${i}`,
+    persons: ["ann lee"], orgs: ["riverton council"], kinds: k,
+  })));
+
+test("grim share g: units carrying conflict, crime or disaster over all units, 2 decimals; politics does not count", () => {
+  // 3 of 8 units grim (c, k, and d with p); one more is politics only, which the ordinary slot counts but g does not.
+  const mixed = kindStory(["c", "k", "dp", "p", "", "", "", ""]);
+  assert.equal(mixed.stories.length, 1);
+  assert.equal(mixed.stories[0].n, 8);
+  assert.deepEqual(mixed.grim, [0.38]); // 3/8 = 0.375
+  assert.deepEqual(mixed.tagged, [4]); // the ordinary slot's count: any kind, politics included
+  assert.ok(!("g" in mixed.stories[0])); // ingest-internal: never in the cell file
+  // Politics only: every unit tagged, none grim.
+  const politics = kindStory(Array(8).fill("p"));
+  assert.deepEqual(politics.grim, [0]);
+  assert.deepEqual(politics.tagged, [8]);
+  // No units: 0, not NaN.
+  assert.equal(grimShare(0, 0), 0);
+  assert.equal(grimShare(3, 8), 0.38);
+  assert.equal(GRIM_KINDS, "cdk");
+});
+
+test("grim share g: a unit counts when any of its copies carries a grim kind, as the ordinary slot counts any kind", () => {
+  const rec = (kinds: string) => art({ url: `https://x.com/${kinds || "none"}`, time: t(1), kinds });
+  const unit = [rec(""), rec("pk")]; // an outlet's two copies of one headline; the second carries crime
+  assert.equal(unitHasKind(unit, GRIM_KINDS), true);
+  assert.equal(unitHasKind([rec("p")], GRIM_KINDS), false);
+  assert.equal(unitHasKind([rec("p")]), true);
+  assert.equal(unitHasKind([rec("")]), false);
+  assert.equal(countKindUnits([unit, [rec("p")], [rec("")]], GRIM_KINDS), 1);
+  assert.equal(countKindUnits([unit, [rec("p")], [rec("")]]), 2);
 });

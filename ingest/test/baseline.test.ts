@@ -6,7 +6,9 @@ import { test } from "node:test";
 import { gzipSync } from "node:zlib";
 import { buildSnapshot } from "../src/aggregate.ts";
 import {
+  ARTICLES_NORMAL_MIN_DAYS,
   advanceBaseline,
+  articlesNormal,
   baselineView,
   completeDays,
   countNewRecords,
@@ -14,6 +16,7 @@ import {
   decodeBaseline,
   encodeBaseline,
   loadBaseline,
+  recordDayTotal,
   trimDays,
   type Baseline,
   type BaselineDays,
@@ -34,7 +37,7 @@ const quiet = () => {};
 const day = (offset: number) => new Date(Date.UTC(2026, 9, 21 + offset)).toISOString().slice(0, 10);
 /** Full slot coverage (96 files per feed) for each given day. */
 const fullSlots = (days: string[]): BaselineSlots => Object.fromEntries(days.map((d) => [d, { english: 96, translingual: 96 }]));
-const baseline = (days: BaselineDays, since = ""): Baseline => ({ since, days, slots: fullSlots(Object.keys(days)) });
+const baseline = (days: BaselineDays, since = ""): Baseline => ({ since, days, slots: fullSlots(Object.keys(days)), totals: {} });
 
 test("day bucketing uses the article's UTC GKG time, at the boundary too", () => {
   const days = countNewRecords({}, [
@@ -144,7 +147,7 @@ test("arrived units: an outlet's later copy of a headline adds nothing to b, ano
 });
 
 test("advanceBaseline: a state that did not load discards the carried baseline", () => {
-  const prev: Baseline = { since: "2026-10-15", days: { "2026-10-20": { a: 500 } }, slots: fullSlots(["2026-10-20"]) };
+  const prev: Baseline = { since: "2026-10-15", days: { "2026-10-20": { a: 500 } }, slots: fullSlots(["2026-10-20"]), totals: { "2026-10-20": 9000 } };
   const cold = [rec("https://x/1", "2026-10-20T22:00:00Z", "a"), rec("https://x/2", "2026-10-21T01:00:00Z", "a")];
   const messages: string[] = [];
   const fresh = advanceBaseline({ prev, stateLoaded: false, firstMerged: cold, mergedStamps: { english: ["20261021001500"] }, today: "2026-10-21", log: (m) => messages.push(m) });
@@ -152,20 +155,22 @@ test("advanceBaseline: a state that did not load discards the carried baseline",
     since: "2026-10-21",
     days: { "2026-10-20": { a: 1 }, "2026-10-21": { a: 1 } }, // not 501: no double count
     slots: { "2026-10-21": { english: 1 } },
+    totals: {}, // discarded with the rest
   });
   assert.match(messages[0], /discarded/);
   // With the state loaded, the carried baseline is extended (and not mutated in place).
   const warm = advanceBaseline({ prev, stateLoaded: true, firstMerged: cold.slice(1), mergedStamps: {}, today: "2026-10-21" });
   assert.deepEqual(warm.days, { "2026-10-20": { a: 500 }, "2026-10-21": { a: 1 } });
   assert.equal(warm.since, "2026-10-15");
+  assert.deepEqual(warm.totals, { "2026-10-20": 9000 });
   assert.deepEqual(prev.days, { "2026-10-20": { a: 500 } });
 });
 
 test("baseline.json.gz round-trips, v1 files load without slots; missing starts empty, corrupt fails", async () => {
-  const b: Baseline = { since: "2026-10-20", days: { "2026-10-20": { a: 3 }, "2026-10-21": { b: 1 } }, slots: fullSlots(["2026-10-20"]) };
+  const b: Baseline = { since: "2026-10-20", days: { "2026-10-20": { a: 3 }, "2026-10-21": { b: 1 } }, slots: fullSlots(["2026-10-20"]), totals: { "2026-10-20": 180000 } };
   assert.deepEqual(decodeBaseline(encodeBaseline(b)), b);
   const v1 = decodeBaseline(gzipSync(JSON.stringify({ v: 1, since: "2026-10-21", days: { "2026-10-21": { a: 2 } } })));
-  assert.deepEqual(v1, { since: "2026-10-21", days: { "2026-10-21": { a: 2 } }, slots: {} });
+  assert.deepEqual(v1, { since: "2026-10-21", days: { "2026-10-21": { a: 2 } }, slots: {}, totals: {} });
   const dir = await mkdtemp(join(tmpdir(), "toe-baseline-"));
   try {
     assert.equal(await loadBaseline({ kind: "file", path: join(dir, "none.json.gz") }, quiet), null);
@@ -197,4 +202,74 @@ test("buildSnapshot writes baselineDays, per-cell b, and per-cell videos", () =>
   const plain = buildSnapshot(records, { now: new Date("2026-10-21T03:00:00Z"), windowHours: 3 });
   assert.equal(plain.heat.baselineDays, 0);
   assert.ok(plain.heat.cells.every((c) => c.b === 0));
+});
+
+/** Every 15-minute file stamp of a UTC day, as the ingest merges them. */
+const dayStamps = (d: string) => Array.from({ length: 96 }, (_, k) => `${d.replaceAll("-", "")}${String(Math.floor(k / 4)).padStart(2, "0")}${String((k % 4) * 15).padStart(2, "0")}00`);
+
+test("articlesNormal: one total per complete day, the day's last snapshot; null until 7 days; at most 14, a 15th drops the oldest", () => {
+  // Daily runs from day(0) (the partial first day). Each day has a morning run (total 5) and a
+  // last run (total 100 * day index), with every file merged, so every day after day(0) is complete.
+  let prev: Baseline | null = null;
+  const views: Record<number, ReturnType<typeof baselineView>> = {};
+  for (let i = 0; i <= 16; i++) {
+    for (const total of [5, 100 * (i + 1)]) {
+      const today = day(i);
+      const next = advanceBaseline({ prev, stateLoaded: true, firstMerged: [rec(`https://x/${i}-${total}`, `${today}T06:00:00Z`)], mergedStamps: { english: dayStamps(today), translingual: dayStamps(today) }, today });
+      views[i] = baselineView(next, today, FEEDS);
+      recordDayTotal(next, today, total);
+      prev = decodeBaseline(encodeBaseline(next)); // carried between runs
+    }
+  }
+  // Day 7: 6 complete days (day 1..6) have a total: still null, 0 days; the run log sees 6.
+  assert.deepEqual([views[7].articlesNormal, views[7].articlesNormalDays, views[7].totalDays], [null, 0, 6]);
+  // Day 8: day 1..7 recorded with their last runs' totals 200..800 (never the morning 5): median 500.
+  assert.deepEqual([views[8].articlesNormal, views[8].articlesNormalDays], [500, ARTICLES_NORMAL_MIN_DAYS]);
+  // Day 15: 14 complete days, day 1..14 (200..1500): median (800 + 900) / 2 = 850.
+  assert.deepEqual([views[15].articlesNormal, views[15].articlesNormalDays], [850, 14]);
+  // Day 16: a 15th complete day; day 1 is dropped, day 2..15 (300..1600): median 950.
+  assert.deepEqual([views[16].articlesNormal, views[16].articlesNormalDays], [950, 14]);
+  assert.equal(Object.hasOwn(prev!.totals, day(1)), false); // trimmed with the 14-day window
+  assert.equal(prev!.totals[day(16)], 1700); // today: the last run so far
+});
+
+test("articlesNormal: even counts round the median to a whole number; days without a total or not complete do not count", () => {
+  const days = Array.from({ length: 8 }, (_, k) => day(-1 - k)); // 8 days, newest first
+  const totals = Object.fromEntries(days.map((d, k) => [d, 1000 + k])); // 1000..1007
+  assert.deepEqual(articlesNormal({ totals }, days), { articlesNormal: 1004, articlesNormalDays: 8, totalDays: 8 }); // 1003.5
+  // A complete day without a total (e.g. before 2026-10-27) is skipped, not counted as 0.
+  const { [days[0]]: _dropped, ...fewer } = totals;
+  assert.deepEqual(articlesNormal({ totals: fewer }, days), { articlesNormal: 1004, articlesNormalDays: 7, totalDays: 7 });
+  // A total on a day that is not complete (here: today, or a partial day) never counts.
+  const b: Baseline = { ...baseline(Object.fromEntries(days.slice(0, 6).map((d) => [d, { a: 1 }]))), totals: { ...totals, [day(0)]: 99 } };
+  assert.deepEqual([baselineView(b, day(0), FEEDS).articlesNormal, baselineView(b, day(0), FEEDS).totalDays], [null, 6]);
+  // recordDayTotal ignores what is not a positive whole count.
+  assert.deepEqual(recordDayTotal({ ...baseline({}), totals: {} }, day(0), 0).totals, {});
+});
+
+test("articlesNormal: a baseline written before day totals existed loads with none, so the count starts at zero days", () => {
+  // A version 2 file as written before 2026-10-27: 10 complete days, no `totals` key.
+  const days = Object.fromEntries(Array.from({ length: 10 }, (_, k) => [day(-1 - k), { a: 5 }]));
+  const old = decodeBaseline(gzipSync(JSON.stringify({ v: 2, since: day(-12), days, slots: fullSlots(Object.keys(days)) })));
+  assert.deepEqual(old.totals, {});
+  const v = baselineView(old, day(0), FEEDS);
+  assert.equal(v.baselineDays, 10);
+  assert.deepEqual([v.articlesNormal, v.articlesNormalDays, v.totalDays], [null, 0, 0]);
+  // The next run records today's total; it counts once the day is complete.
+  const next = recordDayTotal(advanceBaseline({ prev: old, stateLoaded: true, firstMerged: [], mergedStamps: {}, today: day(0) }), day(0), 4321);
+  assert.deepEqual(next.totals, { [day(0)]: 4321 });
+});
+
+test("buildSnapshot writes articlesNormal and articlesNormalDays from the baseline; null and 0 without one", () => {
+  const records = [rec("https://p/1", "2026-10-21T01:00:00Z"), rec("https://p/2", "2026-10-21T02:00:00Z")];
+  const days = Array.from({ length: 7 }, (_, k) => day(-1 - k));
+  const b: Baseline = { ...baseline(Object.fromEntries(days.map((d) => [d, { a: 1 }]))), totals: Object.fromEntries(days.map((d, k) => [d, 100 * (k + 1)])) };
+  const { heat } = buildSnapshot(records, { now: new Date("2026-10-21T03:00:00Z"), windowHours: 3, baseline: baselineView(b, day(0), FEEDS) });
+  assert.equal(heat.articlesNormal, 400);
+  assert.equal(heat.articlesNormalDays, 7);
+  const plain = buildSnapshot(records, { now: new Date("2026-10-21T03:00:00Z"), windowHours: 3 });
+  assert.equal(plain.heat.articlesNormal, null);
+  assert.equal(plain.heat.articlesNormalDays, 0);
+  // Additive: the two keys sit after totals in heat.json.
+  assert.deepEqual(Object.keys(plain.heat), ["generatedAt", "windowHours", "newestArticleAt", "baselineDays", "totals", "articlesNormal", "articlesNormalDays", "topOutletCountries", "cells"]);
 });

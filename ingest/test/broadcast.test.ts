@@ -39,7 +39,7 @@ function run(specs: CellSpec[], baselineDays = 5, since = "2026-10-01"): Broadca
   for (const s of specs) for (const [st, tagged] of s.stories) storyTagged.set(st, tagged);
   const heat: HeatFile = {
     generatedAt: NOW, windowHours: 24, newestArticleAt: NOW, baselineDays,
-    totals: { articles: 0, outlets: 0, countries: 0, cells: specs.length, unplaced: 0, reprints: 0 }, topOutletCountries: [], cells: heatCells,
+    totals: { articles: 0, outlets: 0, countries: 0, cells: specs.length, unplaced: 0, reprints: 0 }, articlesNormal: null, articlesNormalDays: 0, topOutletCountries: [], cells: heatCells,
   };
   return buildBroadcast({ heat, cells, storyTagged, baselineSince: since });
 }
@@ -236,6 +236,8 @@ test("broadcast: a failure is isolated; the file still has six 'none' slots", ()
   const heat: HeatFile = {
     generatedAt: NOW, windowHours: 24, newestArticleAt: NOW, baselineDays: 5,
     totals: { articles: 0, outlets: 0, countries: 0, cells: 1, unplaced: 0, reprints: 0 },
+    articlesNormal: null,
+    articlesNormalDays: 0,
     topOutletCountries: [],
     cells: [{ id: "a", lat: 0, lon: 0, n: 5, u: 5, o: 1, c: 1, i: 0, l: 1, t: 0, name: "A", b: 0 }],
   };

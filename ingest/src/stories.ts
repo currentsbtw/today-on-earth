@@ -1,7 +1,7 @@
 import { isRepublisher as defaultIsRepublisher, outletOf } from "./domains.ts";
 import { titleTokens } from "./entities.ts";
 import { createKeyer, keyCounts, unitsOf, type Keyer } from "./reprints.ts";
-import { cellStats, compareNewestFirst, homeCountry, knownCountries, representative, toCellArticle } from "./stats.ts";
+import { cellStats, compareNewestFirst, homeCountry, knownCountries, representative, round, toCellArticle } from "./stats.ts";
 import type { ArticleRecord, Story } from "./types.ts";
 
 /**
@@ -388,10 +388,36 @@ function attach(items: readonly Item[], stories: readonly Item[][]): Item[][] {
 }
 
 /**
+ * Kinds (kinds.ts letters) that make an article unit count toward a story's grim share `g`
+ * (docs/DATA-CONTRACT.md "Top stories", added 2026-10-27): conflict, crime and disaster.
+ * Politics (p) does not count, unlike the "ordinary" slot, which counts any kind.
+ */
+export const GRIM_KINDS = "cdk";
+
+/**
+ * Whether an article unit carries a kind: any of its records (an outlet's copies of one
+ * headline) has any kind when `kinds` is omitted (the "ordinary" slot's rule), or one of the
+ * letters in `kinds` (the grim share's rule, with GRIM_KINDS).
+ */
+export function unitHasKind(unit: readonly ArticleRecord[], kinds?: string): boolean {
+  return unit.some((r) => (kinds === undefined ? !!r.kinds : [...(r.kinds ?? "")].some((k) => kinds.includes(k))));
+}
+
+/** How many of `units` carry a kind, by unitHasKind's rule. */
+export const countKindUnits = (units: readonly (readonly ArticleRecord[])[], kinds?: string) =>
+  units.reduce((n, unit) => n + (unitHasKind(unit, kinds) ? 1 : 0), 0);
+
+/** A story's grim share `g`: grim units over all its units, 2 decimals; 0 when it has no units. */
+export const grimShare = (grim: number, units: number) => (units > 0 ? round(grim / units, 2) : 0);
+
+/**
  * `records` are one cell's articles; `home` is that cell's own country (for each story's `i`).
  * `keyer` is the snapshot's (reprint keys, shown titles); by default one learned from `records`.
  * `tagged[k]` (ingest-internal, not part of the cell file) is how many of `stories[k]`'s article
  * units carry any kind (conflict, politics, crime, disaster), for the broadcast's "ordinary" slot.
+ * `grim[k]` (ingest-internal, written to stories.json as `g`) is `stories[k]`'s grim share: the
+ * share of its article units carrying a conflict, crime or disaster kind (GRIM_KINDS), 2 decimals.
+ * Both count the same units (clustered and attached) by the same unitHasKind rule.
  * `names[k]` (ingest-internal) is how many of `stories[k].entities`, from the start, are persons or
  * organisations; the rest are theme words (displayEntities). For the topic index.
  */
@@ -399,7 +425,7 @@ export function buildStories(
   records: readonly ArticleRecord[],
   keyer: Keyer = createKeyer(records),
   home = homeCountry(records),
-): { stories: Story[]; unclustered: number; tagged: number[]; names: number[] } {
+): { stories: Story[]; unclustered: number; tagged: number[]; grim: number[]; names: number[] } {
   const items = unitsOf(records, keyer, outletOf)
     .map((unit) => itemOf(unit, keyer))
     .sort((a, b) => oldestFirst(a.r, b.r));
@@ -417,13 +443,18 @@ export function buildStories(
   const order = kept
     .map((g, k) => ({ k, n: g.length + attached[k].length }))
     .sort((a, b) => b.n - a.n);
-  const built = order.map(({ k }, rank) => ({
-    ...toStory(kept[k], attached[k], home, copies, keyer, rank >= FULL_STORIES),
-    tagged: [...kept[k], ...attached[k]].reduce((n, x) => n + (x.unit.some((r) => r.kinds) ? 1 : 0), 0),
-  }));
+  const built = order.map(({ k }, rank) => {
+    const units = [...kept[k], ...attached[k]].map((x) => x.unit);
+    return {
+      ...toStory(kept[k], attached[k], home, copies, keyer, rank >= FULL_STORIES),
+      tagged: countKindUnits(units),
+      grim: grimShare(countKindUnits(units, GRIM_KINDS), units.length),
+    };
+  });
   const stories = built.map((b) => b.story);
   const tagged = built.map((b) => b.tagged);
+  const grim = built.map((b) => b.grim);
   const names = built.map((b) => b.names);
   const clustered = stories.reduce((sum, s) => sum + s.n, 0);
-  return { stories, unclustered: items.length - clustered, tagged, names };
+  return { stories, unclustered: items.length - clustered, tagged, grim, names };
 }

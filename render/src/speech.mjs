@@ -5,8 +5,8 @@
 // prototype: identical PCM across runs and processes).
 //
 // A story whose headline is read in another language (`story.readIn`, v4.2; VOICE_FOR_LANG)
-// is two pieces in one line WAV: the frame, "{Place}. The humans wrote, in {Language}:"
-// (`story.frame`, as script.mjs built it), by af_heart (English phonemes, kokoro-js's own),
+// is two pieces in one line WAV: the frame, "{Place}. The humans wrote, in {Language}:" or any
+// show-mode variant ending ", in {Language}:" (`story.frame`, as script.mjs built it), by af_heart (English phonemes, kokoro-js's own),
 // PIECE_GAP of silence, then the headline by that language's voice. kokoro-js phonemises
 // English only (its espeak-ng carries English data, and generate() refuses other voices), so
 // the headline's phonemes come from render/py/phonemize.py (misaki on espeak-ng, cutlet, or
@@ -103,8 +103,8 @@ export function pcm16Wav(samples, rate) {
 export const lineWav = (outDir, id) => join(outDir, `line-${id}.wav`);
 
 /**
- * A line read in two pieces: the frame, "{Place}. The humans wrote, in {Language}:" (English;
- * `story.frame` as script.mjs built it, so a colon inside the headline never moves the split),
+ * A line read in two pieces: the frame, "{Place}. The humans wrote, in {Language}:" or another
+ * show-mode variant (English; `story.frame` as script.mjs built it, so a colon inside the headline never moves the split),
  * and the headline (the rest of the line's text), with the headline's language and voice.
  * `frame` is the English piece (the frame without its trailing space).
  * @param {{ id: string, text: string, story: { frame: string, readIn: string } }} line

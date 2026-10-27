@@ -29,10 +29,11 @@ const ISO_UTC = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
 const isObj = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v);
 const decimals = (x: number) => (Number.isInteger(x) ? 0 : String(x).split(".")[1]?.length ?? 0);
 
-function exactKeys(where: string, o: Record<string, unknown>, required: string[], optional: string[] = []) {
+/** `nullable`: keys the contract allows to be null (only heat.json articlesNormal, added 2026-10-27). */
+function exactKeys(where: string, o: Record<string, unknown>, required: string[], optional: string[] = [], nullable: string[] = []) {
   for (const k of required) if (!(k in o)) err(where, `missing key "${k}"`);
   for (const k of Object.keys(o)) if (!required.includes(k) && !optional.includes(k)) err(where, `unexpected key "${k}"`);
-  for (const [k, v] of Object.entries(o)) if (v === null || v === undefined) err(where, `"${k}" is null`);
+  for (const [k, v] of Object.entries(o)) if (v === undefined || (v === null && !nullable.includes(k))) err(where, `"${k}" is null`);
 }
 function str(where: string, v: unknown) {
   if (typeof v !== "string") err(where, `expected string, got ${typeof v}`);
@@ -81,12 +82,27 @@ const heatBytes = readFileSync(heatPath);
 const heat = JSON.parse(heatBytes.toString("utf8")) as Record<string, unknown>;
 
 // ---- heat.json ----
-exactKeys("heat", heat, ["generatedAt", "windowHours", "newestArticleAt", "baselineDays", "totals", "topOutletCountries", "cells"]);
+// articlesNormal and articlesNormalDays: additive (2026-10-27), so optional here (older and archived files lack them).
+exactKeys("heat", heat, ["generatedAt", "windowHours", "newestArticleAt", "baselineDays", "totals", "topOutletCountries", "cells"], ["articlesNormal", "articlesNormalDays"], ["articlesNormal"]);
 if (typeof heat.generatedAt !== "string" || !ISO_UTC.test(heat.generatedAt)) err("heat.generatedAt", "not ISO 8601 UTC with Z");
 if (typeof heat.newestArticleAt !== "string" || !ISO_UTC.test(heat.newestArticleAt)) err("heat.newestArticleAt", "not ISO 8601 UTC with Z");
 int("heat.windowHours", heat.windowHours, 1);
 int("heat.baselineDays", heat.baselineDays);
 if (typeof heat.baselineDays === "number" && heat.baselineDays > 14) err("heat.baselineDays", "more than 14");
+// The count's normal (contract "Baseline", added 2026-10-27): both keys or neither; null with 0 days,
+// else a whole number over 7 to 14 complete days, which are never more than baselineDays.
+if ("articlesNormal" in heat !== "articlesNormalDays" in heat) err("heat.articlesNormal", "articlesNormal and articlesNormalDays must appear together");
+else if ("articlesNormalDays" in heat) {
+  int("heat.articlesNormalDays", heat.articlesNormalDays);
+  const nd = heat.articlesNormalDays as number;
+  if (heat.articlesNormal === null) {
+    if (nd !== 0) err("heat.articlesNormalDays", `${nd} while articlesNormal is null (must be 0)`);
+  } else {
+    int("heat.articlesNormal", heat.articlesNormal, 1);
+    if (typeof nd === "number" && (nd < 7 || nd > 14)) err("heat.articlesNormalDays", `${nd}: a normal needs 7 to 14 days`);
+    if (typeof nd === "number" && typeof heat.baselineDays === "number" && nd > heat.baselineDays) err("heat.articlesNormalDays", `${nd} > baselineDays ${heat.baselineDays}`);
+  }
+}
 const totals = isObj(heat.totals) ? heat.totals : (err("heat.totals", "not an object"), {});
 exactKeys("heat.totals", totals, ["articles", "outlets", "countries", "cells", "unplaced", "reprints"]);
 for (const k of ["articles", "outlets", "countries", "cells", "unplaced", "reprints"]) int(`heat.totals.${k}`, totals[k]);
@@ -542,7 +558,13 @@ if (!existsSync(topStoriesPath)) {
   list.forEach((e, i) => {
     const w = `stories.stories[${i}]`;
     if (!isObj(e)) return err(w, "not an object");
-    exactKeys(w, e, ["rank", "cell", "story", "confirmed"]);
+    exactKeys(w, e, ["rank", "cell", "story", "confirmed"], ["g"]);
+    // g (added 2026-10-27): the story's grim share, 0 to 1, 2 decimals. The cell files carry no
+    // kinds, so its value cannot be recomputed here; optional for files from before it.
+    if ("g" in e) {
+      num(`${w}.g`, e.g, 2);
+      if (typeof e.g === "number" && (e.g < 0 || e.g > 1)) err(`${w}.g`, `${e.g} is outside 0..1`);
+    }
     if (!(CONFIRMATION_LEVELS as readonly unknown[]).includes(e.confirmed)) err(`${w}.confirmed`, `expected one of ${CONFIRMATION_LEVELS.join(", ")}, got ${JSON.stringify(e.confirmed)}`);
     if (e.rank !== i + 1) err(`${w}.rank`, `expected ${i + 1}, got ${JSON.stringify(e.rank)}`);
     const cell = isObj(e.cell) ? e.cell : (err(`${w}.cell`, "not an object"), {});

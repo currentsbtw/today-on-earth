@@ -378,7 +378,7 @@ paragraph gains one sentence: the prose voice is the Observer's). Verification: 
 suites, a local newscast render with `--no-encode` whose script.json matches the sample
 above in form, and the three tests in this brief applied to the rendered script by a person.
 
-## Proposed: show mode, v2 (2026-10-27, owner's direction, not yet built)
+## Show mode, v2 (2026-10-27, owner's direction; built the same evening)
 
 The owner, after the first Observer clip: "The humans wrote:" on every story is too flat.
 The target is an intergalactic news show about Earth: nuanced, lively, varied, sarcastic.
@@ -445,7 +445,7 @@ Then the fixed date line: "The humans call this day {Weekday}, the {ordinal} of 
 - "{Place}. {o} of the humans' outlets covered this. One of them wrote: {h}" [o >= 10]
 - "{Place}. Read in {l} languages. We will read it in one: {h}" [l >= 3]
 - "{Place}. Heard in {i} countries that are not this one. The headline: {h}" [i >= 5]
-- "Next, {Place}. The humans wrote, and we quote: {h}"
+- "Next, {Place}. The humans wrote, and we quote: {h}" [k >= 2: never on the first story]
 - "{Place}. We do not know what this means. The humans wrote: {h}" [never on a grim story; the gate]
 - unread, fixed: "{Place}. The humans wrote this in {Language}. It is on your screen."
 - unread, variant: "{Place}. The humans wrote this in {Language}, which is one of theirs. It is on your screen."
@@ -514,3 +514,69 @@ out like the open's spoken caption), render/src/lib.mjs (caption transcript unch
 form), docs/METHODOLOGY.md ("The daily clip": the pools are published in full with the
 selection rule and the gate), tests for pick, the gate, the conditions and the no-repeat
 rule. Build only on the owner's go, after the pools above are edited to taste.
+
+### Implementation decisions (2026-10-27, build go given by the owner)
+
+Binding on the build; the pools above are the text, this is the mechanism.
+
+**script.json v2.** Line kinds, in order: `open` (first: the sign-on, a space, the date
+line), `count` (second, always present), `story` (as v1, with new story fields), `aside`
+(zero to two, never first or last, never directly after a grim story), `close` (last).
+Story lines gain `variant` (the pool id of the frame used: `plain`, `unedited`, `theirs`,
+`outlets`, `languages`, `countries`, `quote`, `unknown`, `unread`, `unread-theirs`),
+`g` (the story's grim share from stories.json, or null when absent) and `grim` (boolean).
+Every story line, English or two-voice, carries `frame`, the exact text before the
+headline (two-voice lines are split there as in v1). `seconds`, `said`, `spoken`,
+`readIn` as in v1.
+
+**The hash.** FNV-1a, 32-bit, over the UTF-8 bytes of the seed string, then the MurmurHash3
+32-bit finaliser (xor-shift 16, multiply 0x85ebca6b, xor-shift 13, multiply 0xc2b2ae35,
+xor-shift 16), because plain FNV-1a's low bit depends only on the count of odd bytes in the seed,
+which made the two aside coins always agree (found in the build); the choice is
+`hash % pool.length`. Seeds: `${date}:open`, `${date}:count` (the count's band is data,
+only the no-history line is pooled if ever more than one), `${date}:story:${k}`,
+`${date}:aside:${k}`, `${date}:close`. Published in the methodology with the pools.
+
+**No repeat; conditions.** Within one show a story-frame variant is used at most once.
+`plain` is not in the hashed pool (decided in the build, 2026-10-27, after a day came out four
+plain of six): it is used for grim stories, for the plain floor, and as the fallback when no
+variant is eligible. Starting at the hashed index, walk the pool forward (wrapping) to the
+first variant that is unused and whose condition holds. Conditions: `outlets` o >= 10,
+`languages` l >= 3, `countries` i >= 5; `unknown` never on a grim story; the others
+unconditional. The unread forms are their own two-item pool, picked the same way.
+
+**The gate and the baseline.** Grim: `g >= 0.25`. A story whose `g` is missing (stories.json
+from before this change) is treated as grim: the gate fails closed. Plain-frame floor: at
+least two stories per show are plain; grim stories count; if fewer than two, force `plain`
+on further stories chosen by `${date}:plain:${j}` over the remaining positions.
+
+**Asides.** Candidate positions: after story 2 and after story 4 (only when that many
+stories exist and the story before is not grim). Each candidate is taken when
+`hash(${date}:aside:${k}) % 2 === 0`; the aside text is then picked from the aside pool by
+the same seed with no repeat. The "{k} headlines" aside states the number of stories read so
+far. The languages aside is: "The humans' press covered {Place} in {l} languages. We work
+in one. We are doing our best." with {Place}, {l} from the story with the most languages
+among the six, condition l >= 10. The "appeared before" aside is not built (needs yesterday's
+script; later).
+
+**The count's normal.** heat.json gains two top-level fields, additive: `articlesNormal`,
+the median of `totals.articles` as recorded at the end of each complete UTC day over the
+last up to 14 complete days, null until 7 exist; and `articlesNormalDays`, how many days
+it covers. The ingest records one total per complete UTC day in its carried state (the
+snapshot closest to 00:00 UTC of the day after, or the last snapshot of the day). The
+count line's band: loud above 1.15x, quiet below 0.85x, else ordinary; with a null normal,
+the no-history line. The band's thresholds are published.
+
+**The g share.** stories.json, on each entry (`{rank, cell, story, confirmed, g}`, not
+inside `story`, which stays the cell file's fields exactly): `g`, two decimals, the share of
+the story's article units whose kind (ingest-internal c, k, d; not p) is set, over all the
+story's units. Computed where the ingest already computes the "ordinary" slot's share. The
+render reads `entry.g`; absent (older files) is the fail-closed grim case.
+
+**The clip page.** `count` and `aside` lines are laid out like `open`: the world view and
+the spoken caption (sayLayout), with the camera where it is (after a story card, the
+aside pulls back to the world; the planner treats it as an open-type segment of the
+line's seconds plus the gap). The validator accepts the new kinds and their order rules.
+
+**What stays.** The site's v1 sentences. The caption's form (every spoken line in order,
+"Headline from …" under each story). VOICE_NOTE. The voice and speed.

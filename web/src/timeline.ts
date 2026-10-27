@@ -242,11 +242,25 @@ export interface NewscastStory {
    * card shows the whole headline from its first frame.
    */
   said?: string;
+  /** Show mode v2 (docs/VOICE.md): the pool id of the frame the line used ("plain", "outlets", ...). Accepted and ignored by the page. */
+  variant?: string;
+  /** The story's grim share from stories.json (0..1), or null when absent. Accepted and ignored. */
+  g?: number | null;
+  /** Whether the grim gate gave the story the plain frame. Accepted and ignored. */
+  grim?: boolean;
+  /** The exact text of the line before the headline. Accepted and ignored. */
+  frame?: string;
+  /** The language whose voice reads the headline (v4.2 two-voice lines). Accepted and ignored. */
+  readIn?: string;
 }
 
 export interface NewscastLine {
   id: string;
-  kind: 'open' | 'story' | 'close';
+  /**
+   * Script v2 order: one `open` first, one `count` second, `story` lines, zero to two `aside`
+   * lines between them (never first or last), one `close` last.
+   */
+  kind: 'open' | 'count' | 'story' | 'aside' | 'close';
   /** What the voice says, verbatim. */
   text: string;
   /** The line's measured audio, in seconds. */
@@ -255,6 +269,8 @@ export interface NewscastLine {
   n?: number;
   of?: number;
   story?: NewscastStory;
+  /** Aside lines: the number (n) of the story the aside follows. */
+  after?: number;
 }
 
 export interface NewscastScript {
@@ -303,10 +319,13 @@ export const NEWSCAST_CARD_HOLD = 0.5;
 export const NEWSCAST_CLOSE_HOLD = 1.0;
 
 /**
- * Check that `value` is a newscast script (the build contract's shape): a YYYY-MM-DD date,
- * a gap of 0..5 s, lines with unique ids, kinds, text and 0 < seconds <= 120, one open first
- * and one close last, and story lines with n/of and a story whose place, coordinates,
- * headline, counts, language and `spoken` are usable. Throws an Error naming the first problem.
+ * Check that `value` is a newscast script (the build contract's shape, script.json v2): a
+ * YYYY-MM-DD date, a gap of 0..5 s, lines with unique ids, kinds, text and 0 < seconds <= 120,
+ * one open first, one count second, at most two asides (never first or last; `after`, when
+ * present, the number of stories before it), one close last, and story lines with n/of and a
+ * story whose place, coordinates, headline, counts, language and `spoken` are usable (the v2
+ * story fields `variant`, `g`, `grim`, `frame` of the right type when present). A v1 script
+ * (no count line) fails. Throws an Error naming the first problem.
  */
 export function checkNewscastScript(value: unknown): NewscastScript {
   const fail = (why: string): never => {
@@ -319,19 +338,29 @@ export function checkNewscastScript(value: unknown): NewscastScript {
   if (typeof value.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value.date)) fail('date');
   if (typeof value.gap !== 'number' || !Number.isFinite(value.gap) || value.gap < 0 || value.gap > 5) fail('gap');
   const lines = value.lines;
-  if (!Array.isArray(lines) || lines.length < 2) return fail('lines');
+  if (!Array.isArray(lines) || lines.length < 3) return fail('lines');
   const ids = new Set<string>();
+  const kinds = new Set(['open', 'count', 'story', 'aside', 'close']);
+  let stories = 0;
+  let asides = 0;
   lines.forEach((line: unknown, k: number) => {
     const where = `line ${k}`;
     if (!isObject(line)) return fail(where);
     if (!isText(line.id) || ids.has(line.id)) fail(`${where} id`);
     ids.add(line.id as string);
-    if (line.kind !== 'open' && line.kind !== 'story' && line.kind !== 'close') fail(`${where} kind`);
+    if (typeof line.kind !== 'string' || !kinds.has(line.kind)) fail(`${where} kind`);
     if (!isText(line.text)) fail(`${where} text`);
     if (typeof line.seconds !== 'number' || !Number.isFinite(line.seconds) || line.seconds <= 0 || line.seconds > 120) fail(`${where} seconds`);
+    if (line.kind === 'aside' && (k === 0 || k === lines.length - 1)) fail(`${where} kind (an aside, never first or last)`);
     if ((line.kind === 'open') !== (k === 0)) fail(`${where} kind (one open, first)`);
     if ((line.kind === 'close') !== (k === lines.length - 1)) fail(`${where} kind (one close, last)`);
+    if ((line.kind === 'count') !== (k === 1)) fail(`${where} kind (one count, second)`);
+    if (line.kind === 'aside') {
+      if (++asides > 2) fail(`${where} kind (at most two asides)`);
+      if (line.after !== undefined && line.after !== stories) fail(`${where} after`);
+    }
     if (line.kind !== 'story') return;
+    stories += 1;
     if (!isCount(line.n) || !isCount(line.of) || line.n < 1 || line.n > line.of) fail(`${where} n/of`);
     const story = line.story;
     if (!isObject(story)) return fail(`${where} story`);
@@ -340,13 +369,18 @@ export function checkNewscastScript(value: unknown): NewscastScript {
     if (!isCount(story.n) || !isCount(story.o) || !isCount(story.l)) fail(`${where} story counts`);
     if (typeof story.spoken !== 'boolean' || typeof story.lang !== 'string') fail(`${where} story spoken/lang`);
     if (story.said !== undefined && typeof story.said !== 'string') fail(`${where} story said`);
+    if (story.variant !== undefined && typeof story.variant !== 'string') fail(`${where} story variant`);
+    if (story.g !== undefined && story.g !== null && (typeof story.g !== 'number' || !(story.g >= 0 && story.g <= 1))) fail(`${where} story g`);
+    if (story.grim !== undefined && typeof story.grim !== 'boolean') fail(`${where} story grim`);
+    if (story.frame !== undefined && typeof story.frame !== 'string') fail(`${where} story frame`);
   });
   return value as unknown as NewscastScript;
 }
 
 /**
  * The newscast's plan at `fps`: per line in order, with `script.gap` seconds after each,
- * `open` -> one open segment of the line's seconds; `story` -> a flight of NEWSCAST_FLIGHT,
+ * `open`, `count` and `aside` -> one open-type segment (kind `open`, naming its line) of the
+ * line's seconds; `story` -> a flight of NEWSCAST_FLIGHT,
  * the line's audio starting LINE_LEAD into it, then a card from the flight's end until the
  * audio ends plus NEWSCAST_CARD_HOLD (LINE_LEAD + seconds + NEWSCAST_CARD_HOLD -
  * NEWSCAST_FLIGHT); `close` -> one close segment of seconds + NEWSCAST_CLOSE_HOLD. The gap is
@@ -369,7 +403,7 @@ export function buildNewscastPlan(script: NewscastScript, fps: number): Newscast
   for (const line of script.lines) {
     const start = line.kind === 'story' ? Math.round((t + LINE_LEAD) * fps) : frame;
     lines.push({ id: line.id, start, frames: framesFor(line.seconds, fps) });
-    if (line.kind === 'open') add('open', line.id, line.seconds + script.gap);
+    if (line.kind === 'open' || line.kind === 'count' || line.kind === 'aside') add('open', line.id, line.seconds + script.gap);
     else if (line.kind === 'close') add('close', line.id, line.seconds + NEWSCAST_CLOSE_HOLD + script.gap);
     else {
       add('flight', line.id, NEWSCAST_FLIGHT);

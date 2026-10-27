@@ -37,16 +37,16 @@ function heatOf(specs: CellSpec[]): HeatFile {
   const heatCells: HeatCell[] = specs.map((s) => ({ id: s.id, lat: 1, lon: 2, n: 50, u: 50, o: 1, c: 1, i: 0, l: 1, t: 0, name: nameOf(s), b: 0 }));
   return {
     generatedAt: NOW, windowHours: 24, newestArticleAt: NOW, baselineDays: 0,
-    totals: { articles: 0, outlets: 0, countries: 0, cells: specs.length, unplaced: 0, reprints: 0 }, topOutletCountries: [], cells: heatCells,
+    totals: { articles: 0, outlets: 0, countries: 0, cells: specs.length, unplaced: 0, reprints: 0 }, articlesNormal: null, articlesNormalDays: 0, topOutletCountries: [], cells: heatCells,
   };
 }
 
-function run(specs: CellSpec[]): TopStoriesFile {
+function run(specs: CellSpec[], storyGrim?: ReadonlyMap<Story, number>): TopStoriesFile {
   const cells: CellFile[] = specs.map((s) => ({
     id: s.id, name: nameOf(s), home: s.home ?? "US", n: 50, u: 50, o: 1, c: 1, i: 0, l: 1, t: 0,
     topOutlets: [], topCountries: [], languages: [], articles: [], videos: 0, stories: s.stories, unclustered: 0,
   }));
-  return buildTopStories({ heat: heatOf(specs), cells });
+  return buildTopStories({ heat: heatOf(specs), cells, storyGrim });
 }
 
 const headlines = (f: TopStoriesFile) => f.stories.map((e) => e.story.headline);
@@ -249,4 +249,16 @@ test("top stories: an unconfirmed story is skipped first and uses up nothing", (
     { id: "a", home: "GR", name: "Athens, Attiki, Greece", stories: [off("Ohio could decide control of the Senate", 99), story("Athens metro strike", { o: 10, articles: [] })] },
   ]);
   assert.deepEqual(g.stories.map((e) => [e.story.headline, e.confirmed]), [["Athens metro strike", "city"]]);
+});
+
+test("top stories: each entry carries its story's grim share g from the snapshot; none without one", () => {
+  const war = story("War-o30", { o: 30 });
+  const fair = story("Fair-o20", { o: 20 });
+  const f = run([{ id: "a", home: "US", stories: [war] }, { id: "b", home: "FR", stories: [fair] }], new Map([[war, 0.62], [fair, 0]]));
+  assert.deepEqual(f.stories.map((e) => [e.story.headline, e.g]), [["War-o30", 0.62], ["Fair-o20", 0]]);
+  assert.deepEqual(Object.keys(f.stories[0]), ["rank", "cell", "story", "confirmed", "g"]);
+  assert.ok(!("g" in f.stories[0].story)); // on the entry, not in the story (which stays the cell file's fields)
+  // A story the map does not hold gets no g (readers treat a missing g as unknown).
+  const none = run([{ id: "a", home: "US", stories: [story("Plain-o9", { o: 9 })] }], new Map());
+  assert.ok(!("g" in none.stories[0]));
 });

@@ -14,6 +14,13 @@ import type { ArticleRecord } from "./types.ts";
  * - every feed has at least 90% of that day's 96 fifteen-minute files merged. The file keeps
  *   a per-day, per-feed count of merged files (`slots`) for this, because the state's own
  *   list of merged files only covers the last 24 hours.
+ *
+ * The file also keeps one window total per UTC day (`totals`, added 2026-10-27): every run
+ * writes its snapshot's `totals.articles` under today, so once the day is over its entry holds
+ * the day's last snapshot. heat.json's `articlesNormal` is the median of those totals over the
+ * complete days above (articlesNormal below). The version is unchanged: a version 2 file
+ * written before 2026-10-27 has no `totals` and loads with none, so the count of days with a
+ * total starts from the first run of this code (and an older decoder ignores the key).
  */
 export const BASELINE_VERSION = 2;
 export const BASELINE_KEEP_DAYS = 14;
@@ -21,17 +28,24 @@ export const BASELINE_MEDIAN_DAYS = 7;
 export const BASELINE_MIN_DAYS = 3;
 export const SLOTS_PER_DAY = 96;
 export const MIN_SLOT_SHARE = 0.9;
+/** heat.json articlesNormal: median over the last up to this many complete days with a total... */
+export const ARTICLES_NORMAL_DAYS = BASELINE_KEEP_DAYS;
+/** ...and null until this many exist. */
+export const ARTICLES_NORMAL_MIN_DAYS = 7;
 
 /** day ("YYYY-MM-DD") -> cell id -> articles first merged that day. */
 export type BaselineDays = Record<string, Record<string, number>>;
 /** day -> feed name -> number of that day's 15-minute files merged. */
 export type BaselineSlots = Record<string, Record<string, number>>;
+/** day -> `totals.articles` of the last snapshot written on that UTC day (added 2026-10-27). */
+export type BaselineTotals = Record<string, number>;
 
 export interface Baseline {
   /** UTC day the baseline started counting (a partial day); "" before the first run. */
   since: string;
   days: BaselineDays;
   slots: BaselineSlots;
+  totals: BaselineTotals;
 }
 
 const DAY = /^\d{4}-\d{2}-\d{2}$/;
@@ -93,10 +107,41 @@ function median(values: number[]): number {
   return v.length % 2 ? v[mid] : (v[mid - 1] + v[mid]) / 2;
 }
 
-export interface BaselineView {
+export interface ArticlesNormal {
+  /** Median of the recorded daily totals, whole number; null while fewer than 7 days have one. */
+  articlesNormal: number | null;
+  /** Days the median covers; 0 when it is null. */
+  articlesNormalDays: number;
+  /** Complete days with a recorded total, also while fewer than 7 (for the run log). */
+  totalDays: number;
+}
+
+export interface BaselineView extends ArticlesNormal {
   baselineDays: number;
   /** b for a cell: median over the last up to 7 complete days, 1 decimal. */
   b: (cellId: string) => number;
+}
+
+/**
+ * heat.json's `articlesNormal` and `articlesNormalDays` (docs/DATA-CONTRACT.md "Baseline",
+ * added 2026-10-27): the median of the daily totals recorded for the last up to 14 complete
+ * days (`complete`, newest first, from completeDays) that have one, rounded to a whole number;
+ * null, with 0 days, until 7 such days exist. A day after a cold start or with missed files is
+ * not complete, so its partial total never counts.
+ */
+export function articlesNormal(b: Pick<Baseline, "totals">, complete: readonly string[]): ArticlesNormal {
+  const recorded = complete.filter((d) => Object.hasOwn(b.totals, d)).slice(0, ARTICLES_NORMAL_DAYS);
+  if (recorded.length < ARTICLES_NORMAL_MIN_DAYS) return { articlesNormal: null, articlesNormalDays: 0, totalDays: recorded.length };
+  return { articlesNormal: Math.round(median(recorded.map((d) => b.totals[d]))), articlesNormalDays: recorded.length, totalDays: recorded.length };
+}
+
+/**
+ * Record this run's snapshot total under `today`, replacing the earlier run's, so a past day
+ * keeps its last snapshot's total. Mutates and returns `b`.
+ */
+export function recordDayTotal(b: Baseline, today: string, articles: number): Baseline {
+  if (DAY.test(today) && Number.isInteger(articles) && articles > 0) b.totals[today] = articles;
+  return b;
 }
 
 export function baselineView(b: Baseline, today: string, feeds: readonly string[]): BaselineView {
@@ -104,6 +149,7 @@ export function baselineView(b: Baseline, today: string, feeds: readonly string[
   const baselineDays = complete.length;
   const recent = complete.slice(0, BASELINE_MEDIAN_DAYS);
   return {
+    ...articlesNormal(b, complete),
     baselineDays,
     b: (cellId) => {
       if (baselineDays < BASELINE_MIN_DAYS) return 0;
@@ -136,11 +182,13 @@ export function advanceBaseline(args: {
   const since = prev?.since || args.today;
   const days = trimDays(countNewRecords(structuredClone(prev?.days ?? {}), args.firstMerged), args.today);
   const slots = trimDays(countNewSlots(structuredClone(prev?.slots ?? {}), args.mergedStamps), args.today);
-  return { since, days, slots };
+  // Day totals are recorded after the snapshot (recordDayTotal); here they are carried and trimmed.
+  const totals = trimDays({ ...prev?.totals }, args.today);
+  return { since, days, slots, totals };
 }
 
 export function encodeBaseline(b: Baseline): Buffer {
-  return gzipSync(JSON.stringify({ v: BASELINE_VERSION, since: b.since, days: b.days, slots: b.slots }), { level: 9 });
+  return gzipSync(JSON.stringify({ v: BASELINE_VERSION, since: b.since, days: b.days, slots: b.slots, totals: b.totals }), { level: 9 });
 }
 
 function cleanCounts(raw: unknown): Record<string, Record<string, number>> {
@@ -155,15 +203,26 @@ function cleanCounts(raw: unknown): Record<string, Record<string, number>> {
   return out;
 }
 
-/** Reads version 2, and version 1 (no `slots`: none of its days can be complete). */
+/** Day totals: a positive integer per valid day; anything else is dropped. */
+function cleanTotals(raw: unknown): BaselineTotals {
+  const out: BaselineTotals = {};
+  if (typeof raw !== "object" || raw === null || Array.isArray(raw)) return out;
+  for (const [day, n] of Object.entries(raw as Record<string, unknown>)) if (DAY.test(day) && Number.isInteger(n) && (n as number) > 0) out[day] = n as number;
+  return out;
+}
+
+/**
+ * Reads version 2, and version 1 (no `slots`: none of its days can be complete). A file
+ * without `totals` (every file before 2026-10-27) loads with none.
+ */
 export function decodeBaseline(bytes: Uint8Array): Baseline {
-  const parsed = JSON.parse(gunzipMaybe(bytes)) as { v?: number; since?: unknown; days?: unknown; slots?: unknown };
+  const parsed = JSON.parse(gunzipMaybe(bytes)) as { v?: number; since?: unknown; days?: unknown; slots?: unknown; totals?: unknown };
   const sinceOk = typeof parsed.since === "string" && (parsed.since === "" || DAY.test(parsed.since));
   const daysOk = typeof parsed.days === "object" && parsed.days !== null && !Array.isArray(parsed.days);
   if ((parsed.v !== 1 && parsed.v !== BASELINE_VERSION) || !sinceOk || !daysOk) {
     throw new Error(`unsupported baseline file (version ${String(parsed.v)})`);
   }
-  return { since: parsed.since as string, days: cleanCounts(parsed.days), slots: cleanCounts(parsed.slots) };
+  return { since: parsed.since as string, days: cleanCounts(parsed.days), slots: cleanCounts(parsed.slots), totals: cleanTotals(parsed.totals) };
 }
 
 /** Load the carried baseline (null = start empty). Same rules as the state file. */

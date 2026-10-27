@@ -79,6 +79,14 @@ export interface HeatFile {
   baselineDays: number;
   totals: { articles: number; outlets: number; countries: number; cells: number; unplaced: number; reprints: number };
   /**
+   * Median of `totals.articles` as recorded once per complete UTC day (the day's last snapshot)
+   * over the last up to 14 complete days, whole number; null until 7 such days exist
+   * (baseline.ts articlesNormal; added 2026-10-27).
+   */
+  articlesNormal: number | null;
+  /** How many complete days `articlesNormal` covers; 0 when it is null (added 2026-10-27). */
+  articlesNormalDays: number;
+  /**
    * The 20 outlet countries with the most article units in the window (placed and unplaced,
    * the unit of totals.articles), by units desc then code; "" excluded.
    */
@@ -237,6 +245,13 @@ export interface TopStory {
   story: SlotStory;
   /** The first level of the cell's name that the story's own text names (top-stories.ts confirmStory). */
   confirmed: "city" | "region" | "country" | "metonym";
+  /**
+   * The story's grim share: of its article units, the share carrying a conflict, crime or
+   * disaster kind (stories.ts GRIM_KINDS; politics does not count), 0 to 1, 2 decimals
+   * (added 2026-10-27). Written on every entry the ingest builds; absent only when the caller
+   * passed no share for the story (and in files from before 2026-10-27).
+   */
+  g?: number;
 }
 
 export interface TopStoriesFile {

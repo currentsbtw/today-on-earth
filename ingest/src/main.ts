@@ -23,7 +23,7 @@ import { loadCountryLookup } from "./domains.ts";
 import { createKeyer } from "./reprints.ts";
 import { FEEDS, fileUrl, mapLimit, streamZipLines, type Feed } from "./fetch.ts";
 import { createRecordAssembler, parseGkgLine, type SkipReason } from "./gkg.ts";
-import { advanceBaseline, baselineView, encodeBaseline, loadBaseline, utcDay, type Baseline } from "./baseline.ts";
+import { advanceBaseline, baselineView, encodeBaseline, loadBaseline, recordDayTotal, utcDay, type Baseline } from "./baseline.ts";
 import { CarryLoadError, resolveCarrySource } from "./carry.ts";
 import { appendFrame, arrivedUnits, buildHistoryEntry, buildIndex, encodeHistory, frameFileName, loadHistory, previousFrame, stepArrivals, toFrame, type HistoryEntry } from "./history.ts";
 import { resolvePlacement } from "./place.ts";
@@ -168,6 +168,9 @@ async function main(): Promise<number> {
     windowHours: coveredHours(now.getTime(), Object.values(feedFrom), windowHours),
     baseline,
   });
+  // This run's window total is today's until a later run replaces it; once the day is over, its
+  // last snapshot's total stays (heat.json articlesNormal, from the next day on).
+  recordDayTotal(nextBaseline, today, snapshot.heat.totals.articles);
 
   await mkdir(outDir, { recursive: true });
   const cellsDir = join(outDir, "cells");
@@ -181,7 +184,7 @@ async function main(): Promise<number> {
   await writeFile(join(outDir, "topics.json"), topicsJson);
   const broadcast = buildBroadcastSafe({ heat: snapshot.heat, cells: snapshot.cells, storyTagged: snapshot.storyTagged, baselineSince: nextBaseline.since }, log);
   await writeFile(join(outDir, "broadcast.json"), JSON.stringify(broadcast));
-  const topStories = buildTopStoriesSafe({ heat: snapshot.heat, cells: snapshot.cells }, log);
+  const topStories = buildTopStoriesSafe({ heat: snapshot.heat, cells: snapshot.cells, storyGrim: snapshot.storyGrim }, log);
   const topStoriesJson = JSON.stringify(topStories);
   await writeFile(join(outDir, "stories.json"), topStoriesJson);
   const stateBytes = encodeState({ feeds, records }, snapshot.heat.generatedAt);
@@ -220,7 +223,7 @@ async function main(): Promise<number> {
       `window articles=${t.articles} (unplaced=${t.unplaced}) outlets=${t.outlets} countries=${t.countries} cells=${t.cells}; ` +
       `heat.json=${Buffer.byteLength(heatJson)}B topics=${topics.topics.length} topics.json=${Buffer.byteLength(topicsJson)}B stories=${topStories.stories.length} stories.json=${Buffer.byteLength(topStoriesJson)}B state.json.gz=${stateBytes.length}B; ` +
       `history frames=${history.length} added=${historyEntry.added ?? "unknown"} largest frame=${largestFrame}B history.json.gz=${historyBytes.length}B; ` +
-      `baseline days=${Object.keys(nextBaseline.days).length} complete=${baseline.baselineDays} new=${firstMerged.length} baseline.json.gz=${baselineBytes.length}B; ` +
+      `baseline days=${Object.keys(nextBaseline.days).length} complete=${baseline.baselineDays} day totals=${baseline.totalDays} articlesNormal=${baseline.articlesNormal ?? "null"} new=${firstMerged.length} baseline.json.gz=${baselineBytes.length}B; ` +
       `${((Date.now() - started) / 1000).toFixed(1)}s`,
   );
   return 0;
