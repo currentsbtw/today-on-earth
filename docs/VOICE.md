@@ -580,3 +580,40 @@ line's seconds plus the gap). The validator accepts the new kinds and their orde
 
 **What stays.** The site's v1 sentences. The caption's form (every spoken line in order,
 "Headline from …" under each story). VOICE_NOTE. The voice and speed.
+
+### Gate calibration, measured (2026-10-27 evening, after the first v2 clip)
+
+The first live stories.json with `g` scored all six top stories 0.76 to 0.97, so the gate
+closed on everything and the first v2 clip had plain frames only (sign-on, count and
+sign-off varied). Measured the same evening on a live 24 h GDELT fetch (194 files, 262,567
+records, 2026-10-26 19:45 to 2026-10-27 19:15 UTC), replaying the ingest's own placement,
+clustering and top-stories so the live top 12 reproduce exactly:
+
+- `g` as shipped (any conflict, crime or disaster theme on a unit) marks 72% of the 1,421
+  stories with 10+ units grim at 0.25 and all 12 top stories; ARMEDCONFLICT runs through
+  every election and diplomacy story, and the disaster prefixes mis-tag weather words
+  (a Bolsonaro politics story at 0.82 from NATURAL_DISASTER_HEAVY_RAIN on 73% of its units).
+- A "harm" family H (KILL, WOUND, TERROR, ARMEDCONFLICT, WMD, KIDNAP, RAPE, EVACUATION, the
+  disaster prefixes) at 0.5 marks 9 of 12; only the Washington story opens.
+- The KILL-or-WOUND share (`kw`) at 0.5 marks 17% of 10+-unit stories and 3 of the 12 (Gaza's
+  election at 0.82, Kiev's ceasefire-and-attacks at 0.83, Jerusalem's Hebron crackdown at
+  0.56); against an editor's reading of the 12 headlines it is right on 10 (11 if the Moscow
+  ceasefire, 0.27, is read as not about harm), with Gaza as its false alarm (background war
+  wording in election coverage) and Moscow as its miss. Known noise: one syndicated AP
+  entertainment piece tagged KILL in 190 copies (0.72).
+- Under `kw` >= 0.5 tonight's six: Gaza and Kiev plain; Washington (0.04), Moscow (0.27),
+  Tehran (0.15) and Paris (0.31, "violent mass protests") open to the variant frames.
+
+Scripts and data: the session scratchpad's measure/ folder (fetch.mts, analyze.mts,
+inspect.mts, per-story outputs). The carried state keeps only six deny-listed themes per
+record and the deny list drops KILL, WOUND, TERROR and ARMEDCONFLICT, so any new family must
+be computed at parse time as a kind letter in `kinds` (ingest/src/kinds.ts), as c, k, d, p are.
+
+Orchestrator's recommendation, for the owner's decision: redefine `g` as the KILL-or-WOUND
+share with the gate at 0.5. The variant frames were each written to stand beside any
+headline, so the gate is the second layer, not the first, and a 17% closure rate keeps the
+show a show. Transition: records parsed before the change carry no harm kind, so for 24 h
+the ingest omits `g` on any story with a unit older than the deploy (fail closed), rather
+than under-reporting it. The alternative on the table is H >= 0.5, "nothing war-adjacent",
+which would have opened one story in twelve tonight. Not measured yet, noted for later:
+judging the headline's own unit (the medoid's themes) instead of a share over the story.
