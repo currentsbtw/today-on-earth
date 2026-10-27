@@ -2393,3 +2393,23 @@ Items 1a and 2 start today; status lines follow each. Live 02:45 UTC (run 400554
 - Satellite imagery (NASA/Sentinel) orbit-to-ground zooms in clips for disasters.
 - "Expected vs. actual coverage" per cell using the baseline, to distinguish quiet
   from uncovered.
+
+- Alien-anchor voice (floated 2026-10-27, not decided). The owner's idea, clarified: the
+  content is told by an alien anchor who knows little about human culture, almost comedic
+  (the register of Futurama's news segment and Rick and Morty's interdimensional news), not a
+  Morbo likeness and not only a mascot reskin. The tension is with "nothing written by us":
+  an anchor who explains the stories writes about the news. Three shapes were weighed:
+  (A) template alien: the fixed sentences, slot names, open/close, about page and empty
+  states rewritten in the alien's vocabulary and frame (reports, news-organs, territories,
+  tongues, rotations); the headline stays the outlet's verbatim words; the number stays
+  legible (the 2026-10-22 radio-register lesson). Keeps the rule and the audit.
+  (B) model-written alien explanation per story: breaks "nothing in the pipeline judges
+  text", unverifiable daily words about real events in the site's name; not for the
+  instrument. (C) a human-written show on top of the instrument (the owner writes it,
+  sourced from the top-12 and the published rules, labelled as commentary, its own channel
+  name): full comedic freedom, the instrument untouched; costs writing time per episode.
+  Orchestrator's recommendation: A for the site and the daily clip, C as the growth bet if
+  the first posts show the dry newscast does not travel; never B on real headlines. Timing:
+  after the 2026-10-31 audit and the first public post, so the two can be compared.
+  Brief written 2026-10-27: docs/VOICE.md (character, vocabulary, every rewritten fixed
+  sentence, a sample newscast from the live snapshot; build after the 10/31 audit).
