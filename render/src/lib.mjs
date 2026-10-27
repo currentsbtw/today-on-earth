@@ -270,6 +270,8 @@ export function checkNewscastPlan(plan, fps, script) {
 
 /** The broadcast page's address, as the clip's end card shows it (with https://). */
 export const BROADCAST_ADDRESS = "https://currentsbtw.github.io/today-on-earth/broadcast";
+/** The synthetic-voice label: on the close's lockup and the transcript's last line, never spoken. */
+export const VOICE_NOTE = "Read by a synthetic voice from the outlets' own headlines.";
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -286,7 +288,8 @@ export const longDate = (day) => {
  * plan has none) the signal block is left out. With the newscast's `script`, the transcript
  * follows after a blank line: each spoken line as spoken, and under each story line its
  * headline's credit, "Headline from wamc.org", with the headline itself when the voice did not
- * read it ("Headline from eltiempo.com: Francia vive…"). LF line ends and a trailing newline.
+ * read it ("Headline from eltiempo.com: Francia vive…"), then VOICE_NOTE as the last line (a
+ * note, not a spoken line). LF line ends and a trailing newline.
  * @param {{ date: string, signals?: { label: string, place: string, page: string }[] }} plan
  * @param {{ broadcast?: string, script?: { lines: { kind: string, text: string, story?: { source: string | null, headline: string, spoken: boolean } }[] } }} [opts]
  */
@@ -305,6 +308,7 @@ export function captionText(plan, { broadcast = BROADCAST_ADDRESS, script } = {}
       const st = l.story;
       if (l.kind === "story" && st) lines.push(`Headline from ${st.source || "an outlet"}${st.spoken ? "" : `: ${st.headline}`}`);
     }
+    lines.push(VOICE_NOTE);
   }
   return `${lines.join("\n")}\n`;
 }

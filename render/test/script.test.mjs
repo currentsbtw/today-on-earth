@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buildScript, clipDate, CLOSE_TEXT, languageName, ordinalWords, spokenDate, spokenHeadline, spokenSeconds, storyText } from "../src/script.mjs";
+import { buildScript, clipDate, CLOSE_TEXT, languageName, openText, ordinalWords, spokenDate, spokenHeadline, spokenSeconds, storyText } from "../src/script.mjs";
 
 const heat = { generatedAt: "2026-10-25T00:15:00Z", windowHours: 24, totals: { articles: 242540, outlets: 10568, countries: 195, cells: 2797 } };
 
@@ -31,8 +31,8 @@ test("dates in words: ordinals, the weekday and month in UTC, the clip's day fro
     "first", "second", "third", "eleventh", "twelfth", "thirteenth", "twentieth", "twenty-first", "twenty-second", "twenty-third", "twenty-fourth", "thirtieth", "thirty-first",
   ]);
   assert.throws(() => ordinalWords(32), /day of month/);
-  assert.equal(spokenDate("2026-10-24"), "Saturday the twenty-fourth of October");
-  assert.equal(spokenDate("2026-01-01"), "Thursday the first of January");
+  assert.equal(spokenDate("2026-10-24"), "Saturday, the twenty-fourth of October");
+  assert.equal(spokenDate("2026-01-01"), "Thursday, the first of January");
   assert.throws(() => spokenDate("24 October"), /date/);
   // A 00:15 UTC snapshot of the last 24 hours is mostly the day before (as v3's plan dates it).
   assert.equal(clipDate(heat), "2026-10-24");
@@ -40,8 +40,8 @@ test("dates in words: ordinals, the weekday and month in UTC, the clip's day fro
   assert.throws(() => clipDate({}), /generatedAt/);
 });
 
-test("buildScript: the opening for a known date and totals, five stories, the close", () => {
-  const script = buildScript({ stories, heat, date: "2026-10-24", generatedAt: "2026-10-25T00:20:00Z" });
+test("buildScript: the opening for a known date, six stories, the close", () => {
+  const script = buildScript({ stories, date: "2026-10-24", generatedAt: "2026-10-25T00:20:00Z" });
   assert.deepEqual(
     { ...script, lines: undefined },
     { date: "2026-10-24", generatedAt: "2026-10-25T00:20:00Z", voice: { engine: "kokoro", name: "af_heart", speed: 1.1 }, gap: 0.4, lines: undefined },
@@ -49,26 +49,30 @@ test("buildScript: the opening for a known date and totals, five stories, the cl
   assert.deepEqual(script.lines[0], {
     id: "open",
     kind: "open",
-    text: "Today on Earth, Saturday the twenty-fourth of October. 242,540 articles from 10,568 outlets in 195 countries.",
+    text: "Today on Earth. Saturday, the twenty-fourth of October. Six places the world's press pointed at.",
     seconds: 0,
   });
-  assert.deepEqual(script.lines.map((l) => l.id), ["open", "story-1", "story-2", "story-3", "story-4", "story-5", "close"]);
+  assert.deepEqual(script.lines.map((l) => l.id), ["open", "story-1", "story-2", "story-3", "story-4", "story-5", "story-6", "close"]);
   assert.deepEqual(script.lines.at(-1), { id: "close", kind: "close", text: CLOSE_TEXT, seconds: 0 });
-  assert.equal(
-    CLOSE_TEXT,
-    "That was today on Earth. The full broadcast is at the address on screen. Read by a synthetic voice from the outlets' own headlines.",
-  );
+  assert.equal(CLOSE_TEXT, "That was today on Earth. Every place, every outlet, every day. Find us on GitHub.");
+  // The voice label is never spoken (it is on the lockup and in the caption).
+  assert.ok(!script.lines.some((l) => /synthetic voice/i.test(l.text)));
   assert.equal(spokenSeconds(script), 0);
-  // Fewer stories than five: all of them; none: the opening and the close.
-  assert.equal(buildScript({ stories: { stories: stories.stories.slice(0, 2) }, heat, date: "2026-10-24" }).lines.length, 4);
-  assert.deepEqual(buildScript({ stories: { stories: [] }, heat, date: "2026-10-24" }).lines.map((l) => l.kind), ["open", "close"]);
-  assert.throws(() => buildScript({ stories, heat: { totals: { articles: 1 } }, date: "2026-10-24" }), /totals.outlets/);
+  // Fewer stories than six: all of them, and the opening says how many; none: no third sentence.
+  const two = buildScript({ stories: { stories: stories.stories.slice(0, 2) }, date: "2026-10-24" });
+  assert.equal(two.lines.length, 4);
+  assert.equal(two.lines[0].text, "Today on Earth. Saturday, the twenty-fourth of October. Two places the world's press pointed at.");
+  assert.equal(openText("2026-10-24", 1), "Today on Earth. Saturday, the twenty-fourth of October. One place the world's press pointed at.");
+  const none = buildScript({ stories: { stories: [] }, date: "2026-10-24" });
+  assert.deepEqual(none.lines.map((l) => l.kind), ["open", "close"]);
+  assert.equal(none.lines[0].text, "Today on Earth. Saturday, the twenty-fourth of October.");
 });
 
-test("buildScript: a story line (no languages clause, at any l), its story fields", () => {
-  const [, hebron, , atlanta, milan, kiev] = buildScript({ stories, heat, date: "2026-10-24" }).lines;
-  assert.equal(hebron.text, "Hebron. 277 articles from 245 outlets. Israeli PM pledges massive military operation after West Bank checkpoint attack.");
-  assert.deepEqual([hebron.n, hebron.of], [1, 5]);
+test("buildScript: a story line is the place and the headline (no counts), its story fields", () => {
+  const [, hebron, , atlanta, milan, kiev] = buildScript({ stories, date: "2026-10-24" }).lines;
+  assert.equal(hebron.text, "Hebron. Israeli PM pledges massive military operation after West Bank checkpoint attack.");
+  assert.deepEqual([hebron.n, hebron.of], [1, 6]);
+  // The counts stay in the story object (the card's ledger row), only out of the voice.
   assert.deepEqual(hebron.story, {
     cell: "8301b2fffffffff",
     place: "Hebron",
@@ -87,34 +91,34 @@ test("buildScript: a story line (no languages clause, at any l), its story field
     said: "Israeli PM pledges massive military operation after West Bank checkpoint attack",
   });
   // A headline ending in ? or . keeps its own mark (and `said` carries it).
-  assert.equal(atlanta.text, "Atlanta. 74 articles from 73 outlets. Six Flags says it will install seat belts?");
+  assert.equal(atlanta.text, "Atlanta. Six Flags says it will install seat belts?");
   assert.equal(atlanta.story.said, "Six Flags says it will install seat belts?");
   assert.equal(atlanta.story.place, "Atlanta");
-  assert.equal(kiev.text, "Kiev. 121 articles from 110 outlets. Musk says he was behind Starlink speed restriction.");
-  // Thousands separators in the counts; an unread headline has said "".
-  assert.equal(milan.text, "Milan. 1,399 articles from 1,225 outlets. A headline in Italian, on screen.");
+  assert.equal(kiev.text, "Kiev. Musk says he was behind Starlink speed restriction.");
+  // An unread headline has said "".
+  assert.equal(milan.text, "Milan. The headline is in Italian, on screen.");
   assert.equal(milan.story.said, "");
-  assert.deepEqual(storyText({ place: "X", n: 5, o: 4, l: 2, headline: "H", lang: "en" }), { text: "X. 5 articles from 4 outlets. H.", spoken: true, said: "H" });
+  assert.deepEqual(storyText({ place: "X", headline: "H", lang: "en" }), { text: "X. H.", spoken: true, said: "H" });
 });
 
 test("invisible characters: out of the spoken text and the script's headline", () => {
   const zw = entry(1, "London, United Kingdom", { headline: "​Chris Brown⁠ avoids jail time﻿, given suspended‎ sentence", n: 323, o: 282, l: 6, i: 30 });
-  const [, london] = buildScript({ stories: { stories: [zw] }, heat, date: "2026-10-24" }).lines;
+  const [, london] = buildScript({ stories: { stories: [zw] }, date: "2026-10-24" }).lines;
   assert.equal(london.story.headline, "Chris Brown avoids jail time, given suspended sentence");
   assert.equal(london.story.said, london.story.headline);
-  assert.equal(london.text, "London. 323 articles from 282 outlets. Chris Brown avoids jail time, given suspended sentence.");
+  assert.equal(london.text, "London. Chris Brown avoids jail time, given suspended sentence.");
   assert.ok(!/[​-‏⁠﻿]/u.test(london.text));
 });
 
 test("buildScript: a non-English headline is on screen, not spoken", () => {
-  const lines = buildScript({ stories, heat, date: "2026-10-24" }).lines;
+  const lines = buildScript({ stories, date: "2026-10-24" }).lines;
   const paris = lines[2];
-  assert.equal(paris.text, "Paris. 343 articles from 241 outlets. A headline in Spanish, on screen.");
+  assert.equal(paris.text, "Paris. The headline is in Spanish, on screen.");
   assert.equal(paris.story.spoken, false);
   assert.equal(paris.story.headline, "Francia vive nueva jornada de protestas");
   assert.equal(paris.story.source, "eltiempo.com");
-  assert.ok(!lines.some((l) => l.story?.place === "Madrid"), "the sixth entry is not read");
-  assert.equal(storyText({ place: "Madrid", n: 86, o: 78, l: 20, headline: "Ισπανία", lang: "el" }).text, "Madrid. 86 articles from 78 outlets. A headline in Greek, on screen.");
+  assert.equal(lines[6].text, "Madrid. The headline is in Greek, on screen.");
+  assert.ok(!lines.some((l) => l.story?.place === "Tehran"), "the seventh entry is not read");
   // The headline itself never reaches the spoken text.
   assert.ok(!paris.text.includes("Francia"));
   assert.equal(languageName("es"), "Spanish");
@@ -124,8 +128,8 @@ test("buildScript: a non-English headline is on screen, not spoken", () => {
 });
 
 test("spoken headlines: an outlet or section label is not read; the card keeps the shown title", () => {
-  const kiev = buildScript({ stories, heat, date: "2026-10-24" }).lines[5];
-  assert.equal(kiev.text, "Kiev. 121 articles from 110 outlets. Musk says he was behind Starlink speed restriction.");
+  const kiev = buildScript({ stories, date: "2026-10-24" }).lines[5];
+  assert.equal(kiev.text, "Kiev. Musk says he was behind Starlink speed restriction.");
   assert.equal(kiev.story.headline, "Arab News | Musk says he was behind Starlink speed restriction.");
   assert.equal(kiev.story.said, "Musk says he was behind Starlink speed restriction.");
   assert.equal(spokenHeadline("Arab News | Musk says he was behind Starlink speed restriction"), "Musk says he was behind Starlink speed restriction");
@@ -141,5 +145,5 @@ test("spoken headlines: an outlet or section label is not read; the card keeps t
   assert.equal(spokenHeadline("Five words here are many | Headline that is long enough"), "Five words here are many | Headline that is long enough");
   // Never stripped when what is left would be under 20 characters.
   assert.equal(spokenHeadline("Arab News | Short one here"), "Arab News | Short one here");
-  assert.equal(storyText({ place: "X", n: 5, o: 4, l: 1, headline: "WATCH | Firefighters battle a wildfire", lang: "en" }).text, "X. 5 articles from 4 outlets. Firefighters battle a wildfire.");
+  assert.equal(storyText({ place: "X", headline: "WATCH | Firefighters battle a wildfire", lang: "en" }).text, "X. Firefighters battle a wildfire.");
 });

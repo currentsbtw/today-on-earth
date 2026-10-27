@@ -213,7 +213,8 @@ export function interpolateTotals(a: Counts, b: Counts, f: number): Counts {
 
 // The newscast (clip.html?newscast=1, docs/PLAN.md "Clip v4: the newscast"): the renderer
 // synthesises every line of the script first, measures it, and hands the script to the page;
-// the plan below lays the frames out so each line's segments start as its audio starts.
+// the plan below lays the frames out from the lines' measured audio (a story's audio starts
+// LINE_LEAD into its flight, the other lines' with their segment).
 
 /** One story as the script carries it: its place, the outlet's headline and the counts. */
 export interface NewscastStory {
@@ -282,13 +283,19 @@ export interface NewscastPlan {
   /** The first card's last frame (its headline fully painted). */
   poster: number;
   segments: NewscastSegment[];
-  /** Per line: the first frame of its segments (where its audio starts) and its audio's frames. */
+  /** Per line: the frame its audio starts at (a story's LINE_LEAD into its flight) and its audio's frames. */
   lines: { id: string; start: number; frames: number }[];
   signals?: ClipSignal[];
 }
 
 /** A story line's flight into its place, in seconds. */
 export const NEWSCAST_FLIGHT = 1.2;
+/**
+ * Seconds into a story's flight at which its line's audio starts: the place is named as the
+ * camera lands, and the headline begins with the card (NEWSCAST_FLIGHT - LINE_LEAD after the
+ * line starts).
+ */
+export const LINE_LEAD = 0.7;
 /** How long a card holds after its line ends, in seconds. */
 export const NEWSCAST_CARD_HOLD = 0.5;
 /** How long the close's lockup holds after the voice ends, in seconds. */
@@ -338,12 +345,14 @@ export function checkNewscastScript(value: unknown): NewscastScript {
 
 /**
  * The newscast's plan at `fps`: per line in order, with `script.gap` seconds after each,
- * `open` -> one open segment of the line's seconds; `story` -> a flight of NEWSCAST_FLIGHT
- * then a card of (seconds - NEWSCAST_FLIGHT + NEWSCAST_CARD_HOLD); `close` -> one close
- * segment of seconds + NEWSCAST_CLOSE_HOLD. The gap is held by the line's last segment, so
- * segments stay contiguous. Segment edges are rounded from the running time in seconds (not
- * summed from rounded lengths), so a line's start never drifts from its audio by more than
- * half a frame; every segment keeps at least one frame. `lines[].frames` is the line's audio.
+ * `open` -> one open segment of the line's seconds; `story` -> a flight of NEWSCAST_FLIGHT,
+ * the line's audio starting LINE_LEAD into it, then a card from the flight's end until the
+ * audio ends plus NEWSCAST_CARD_HOLD (LINE_LEAD + seconds + NEWSCAST_CARD_HOLD -
+ * NEWSCAST_FLIGHT); `close` -> one close segment of seconds + NEWSCAST_CLOSE_HOLD. The gap is
+ * held by the line's last segment, so segments stay contiguous. Segment edges and line starts
+ * are rounded from the running time in seconds (not summed from rounded lengths), so nothing
+ * drifts from the audio by more than half a frame; every segment keeps at least one frame.
+ * `lines[].start` is where the line's audio starts and `lines[].frames` is its audio.
  */
 export function buildNewscastPlan(script: NewscastScript, fps: number): NewscastPlan {
   const segments: NewscastSegment[] = [];
@@ -357,12 +366,13 @@ export function buildNewscastPlan(script: NewscastScript, fps: number): Newscast
     frame = end;
   };
   for (const line of script.lines) {
-    lines.push({ id: line.id, start: frame, frames: framesFor(line.seconds, fps) });
+    const start = line.kind === 'story' ? Math.round((t + LINE_LEAD) * fps) : frame;
+    lines.push({ id: line.id, start, frames: framesFor(line.seconds, fps) });
     if (line.kind === 'open') add('open', line.id, line.seconds + script.gap);
     else if (line.kind === 'close') add('close', line.id, line.seconds + NEWSCAST_CLOSE_HOLD + script.gap);
     else {
       add('flight', line.id, NEWSCAST_FLIGHT);
-      add('card', line.id, line.seconds - NEWSCAST_FLIGHT + NEWSCAST_CARD_HOLD + script.gap);
+      add('card', line.id, LINE_LEAD + line.seconds + NEWSCAST_CARD_HOLD - NEWSCAST_FLIGHT + script.gap);
     }
   }
   const card = segments.find((s) => s.kind === 'card');

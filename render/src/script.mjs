@@ -3,27 +3,26 @@
 // unit-tested; the renderer synthesises each line (speech.mjs), fills `seconds` and hands the
 // script to clip.html, and writes it as script.json beside the clip.
 //
-//   open   "Today on Earth, {weekday} the {ordinal} of {month}. {articles} articles from
-//          {outlets} outlets in {countries} countries."
-//   story  "{Place}. {n} articles from {o} outlets. {headline}."  (the headline as spoken,
-//          spokenHeadline; the languages count is on the card's ledger row, not spoken), or
-//          for a headline not in English:
-//          "{Place}. {n} articles from {o} outlets. A headline in {Language}, on screen."
-//   close  "That was today on Earth. The full broadcast is at the address on screen. Read by a
-//          synthetic voice from the outlets' own headlines."
+//   open   "Today on Earth. {Weekday}, the {ordinal} of {month}. Six places the world's press
+//          pointed at."  (the number of stories read, in words)
+//   story  "{Place}. {headline}."  (the headline as spoken, spokenHeadline; the counts are on
+//          the card's ledger row, not spoken), or for a headline not in English:
+//          "{Place}. The headline is in {Language}, on screen."
+//   close  "That was today on Earth. Every place, every outlet, every day. Find us on GitHub."
 //
 // The outlet is never spoken (its name on screen and in the caption is the credit), nor the
-// address (it is on the close's lockup).
+// address or the voice label: both stand on the close's lockup, and the label is the caption
+// transcript's last line (lib.mjs VOICE_NOTE), not a spoken line.
 import { VOICE_SPEED } from "./speech.mjs";
 
 /** Stories read per clip: the first entries of stories.json. */
-export const STORY_COUNT = 5;
+export const STORY_COUNT = 6;
 /** Seconds of silence between lines (the page lays the lines out with it). */
 export const LINE_GAP = 0.4;
 export const VOICE = Object.freeze({ engine: "kokoro", name: "af_heart", speed: VOICE_SPEED });
 
 export const CLOSE_TEXT =
-  "That was today on Earth. The full broadcast is at the address on screen. Read by a synthetic voice from the outlets' own headlines.";
+  "That was today on Earth. Every place, every outlet, every day. Find us on GitHub.";
 
 const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -37,8 +36,7 @@ export function ordinalWords(d) {
   return `${d < 30 ? "twenty" : "thirty"}-${ORDINALS[(d % 10) - 1]}`;
 }
 
-/** Digits with thousands separators: 242540 -> "242,540". */
-export const count = (v) => Math.round(v).toLocaleString("en-US");
+const NUMBER_WORDS = ["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve"];
 
 /**
  * The UTC day the snapshot's window mostly covers (the middle of it), as v3's plan dates the
@@ -52,11 +50,11 @@ export function clipDate(heat) {
   return new Date(at - (hours / 2) * 3_600_000).toISOString().slice(0, 10);
 }
 
-/** "2026-10-24" -> "Saturday the twenty-fourth of October" (UTC). */
+/** "2026-10-24" -> "Saturday, the twenty-fourth of October" (UTC). */
 export function spokenDate(day) {
   if (typeof day !== "string" || !/^\d{4}-\d\d-\d\d$/.test(day)) throw new Error(`date ${JSON.stringify(day)}`);
   const d = new Date(`${day}T00:00:00Z`);
-  return `${WEEKDAYS[d.getUTCDay()]} the ${ordinalWords(d.getUTCDate())} of ${MONTHS[d.getUTCMonth()]}`;
+  return `${WEEKDAYS[d.getUTCDay()]}, the ${ordinalWords(d.getUTCDate())} of ${MONTHS[d.getUTCMonth()]}`;
 }
 
 const languageNames = new Intl.DisplayNames(["en"], { type: "language" });
@@ -86,9 +84,11 @@ const sentence = (s) => {
   return /[.!?…]["'”’)]*$/.test(t) ? t : `${t}.`;
 };
 
-/** The opening line's text. */
-export function openText(day, totals) {
-  return `Today on Earth, ${spokenDate(day)}. ${count(totals.articles)} articles from ${count(totals.outlets)} outlets in ${count(totals.countries)} countries.`;
+/** The opening line's text for `stories` stories read ("Six places", "One place"; none: no third sentence). */
+export function openText(day, stories) {
+  if (!Number.isInteger(stories) || stories < 0 || stories >= NUMBER_WORDS.length) throw new Error(`story count ${stories}`);
+  const places = stories === 0 ? "" : ` ${NUMBER_WORDS[stories]} ${stories === 1 ? "place" : "places"} the world's press pointed at.`;
+  return `Today on Earth. ${spokenDate(day)}.${places}`;
 }
 
 /**
@@ -116,26 +116,21 @@ export function spokenHeadline(headline) {
  * headline exactly as the text carries it (after spokenHeadline, before the added full stop;
  * "" when not read). Invisible characters are removed from all of it.
  */
-export function storyText({ place, n, o, headline, lang }) {
+export function storyText({ place, headline, lang }) {
   const spoken = lang === "en";
-  const counts = `${count(n)} articles from ${count(o)} outlets`;
-  if (!spoken) return { text: visible(`${place}. ${counts}. A headline in ${languageName(lang)}, on screen.`), spoken, said: "" };
+  if (!spoken) return { text: visible(`${place}. The headline is in ${languageName(lang)}, on screen.`), spoken, said: "" };
   const said = spokenHeadline(visible(headline));
-  return { text: visible(`${place}. ${counts}. ${sentence(said)}`), spoken, said };
+  return { text: visible(`${place}. ${sentence(said)}`), spoken, said };
 }
 
 /**
- * The newscast script from the live stories.json and heat.json bodies: the opening, the first
- * STORY_COUNT stories (fewer if fewer), the close. `seconds` are 0 until synthesised.
- * @param {{ stories: any, heat: any, date: string, generatedAt?: string }} p
+ * The newscast script from the live stories.json body: the opening, the first STORY_COUNT
+ * stories (fewer if fewer), the close. `seconds` are 0 until synthesised.
+ * @param {{ stories: any, date: string, generatedAt?: string }} p
  */
-export function buildScript({ stories, heat, date, generatedAt = new Date().toISOString() }) {
-  const totals = heat?.totals;
-  for (const k of ["articles", "outlets", "countries"]) {
-    if (!Number.isFinite(totals?.[k])) throw new Error(`heat.json totals.${k} is ${JSON.stringify(totals?.[k])}`);
-  }
+export function buildScript({ stories, date, generatedAt = new Date().toISOString() }) {
   const entries = Array.isArray(stories?.stories) ? stories.stories.slice(0, STORY_COUNT) : [];
-  const lines = [{ id: "open", kind: "open", text: openText(date, totals), seconds: 0 }];
+  const lines = [{ id: "open", kind: "open", text: openText(date, entries.length), seconds: 0 }];
   entries.forEach((e, k) => {
     const { cell, story } = e ?? {};
     if (!cell?.id || !cell?.name || !story?.headline) throw new Error(`stories.json entry ${k + 1} has no cell or headline`);
@@ -143,7 +138,7 @@ export function buildScript({ stories, heat, date, generatedAt = new Date().toIS
       if (!Number.isFinite(story[f])) throw new Error(`stories.json entry ${k + 1} story.${f} is ${JSON.stringify(story[f])}`);
     }
     const place = shortPlace(cell.name);
-    const { text, spoken, said } = storyText({ place, n: story.n, o: story.o, headline: story.headline, lang: story.headlineLang });
+    const { text, spoken, said } = storyText({ place, headline: story.headline, lang: story.headlineLang });
     lines.push({
       id: `story-${k + 1}`,
       kind: "story",

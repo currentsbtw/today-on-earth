@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { bracket, buildNewscastPlan, buildPlan, checkNewscastScript, framesFor, headlineOffset, interpolateCells, interpolateTotals, lapseTime, pullbackFraction, reached, readTimelineParams, segmentAt, sentenceTimes, spokenAt, TIMELINE_DEFAULTS, wordTimes, type ClipPlan, type NewscastLine, type NewscastScript } from '../src/timeline.ts';
+import { bracket, buildNewscastPlan, buildPlan, LINE_LEAD, checkNewscastScript, framesFor, headlineOffset, interpolateCells, interpolateTotals, lapseTime, pullbackFraction, reached, readTimelineParams, segmentAt, sentenceTimes, spokenAt, TIMELINE_DEFAULTS, wordTimes, type ClipPlan, type NewscastLine, type NewscastScript } from '../src/timeline.ts';
 
 const MIN = 60_000;
 const HOUR = 60 * MIN;
@@ -215,25 +215,25 @@ const script = (): NewscastScript => ({
 
 test('newscast plan: open, flight + card per story, close; the gap held by each line', () => {
   const plan = buildNewscastPlan(script(), 30);
-  // Edges at the running time: open 9.8+0.4 = 10.2 s; s1 flight to 11.4, card 12-1.2+0.5+0.4 = 11.7 to 23.1;
-  // s2 flight to 24.3, card 11.5-1.2+0.9 = 11.2 to 35.5; close 8.2+1.0+0.4 = 9.6 to 45.1.
+  // Edges at the running time: open 9.8+0.4 = 10.2 s; s1 flight to 11.4, card 0.7+12+0.5-1.2+0.4 = 12.4 to 23.8;
+  // s2 flight to 25.0, card 0.7+11.5+0.5-1.2+0.4 = 11.9 to 36.9; close 8.2+1.0+0.4 = 9.6 to 46.5.
   assert.deepEqual(
     plan.segments.map((s) => [s.kind, s.line, s.start, s.frames]),
     [
       ['open', 'open', 0, 306],
       ['flight', 's1', 306, 36],
-      ['card', 's1', 342, 351],
-      ['flight', 's2', 693, 36],
-      ['card', 's2', 729, 336],
-      ['close', 'close', 1065, 288],
+      ['card', 's1', 342, 372],
+      ['flight', 's2', 714, 36],
+      ['card', 's2', 750, 357],
+      ['close', 'close', 1107, 288],
     ],
   );
-  assert.equal(plan.frames, 1353);
+  assert.equal(plan.frames, 1395);
   assert.equal(plan.date, '2026-10-24');
   assert.equal(plan.fps, 30);
 });
 
-test('newscast plan: segments contiguous; lines start at their first segment, frames are the audio', () => {
+test('newscast plan: segments contiguous; a story line starts LINE_LEAD into its flight, frames are the audio', () => {
   const plan = buildNewscastPlan(script(), 30);
   let next = 0;
   for (const s of plan.segments) {
@@ -244,21 +244,39 @@ test('newscast plan: segments contiguous; lines start at their first segment, fr
   assert.equal(next, plan.frames);
   assert.deepEqual(plan.lines, [
     { id: 'open', start: 0, frames: 294 },
-    { id: 's1', start: 306, frames: 360 },
-    { id: 's2', start: 693, frames: 345 },
-    { id: 'close', start: 1065, frames: 246 },
+    { id: 's1', start: 327, frames: 360 },
+    { id: 's2', start: 735, frames: 345 },
+    { id: 'close', start: 1107, frames: 246 },
   ]);
-  // The next line starts exactly the gap after the previous line's audio + its hold.
-  assert.equal(plan.lines[1].start - plan.lines[0].start, Math.round((9.8 + 0.4) * 30));
-  for (const line of plan.lines) assert.equal(plan.segments.find((s) => s.line === line.id)!.start, line.start);
+  assert.equal(LINE_LEAD, 0.7);
+  for (const line of plan.lines) {
+    const own = plan.segments.filter((s) => s.line === line.id);
+    const first = own[0];
+    const last = own[own.length - 1];
+    if (first.kind !== 'flight') {
+      // The open and the close: the audio starts with the line's segment.
+      assert.equal(first.start, line.start);
+      continue;
+    }
+    // The audio starts 0.7 s (21 frames) into the flight; the card starts at the flight's end,
+    // 0.5 s (15 frames) after the audio, when the place has been named.
+    assert.equal(line.start - first.start, 21);
+    assert.equal(own[1].kind, 'card');
+    assert.equal(own[1].start, first.start + first.frames);
+    assert.equal(own[1].start - line.start, 15);
+    // The card holds the audio's end + 0.5 s, then the 0.4 s gap (27 frames).
+    assert.equal(last.start + last.frames - (line.start + line.frames), 27);
+  }
 });
 
 test('newscast plan: the poster is the first card\'s last frame; no drift from rounding', () => {
   const plan = buildNewscastPlan(script(), 30);
-  assert.equal(plan.poster, 342 + 351 - 1);
-  // 25 fps: 1.2 s flights are 30 frames; line starts stay at round(running seconds x fps).
+  assert.equal(plan.poster, 342 + 372 - 1);
+  // 25 fps: 1.2 s flights are 30 frames; every line start stays within half a frame of its
+  // audio's time in seconds (story lines 0.7 s into their flights: 10.9, 24.5; the close 36.9).
   const p25 = buildNewscastPlan(script(), 25);
-  assert.deepEqual(p25.lines.map((l) => l.start), [0, Math.round(10.2 * 25), Math.round(23.1 * 25), Math.round(35.5 * 25)]);
+  [0, 10.9, 24.5, 36.9].forEach((at, k) => assert.ok(Math.abs(p25.lines[k].start - at * 25) <= 0.5, `line ${k} at ${p25.lines[k].start}`));
+  assert.deepEqual(p25.segments.filter((s) => s.kind === 'flight').map((s) => s.frames), [30, 30]);
   const noStory = buildNewscastPlan({ ...script(), lines: [script().lines[0], script().lines[3]] }, 30);
   assert.deepEqual(noStory.segments.map((s) => s.kind), ['open', 'close']);
   assert.equal(noStory.poster, noStory.frames - 1);

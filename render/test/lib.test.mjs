@@ -299,6 +299,8 @@ test("captionText: the transcript after the links, each story's headline credit"
     "Paris. 343 articles from 241 outlets. A headline in Spanish, on screen.",
     "Headline from eltiempo.com: Francia vive nueva jornada de protestas",
     "That was today on Earth.",
+    // The voice label: a note line after the transcript, not a spoken line.
+    "Read by a synthetic voice from the outlets' own headlines.",
   ];
   assert.equal(
     captionText({ date: "2026-10-24" }, { script: voicedScript() }),
@@ -307,6 +309,30 @@ test("captionText: the transcript after the links, each story's headline credit"
   // With signals, the transcript comes after the signal links and the broadcast line.
   const withSignals = captionText({ date: "2026-10-24", signals: signals().slice(0, 1) }, { script: voicedScript() }).split("\n");
   assert.deepEqual(withSignals.slice(3, 9), ["1/1 · MOST COVERED STORY · Paris", `${PAGE}831fb4fffffffff.html`, "", broadcast, "", transcript[0]]);
+});
+
+test("checkNewscastPlan: a story line's audio may start inside its flight (the page's LINE_LEAD)", () => {
+  // As web/src/timeline.ts lays it out: each story's audio 0.7 s (7 frames at 10 fps) into its
+  // flight, the card from the flight's end to the audio's end + 0.5 s and the gap.
+  const plan = {
+    ...newscastPlan(),
+    frames: 344,
+    segments: [
+      { kind: "open", line: "open", start: 0, frames: 103 },
+      { kind: "flight", line: "story-1", start: 103, frames: 12 },
+      { kind: "card", line: "story-1", start: 115, frames: 61 },
+      { kind: "flight", line: "story-2", start: 176, frames: 12 },
+      { kind: "card", line: "story-2", start: 188, frames: 42 },
+      { kind: "close", line: "close", start: 230, frames: 114 },
+    ],
+    lines: [
+      { id: "open", start: 0, frames: 99 },
+      { id: "story-1", start: 110, frames: 61 },
+      { id: "story-2", start: 183, frames: 42 },
+      { id: "close", start: 230, frames: 90 },
+    ],
+  };
+  assert.equal(checkNewscastPlan(plan, 10, voicedScript()), plan);
 });
 
 test("mixArgs: each voice line resampled to 48 kHz and delayed to its start, in samples, over the bed", () => {

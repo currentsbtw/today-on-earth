@@ -973,38 +973,36 @@ cache the audio by a hash of the script text.
 **Decided 2026-10-24 (owner): Kokoro, voice af_heart.** Build contract for v4, binding on the
 renderer (`render/`) and the page (`web/clip.html`) until DATA-CONTRACT carries it:
 
-1. **The script** is built by the renderer from the live `stories.json` and `heat.json`, written
-   as `script.json` beside the outputs, and handed to the page. Lines, in order:
-   - `open`: "Today on Earth, {weekday} the {ordinal} of {month}. {articles} articles from
-     {outlets} outlets in {countries} countries." Two sentences, nothing more (owner
-     2026-10-25: the third sentence, "Here is where the world's press pointed.", is dropped).
-     Digits with thousands separators; the voice reads them correctly.
-   - `story` × 5 (owner 2026-10-25, was 6: the first five entries of `stories.json`; they are
-     already one per place and event, text-confirmed, credited to a non-republisher; the header
-     reads "N/5" through the line's `of`): "{Place}. {n} articles from {o} outlets.
-     {headline}." No languages clause (owner 2026-10-25, second pass; the card's ledger row
-     still shows the languages). The spoken
-     headline drops an outlet or section label (owner 2026-10-25; speech only, the card shows
-     the title unchanged): a leading 1 to 4 words followed by " | ", " — ", " – " or " :: "
-     ("Arab News | ", "WATCH | ", "Opinion — "), and a trailing label of the same form when the
-     shown title still carries one; never when what is left would be under 20 characters
-     (`HEADLINE_PREFIX`, `HEADLINE_SUFFIX` and `spokenHeadline` in `render/src/script.mjs`). The
-     caption's transcript shows the spoken form; its "Headline from <outlet>" line stays. The
-     story object carries the spoken form as `said` ("" when not read), which the page's word
-     reveal uses to find the headline in the line. Zero-width and other invisible characters
-     (U+200B to U+200F, U+2060, U+FEFF) are removed from the spoken text and from the script's
-     `headline`, so the card and the reveal see the same string. The outlet is
-     NOT spoken (its name on screen and in the caption is the credit; domains read badly); the
-     headline is spoken only when `headlineLang` is `en` in v4.0. For another language the line
-     is "{Place}. {n} articles from {o} outlets. A headline in {Language}, on screen." and the
-     headline shows unread; v4.1 adds Kokoro's Spanish and Italian voices through the Python
-     front end (misaki via uv) and reads them.
-   - `close`: "That was today on Earth. The full broadcast is at the address on screen. Read by
-     a synthetic voice from the outlets' own headlines." (owner 2026-10-25, second pass: the
-     address is no longer spoken; it is on the lockup.)
-   Nothing else is ever spoken. The template is published in the methodology.
+1. **The script** is built by the renderer from the live `stories.json` (and the clip's day from
+   `heat.json`), written as `script.json` beside the outputs, and handed to the page. Lines, in
+   order (the owner's v4.1 script, 2026-10-26; nothing else is ever spoken):
+   - `open`: "Today on Earth. {Weekday}, the {ordinal} of {month}. Six places the world's press
+     pointed at." The number is the stories read, in words ("Six"; "One place" for one; no
+     third sentence for none). No totals are spoken; the open's layout shows none either.
+   - `story` × 6 (`STORY_COUNT = 6`: the first six entries of `stories.json`; they are already
+     one per place and event, text-confirmed, credited to a non-republisher; the header reads
+     "N/6" through the line's `of`). In English: "{Place}. {headline}." No counts: the card's
+     ledger row shows them. For another language: "{Place}. The headline is in {Language}, on
+     screen." and the headline shows unread (v4.1 may add Kokoro's Spanish and Italian voices
+     through the Python front end, misaki via uv). The headline is spoken only when
+     `headlineLang` is `en`. The spoken headline drops an outlet or section label (speech only,
+     the card shows the title unchanged): a leading 1 to 4 words followed by " | ", " — ",
+     " – " or " :: " ("Arab News | ", "WATCH | ", "Opinion — "), and a trailing label of the
+     same form when the shown title still carries one; never when what is left would be under
+     20 characters (`HEADLINE_PREFIX`, `HEADLINE_SUFFIX` and `spokenHeadline` in
+     `render/src/script.mjs`). The story object carries the spoken form as `said` ("" when not
+     read), which the page's word reveal uses to find the headline in the line. Zero-width and
+     other invisible characters (U+200B to U+200F, U+2060, U+FEFF) are removed from the spoken
+     text and from the script's `headline`, so the card and the reveal see the same string. The
+     outlet is NOT spoken (its name on screen and in the caption is the credit).
+   - `close`: "That was today on Earth. Every place, every outlet, every day. Find us on GitHub."
+   The address and the voice label ("Read by a synthetic voice from the outlets' own
+   headlines.") are not spoken: both stand on the close's lockup, and the label is the caption
+   transcript's last line, a note after the spoken lines (`VOICE_NOTE` in `render/src/lib.mjs`).
+   The caption's transcript shows each line as spoken, with "Headline from <outlet>" under each
+   story. The template is published in the methodology.
 2. **Speech**: `kokoro-js` (pinned), model `onnx-community/Kokoro-82M-v1.0-ONNX` fp32, voice
-   `af_heart` at speed 1.1 (owner 2026-10-25; kokoro-js's `generate(text, { voice, speed })`,
+   `af_heart` at speed 1.1 (owner 2026-10-25, kept for v4.1; kokoro-js's `generate(text, { voice, speed })`,
    `VOICE_SPEED` in `render/src/speech.mjs`, written to `script.json` as `voice.speed`),
    24 kHz mono WAV per line, measured; `seconds` per line goes into the script.
    The model and packages are cached in Actions; the first run downloads about 325 MB.
@@ -1012,10 +1010,10 @@ renderer (`render/`) and the page (`web/clip.html`) until DATA-CONTRACT carries 
    outlines) and waits for `window.__clipNewscast(script)` (called by the renderer after load),
    which returns the plan `{ fps, frames, date, poster, segments: [{ kind, line, start,
    frames }], lines: [{ id, start, frames }], signals }` with segment kinds: `open` (the world
-   at the live snapshot, the opening's two sentences painted one by one at the line's
-   proportional times, the hook caption's register), per story a `flight` (1.2 s, the place
-   name is being spoken; the caption "N/5 · {PLACE}") then a `card` held until the line ends
-   plus 0.5 s (the card as today: header "N/5", place, ledger row, headline, credit; the
+   at the live snapshot, the opening's three sentences painted one by one at the line's
+   proportional times, the hook caption's register), per story a `flight` (1.2 s, the line's audio starting `LINE_LEAD` = 0.7 s into it, the place
+   name is being spoken; the caption "N/6 · {PLACE}") then a `card` held until the line ends
+   plus 0.5 s (the card as today: header "N/6", place, ledger row, headline, credit; the
    headline's words are painted as spoken at the proportional rate, one step per word), then
    `close` (pull back to the world for the first sentence, then the lockup with ONE verb line,
    SEE TODAY'S BROADCAST, the address, and READ BY A SYNTHETIC VOICE under it). Lines are
@@ -1096,6 +1094,23 @@ a U+200B), and each story carries `said`, the spoken headline, which `headlineOf
 the voice reaches the rest); `NewscastScript.voice` is typed as the object the renderer
 writes. Same snapshot: 69.5 s of speech (opening 11.9 s, English stories 9.3 to 11.5 s, the
 German one 6.8 s, close 8.1 s), 2,275 frames, 0 bad, a 76.8 s mp4.
+
+**Status v4.1 script (render), 2026-10-26: built, not committed.** The owner's reworked script
+(contract item 1): the opening is the name, the date and "Six places the world's press pointed
+at." (no totals), six stories, a story is "{Place}. {headline}." (no counts; the card's ledger
+row keeps them) or "{Place}. The headline is in {Language}, on screen.", and the close is "That
+was today on Earth. Every place, every outlet, every day. Find us on GitHub." The voice label
+is no longer spoken: it stays on the lockup and is the caption transcript's last line
+(`VOICE_NOTE`). Speed 1.1, the label strip, the invisible-character rule and `said` unchanged;
+`buildScript` no longer takes `heat` (nothing from it is spoken). No page change: the plan
+already holds an unread card for its line less the flight plus 0.5 s and the gap (Sao Paulo:
+3.50 s of speech, a 96-frame card). Measured on the live snapshot of 2026-10-27 03:37 UTC
+(local render, 1080x1920 30 fps): 8 lines, 48.9 s of speech (opening 6.1 s, English stories
+6.0 to 7.3 s, the Spanish one 3.5 s, close 5.5 s), 1,683 frames, 0 bad, a 57.1 s mp4. Seen
+in the timing: with the counts gone, the headline starts about 0.5 s into the line, inside the
+1.2 s flight, so its first one or two words are already spoken when the card appears (the
+reveal paints them at the card's first frame).
+
 
 **What changes in the machinery.** The audio drives the timeline, not the other way round:
 the renderer (or a new step before it) synthesises every line first, measures each line's

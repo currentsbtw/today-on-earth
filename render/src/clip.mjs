@@ -123,7 +123,7 @@ async function voicedScript(opts, heat, outDir) {
   // Loaded only here: --script and --mode timeline never load the model.
   const { synthesise } = await import("./speech.mjs");
   const stories = await fetchJson(opts.site, "data/stories.json");
-  const script = buildScript({ stories, heat, date: clipDate(heat) });
+  const script = buildScript({ stories, date: clipDate(heat) });
   const voiceDir = join(outDir, "voice");
   await rm(voiceDir, { recursive: true, force: true });
   const seconds = await synthesise(script.lines, { outDir: voiceDir, voice: script.voice.name, speed: script.voice.speed });
