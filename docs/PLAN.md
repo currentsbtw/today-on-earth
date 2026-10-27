@@ -1016,7 +1016,7 @@ renderer (`render/`) and the page (`web/clip.html`) until DATA-CONTRACT carries 
    proportional times, the hook caption's register), per story a `flight` (1.2 s, the line's audio starting `LINE_LEAD` = 0.7 s into it, the place
    name is being spoken; the caption "N/6 · {PLACE}") then a `card` held until the line ends
    plus 0.5 s (the card as today: header "N/6", place, ledger row, headline, credit; the
-   headline's words are painted as spoken at the proportional rate, one step per word), then
+   whole headline shows from the card's first frame, owner's decision 2026-10-27), then
    `close` (pull back to the world for the first sentence, then the lockup with ONE verb line,
    SEE TODAY'S BROADCAST, the address, and READ BY A SYNTHETIC VOICE under it). Lines are
    separated by a 0.4 s gap. `window.__clipStep(i)` as today; `data-error` if no script
@@ -1040,8 +1040,9 @@ line's last segment so the segments stay contiguous, and every segment edge is r
 running time in seconds, so a line never drifts from its audio by more than half a frame.
 `segments[].line` is the line's `id`; `lines[].start` is where the renderer places the line's
 WAV and `lines[].frames` is its audio; `poster` is the first card's last frame; `signals` carry
-`slot: "s<N>"`, `label: "STORY"`, the place, cell and page. The sentence and word timing
-(`sentenceTimes`, `wordTimes`) is proportional by characters over the whole line. stories.json
+`slot: "s<N>"`, `label: "STORY"`, the place, cell and page. The open's sentence timing
+(`sentenceTimes`) is proportional by characters over the whole line; the card shows the whole
+headline from its first frame (word painting dropped 2026-10-27, owner). stories.json
 is read only to warn (console) when a script story's cell is not in it. `?timeline=1` is
 unchanged (the card code is shared, not forked). Checked in headless Edge against the dev
 server at 540x960 with a hand-built script from local cells (Moscow, Paris, Milan in Italian

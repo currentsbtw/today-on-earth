@@ -238,7 +238,8 @@ export interface NewscastStory {
   spoken: boolean;
   /**
    * The headline exactly as the line's text carries it (an outlet or section label removed;
-   * "" when not read). Absent in scripts before v4.0.1.
+   * "" when not read). Absent in scripts before v4.0.1. Accepted and ignored by the page: the
+   * card shows the whole headline from its first frame.
    */
   said?: string;
 }
@@ -407,34 +408,6 @@ export function sentenceTimes(text: string, seconds: number): { text: string; at
   }
   if (from < text.length) out.push({ text: text.slice(from).trim(), at: spokenAt(text, from, seconds) });
   return out.filter((s) => s.text);
-}
-
-/**
- * Where the headline starts in a story line's text: the line ends with it (and a full stop),
- * after the place and the counts sentence. With `said` (the headline as spoken, a label
- * removed) found in the text, the offset that lines the shown headline's copy of `said` up with
- * it, so a dropped label's words come just before the voice reaches the rest (never below 0).
- * Otherwise the headline's last occurrence; when the text does not carry it verbatim, where it
- * would start at the end of the text.
- */
-export function headlineOffset(text: string, headline: string, said?: string): number {
-  if (said) {
-    const at = text.lastIndexOf(said);
-    if (at >= 0) return Math.max(0, at - Math.max(0, headline.indexOf(said)));
-  }
-  const at = text.lastIndexOf(headline);
-  return at >= 0 ? at : Math.max(0, text.length - headline.length - 1);
-}
-
-/**
- * The headline's words (runs of non-space) with the time the voice reaches each, in seconds
- * from the line's start, at an even rate over the whole line: word k at
- * seconds x (characters before the headline + characters before word k) / line length.
- * `said` as for headlineOffset.
- */
-export function wordTimes(text: string, headline: string, seconds: number, said?: string): { word: string; at: number }[] {
-  const start = headlineOffset(text, headline, said);
-  return Array.from(headline.matchAll(/\S+/g), (m) => ({ word: m[0], at: spokenAt(text, start + (m.index ?? 0), seconds) }));
 }
 
 /** How many of `times` (ascending) have been reached at `t` seconds; an epsilon absorbs float error. */

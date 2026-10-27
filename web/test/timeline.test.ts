@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { bracket, buildNewscastPlan, buildPlan, LINE_LEAD, checkNewscastScript, framesFor, headlineOffset, interpolateCells, interpolateTotals, lapseTime, pullbackFraction, reached, readTimelineParams, segmentAt, sentenceTimes, spokenAt, TIMELINE_DEFAULTS, wordTimes, type ClipPlan, type NewscastLine, type NewscastScript } from '../src/timeline.ts';
+import { bracket, buildNewscastPlan, buildPlan, LINE_LEAD, checkNewscastScript, framesFor, interpolateCells, interpolateTotals, lapseTime, pullbackFraction, reached, readTimelineParams, segmentAt, sentenceTimes, spokenAt, TIMELINE_DEFAULTS, type ClipPlan, type NewscastLine, type NewscastScript } from '../src/timeline.ts';
 
 const MIN = 60_000;
 const HOUR = 60 * MIN;
@@ -316,31 +316,6 @@ test('sentence times: split at sentence ends, each at seconds x chars before / t
   assert.equal(reached(said.map((s) => s.at), 0), 1);
   assert.equal(reached(said.map((s) => s.at), said[2].at), 3);
   assert.equal(reached(said.map((s) => s.at), said[2].at - 0.01), 2);
+  assert.equal(spokenAt('abcd', 2, 8), 4);
 });
 
-test('word times: the headline starts after the counts, words at an even rate over the line', () => {
-  const text = `Paris. 520 articles from 410 outlets in 38 languages. ${HEADLINE}.`;
-  const start = text.indexOf(HEADLINE);
-  assert.equal(headlineOffset(text, HEADLINE), start);
-  const words = wordTimes(text, HEADLINE, 12);
-  assert.deepEqual(words.map((w) => w.word), ['France', 'braces:', 'Macron', 'restricts', 'protests']);
-  assert.equal(words[0].at, (12 * start) / text.length);
-  assert.equal(words[2].at, (12 * (start + HEADLINE.indexOf('Macron'))) / text.length);
-  assert.ok(words.every((w, k) => k === 0 || w.at > words[k - 1].at));
-  assert.ok(words[words.length - 1].at < 12);
-  // Not verbatim in the text (the renderer cleaned it): it is taken to end the line.
-  assert.equal(headlineOffset('Paris. Counts. Something else.', 'Other words'), 'Paris. Counts. Something else.'.length - 'Other words'.length - 1);
-  assert.equal(spokenAt('abcd', 2, 8), 4);
-  // With `said` (a label dropped from the spoken form): its words line up with the voice; the
-  // label's words come just before; a `said` the text does not carry falls back as above.
-  const shown = `Arab News | ${HEADLINE}`;
-  const spokenLine = `Paris. 520 articles from 410 outlets. ${HEADLINE}.`;
-  const at = spokenLine.indexOf(HEADLINE);
-  assert.equal(headlineOffset(spokenLine, shown, HEADLINE), at - 'Arab News | '.length);
-  const labelled = wordTimes(spokenLine, shown, 10, HEADLINE);
-  assert.deepEqual(labelled.map((w) => w.word).slice(0, 4), ['Arab', 'News', '|', 'France']);
-  assert.equal(labelled[3].at, (10 * at) / spokenLine.length);
-  assert.ok(labelled[0].at < labelled[3].at);
-  assert.equal(headlineOffset(spokenLine, HEADLINE, ''), at);
-  assert.equal(headlineOffset('Paris. Counts. Something else.', 'Other words', 'Not here'), 'Paris. Counts. Something else.'.length - 'Other words'.length - 1);
-});

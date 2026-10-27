@@ -11,9 +11,8 @@
 //                    segments: open (the world, no clock, key or totals; the opening's
 //                    sentences painted one by one at their proportional times in the hook
 //                    caption's register), per story a flight captioned "N/M · PLACE" and its
-//                    card (header "N/M", the headline's words painted as the voice reaches
-//                    them, or the whole headline over "HEADLINE NOT READ · <LANGUAGE>" when the
-//                    voice skips it), and close (the first sentence over a pull-back to the
+//                    card (header "N/M", the whole headline from the card's first frame, over
+//                    "HEADLINE NOT READ · <LANGUAGE>" when the voice skips it), and close (the first sentence over a pull-back to the
 //                    world, then from the second sentence the end card with one verb line and
 //                    READ BY A SYNTHETIC VOICE, no totals);
 //   ?timeline=1&fps=30&hook=2&fly=1.5&lapse=7&card=5&end=3&slots=3   the whole clip as one
@@ -88,7 +87,6 @@ import {
   readTimelineParams,
   segmentAt,
   sentenceTimes,
-  wordTimes,
   type ClipPlan,
   type ClipSignal,
   type NewscastLine,
@@ -531,8 +529,7 @@ function slotCard(slot: FilledSlot, run: RunPlace): CardText {
 
 /**
  * Put one card's texts in the card at type scale `fit`: the header, the place's short name,
- * the ledger row, the headline (one span per word, so the newscast can paint them as spoken)
- * and the outlet, with the "HEADLINE NOT READ" line over it when the voice skips the headline.
+ * the ledger row, the headline (whole, from the card's first frame) and the outlet, with the "HEADLINE NOT READ" line over it when the voice skips the headline.
  * A `caption` (a flight's) puts the caption in the header's place.
  */
 function fillCard(text: CardText, fit?: string, caption = false) {
@@ -541,7 +538,7 @@ function fillCard(text: CardText, fit?: string, caption = false) {
   el('clip-ledger').replaceChildren(...text.ledger.map(([n, one, many]) => countItem(n, one, many)));
   const headline = el('clip-headline');
   el('clip-quote').hidden = !text.headline;
-  headline.replaceChildren(...text.headline.split(/(\s+)/).filter(Boolean).map((part) => (/^\s+$/.test(part) ? document.createTextNode(part) : Object.assign(document.createElement('span'), { textContent: part }))));
+  headline.textContent = text.headline;
   headline.removeAttribute('lang');
   if (text.lang) headline.lang = text.lang;
   const unread = el('clip-unread');
@@ -549,15 +546,6 @@ function fillCard(text: CardText, fit?: string, caption = false) {
   unread.textContent = text.unread ? `Headline not read · ${text.unread}` : '';
   el('clip-outlet').textContent = text.headline ? text.source : '';
   if (fit !== undefined) el('clip-card').style.setProperty('--fit', fit);
-}
-
-/**
- * Paint the headline's first `words` words and leave the rest invisible (not dimmed: their
- * room is kept, so the lines never reflow); null paints them all.
- */
-function paintHeadline(words: number | null) {
-  const spans = el('clip-headline').children;
-  for (let k = 0; k < spans.length; k++) (spans[k] as HTMLElement).style.visibility = words === null || k < words ? '' : 'hidden';
 }
 
 /**
@@ -1213,7 +1201,6 @@ async function renderNewscast() {
     const pullFrames = Math.min(closeSegment.frames, Math.max(0, Math.ceil(lockupAt * fps - 1e-9)));
     const pull = path(arrivals.length ? arrivals[arrivals.length - 1] : worldView, worldView, Math.max(1, pullFrames));
     const callouts = await Promise.all(stories.map((line) => cellCallout({ id: line.story.cell, name: line.story.place, lat: line.story.lat, lon: line.story.lon }, heat)));
-    const words = stories.map((line) => (line.story.spoken ? wordTimes(line.text, line.story.headline, line.seconds, line.story.said).map((w) => w.at) : null));
     const lineIndex = new Map(script.lines.map((line, k) => [line.id, k]));
     const storyIndex = new Map(stories.map((line, n) => [line.id, n]));
 
@@ -1249,15 +1236,13 @@ async function renderNewscast() {
           flightLayout(texts[n], liveAt, null, w0, cards[n]);
           showCallout(null);
           break;
-        case 'card': {
+        case 'card':
+          // The whole headline shows with the card, from its first frame.
           map.jumpTo(arrivals[n]);
           cardLayout(texts[n], liveAt, cards[n]);
-          const times = words[n];
-          paintHeadline(times ? reached(times, t) : null);
           showCallout(n);
           closeUp = true;
           break;
-        }
         case 'close':
           if (offset < pullFrames) {
             map.jumpTo(pull[offset + 1]);
