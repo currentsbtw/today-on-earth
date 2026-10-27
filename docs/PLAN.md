@@ -982,10 +982,12 @@ renderer (`render/`) and the page (`web/clip.html`) until DATA-CONTRACT carries 
    - `story` × 6 (`STORY_COUNT = 6`: the first six entries of `stories.json`; they are already
      one per place and event, text-confirmed, credited to a non-republisher; the header reads
      "N/6" through the line's `of`). In English: "{Place}. {headline}." No counts: the card's
-     ledger row shows them. For another language: "{Place}. The headline is in {Language}, on
-     screen." and the headline shows unread (v4.1 may add Kokoro's Spanish and Italian voices
-     through the Python front end, misaki via uv). The headline is spoken only when
-     `headlineLang` is `en`. The spoken headline drops an outlet or section label (speech only,
+     ledger row shows them. A headline is read in its own language when Kokoro 1.0 has a voice
+     for it (v4.2, owner 2026-10-27: es, fr, it, pt, hi, ja, zh; `VOICE_FOR_LANG`, the story
+     carries `readIn`), with the same "{Place}. {headline}." line; the place name is always in
+     the English voice (af_heart). Any other language is on screen: "{Place}. The headline is in
+     {Language}, on screen." and the headline shows unread; so is a voiced language whose
+     phonemes the renderer could not get (`onScreenLine`). The spoken headline drops an outlet or section label (speech only,
      the card shows the title unchanged): a leading 1 to 4 words followed by " | ", " — ",
      " – " or " :: " ("Arab News | ", "WATCH | ", "Opinion — "), and a trailing label of the
      same form when the shown title still carries one; never when what is left would be under
@@ -1110,6 +1112,44 @@ already holds an unread card for its line less the flight plus 0.5 s and the gap
 in the timing: with the counts gone, the headline starts about 0.5 s into the line, inside the
 1.2 s flight, so its first one or two words are already spoken when the card appears (the
 reveal paints them at the card's first frame). CI verified (run 40446556404 on ubuntu-latest after deploy 40445140614): 8 lines, 48.9 s of speech synthesised in 14.1 s from the cached model, 1,809 frames, clip-2026-10-26.mp4 61.3 s on the clips release, identical to the local render. The v4.1 newscast is the daily clip from 2026-10-28 00:20 UTC.
+
+**Status v4.2 voices (render), 2026-10-27: built, not committed.** The owner's decision of
+2026-10-27: a headline in a language Kokoro 1.0 has a voice for is read in that language by
+that voice, the place staying in af_heart; speed 1.1 everywhere. Contract item 1 now carries
+the rule. A phonemiser that cannot start, fails, takes over 120 s or gives empty phonemes
+never fails the clip: the story is spoken and written in its on-screen form (`onScreenLine`;
+`KOKORO_PHONEMIZER=none` simulates it). `VOICE_FOR_LANG` in `render/src/speech.mjs`: es
+ef_dora, fr ff_siwis, it if_sara, pt pf_dora (Brazilian), hi hf_alpha, ja jf_alpha, zh
+zf_xiaobei; German and every other language keep the "on screen" line. Such a story is
+"{Place}. {headline}." with `spoken: true`, `said` as for English (label strip included) and
+`readIn: '<lang>'`; the caption's transcript shows the line as spoken, in its language, with the
+credit alone. Its line WAV is two pieces: "{Place}." by af_heart (kokoro-js's English
+phonemes), 0.25 s of silence, then the headline by the language's voice from phonemes made by
+`render/py/phonemize.py` (JSON lines `{id, lang, text}` in, `{id, phonemes}` out; misaki 0.9.4
+as the Python kokoro package uses it: EspeakG2P on espeakng-loader's espeak-ng for es fr it pt-br
+hi, cutlet with unidic-lite for ja, jieba and pypinyin for zh), run once per script with `uv run
+--project render/py --locked` (pinned by `render/py/uv.lock`, Python 3.12 because misaki needs
+< 3.13; the environment in `render/.cache/py`, 378 MB) and fed to the model through
+`tts.tokenizer()` and `generate_from_ids()`. misaki.ja imports pyopenjtalk but its default
+(cutlet) path never calls it, so a stub stands in for the 300 MB package. Clip workflow:
+`astral-sh/setup-uv` v10.3.2 pinned by commit, uv 0.12.5 and Python 3.12 pinned, uv's cache
+keyed on the lock, a "Prepare the phonemiser" step (`uv sync --locked` and one Spanish line);
+45 min and `npm ci --ignore-scripts` unchanged. Measured here (Windows, 22 cores): the
+self-test's English line 3.55 s and Spanish line 4.25 s, 3.9 s in all with the model load and the
+phonemiser (one uv process, 0.9 to 2.5 s); a fresh environment from uv's warm cache in 1.7 s;
+every phoneme of all seven languages is in Kokoro's vocabulary; one line per language (es fr it
+pt hi ja zh: 4.25, 4.97, 3.60, 4.67, 4.97, 4.90, 6.25 s) transcribed by Whisper-small back to its
+headline (Japanese with homophones, French only after cutting the place off, a Whisper
+stop). Live snapshot of 2026-10-27 13:41 UTC: 8 lines, 55.93 s of speech in 14.4 s, one
+Spanish story (Washington, eltiempo.com, 8.80 s, af_heart + ef_dora), identical WAV bytes on a
+second run; local render against the dev server, 1080x1920 30 fps: 2,020 frames, 0 bad, a
+68.3 s mp4. **Found:** the audible pause between the place and a foreign headline is about
+0.92 s (each piece's own edge silence plus the 0.25 s), against 0.29 to 0.39 s between place
+and headline in an English line; trimming the pieces' edge silence before the join would bring
+it to about 0.25 s, the owner's call by ear. The page's word reveal is proportional over the
+whole line, so on a two-piece line the headline's words run slightly ahead of the voice. Spanish
+is espeak's Castilian ("dice" with θ). Not done: a Linux (CI) run of the phonemiser, and the
+owner's listening.
 
 
 **What changes in the machinery.** The audio drives the timeline, not the other way round:

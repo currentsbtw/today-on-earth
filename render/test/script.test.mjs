@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buildScript, clipDate, CLOSE_TEXT, languageName, openText, ordinalWords, spokenDate, spokenHeadline, spokenSeconds, storyText } from "../src/script.mjs";
+import { buildScript, clipDate, CLOSE_TEXT, languageName, onScreenLine, openText, ordinalWords, spokenDate, spokenHeadline, spokenSeconds, storyText } from "../src/script.mjs";
 
 const heat = { generatedAt: "2026-10-25T00:15:00Z", windowHours: 24, totals: { articles: 242540, outlets: 10568, countries: 195, cells: 2797 } };
 
@@ -95,9 +95,10 @@ test("buildScript: a story line is the place and the headline (no counts), its s
   assert.equal(atlanta.story.said, "Six Flags says it will install seat belts?");
   assert.equal(atlanta.story.place, "Atlanta");
   assert.equal(kiev.text, "Kiev. Musk says he was behind Starlink speed restriction.");
-  // An unread headline has said "".
-  assert.equal(milan.text, "Milan. The headline is in Italian, on screen.");
-  assert.equal(milan.story.said, "");
+  // An Italian headline is read in Italian (by if_sara); an English story has no readIn.
+  assert.equal(milan.text, "Milan. Cortei, da Milano a Roma.");
+  assert.equal(milan.story.readIn, "it");
+  assert.ok(!("readIn" in hebron.story));
   assert.deepEqual(storyText({ place: "X", headline: "H", lang: "en" }), { text: "X. H.", spoken: true, said: "H" });
 });
 
@@ -110,17 +111,38 @@ test("invisible characters: out of the spoken text and the script's headline", (
   assert.ok(!/[​-‏⁠﻿]/u.test(london.text));
 });
 
-test("buildScript: a non-English headline is on screen, not spoken", () => {
+test("buildScript: a headline in a language with a Kokoro voice is read in it; any other is on screen", () => {
   const lines = buildScript({ stories, date: "2026-10-24" }).lines;
   const paris = lines[2];
-  assert.equal(paris.text, "Paris. The headline is in Spanish, on screen.");
-  assert.equal(paris.story.spoken, false);
+  // Spanish: the place (English voice), then the headline (ef_dora), one line as for English.
+  assert.equal(paris.text, "Paris. Francia vive nueva jornada de protestas.");
+  assert.equal(paris.story.spoken, true);
+  assert.equal(paris.story.readIn, "es");
+  assert.equal(paris.story.said, "Francia vive nueva jornada de protestas");
   assert.equal(paris.story.headline, "Francia vive nueva jornada de protestas");
   assert.equal(paris.story.source, "eltiempo.com");
-  assert.equal(lines[6].text, "Madrid. The headline is in Greek, on screen.");
+  // Greek has no Kokoro voice: on screen, unread, no readIn.
+  const madrid = lines[6];
+  assert.equal(madrid.text, "Madrid. The headline is in Greek, on screen.");
+  assert.deepEqual([madrid.story.spoken, madrid.story.said, "readIn" in madrid.story], [false, "", false]);
+  assert.ok(!madrid.text.includes("Ισπανία"));
   assert.ok(!lines.some((l) => l.story?.place === "Tehran"), "the seventh entry is not read");
-  // The headline itself never reaches the spoken text.
-  assert.ok(!paris.text.includes("Francia"));
+  // German stays on screen (no Kokoro 1.0 voice).
+  assert.deepEqual(storyText({ place: "Berlin", headline: "Proteste in ganz Frankreich gehen weiter", lang: "de" }), {
+    text: "Berlin. The headline is in German, on screen.",
+    spoken: false,
+    said: "",
+  });
+  // A read Spanish headline loses its outlet label like an English one; `said` is what is read.
+  assert.deepEqual(storyText({ place: "Bogotá", headline: "El Tiempo | Francia vive nueva jornada de protestas", lang: "es" }), {
+    text: "Bogotá. Francia vive nueva jornada de protestas.",
+    spoken: true,
+    said: "Francia vive nueva jornada de protestas",
+    readIn: "es",
+  });
+  // Each voiced language is read; a CJK or Devanagari full stop is kept, not doubled.
+  for (const lang of ["es", "fr", "it", "pt", "hi", "ja", "zh"]) assert.equal(storyText({ place: "X", headline: "H", lang }).readIn, lang);
+  assert.equal(storyText({ place: "Tokyo", headline: "東京で震度5の地震。", lang: "ja" }).text, "Tokyo. 東京で震度5の地震。");
   assert.equal(languageName("es"), "Spanish");
   assert.equal(languageName("zh"), "Chinese");
   assert.equal(languageName("qqq"), "qqq");
@@ -146,4 +168,21 @@ test("spoken headlines: an outlet or section label is not read; the card keeps t
   // Never stripped when what is left would be under 20 characters.
   assert.equal(spokenHeadline("Arab News | Short one here"), "Arab News | Short one here");
   assert.equal(storyText({ place: "X", headline: "WATCH | Firefighters battle a wildfire", lang: "en" }).text, "X. Firefighters battle a wildfire.");
+});
+
+test("onScreenLine: a read story falls back to its on-screen form (the phonemiser failed)", () => {
+  const lines = buildScript({ stories, date: "2026-10-24" }).lines;
+  const paris = lines[2];
+  const back = onScreenLine(paris);
+  assert.equal(back.text, "Paris. The headline is in Spanish, on screen.");
+  assert.deepEqual([back.story.spoken, back.story.said, "readIn" in back.story], [false, "", false]);
+  // The rest of the line and story are kept; the original is not changed.
+  assert.deepEqual({ ...back, text: undefined, story: undefined }, { ...paris, text: undefined, story: undefined });
+  assert.equal(back.story.headline, paris.story.headline);
+  assert.equal(back.story.source, "eltiempo.com");
+  assert.equal(paris.story.readIn, "es");
+  // As buildScript writes an unread story, and English or on-screen lines pass through unchanged.
+  const unread = buildScript({ stories: { stories: [{ ...stories.stories[1], story: { ...stories.stories[1].story, headlineLang: "el" } }] }, date: "2026-10-24" }).lines[1];
+  assert.deepEqual(back.story, { ...unread.story, lang: "es" });
+  for (const l of [lines[0], lines[1], lines[6], lines.at(-1)]) assert.equal(onScreenLine(l), l);
 });

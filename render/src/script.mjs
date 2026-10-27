@@ -6,14 +6,16 @@
 //   open   "Today on Earth. {Weekday}, the {ordinal} of {month}. Six places the world's press
 //          pointed at."  (the number of stories read, in words)
 //   story  "{Place}. {headline}."  (the headline as spoken, spokenHeadline; the counts are on
-//          the card's ledger row, not spoken), or for a headline not in English:
-//          "{Place}. The headline is in {Language}, on screen."
+//          the card's ledger row, not spoken). A headline in a language Kokoro has a voice for
+//          (VOICE_FOR_LANG in speech.mjs: es fr hi it ja pt zh) is read in that language by that
+//          voice, the place by the English one; the story carries `readIn: '<lang>'` (v4.2).
+//          For any other language: "{Place}. The headline is in {Language}, on screen."
 //   close  "That was today on Earth. Every place, every outlet, every day. Find us on GitHub."
 //
 // The outlet is never spoken (its name on screen and in the caption is the credit), nor the
 // address or the voice label: both stand on the close's lockup, and the label is the caption
 // transcript's last line (lib.mjs VOICE_NOTE), not a spoken line.
-import { VOICE_SPEED } from "./speech.mjs";
+import { VOICE_FOR_LANG, VOICE_SPEED } from "./speech.mjs";
 
 /** Stories read per clip: the first entries of stories.json. */
 export const STORY_COUNT = 6;
@@ -78,10 +80,10 @@ export const visible = (s) => String(s ?? "").replace(INVISIBLE, "");
 /** The place as spoken: the cell name up to the first comma ("Milan, Lombardia, Italy" -> "Milan"). */
 export const shortPlace = (name) => String(name ?? "").split(",")[0].trim();
 
-/** End a sentence with a full stop unless it already ends with one (or ! ? …). */
+/** End a sentence with a full stop unless it already ends with one (or ! ? …, or the CJK and Devanagari marks). */
 const sentence = (s) => {
   const t = s.trim();
-  return /[.!?…]["'”’)]*$/.test(t) ? t : `${t}.`;
+  return /[.!?…。！？।]["'”’)」』]*$/u.test(t) ? t : `${t}.`;
 };
 
 /** The opening line's text for `stories` stories read ("Six places", "One place"; none: no third sentence). */
@@ -111,16 +113,35 @@ export function spokenHeadline(headline) {
   return h;
 }
 
+/** Whether a headline in `lang` is read aloud: English, or a language with a voice in VOICE_FOR_LANG. */
+export const readable = (lang) => lang === "en" || Object.hasOwn(VOICE_FOR_LANG, lang ?? "");
+
 /**
- * A story line's text, whether its headline is spoken (English only in v4.0) and `said`, the
- * headline exactly as the text carries it (after spokenHeadline, before the added full stop;
- * "" when not read). Invisible characters are removed from all of it.
+ * A story line's text, whether its headline is spoken, `said`, the headline exactly as the text
+ * carries it (after spokenHeadline, before the added full stop; "" when not read), and for a
+ * headline read in another language `readIn`, its language code. Invisible characters are
+ * removed from all of it.
  */
 export function storyText({ place, headline, lang }) {
-  const spoken = lang === "en";
+  const spoken = readable(lang);
   if (!spoken) return { text: visible(`${place}. The headline is in ${languageName(lang)}, on screen.`), spoken, said: "" };
   const said = spokenHeadline(visible(headline));
-  return { text: visible(`${place}. ${sentence(said)}`), spoken, said };
+  const line = { text: visible(`${place}. ${sentence(said)}`), spoken, said };
+  return lang === "en" ? line : { ...line, readIn: lang };
+}
+
+/**
+ * A story line whose headline was to be read in another language, in its "on screen" form
+ * instead: "{Place}. The headline is in {Language}, on screen.", spoken false, said "", no
+ * readIn (the renderer's fallback when the phonemiser cannot give its phonemes). A new line;
+ * any other line is returned unchanged.
+ * @param {any} line
+ */
+export function onScreenLine(line) {
+  if (line?.kind !== "story" || !line.story?.readIn) return line;
+  const { readIn, ...story } = line.story;
+  const text = visible(`${story.place}. The headline is in ${languageName(story.lang ?? readIn)}, on screen.`);
+  return { ...line, text, story: { ...story, spoken: false, said: "" } };
 }
 
 /**
@@ -138,7 +159,7 @@ export function buildScript({ stories, date, generatedAt = new Date().toISOStrin
       if (!Number.isFinite(story[f])) throw new Error(`stories.json entry ${k + 1} story.${f} is ${JSON.stringify(story[f])}`);
     }
     const place = shortPlace(cell.name);
-    const { text, spoken, said } = storyText({ place, headline: story.headline, lang: story.headlineLang });
+    const { text, spoken, said, readIn } = storyText({ place, headline: story.headline, lang: story.headlineLang });
     lines.push({
       id: `story-${k + 1}`,
       kind: "story",
@@ -162,6 +183,7 @@ export function buildScript({ stories, date, generatedAt = new Date().toISOStrin
         confirmed: e.confirmed ?? null,
         spoken,
         said,
+        ...(readIn ? { readIn } : {}),
       },
     });
   });

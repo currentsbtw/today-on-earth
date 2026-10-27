@@ -36,7 +36,7 @@ import { dirname, join, resolve } from "node:path";
 import { chromium } from "playwright-core";
 import { audioEvents, newscastEvents, renderWav, SAMPLE_RATE } from "./audio.mjs";
 import { captionText, captureTimeline, checkNewscastPlan, checkPlan, checkScript, describeSegments, ffmpegArgs, frameName, maxCellN, mixArgs, newscastUrl, parseArgs, timelineUrl } from "./lib.mjs";
-import { buildScript, clipDate, spokenSeconds } from "./script.mjs";
+import { buildScript, clipDate, onScreenLine, spokenSeconds } from "./script.mjs";
 
 const READY_TIMEOUT_MS = 60_000;
 const STEP_TIMEOUT_MS = 30_000;
@@ -126,7 +126,9 @@ async function voicedScript(opts, heat, outDir) {
   const script = buildScript({ stories, date: clipDate(heat) });
   const voiceDir = join(outDir, "voice");
   await rm(voiceDir, { recursive: true, force: true });
-  const seconds = await synthesise(script.lines, { outDir: voiceDir, voice: script.voice.name, speed: script.voice.speed });
+  // A headline the phonemiser could not give phonemes for is spoken, and written, in its on-screen form.
+  const seconds = await synthesise(script.lines, { outDir: voiceDir, voice: script.voice.name, speed: script.voice.speed, onScreen: onScreenLine });
+  script.lines = script.lines.map((l) => seconds.replaced[l.id] ?? l);
   script.lines.forEach((l, k) => (l.seconds = Math.round(seconds[k] * 1e6) / 1e6));
   return { script: checkScript(script), voiceDir };
 }

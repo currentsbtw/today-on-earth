@@ -309,6 +309,11 @@ test("captionText: the transcript after the links, each story's headline credit"
   // With signals, the transcript comes after the signal links and the broadcast line.
   const withSignals = captionText({ date: "2026-10-24", signals: signals().slice(0, 1) }, { script: voicedScript() }).split("\n");
   assert.deepEqual(withSignals.slice(3, 9), ["1/1 · MOST COVERED STORY · Paris", `${PAGE}831fb4fffffffff.html`, "", broadcast, "", transcript[0]]);
+  // A headline read in Spanish (v4.2): the line as spoken, in Spanish, and the credit alone.
+  const read = voicedScript();
+  read.lines[2] = { ...read.lines[2], text: "Paris. Francia vive nueva jornada de protestas.", story: { ...read.lines[2].story, spoken: true, said: "Francia vive nueva jornada de protestas", readIn: "es" } };
+  const lines = captionText({ date: "2026-10-24" }, { script: read }).split("\n");
+  assert.deepEqual(lines.slice(8, 10), ["Paris. Francia vive nueva jornada de protestas.", "Headline from eltiempo.com"]);
 });
 
 test("checkNewscastPlan: a story line's audio may start inside its flight (the page's LINE_LEAD)", () => {

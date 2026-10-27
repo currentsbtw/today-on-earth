@@ -2,7 +2,9 @@ name: Clip
 
 # Daily vertical clip of the last 24 hours, the newscast (docs/PLAN.md "Clip v4: the
 # newscast"): builds the script from the live stories.json and heat.json, voices each line
-# offline with Kokoro (kokoro-js, voice af_heart), hands the script to the live site's
+# offline with Kokoro (kokoro-js, voice af_heart; a headline in Spanish, French, Italian,
+# Portuguese, Hindi, Japanese or Mandarin by that language's Kokoro voice, its phonemes from
+# render/py/phonemize.py run by uv), hands the script to the live site's
 # clip.html in newscast mode, steps it frame by frame at 30 fps, mixes the voice over a quiet
 # bed, encodes an H.264 + AAC mp4, and publishes it, with caption-<date>.txt (the text to post
 # with it, with the transcript) and script.json, as an artifact and on the rolling "clips"
@@ -100,6 +102,25 @@ jobs:
         with:
           path: render/.cache/kokoro
           key: kokoro-Kokoro-82M-v1.0-ONNX-fp32-kokoro-js-1.2.1
+
+      # Headlines read in another language (v4.2) are phonemised by render/py/phonemize.py
+      # (misaki on espeak-ng, cutlet, jieba and pypinyin), which speech.mjs runs with
+      # `uv run --project render/py --locked` in render/.cache/py. uv and Python 3.12 are pinned
+      # here; setup-uv keeps uv's cache (the locked wheels) in the Actions cache, keyed on
+      # render/py/uv.lock, and the environment is built from it before the render.
+      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
+        with:
+          version: "0.12.5"
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: render/py/uv.lock
+
+      - name: Prepare the phonemiser
+        env:
+          UV_PROJECT_ENVIRONMENT: ${{ github.workspace }}/render/.cache/py
+        run: |
+          uv sync --project render/py --locked
+          echo '{"id":"check","lang":"es","text":"Hola."}' | uv run --project render/py --locked --quiet python -I render/py/phonemize.py
 
       - name: Render clip
         working-directory: render
