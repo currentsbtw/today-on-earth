@@ -342,20 +342,26 @@ the owner may pick a different Kokoro voice by ear at speed 1.0 after hearing th
 script, as the 2026-10-24 voice decision was made. Platform labelling of synthetic voices
 is unchanged. No paid or cloud voice.
 
-## Open for the owner
+## Decisions (all five taken by the owner on 2026-10-27)
 
-1. The counted nouns: literal (this brief) or alien. See Vocabulary.
+1. The counted nouns stay literal (articles, outlets, countries, languages, a day). See
+   Vocabulary. The alien lexicon is rejected.
 2. ~~The frame phrase "The humans wrote:" against three grim headlines.~~ Decided by the
    owner 2026-10-27: it passes, judged against the live sample's Tiptonville, Kiev and Gaza
    lines. The frame stays. (The fallback, had it failed, was the bare form "{Place}.
    {headline}." with the voice carried by the open and close only.)
-3. "The humans" in third person throughout, or "you" in the opening and closing only (this
-   brief), or "you" nowhere.
-4. The about page: the opening only (this brief), or also a one-line voiced heading per
-   section.
-5. A name for the Observer, or none. This brief uses none: the mascot's label is a count,
-   OBSERVERS · N, and a name would make it a person. The site's name is already the title of
-   its broadcast.
+3. Third person for the species throughout, as this brief writes it. "You" survives in two
+   fixed spots only, both addressed to the viewer and not to the species: "It is on your
+   screen." (the unread-headline line) and "This is a count of your planet's news." (the
+   about page's first sentence). Nowhere else.
+4. The about page takes the voice in its opening section only. The sections after it are
+   the calibration document, with the Accuracy table among them, and a character line above
+   an error table would read as a joke about the error. The headings stay literal; they are
+   the anchor index and are mirrored in docs/METHODOLOGY.md.
+5. The Observer stays unnamed for now. The mascot's label is a count, OBSERVERS · N, and a
+   name would make it a person. The site's name is already the title of its broadcast.
+
+Nothing is open. The build waits for the 2026-10-31 audit and the first public post.
 
 ## When this is built
 
